@@ -1,0 +1,41 @@
+{
+    "name": "ilbronza/products",
+    "description": ":package_description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Author Name",
+            "email": "author@email.com",
+            "homepage": "http://author.com"
+        }
+    ],
+    "homepage": "https://github.com/ilbronza/products",
+    "keywords": ["Laravel", "Products"],
+    "require": {
+        "illuminate/support": "~9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~7"
+    },
+    "autoload": {
+        "psr-4": {
+            "IlBronza\\Products\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IlBronza\\Products\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "IlBronza\\Products\\ProductsServiceProvider"
+            ],
+            "aliases": {
+                "Products": "IlBronza\\Products\\Facades\\Products"
+            }
+        }
+    }
+}
