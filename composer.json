@@ -4,19 +4,16 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Author Name",
-            "email": "author@email.com",
-            "homepage": "http://author.com"
+            "name": "Davide Bronzini",
+            "email": "davide_bronzini@hotmail.com",
+            "homepage": "http://sistema.srl"
         }
     ],
     "homepage": "https://github.com/ilbronza/products",
     "keywords": ["Laravel", "Products"],
     "require": {
-        "illuminate/support": "~9"
     },
     "require-dev": {
-        "phpunit/phpunit": "~9.0",
-        "orchestra/testbench": "~7"
     },
     "autoload": {
         "psr-4": {
