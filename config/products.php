@@ -1,19 +1,16 @@
 <?php
 
-use App\Http\Controllers\PackageOverriding\Products\ProductIndexController;
-use App\Models\ProductsPackage\Order;
-use App\Models\ProductsPackage\Product;
-use App\Workstation;
-
-
-
-
 use IlBronza\Products\Http\Controllers\Order\ProductOrderIndexController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseIndexController;
+use IlBronza\Products\Http\Controllers\Product\ProductCurrentController;
+use IlBronza\Products\Http\Controllers\Product\ProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ProductShowController;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroupParametersFile;
+use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Phase;
+use IlBronza\Products\Models\Product;
 use IlBronza\Products\Models\ProductRelation;
 
 return [
@@ -23,9 +20,14 @@ return [
         'product' => [
             'class' => Product::class,
             'table' => 'products__products',
+            'fieldsGroupParameters' => [
+                'ProductIndexController' => ProductFieldsGroupParametersFile::class,
+                'ProductCurrentController' => ProductFieldsGroupParametersFile::class,
+            ],
             'controllers' => [
                 'show' => ProductShowController::class,
-                'index' => ProductIndexController::class
+                'index' => ProductIndexController::class,
+                'current' => ProductCurrentController::class
             ],
         ],
         'phase' => [

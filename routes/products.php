@@ -9,6 +9,8 @@ Route::group([
 	],
 	function()
 	{
+		Route::get('current-products', [Products::getController('product', 'current'), 'index'])->name('products.current');
+
 		Route::get('products', [Products::getController('product', 'index'), 'index'])->name('products.index');
 
 		Route::get('products/{product}', [Products::getController('product', 'show'), 'show'])->name('products.show');

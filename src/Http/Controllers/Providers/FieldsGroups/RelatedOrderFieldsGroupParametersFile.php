@@ -12,17 +12,13 @@ class RelatedOrderFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
-                // 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
+                'code' => 'flat',
                 'created_at' => 'dates.datetime',
-                // 'sorting_index' => 'flat',
-                'name' => 'flat',
-                // 'client_id' => [
-                //     'type' => 'links.LinkCachedProperty',
-                //     'modelClass' => Client::getProjectClassName(),
-                //     'property' => 'name'
-                // ],
-                // 'mySelfDelete' => 'links.delete'
+                'mySelfClass' => 'classname',
+                // 'extraFields' => 'json',
+                'completed_at' => 'dates.datetime',
+                'delivery_sorting' => 'flat'
             ]
         ];
 	}

@@ -32,7 +32,13 @@ class ProductIndexController extends ProductCRUD
 
             function()
             {
-                return $this->getModelClass()::with('client', 'orders')->get();                
+                return $this->getModelClass()::with([
+                    'client' => function($query)
+                    {
+                        $query->select('id', 'name');
+                    },
+                    'orders'
+                ])->get();
             }
         );
     }

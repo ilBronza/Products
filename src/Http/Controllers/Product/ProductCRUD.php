@@ -8,7 +8,6 @@ class ProductCRUD extends CRUD
 {
     public function setModelClass()
     {
-        dd(config('products.models.product.class'));
         $this->modelClass = config('products.models.product.class');
     }
 

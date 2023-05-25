@@ -25,6 +25,13 @@ class Products implements RoutedObjectInterface
             'text' => 'products::products.list'
         ]);
 
+        $currentProductsButton = $menu->createButton([
+            'name' => 'products.current',
+            'icon' => 'users',
+            'text' => 'products::products.current',
+            'href' => IbRouter::route($this, 'products.current')
+        ]);
+
         $productsButton = $menu->createButton([
             'name' => 'products.index',
             'icon' => 'users',
@@ -34,6 +41,7 @@ class Products implements RoutedObjectInterface
 
         $button->addChild($productsManagerButton);
 
+        $productsManagerButton->addChild($currentProductsButton);
         $productsManagerButton->addChild($productsButton);
     }
 

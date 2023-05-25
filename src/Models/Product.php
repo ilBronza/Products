@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models;
 
+use Carbon\Carbon;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeTrait;
@@ -25,6 +26,17 @@ class Product extends BaseModel
 	public function getManyToManyRelationClass() : string
 	{
 		return ProductRelation::class;
+	}
+
+	public function scopeCurrent($query)
+	{
+		$query->whereHas(
+			'orderProducts',
+			function($_query)
+			{
+			    return $_query->where('products__order_products.created_at', '>' , Carbon::now()->subYears(1));
+			}
+		);
 	}
 
 	use ProductRelationshipsTrait;

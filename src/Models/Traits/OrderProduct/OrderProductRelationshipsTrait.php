@@ -5,7 +5,7 @@ namespace IlBronza\Products\Models\Traits\OrderProduct;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\Product;
 
-trait OrderProductPhaseRelationshipsTrait
+trait OrderProductRelationshipsTrait
 {
 	public function product()
 	{
