@@ -2,9 +2,10 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
+use IlBronza\Clients\Models\Client;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 
-class RelatedOrderFieldsGroupParametersFile extends FieldsGroupParametersFile
+class AccessoryFieldsGroupParametersFile extends FieldsGroupParametersFile
 {
 	static function getFieldsGroup() : array
 	{
@@ -12,13 +13,13 @@ class RelatedOrderFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
+                'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-                'code' => 'flat',
                 'created_at' => 'dates.datetime',
-                'mySelfClass' => 'classname',
-                // 'extraFields' => 'json',
-                'completed_at' => 'dates.datetime',
-                'delivery_sorting' => 'flat'
+                'name' => 'flat',
+                'temp_position' => 'flat',
+                'quantity_neeeded_in_stock' => 'flat',
+                'mySelfDelete' => 'links.delete'
             ]
         ];
 	}

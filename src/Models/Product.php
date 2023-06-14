@@ -3,23 +3,22 @@
 namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
-use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeTrait;
-use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Products\Models\Phase;
-use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
+use IlBronza\Products\Models\ProductRelation;
+use IlBronza\Products\Models\Traits\Product\ProductQueriesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductRelationshipsTrait;
+use IlBronza\Products\Models\Traits\Product\ProductScopesTrait;
 
-class Product extends BaseModel
+class Product extends ProductPackageBaseModel
 {
 	static $modelConfigPrefix = 'product';
 
-	use ProductPackageBaseModelTrait;
-	use CRUDUseUuidTrait;
 	use CRUDSluggableTrait;
-    use InteractsWithNotesTrait;
+	use ProductRelationshipsTrait;
+	use ProductScopesTrait;
+	use ProductQueriesTrait;
 
 	use CRUDManyToManyTreeTrait;
 
@@ -28,18 +27,27 @@ class Product extends BaseModel
 		return ProductRelation::class;
 	}
 
-	public function scopeCurrent($query)
+	public function getChildrenCountAttribute()
 	{
-		$query->whereHas(
-			'orderProducts',
-			function($_query)
+		return $this->getCachedCalculatedProperty(
+			$name = 'children_count',
+			function()
 			{
-			    return $_query->where('products__order_products.created_at', '>' , Carbon::now()->subYears(1));
+				return $this->products()->count();
 			}
 		);
 	}
 
-	use ProductRelationshipsTrait;
+	public function getPhasesDescriptionStringAttribute()
+	{
+		cache()->flush();
+		return $this->getCachedCalculatedProperty(
+			$name = 'phases_description_string',
+			function()
+			{
+				return $this->getPhases()->implode('name', " - ");
+			}
+		);		
+	}
 
-	protected $keyType = 'string';
 }

@@ -2,22 +2,21 @@
 
 namespace IlBronza\Products\Models;
 
-use IlBronza\CRUD\Models\BaseModel;
-use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
-use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
+use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
 
-
-class OrderProductPhase extends BaseModel
+class OrderProductPhase extends ProductPackageBaseModel
 {
 	static $modelConfigPrefix = 'orderProductPhase';
 
-	use ProductPackageBaseModelTrait;
-	use CRUDUseUuidTrait;
-    use InteractsWithNotesTrait;
-
+	use OrderProductPhaseScopesTrait;
 	use OrderProductPhaseRelationshipsTrait;
 
-	protected $keyType = 'string';
+	public function getWorkstationId()
+	{
+		if($this->workstation_overridden_id)
+			return $this->workstation_overridden_id;
+
+		return $this->getPhase()->getWorkstationId();
+	}
 }

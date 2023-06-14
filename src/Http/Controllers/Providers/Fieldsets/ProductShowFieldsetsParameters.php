@@ -25,6 +25,3 @@ class ProductShowFieldsetsParameters extends FieldsetParametersFile
         ];
     }
 }
-
-
-

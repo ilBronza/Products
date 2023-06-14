@@ -2,13 +2,9 @@
 
 namespace IlBronza\Products\Http\Controllers\Product;
 
-use IlBronza\CRUD\CRUD;
+use IlBronza\Products\Http\Controllers\CRUDProductPackageController;
 
-class ProductCRUD extends CRUD
+class ProductCRUD extends CRUDProductPackageController
 {
-    public function setModelClass()
-    {
-        $this->modelClass = config('products.models.product.class');
-    }
-
+    public $configModelClassName = 'product';
 }

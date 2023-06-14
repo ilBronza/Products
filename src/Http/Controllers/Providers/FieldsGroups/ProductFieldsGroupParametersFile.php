@@ -23,7 +23,7 @@ class ProductFieldsGroupParametersFile extends FieldsGroupParametersFile
                     'property' => 'name'
                 ],
                 'orders_count' => 'flat',
-                'mySelfDelete' => 'links.delete'
+                // 'mySelfDelete' => 'links.delete'
             ]
         ];
 	}

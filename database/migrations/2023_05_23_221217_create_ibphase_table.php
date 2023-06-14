@@ -21,7 +21,7 @@ class CreateIbphaseTable extends Migration
                 config('products.models.product.table')
             );
 
-            $table->unsignedInteger('sorting_index')->nullable();
+            $table->unsignedInteger('sequence')->nullable();
 
             $table->boolean('optional')->nullable();
 

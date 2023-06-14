@@ -12,9 +12,17 @@ class ProductRelationManager Extends RelationshipsManager
 		return [
 			'show' => [
 				'relations' => [
+					'productRelations' => config('products.models.productRelation.controllers.byProductIndex'),
+					'accessoryProducts' => config('products.models.accessoryProduct.controllers.byProductIndex'),
+					'phases' => [
+						'controller' => config('products.models.phase.controllers.productPhaseIndex'),
+						'selectRowCheckboxes' => false,
+						'buttonsMethods' => [
+							'getReorderButtonByProduct'
+						],
+					],
 					'notes' => CrudNoteController::class,
-					'phases' => config('products.models.phase.controllers.productPhaseIndex'),
-					'orders' => config('products.models.order.controllers.productOrderIndex')
+					'orderProducts' => config('products.models.orderProduct.controllers.byProductIndex'),
 				]
 			]
 		];

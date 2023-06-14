@@ -2,13 +2,9 @@
 
 namespace IlBronza\Products\Http\Controllers\Phase;
 
-use IlBronza\CRUD\CRUD;
+use IlBronza\Products\Http\Controllers\CRUDProductPackageController;
 
-class PhaseCRUD extends CRUD
+class PhaseCRUD extends CRUDProductPackageController
 {
-    public function setModelClass()
-    {
-        $this->modelClass = config('products.models.phase.class');
-    }
-
+    public $configModelClassName = 'phase';
 }

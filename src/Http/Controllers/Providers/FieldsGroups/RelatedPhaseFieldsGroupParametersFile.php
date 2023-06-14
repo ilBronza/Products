@@ -14,15 +14,9 @@ class RelatedPhaseFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfPrimary' => 'primary',
                 // 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-                'created_at' => 'dates.datetime',
-                'sorting_index' => 'flat',
+                'sequence' => 'flat',
                 'name' => 'flat',
-                // 'client_id' => [
-                //     'type' => 'links.LinkCachedProperty',
-                //     'modelClass' => Client::getProjectClassName(),
-                //     'property' => 'name'
-                // ],
-                'mySelfDelete' => 'links.delete'
+                // 'mySelfDelete' => 'links.delete'
             ]
         ];
 	}

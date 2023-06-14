@@ -2,8 +2,13 @@
 
 namespace IlBronza\Products\Models;
 
+use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDMAnyToManyTreeRelationalModelTrait;
+use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
+use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
+use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,15 +17,29 @@ class ProductRelation extends Pivot
 	use CRUDMAnyToManyTreeRelationalModelTrait;
 
 	use SoftDeletes;
+	use CRUDCacheTrait;
+	use CRUDRelationshipModelTrait;
+    use CRUDUseUuidTrait;
+
+	use CRUDModelTrait, ProductPackageBaseModelTrait
+	{
+        ProductPackageBaseModelTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
+    }
+
+	protected $keyType = 'string';
 
 	protected $dates = [
 		'deleted_at'
 	];
 
 	public $incrementing = true;
+
 	protected $guarded = [];
 
-	// protected $table = 'costi_component_relations';
+	public function getTable()
+	{
+		return config("products.models.productRelation.table");
+	}
 
 	public function getRelatedClassName()
 	{
@@ -33,5 +52,46 @@ class ProductRelation extends Pivot
 			'main_code',
 			'quantity_coefficient'
 		];
+	}
+
+	public function component()
+	{
+		return $this->belongsTo(
+			Product::getProjectClassName(),
+			'child_id'
+		);
+	}
+
+	public function parent()
+	{
+		return $this->belongsTo(
+			Product::getProjectClassName(),
+			'parent_id'
+		);
+	}
+
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	public function getComponent()
+	{
+		return $this->component;
+	}
+
+	public function getMainCode()
+	{
+		return $this->main_code;
+	}
+
+	public function getName()
+	{
+		$name = $this->getParent()->getName() . ' -> componente ' . $this->getComponent()->getName();
+
+		if($this->getMainCode())
+			return $name . ' per ' . $this->getMainCode();
+
+		return $name;
 	}
 }

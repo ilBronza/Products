@@ -26,7 +26,7 @@ class CreateIbOrderProductsPhasesTable extends Migration
                 config('products.models.phase.table')
             );
 
-            $table->unsignedInteger('sorting_index')->nullable();
+            $table->unsignedInteger('sequence')->nullable();
 
             $table->unsignedInteger('quantity_required')->nullable();
             $table->unsignedInteger('quantity_done')->nullable();

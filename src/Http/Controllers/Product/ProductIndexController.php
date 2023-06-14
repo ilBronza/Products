@@ -4,8 +4,7 @@ namespace IlBronza\Products\Http\Controllers\Product;
 
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
-use IlBronza\Products\Http\Controllers\Product\ProductCRUD;
-use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroupParametersFile;
+
 use Illuminate\Support\Str;
 
 class ProductIndexController extends ProductCRUD
@@ -15,7 +14,7 @@ class ProductIndexController extends ProductCRUD
 
     public function getIndexFieldsArray()
     {
-        return ProductFieldsGroupParametersFile::getFieldsGroup();
+        return config('products.models.product.fieldsGroupsFiles.index')::getFieldsGroup();
     }
 	
     public $allowedMethods = ['index'];
@@ -33,6 +32,7 @@ class ProductIndexController extends ProductCRUD
             function()
             {
                 return $this->getModelClass()::with([
+                    'extraFields',
                     'client' => function($query)
                     {
                         $query->select('id', 'name');
