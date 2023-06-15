@@ -2,6 +2,8 @@
 
 namespace IlBronza\Products\Models\Traits\Product;
 
+use Carbon\Carbon;
+
 trait ProductScopesTrait
 {
 	public function scopeCurrent($query)

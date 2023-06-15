@@ -19,4 +19,14 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 		return $this->getPhase()->getWorkstationId();
 	}
+
+	public function getQuantityRequired()
+	{
+		return $this->quantity_required;
+	}
+
+	public function getQuantityDone()
+	{
+		return $this->quantity_done;
+	}
 }

@@ -24,6 +24,7 @@ use IlBronza\Products\Http\Controllers\Product\ProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ProductShowController;
 use IlBronza\Products\Http\Controllers\Product\ProductTeaserController;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByOrderRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedProductRelationFieldsGroupParametersFile;
@@ -104,7 +105,8 @@ return [
             'class' => Product::class,
             'table' => 'products__products',
             'fieldsGroupsFiles' => [
-                'index' => ProductFieldsGroupParametersFile::class
+                'index' => ProductFieldsGroupParametersFile::class,
+                'byClientIndex' => ByClientProductFieldsGroupParametersFile::class
             ],
             'relationshipsManagerClasses' => [
                 'show' => ProductRelationManager::class

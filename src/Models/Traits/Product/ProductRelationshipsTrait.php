@@ -10,6 +10,8 @@ use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Phase;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 trait ProductRelationshipsTrait
 {
@@ -70,4 +72,37 @@ trait ProductRelationshipsTrait
 		return $this->belongsToMany(Order::getProjectClassName(), config('products.models.orderProduct.table'));
 	}
 
+	public function activeOrders()
+	{
+		return $this->orders()->active();
+	}
+
+	public function getCountRelation(string $relationName, int $value = null)
+	{
+		if(! is_null($value))
+			return $value;
+
+		if($this->relationLoaded($relationName))
+			return $this->{$relationName}->count();
+
+		return cache()->remember(
+			$this->cacheKey(Str::snake($relationName) . "_count"),
+			3600,
+			function() use($relationName)
+			{
+				Log::warning('If you see this log too often, consider querying relation for ' . Str::snake($relationName) . '_count field');
+				return $this->{$relationName}()->count();
+			}
+		);
+	}
+
+	public function getActiveOrdersCountAttribute($value)
+	{
+		return $this->getCountRelation('activeOrders', $value);
+	}
+
+	public function getOrdersCountAttribute($value)
+	{
+		return $this->getCountRelation('orders', $value);
+	}
 }
