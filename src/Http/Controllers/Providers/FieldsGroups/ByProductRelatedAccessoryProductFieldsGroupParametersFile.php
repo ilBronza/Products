@@ -5,7 +5,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\Phase;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 
 class ByProductRelatedAccessoryProductFieldsGroupParametersFile extends FieldsGroupParametersFile
 {

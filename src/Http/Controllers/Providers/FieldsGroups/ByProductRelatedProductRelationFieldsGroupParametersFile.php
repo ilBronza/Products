@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 
 class ByProductRelatedProductRelationFieldsGroupParametersFile extends FieldsGroupParametersFile
 {

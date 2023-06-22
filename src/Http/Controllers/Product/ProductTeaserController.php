@@ -5,7 +5,7 @@ namespace IlBronza\Products\Http\Controllers\Product;
 use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 use IlBronza\CRUD\Traits\CRUDTeaserTrait;
 use IlBronza\Products\Http\Controllers\Product\ProductCRUD;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 
 class ProductTeaserController extends ProductCRUD
 {

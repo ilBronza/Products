@@ -3,15 +3,19 @@
 namespace IlBronza\Products\Models;
 
 use IlBronza\CRUD\Models\BaseModel;
-
 use IlBronza\Products\Models\OrderProductPhase;
+use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
+use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
 
 class OrderProduct extends ProductPackageBaseModel
 {
-	static $modelConfigPrefix = 'orderProduct';
-
 	use OrderProductRelationshipsTrait;
+	use OrderProductScopesTrait;
+
+	use CompletionScopesTrait;
+
+	static $modelConfigPrefix = 'orderProduct';
 
 	public function getIndexUrl(array $data = [])
 	{

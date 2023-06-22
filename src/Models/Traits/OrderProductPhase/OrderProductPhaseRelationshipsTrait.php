@@ -7,14 +7,14 @@ use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\Phase;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
+use Illuminate\Support\Collection;
 
 trait OrderProductPhaseRelationshipsTrait
 {
 	public function client()
 	{
-		dd(__METHOD__);
-		// return $this->hasOne(Client::getProjectClassName(), 'id', 'client_id');
+		return $this->belongsTo(Client::getProjectClassName(), 'live_client_id', 'id');
 	}
 
     public function workstation()
@@ -25,6 +25,16 @@ trait OrderProductPhaseRelationshipsTrait
         );
     }
 
+	public function getWorkstation()
+	{
+		if($this->relationLoaded('workstation'))
+			return $this->workstation;
+
+		return Workstation::findCached(
+			$this->getWorkstationId()
+		);
+	}
+
 	public function orderProduct()
 	{
 		return $this->belongsTo(OrderProduct::getProjectClassName());
@@ -32,7 +42,7 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getOrderProduct() : ? OrderProduct
 	{
-		return $this->orderProduct;
+		return $this->getOrFindCachedRelation('orderProduct');
 	}
 
 	public function phase()
@@ -42,7 +52,7 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getPhase() : ? Phase
 	{
-		return $this->phase;
+		return $this->getOrFindCachedRelation('phase');
 	}
 
 	public function order()
@@ -59,7 +69,7 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getOrder() : ? Order
 	{
-		return $this->order;
+		return $this->getOrFindCachedRelation('order');
 	}
 
 	public function product()
@@ -76,7 +86,16 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getProduct() : ? Product
 	{
-		return $this->product;
+		return $this->getOrFindCachedRelation('product');
 	}
 
+	public function orderProductPhases()
+	{
+		return $this->hasMany(static::getProjectClassName(), 'order_product_id', 'order_product_id');
+	}
+
+	public function getOrderProductPhases() : Collection
+	{
+		return $this->getOrFindCachedRelation('orderProductPhases');
+	}
 }

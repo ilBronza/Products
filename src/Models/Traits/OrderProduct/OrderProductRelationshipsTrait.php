@@ -5,7 +5,7 @@ namespace IlBronza\Products\Models\Traits\OrderProduct;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProductPhase;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 use IlBronza\Ukn\Facades\Ukn;
 use Illuminate\Support\Collection;
 

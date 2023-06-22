@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Http\Controllers\Phase;
 
 use IlBronza\CRUD\Traits\CRUDNestableTrait;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 

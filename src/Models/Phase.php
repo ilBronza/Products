@@ -7,13 +7,16 @@ use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Traits\Phase\PhaseRelationshipsTrait;
+use IlBronza\Products\Models\Traits\Phase\PhaseScopesTrait;
 
 
 class Phase extends ProductPackageBaseModel
 {
 	use CRUDSluggableTrait;
 	use CRUDParentingTrait;
+
 	use PhaseRelationshipsTrait;
+	use PhaseScopesTrait;
 
 	static $modelConfigPrefix = 'phase';
 
@@ -25,6 +28,11 @@ class Phase extends ProductPackageBaseModel
 	public function getIndexUrl(array $data = [])
 	{
 		return false;
+	}
+
+	public function getWorkstationId()
+	{
+		return $this->workstation_id;
 	}
 
 	static function getReorderButtonByProduct(Product $product) : Button

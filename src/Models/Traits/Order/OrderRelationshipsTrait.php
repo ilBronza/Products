@@ -6,7 +6,7 @@ use IlBronza\Clients\Models\Client;
 use IlBronza\Clients\Models\Destination;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 use Illuminate\Support\Collection;
 
 trait OrderRelationshipsTrait

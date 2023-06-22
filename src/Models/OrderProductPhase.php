@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models;
 
+use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
 
@@ -11,6 +12,8 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	use OrderProductPhaseScopesTrait;
 	use OrderProductPhaseRelationshipsTrait;
+
+	use CompletionScopesTrait;
 
 	public function getWorkstationId()
 	{

@@ -1,9 +1,11 @@
 <?php
 
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
+use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductShowController;
+use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
@@ -32,7 +34,9 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroup
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderCreateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderEditFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseShowFieldsetsParameters;
@@ -44,8 +48,8 @@ use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Phase;
-use IlBronza\Products\Models\Product;
 use IlBronza\Products\Models\ProductRelation;
+use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
@@ -150,12 +154,14 @@ return [
             'class' => Order::class,
             'table' => 'products__orders',
             'controllers' => [
+                'create' => OrderCreateController::class,
                 'index' => OrderIndexController::class,
                 'show' => OrderShowController::class,
                 'teaser' => OrderTeaserController::class,
                 'destroy' => OrderDeletionController::class,
             ],
             'parametersFiles' => [
+                'create' => OrderCreateFieldsetsParameters::class,
                 'show' => OrderShowFieldsetsParameters::class,
                 'teaser' => OrderShowFieldsetsParameters::class,
                 'edit' => OrderEditFieldsetsParameters::class,
@@ -179,6 +185,7 @@ return [
             'parametersFiles' => [
                 'show' => OrderProductShowFieldsetsParameters::class,
                 'teaser' => OrderProductShowFieldsetsParameters::class,
+                'edit' => OrderProductShowFieldsetsParameters::class,
             ],
             'relationshipsManagerClasses' => [
                 'show' => OrderProductRelationManager::class
@@ -194,8 +201,12 @@ return [
             'fieldsGroupsFiles' => [
                 'related' => RelatedOrderProductPhaseFieldsGroupParametersFile::class
             ],
+            'parametersFiles' => [
+                'edit' => OrderProductPhaseEditFieldsetsParameters::class,
+            ],
             'controllers' => [
                 'show' => OrderProductPhaseShowController::class,
+                'edit' => OrderProductPhaseEditUpdateController::class,
                 'phaseOrderProductPhaseIndex' => PhaseOrderProductPhaseIndexController::class
             ]
         ],

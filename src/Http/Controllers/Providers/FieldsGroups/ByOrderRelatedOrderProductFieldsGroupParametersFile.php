@@ -5,7 +5,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 use IlBronza\Clients\Models\Destination;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 use IlBronza\Products\Models\Order;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 
 class ByOrderRelatedOrderProductFieldsGroupParametersFile extends FieldsGroupParametersFile
 {

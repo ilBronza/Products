@@ -2,6 +2,8 @@
 
 namespace IlBronza\Products\Models\Traits\OrderProductPhase;
 
+use IlBronza\Products\Models\OrderProduct;
+use IlBronza\Products\Models\Product\Product;
 use Illuminate\Support\Collection;
 
 trait OrderProductPhaseScopesTrait
@@ -40,5 +42,25 @@ trait OrderProductPhaseScopesTrait
         ->orWhere('workstation_overridden_id', $id);
     }
 
-                
+    public function scopeWithClientId($query)
+    {
+        $orderProductPhasePlaceholder = OrderProduct::getProjectClassName()::make();
+
+        $query->addSelect([
+            'live_client_id' => Product::getProjectClassName()::select('client_id')
+                    ->join(
+                        $orderProductPhasePlaceholder->getTable(),
+                        $orderProductPhasePlaceholder->getTable() . '.product_id',
+                        '=',
+                        Product::getProjectClassName()::make()->getTable() . '.id'
+                    )
+                    ->whereColumn('products__order_products.id', $this->getTable() . '.order_product_id')
+                    ->take(1)
+        ]);
+    }
+
+    public function scopeWithClient($query)
+    {
+        $query->withClientId()->with('client');
+    }
 }

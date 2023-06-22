@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Models\Traits\Phase;
 
 use IlBronza\Products\Models\OrderProductPhase;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 
 trait PhaseRelationshipsTrait
 {

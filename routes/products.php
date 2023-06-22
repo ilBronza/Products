@@ -69,6 +69,7 @@ Route::group(['prefix' => 'accessory-products'], function()
 Route::group(['prefix' => 'orders'], function()
 {
 	Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
+	Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
 	Route::get('{order}', [Products::getController('order', 'show'), 'show'])->name('orders.show');
 	Route::get('{order}/edit', [Products::getController('order', 'edit'), 'edit'])->name('orders.edit');
 	Route::put('{order}', [Products::getController('order', 'edit'), 'update'])->name('orders.update');
@@ -86,6 +87,8 @@ Route::group(['prefix' => 'order-products'], function()
 Route::group(['prefix' => 'order-product-phases'], function()
 {
 	Route::get('{orderProductPhase}', [Products::getController('orderProductPhase', 'show'), 'show'])->name('orderProductPhases.show');
+
+	Route::put('{orderProductPhase}', [Products::getController('orderProductPhase', 'edit'), 'update'])->name('orderProductPhases.update');
 });
 
 });

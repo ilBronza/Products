@@ -5,7 +5,7 @@ namespace IlBronza\Products\Models;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 

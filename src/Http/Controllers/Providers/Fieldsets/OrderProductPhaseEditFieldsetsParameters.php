@@ -4,7 +4,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\Fieldsets;
 
 use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
 
-class OrderCreateFieldsetsParameters extends FieldsetParametersFile
+class OrderProductPhaseEditFieldsetsParameters extends FieldsetParametersFile
 {
     public function _getFieldsetsParameters() : array
     {
@@ -12,13 +12,6 @@ class OrderCreateFieldsetsParameters extends FieldsetParametersFile
             'base' => [
                 'fields' => [
                     'name' => ['text' => 'string|nullable|max:255'],
-                    'client' => [
-                        'type' => 'select',
-                        'multiple' => false,
-                        'disabled' => true,
-                        'rules' => 'string|required|exists:' . config('clients.models.client.table') . ',id',
-                        'relation' => 'client'
-                    ],
                 ],
                 'width' => ['1-2@m']
             ]

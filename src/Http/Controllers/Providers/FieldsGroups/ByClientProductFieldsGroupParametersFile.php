@@ -18,6 +18,7 @@ class ByClientProductFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'created_at' => 'dates.datetime',
                 'name' => 'flat',
                 'orders_count' => 'flat',
+                'regulate_production_tolerance' => 'editor.text',
                 // 'mySelfDelete' => 'links.delete'
             ]
         ];

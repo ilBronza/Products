@@ -7,7 +7,7 @@ use IlBronza\CRUD\Traits\Model\CRUDMAnyToManyTreeRelationalModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\Products\Models\Product;
+use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;

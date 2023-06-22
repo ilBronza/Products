@@ -32,6 +32,11 @@ class CreateIbordersTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::table(config('products.models.order.table'), function (Blueprint $table) {
+            $table->uuid('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on(config('products.models.order.table'));
+        });
     }
 
     /**
