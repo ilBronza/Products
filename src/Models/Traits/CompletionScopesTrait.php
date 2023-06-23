@@ -107,7 +107,7 @@ trait CompletionScopesTrait
 
     public function scopeCompletedDateInterval($query, array $dates)
     {
-        $query->whereHas('extraFields', function($_query) use($datess)
+        $query->whereHas('extraFields', function($_query) use($dates)
         {
             $_query->where(function($__query) use ($dates)
             {
