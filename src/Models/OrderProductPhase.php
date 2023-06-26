@@ -32,4 +32,23 @@ class OrderProductPhase extends ProductPackageBaseModel
 	{
 		return $this->quantity_done;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//DA SISTEMARE CON QUERY
+
+	public function getOrderId()
+	{
+		return $this->getOrderProduct()->order_id;
+	}
 }

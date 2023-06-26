@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Models;
 
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
-use IlBronza\CRUD\Traits\Model\CRUDMAnyToManyTreeRelationalModelTrait;
+use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeRelationalModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductRelation extends Pivot
 {
-	use CRUDMAnyToManyTreeRelationalModelTrait;
+	use CRUDManyToManyTreeRelationalModelTrait;
 
 	use SoftDeletes;
 	use CRUDCacheTrait;

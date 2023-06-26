@@ -5,12 +5,25 @@ namespace IlBronza\Products\Models\Traits\OrderProduct;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProductPhase;
+use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Ukn\Facades\Ukn;
 use Illuminate\Support\Collection;
 
 trait OrderProductRelationshipsTrait
 {
+	public function phases()
+	{
+		return $this->belongsToMany(
+			$related = Phase::getProjectClassName(),
+			$table = 'products__products',
+			$foreignPivotKey = 'id',
+			$relatedPivotKey = 'id',
+			$parentKey = 'product_id',
+			$relatedKey = 'product_id'
+		);
+	}
+
 	public function product()
 	{
 		return $this->belongsTo(Product::getProjectClassName());

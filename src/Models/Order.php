@@ -7,13 +7,16 @@ use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
+use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
 use Illuminate\Support\Collection;
 
 class Order extends ProductPackageBaseModel
 {
 	use CRUDParentingTrait;
-	use OrderRelationshipsTrait;
 	use CRUDSluggableTrait;
+
+	use OrderRelationshipsTrait;
+	use OrderScopesTrait;
 
 	use CompletionScopesTrait;
 

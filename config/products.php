@@ -3,8 +3,12 @@
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
+use IlBronza\Products\Http\Controllers\OrderProduct\ByWorkstationOrderProductIndexController;
+use IlBronza\Products\Http\Controllers\OrderProduct\ElaboratedByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductShowController;
+use IlBronza\Products\Http\Controllers\OrderProduct\ToElaborateByWorkstationOrderProductIndexController;
+use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
@@ -30,6 +34,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFie
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByOrderRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedProductRelationFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedPhaseFieldsGroupParametersFile;
@@ -155,6 +160,7 @@ return [
             'table' => 'products__orders',
             'controllers' => [
                 'create' => OrderCreateController::class,
+                'active' => ActiveOrderIndexController::class,
                 'index' => OrderIndexController::class,
                 'show' => OrderShowController::class,
                 'teaser' => OrderTeaserController::class,
@@ -170,7 +176,7 @@ return [
                 'show' => OrderRelationManager::class
             ],
             'fieldsGroupsFiles' => [
-
+                'index' => OrderFieldsGroupParametersFile::class,
             ]
         ],
         'orderProduct' => [
@@ -179,6 +185,8 @@ return [
             'controllers' => [
                 'show' => OrderProductShowController::class,
                 'edit' => OrderProductEditUpdateController::class,
+                'elaboratedByWorkstation' => ElaboratedByWorkstationOrderProductIndexController::class,
+                'toElaboratebyWorkstation' => ToElaborateByWorkstationOrderProductIndexController::class,
                 'byProductIndex' => ByProductOrderProductIndexController::class,
                 'byOrderIndex' => ByOrderOrderProductIndexController::class,
             ],
@@ -191,6 +199,7 @@ return [
                 'show' => OrderProductRelationManager::class
             ],
             'fieldsGroupsFiles' => [
+                'workstationRelated' => ByWorkstationRelatedOrderProductFieldsGroupParametersFile::class,
                 'orderRelated' => ByOrderRelatedOrderProductFieldsGroupParametersFile::class,
                 'productRelated' => ByProductRelatedOrderProductFieldsGroupParametersFile::class
             ]

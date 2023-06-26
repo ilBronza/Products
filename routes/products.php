@@ -69,6 +69,7 @@ Route::group(['prefix' => 'accessory-products'], function()
 Route::group(['prefix' => 'orders'], function()
 {
 	Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
+	Route::get('active', [Products::getController('order', 'active'), 'index'])->name('orders.active');
 	Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
 	Route::get('{order}', [Products::getController('order', 'show'), 'show'])->name('orders.show');
 	Route::get('{order}/edit', [Products::getController('order', 'edit'), 'edit'])->name('orders.edit');
@@ -79,6 +80,12 @@ Route::group(['prefix' => 'orders'], function()
 
 Route::group(['prefix' => 'order-products'], function()
 {
+	Route::group(['prefix' => 'by-workstation/{workstation}'], function()
+	{
+		Route::get('', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');
+		Route::get('elaborated', [Products::getController('orderProduct', 'elaboratedByWorkstation'), 'index'])->name('orderProducts.byWorkstation.elaborated');
+	});
+
 	Route::get('{orderProduct}', [Products::getController('orderProduct', 'show'), 'show'])->name('orderProducts.show');
 	Route::get('{orderProduct}/edit', [Products::getController('orderProduct', 'edit'), 'edit'])->name('orderProducts.edit');
 	Route::put('{orderProduct}', [Products::getController('orderProduct', 'edit'), 'update'])->name('orderProducts.update');

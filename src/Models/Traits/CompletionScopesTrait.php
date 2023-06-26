@@ -2,10 +2,20 @@
 
 namespace IlBronza\Products\Models\Traits;
 
+use App\Models\ProductsPackage\OrderProductExtraFields;
 use Carbon\Carbon;
 
 trait CompletionScopesTrait
 {
+    public function scopeWithCompletedAt($query)
+    {
+        $query->addSelect([
+            'live_completed_at' => OrderProductExtraFields::select('completed_at')
+                    ->whereColumn('order_products.order_product_id', $this->getTable() . '.id')
+                    ->take(1)
+        ]);
+    }
+
     public function scopeCompletedByDate($query, Carbon $date)
     {
         $query->whereHas('extraFields', function($_query) use($date)

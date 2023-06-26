@@ -3,8 +3,10 @@
 namespace IlBronza\Products\Models;
 
 use IlBronza\CRUD\Models\BaseModel;
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
 
@@ -12,6 +14,7 @@ class OrderProduct extends ProductPackageBaseModel
 {
 	use OrderProductRelationshipsTrait;
 	use OrderProductScopesTrait;
+	use OrderProductGetterSetterTrait;
 
 	use CompletionScopesTrait;
 
@@ -45,5 +48,20 @@ class OrderProduct extends ProductPackageBaseModel
 			return $destinationId;
 
 		return $this->getClient()->getDefaultDestination()->getKey();
+	}
+
+
+
+
+
+
+
+
+
+
+
+	public function getProductUrl()
+	{
+		return IbRouter::route(app('products'), 'products.show', ['product' => $this->getProductId()]);
 	}
 }
