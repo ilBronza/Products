@@ -38,4 +38,9 @@ class Order extends ProductPackageBaseModel
 	{
 		$query->whereIn('client_id', $clientsIds);
 	}
+
+	public function setName(string $name, bool $save = false)
+	{
+		return $this->_customSetter('name', $name, $save);
+	}
 }

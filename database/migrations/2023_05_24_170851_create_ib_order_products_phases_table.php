@@ -36,6 +36,9 @@ class CreateIbOrderProductsPhasesTable extends Migration
                 config('products.models.workstation.table')
             );
 
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

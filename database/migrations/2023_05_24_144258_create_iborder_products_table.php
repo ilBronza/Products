@@ -34,6 +34,9 @@ class CreateIborderProductsTable extends Migration
             $table->unsignedBigInteger('quantity_required')->nullable();
             $table->unsignedBigInteger('quantity_done')->nullable();
 
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

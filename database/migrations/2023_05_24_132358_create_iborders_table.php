@@ -29,6 +29,9 @@ class CreateIbordersTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
 
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

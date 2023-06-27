@@ -33,6 +33,14 @@ class OrderProductPhase extends ProductPackageBaseModel
 		return $this->quantity_done;
 	}
 
+	public function setQuantityDone(float $quantityDone, bool $save = false)
+	{
+		$this->quantity_done = $quantityDone;
+
+		if($save)
+			$this->save();
+	}
+
 
 
 
