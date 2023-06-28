@@ -8,6 +8,21 @@ use Illuminate\Support\Collection;
 
 trait OrderProductPhaseScopesTrait
 {
+    public function scopeByQuantityDoneInterval($query, float $fromQuantity, float $toQuantity)
+    {
+        $query
+            ->where('quantity_done', '>', $fromQuantity)
+            ->where('quantity_done', '<', $toQuantity);
+    }
+
+    public function scopeByProductsIds($query, array|Collection $ids)
+    {
+        $query->whereHas('orderProduct', function($_query) use($ids)
+            {
+                $_query->whereIn('product_id', $ids);
+            });
+    }
+
     public function scopeByOrdersIds($query, array|Collection $ids)
     {
         $query->whereHas('orderProduct', function($_query) use($ids)

@@ -6,6 +6,7 @@ use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
+use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Traits\Phase\PhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Phase\PhaseScopesTrait;
 
