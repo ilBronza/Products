@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
+use Illuminate\Support\Facades\Log;
 
 class OrderProductPhase extends ProductPackageBaseModel
 {
@@ -20,7 +21,19 @@ class OrderProductPhase extends ProductPackageBaseModel
 		if($this->workstation_overridden_id)
 			return $this->workstation_overridden_id;
 
-		return $this->getPhase()->getWorkstationId();
+		if(! $phase = $this->getPhase())
+		{
+			if($phase = $this->phase()->withTrashed()->first())
+			{
+				Log::critical('Ho usato una fase cancellata per orderProductPhase ' . $this->getKey());
+				return $phase->getWorkstationId();
+			}
+
+			Log::critical('Non trovo fase per orderProductPhase ' . $this->getKey());
+			return null;
+		}
+
+		return $phase->getWorkstationId();
 	}
 
 	public function getQuantityRequired()
@@ -41,7 +54,10 @@ class OrderProductPhase extends ProductPackageBaseModel
 			$this->save();
 	}
 
-
+	public function getSequence() : int
+	{
+		return $this->sequence;
+	}
 
 
 

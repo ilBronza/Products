@@ -44,7 +44,6 @@ class Product extends ProductPackageBaseModel
 
 	public function getPhasesDescriptionStringAttribute()
 	{
-		cache()->flush();
 		return $this->getCachedCalculatedProperty(
 			$name = 'phases_description_string',
 			function()
@@ -52,6 +51,11 @@ class Product extends ProductPackageBaseModel
 				return $this->getPhases()->implode('name', " - ");
 			}
 		);		
+	}
+
+	public function getShortDescription()
+	{
+		return $this->short_description;
 	}
 
 }

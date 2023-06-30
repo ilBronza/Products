@@ -32,7 +32,7 @@ class ElaboratedByWorkstationOrderProductIndexController extends OrderProductCRU
             ->byCompletionPeriod($this->dateFrom, $this->dateTo)
             ->withSupplierId()
             ->withProductSizes()
-            ->withCompletedAt()
+            // ->withCompletedAt() // ora è nella tabella stessa
             ->byWorkstationId($this->workstationId)
             ->get();
 

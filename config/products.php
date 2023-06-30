@@ -208,12 +208,14 @@ return [
             'class' => OrderProductPhase::class,
             'table' => 'products__order_product_phases',
             'fieldsGroupsFiles' => [
-                'related' => RelatedOrderProductPhaseFieldsGroupParametersFile::class
+                'related' => RelatedOrderProductPhaseFieldsGroupParametersFile::class,
+                'toElaborate' => ToElaborateOrderProductPhaseFieldsGroupParametersFile::class
             ],
             'parametersFiles' => [
                 'edit' => OrderProductPhaseEditFieldsetsParameters::class,
             ],
             'controllers' => [
+                'toElaboratebyWorkstation' => ToElaborateByWorkstationOrderProductPhaseIndexController::class,
                 'show' => OrderProductPhaseShowController::class,
                 'edit' => OrderProductPhaseEditUpdateController::class,
                 'phaseOrderProductPhaseIndex' => PhaseOrderProductPhaseIndexController::class

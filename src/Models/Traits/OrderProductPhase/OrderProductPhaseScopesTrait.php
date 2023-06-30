@@ -74,6 +74,26 @@ trait OrderProductPhaseScopesTrait
         ]);
     }
 
+    public function scopeWithPrevious($query)
+    {
+        $orderProductPhasePlaceholder = static::make();
+
+        $query->addSelect([
+            'live_previous_id' => static::select('id')
+                    ->whereColumn('id', $this->getTable() . '.id')
+                    ->take(1)
+        ]);
+    }
+
+    public function scopeWithOrderId($query)
+    {
+        $query->addSelect([
+            'live_order_id' => OrderProduct::getProjectClassName()::select('order_id')
+                    ->whereColumn('products__order_products.id', $this->getTable() . '.order_product_id')
+                    ->take(1)
+        ]);
+    }
+
     public function scopeWithClient($query)
     {
         $query->withClientId()->with('client');

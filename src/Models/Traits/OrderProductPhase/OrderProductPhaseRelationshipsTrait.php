@@ -9,6 +9,7 @@ use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 trait OrderProductPhaseRelationshipsTrait
 {
@@ -28,11 +29,15 @@ trait OrderProductPhaseRelationshipsTrait
 	public function getWorkstation()
 	{
 		if($this->relationLoaded('workstation'))
-			return $this->workstation;
+			if($this->workstation)
+				return $this->workstation;
 
-		return Workstation::findCached(
-			$this->getWorkstationId()
-		);
+		if($workstation = Workstation::findCached(
+					$this->getWorkstationId()
+				))
+			return $workstation;
+
+		dd($this);
 	}
 
 	public function orderProduct()
@@ -94,8 +99,48 @@ trait OrderProductPhaseRelationshipsTrait
 		return $this->hasMany(static::getProjectClassName(), 'order_product_id', 'order_product_id');
 	}
 
-	public function getOrderProductPhases() : Collection
+	public function getOrderProductPhases(array $relations = null) : Collection
 	{
-		return $this->getOrFindCachedRelation('orderProductPhases');
+		return $this->getOrFindCachedRelation('orderProductPhases', $relations);
 	}
+
+	public function getPreviousOrderProductPhase() : ? static
+	{
+		return $this->orderProductPhases()->get()->firstWhere('sequence', $this->getSequence() - 1);
+
+		// if($this->getKey() == 'e21f37a9-7785-4508-8656-13863e584830')
+		// {
+		// 	dd($this);
+		// 	DB::enableQueryLog();
+
+		// 	$prev = $this->orderProductPhases()->where([
+		// 		'sequence' => function($query)
+		// 		{
+		// 			$query->select(DB::raw('sequence'))
+		// 				->from('products__order_product_phases as opp')
+		// 				->whereRaw('opp.id = products__order_product_phases.id');
+		// 		}
+		// 	])->first();
+
+		// 	// dd($prev);
+
+		// 	dd(DB::getQueryLog());
+
+		// 	dd($prev);
+
+		// }
+
+		// return $this->previous;
+	}
+
+	public function next()
+	{
+		return $this->getOrderProductPhases()->where('sequence', $this->getSequence() + 1);
+	}
+
+	public function getNextOrderProductPhase()
+	{
+		return $this->next;
+	}
+
 }

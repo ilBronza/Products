@@ -93,6 +93,13 @@ Route::group(['prefix' => 'order-products'], function()
 
 Route::group(['prefix' => 'order-product-phases'], function()
 {
+	Route::group(['prefix' => 'by-workstation/{workstation}'], function()
+	{
+		// Route::get('to-sort', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');
+		Route::get('to-elaborate', [Products::getController('orderProductPhase', 'toElaboratebyWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.toElaborate');
+	});
+
+
 	Route::get('{orderProductPhase}', [Products::getController('orderProductPhase', 'show'), 'show'])->name('orderProductPhases.show');
 
 	Route::put('{orderProductPhase}', [Products::getController('orderProductPhase', 'edit'), 'update'])->name('orderProductPhases.update');

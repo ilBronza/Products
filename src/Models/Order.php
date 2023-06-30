@@ -26,7 +26,7 @@ class Order extends ProductPackageBaseModel
 
 	public function scopeByClientId($query, string $clientId)
 	{
-		$query->where('client_id', $clientId);
+		$query->where(static::getProjectClassName()::make()->getTable() . '.client_id', $clientId);
 	}
 
 	public function scopeByClientIds($query, array|Collection $clientsIds)
