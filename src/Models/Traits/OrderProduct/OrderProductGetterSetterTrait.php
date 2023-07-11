@@ -23,4 +23,12 @@ trait OrderProductGetterSetterTrait
 
         return $this->getProduct()->getName();
     }
+
+    public function setQuantityDone(float $value = null, bool $save = false)
+    {
+        $this->_customSetter('quantity_done', $value, $save);
+    }
+
+
+
 }

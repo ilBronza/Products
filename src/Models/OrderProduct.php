@@ -25,15 +25,6 @@ class OrderProduct extends ProductPackageBaseModel
 		return null;
 	}
 
-	//TODO trasformarlo in relazione per quando serve come da Laracasts eloquent mastering - ultimo accesso last login video
-	public function getLastOrderProductPhase() : OrderProductPhase
-	{
-		if(! $this->relationLoaded('orderProductPhases'))
-			return $this->orderProductPhases()->orderByDesc('sequence')->first();
-
-		return $this->orderProductPhases->sortByDesc('sequence')->first();
-	}
-
 	public function getQuantityRequired() : int
 	{
 		return $this->quantity_required;
@@ -56,12 +47,17 @@ class OrderProduct extends ProductPackageBaseModel
 
 
 
-
-
-
-
 	public function getProductUrl()
 	{
 		return IbRouter::route(app('products'), 'products.show', ['product' => $this->getProductId()]);
+	}
+
+	public function hasAllOrderProductPhasesCompleted() : bool
+	{
+		foreach($this->getOrderProductPhases() as $orderProductPhase)
+			if(! $orderProductPhase->isCompleted())
+				return false;
+
+		return true;
 	}
 }

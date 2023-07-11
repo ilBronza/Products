@@ -13,7 +13,7 @@ class ProductsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ilbronza');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'products');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'ilbronza');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/products.php');
@@ -72,9 +72,9 @@ class ProductsServiceProvider extends ServiceProvider
         ], 'products.views');*/
 
         // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/ilbronza'),
-        ], 'products.views');*/
+        // $this->publishes([
+        //     __DIR__.'/../resources/lang' => resource_path('lang/vendor/ilbronza'),
+        // ], 'products.lang');
 
         // Registering package commands.
         // $this->commands([]);

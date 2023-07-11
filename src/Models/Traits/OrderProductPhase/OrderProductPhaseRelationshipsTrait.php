@@ -10,6 +10,7 @@ use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 trait OrderProductPhaseRelationshipsTrait
 {
@@ -18,7 +19,7 @@ trait OrderProductPhaseRelationshipsTrait
 		return $this->belongsTo(Client::getProjectClassName(), 'live_client_id', 'id');
 	}
 
-    public function workstation()
+	public function workstation()
     {
         return $this->belongsTo(
         	Workstation::class,
@@ -99,48 +100,46 @@ trait OrderProductPhaseRelationshipsTrait
 		return $this->hasMany(static::getProjectClassName(), 'order_product_id', 'order_product_id');
 	}
 
-	public function getOrderProductPhases(array $relations = null) : Collection
+	public function getOrderProductPhases() : Collection
 	{
-		return $this->getOrFindCachedRelation('orderProductPhases', $relations);
+		return $this->getOrFindCachedRelation('orderProductPhases');
 	}
 
-	public function getPreviousOrderProductPhase() : ? static
+	public function previous()
 	{
-		return $this->orderProductPhases()->get()->firstWhere('sequence', $this->getSequence() - 1);
-
-		// if($this->getKey() == 'e21f37a9-7785-4508-8656-13863e584830')
-		// {
-		// 	dd($this);
-		// 	DB::enableQueryLog();
-
-		// 	$prev = $this->orderProductPhases()->where([
-		// 		'sequence' => function($query)
-		// 		{
-		// 			$query->select(DB::raw('sequence'))
-		// 				->from('products__order_product_phases as opp')
-		// 				->whereRaw('opp.id = products__order_product_phases.id');
-		// 		}
-		// 	])->first();
-
-		// 	// dd($prev);
-
-		// 	dd(DB::getQueryLog());
-
-		// 	dd($prev);
-
-		// }
-
-		// return $this->previous;
+		return $this->belongsTo(static::class, 'live_previous_id', 'id');
 	}
 
 	public function next()
 	{
-		return $this->getOrderProductPhases()->where('sequence', $this->getSequence() + 1);
+		return $this->belongsTo(static::class, 'live_next_id', 'id');
 	}
 
 	public function getNextOrderProductPhase()
 	{
-		return $this->next;
+		// if($this->relationLoaded('next'))
+		// 	return $this->next;
+
+		// Log::critical('Check here, use withNext() scope');
+
+		return $this->getOrderProductPhases()->firstWhere('sequence', $this->getSequence() + 1);		
+	}
+
+	public function getPreviousOrderProductPhase() : ? static
+	{
+		// if($this->relationLoaded('previous'))
+		// 	return $this->previous;
+
+		// Log::critical('Check here, use withPrevious() scope');
+
+		return $this->getOrderProductPhases()->firstWhere('sequence', $this->getSequence() - 1);		
+	}
+
+	public function getLastOrderProductPhase() : static
+	{
+		Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
+
+		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();		
 	}
 
 }

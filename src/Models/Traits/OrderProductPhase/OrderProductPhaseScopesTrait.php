@@ -80,15 +80,39 @@ trait OrderProductPhaseScopesTrait
 
         $query->addSelect([
             'live_previous_id' => static::select('id')
-                    ->whereColumn('id', $this->getTable() . '.id')
+                    ->fromRaw($this->getTable() . ' oop')
+                    ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
+                    ->where('sequence', \DB::raw('(' . $this->getTable() . '.sequence - 1)'))
                     ->take(1)
-        ]);
+        ])->with('previous');
+    }
+
+    public function scopeWithNext($query)
+    {
+        $orderProductPhasePlaceholder = static::make();
+
+        $query->addSelect([
+            'live_next_id' => static::select('id')
+                    ->fromRaw($this->getTable() . ' oop')
+                    ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
+                    ->where('sequence', \DB::raw('(' . $this->getTable() . '.sequence + 1)'))
+                    ->take(1)
+        ])->with('next');
     }
 
     public function scopeWithOrderId($query)
     {
         $query->addSelect([
             'live_order_id' => OrderProduct::getProjectClassName()::select('order_id')
+                    ->whereColumn('products__order_products.id', $this->getTable() . '.order_product_id')
+                    ->take(1)
+        ]);
+    }
+
+    public function scopeWithProductId($query)
+    {
+        $query->addSelect([
+            'live_product_id' => OrderProduct::getProjectClassName()::select('product_id')
                     ->whereColumn('products__order_products.id', $this->getTable() . '.order_product_id')
                     ->take(1)
         ]);

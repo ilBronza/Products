@@ -2,19 +2,60 @@
 
 namespace IlBronza\Products\Models\Traits\Product;
 
+use App\Models\ProductsPackage\Size;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
+use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 trait ProductRelationshipsTrait
 {
+	public function size()
+	{
+		return $this->belongsTo(Size::class);
+	}
+
+	public function packing()
+    {
+        return $this->belongsTo(Packing::class);
+    }
+
+    public function getPacking() : Packing
+    {
+    	if($this->packing)
+    		return $this->packing;
+
+    	$this->providePackingModelForExtraFields();
+
+    	return $this->packing;
+    }
+
+	public function providePackingModelForExtraFields() : Packing
+	{
+		if(! $this->packing)
+		{
+			$packing = Packing::create();
+
+			$packing->packable_type = static::getProjectClassName();
+			$packing->packable_id = $this->getKey();
+
+			$this->packing()->associate($packing);
+			$this->save();
+
+			return $this->packing;
+		}
+
+		return $this->packing;
+	}
+
 	public function accessories()
 	{
 		return $this->belongsToMany(
@@ -57,6 +98,11 @@ trait ProductRelationshipsTrait
 	public function orderProducts()
 	{
 		return $this->hasMany(OrderProduct::getProjectClassName());
+	}
+
+	public function lastOrderProduct()
+	{
+		return $this->belongsTo(OrderProduct::getProjectClassName(), 'live_last_order_product_id', 'id');
 	}
 
 	public function orderProductPhases()

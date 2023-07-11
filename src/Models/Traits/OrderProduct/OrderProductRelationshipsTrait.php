@@ -9,6 +9,7 @@ use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Ukn\Facades\Ukn;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 trait OrderProductRelationshipsTrait
 {
@@ -57,9 +58,32 @@ trait OrderProductRelationshipsTrait
 		return $this->hasMany(OrderProductPhase::getProjectClassName());
 	}
 
+	public function lastOrderProductPhase()
+	{
+		return $this->belongsTo(OrderProductPhase::getProjectClassName(), 'live_last_order_product_phase_id', 'id');
+	}
+
+	public function firstOrderProductPhase()
+	{
+		return $this->belongsTo(OrderProductPhase::getProjectClassName(), 'live_first_order_product_phase_id', 'id');
+	}
+
 	public function getOrderProductPhases() : Collection
 	{
 		return $this->orderProductPhases;
+	}
+
+	public function getLastOrderProductPhase() : OrderProductPhase
+	{
+		if($this->relationLoaded('lastorderProductPhases'))
+			return $this->lastorderProductPhases;
+
+		if(! $this->relationLoaded('orderProductPhases'))
+			return $this->orderProductPhases()->orderByDesc('sequence')->first();
+
+		Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
+
+		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();
 	}
 
 	public function client()

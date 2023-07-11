@@ -8,7 +8,7 @@ trait ProductQueriesTrait
 	{
 		return $this->orderProductPhases()
 			->byWorkstationId($workstationId)
-			->sortByExtraField('completed_at', 'DESC')
+			->orderBy('completed_at', 'DESC')
 			->first();
 	}
 }

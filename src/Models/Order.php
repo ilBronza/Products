@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models;
 
 use IlBronza\CRUD\Models\BaseModel;
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
@@ -42,5 +43,10 @@ class Order extends ProductPackageBaseModel
 	public function setName(string $name, bool $save = false)
 	{
 		return $this->_customSetter('name', $name, $save);
+	}
+
+	public function getFilteredByClientUrl()
+	{
+		return IbRouter::route(app('products'), 'orders.active.byClient', ['client' => $this->getClientId()]);
 	}
 }

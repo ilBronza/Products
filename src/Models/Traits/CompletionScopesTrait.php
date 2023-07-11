@@ -7,23 +7,9 @@ use Carbon\Carbon;
 
 trait CompletionScopesTrait
 {
-    public function scopeWithCompletedAt($query)
-    {
-        dddl("ora è nella tabella stessa il campo in questione");
-
-        $query->addSelect([
-            'live_completed_at' => OrderProductExtraFields::select('completed_at')
-                    ->whereColumn('order_products.order_product_id', $this->getTable() . '.id')
-                    ->take(1)
-        ]);
-    }
-
     public function scopeCompletedByDate($_query, Carbon $date)
     {
-        // $query->whereHas('extraFields', function($_query) use($date)
-        // {
-            $_query->whereDate('completed_at', $date);
-        // });
+            $_query->whereDate(static::make()->getTable() . '.completed_at', $date);
     }
 
     public function scopeCompletedToday($query)
@@ -33,33 +19,24 @@ trait CompletionScopesTrait
 
     public function scopeCompleted($_query)
     {
-        // $query->whereHas('extraFields', function($_query)
-        // {
-            $_query->whereNotNull('completed_at');
-        // });
+            $_query->whereNotNull(static::make()->getTable() . '.completed_at');
     }
 
     public function scopeNotCompleted($_query)
     {
-        // $query->whereHas('extraFields', function($_query)
-        // {
             $_query->whereNull(static::getProjectClassName()::make()->getTable() . '.completed_at');
-        // });
     }
 
     public function scopeNotCompletedOrToday($_query)
     {
-        // $query->whereHas('extraFields', function($_query)
-        // {
-            $_query     ->whereNull('completed_at')
-                        ->orWhereDate('completed_at', Carbon::today()->format('Y-m-d'))
+            $_query     ->whereNull(static::make()->getTable() . '.completed_at')
+                        ->orWhereDate(static::make()->getTable() . '.completed_at', Carbon::today()->format('Y-m-d'))
                         ;
-        // });
     }
 
     public function scopeCompletedOrPartiallyCompletedDate($query, Carbon $date)
     {
-        $query->whereDate('completed_at', $date);
+        $query->whereDate(static::make()->getTable() . '.completed_at', $date);
         $query->orWhereHas('extraFields', function($_query) use($date)
         {
             $_query->whereDate('partially_completed_at', $date);
@@ -68,97 +45,67 @@ trait CompletionScopesTrait
 
     public function scopeOrdered($query)
     {
-        $query->whereDate('completed_at', $date);
+        $query->whereDate(static::make()->getTable() . '.completed_at', $date);
         $query->orWhereHas('extraFields', function($_query) use($date)
         {
-            // $_query->where(function($__query)
-            // {
-            //     $__query->whereDate('completed_at', $date);
-                // $__query->orWhereDate('partially_completed_at', $date);
                 $_query->orWhereDate('partially_completed_at', $date);
-            // });
         });
     }
 
     public function scopeCompletedDate($query, Carbon $date)
     {
-        $query->whereDate('completed_at', $date);
+        $query->whereDate(static::make()->getTable() . '.completed_at', $date);
         $query->orWhereHas('extraFields', function($_query) use($date)
         {
-            // $_query->where(function($__query) use ($date)
-            // {
-                // $__query->whereDate('completed_at', $date);
-                // $__query->orWhereDate('partially_completed_at', $date);
-                $_query->orWhereDate('partially_completed_at', $date);
-            // });
+            $_query->whereDate('partially_completed_at', $date);
         });
     }
 
     public function scopeByCompletionPeriod($_query, Carbon $from = null, Carbon $to = null)
     {
-        // $query->whereHas('extraFields', function($_query) use($from, $to)
-        // {
             if($from)
-                $_query->whereDate('completed_at', '>=', $from);
+                $_query->whereDate(static::make()->getTable() . '.completed_at', '>=', $from);
 
             if($to)
-                $_query->whereDate('completed_at', '<=', $to);
-        // });
+                $_query->whereDate(static::make()->getTable() . '.completed_at', '<=', $to);
     }
 
     public function scopeCompletedAfter($_query, Carbon $from = null)
     {
-        // $query->whereHas('extraFields', function($_query) use($from)
-        // {
-            $_query->whereDate('completed_at', '>=', $from);
-        // });
+            $_query->whereDate(static::make()->getTable() . '.completed_at', '>=', $from);
     }
 
     public function scopeCompletedBefore($_query, Carbon $to = null)
     {
-        // $query->whereHas('extraFields', function($_query) use($to)
-        // {
-            $_query->whereDate('completed_at', '<=', $to);
-        // });
+            $_query->whereDate(static::make()->getTable() . '.completed_at', '<=', $to);
     }
 
-    public function scopeCompletedDateInterval($_query, array $dates)
+    public function scopeCompletedDateInterval($query, array $dates)
     {
-        // $query->whereHas('extraFields', function($_query) use($dates)
-        // {
-            $_query->where(function($__query) use ($dates)
-            {
-                $__query->where(function($___query) use($dates)
-                {
-                    $___query->whereDate('completed_at', '>=', $dates['date_from'])
-                            ->orWhereDate('partially_completed_at', '>=', $dates['date_from']);
-                });
+        $query->where(function($_query) use($dates)
+        {
+            $_query->whereDate(static::make()->getTable() . '.completed_at', '>=', $dates['date_from'])
+                // ->orWhereDate('partially_completed_at', '>=', $dates['date_from'])
+            ;
+        });
 
-                $__query->where(function($___query) use ($dates)
-                {
-                    $___query->whereDate('completed_at', '<=', $dates['date_to'])
-                            ->orWhereDate('partially_completed_at', '<=', $dates['date_to']);
-                });
-            });
-
-        // });
+        $query->where(function($_query) use ($dates)
+        {
+            $_query->whereDate(static::make()->getTable() . '.completed_at', '<=', $dates['date_to'])
+                // ->orWhereDate('partially_completed_at', '<=', $dates['date_to'])
+            ;
+        });
     }
 
     public function scopeStarted($_query)
     {
-        // $query->whereHas('extraFields', function($_query)
-        // {
             $_query->whereNotNull('started_at');
-        // });
     }
 
     public function scopeActive($_query)
     {
-        // $query->whereHas('extraFields', function($_query)
-        // {
-            $_query->whereNull('completed_at');
-            $_query->orWhere('completed_at', '>=', Carbon::today()->subDay(2));
-        // });
+            $_query->whereNull(static::make()->getTable() . '.completed_at');
+            $_query->orWhere(static::make()->getTable() . '.completed_at', '>=', Carbon::today()->subDay(2));
     }
 
 
@@ -214,6 +161,25 @@ trait CompletionScopesTrait
         {
             $_query->whereDate('started_at', $date);
         });
+    }
+
+    public function isCompleted()
+    {
+        if(!! $this->completed_at)
+            return true;
+    }
+
+    public function setCompletedAt($value, bool $save = false)
+    {
+        $this->completed_at = $value;
+
+        if($save)
+            $this->save();
+    }
+
+    public function getCompletedAt() : ? Carbon
+    {
+        return $this->completed_at;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models;
 
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
@@ -25,6 +26,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 		{
 			if($phase = $this->phase()->withTrashed()->first())
 			{
+				$phase->restore();
 				Log::critical('Ho usato una fase cancellata per orderProductPhase ' . $this->getKey());
 				return $phase->getWorkstationId();
 			}
@@ -34,6 +36,11 @@ class OrderProductPhase extends ProductPackageBaseModel
 		}
 
 		return $phase->getWorkstationId();
+	}
+
+	public function getCalculatedWorkstationIdAttribute()
+	{
+		return $this->getWorkstationId();
 	}
 
 	public function getQuantityRequired()
@@ -56,12 +63,18 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	public function getSequence() : int
 	{
-		return $this->sequence;
+		return $this->sequence ?? 0;
 	}
 
+	public function getIndexUrl(array $data = [])
+	{
+        return IbRouter::route(app('products'), 'orderProductPhases.byOrderProduct', ['orderProduct' => $this->getOrderProductId()]);
+	}
 
-
-
+	public function getOrderProductId() : string
+	{
+		return $this->order_product_id;
+	}
 
 
 

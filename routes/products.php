@@ -26,6 +26,21 @@ Route::group(['prefix' => 'products'], function()
 	Route::post('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'storeReorder'])->name('phases.storeReorder');
 });
 
+Route::group(['prefix' => 'packing'], function()
+{
+	Route::delete('delete-media/{packing}/{media}', [Products::getController('packing', 'deleteMedia'), 'deleteMedia'])->name('packings.deleteMedia');
+	// Route::get('', [Products::getController('product', 'index'), 'index'])->name('products.index');
+	// Route::get('{product}', [Products::getController('product', 'show'), 'show'])->name('products.show');
+	Route::get('{packing}/edit', [Products::getController('packing', 'edit'), 'edit'])->name('packings.edit');
+	Route::put('{packing}', [Products::getController('packing', 'edit'), 'update'])->name('packings.update');
+
+	// Route::delete('{product}/delete', [Products::getController('product', 'destroy'), 'destroy'])->name('products.destroy');
+
+	// Route::get('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'reorder'])->name('phases.reorder');
+
+	// Route::post('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'storeReorder'])->name('phases.storeReorder');
+});
+
 Route::group(['prefix' => 'products-relations'], function()
 {
 	Route::get('by-product/{product}', [Products::getController('productRelation', 'index'), 'index'])->name('productRelations.index');
@@ -68,6 +83,8 @@ Route::group(['prefix' => 'accessory-products'], function()
 
 Route::group(['prefix' => 'orders'], function()
 {
+	Route::get('active-by-client/{client}', [Products::getController('order', 'activeByClient'), 'index'])->name('orders.active.byClient');
+
 	Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
 	Route::get('active', [Products::getController('order', 'active'), 'index'])->name('orders.active');
 	Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
@@ -99,9 +116,11 @@ Route::group(['prefix' => 'order-product-phases'], function()
 		Route::get('to-elaborate', [Products::getController('orderProductPhase', 'toElaboratebyWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.toElaborate');
 	});
 
+	Route::get('by-order-product/{orderProduct}', [Products::getController('orderProductPhase', 'byOrderProductIndex'), 'index'])->name('orderProductPhases.byOrderProduct');
 
 	Route::get('{orderProductPhase}', [Products::getController('orderProductPhase', 'show'), 'show'])->name('orderProductPhases.show');
 
+	Route::get('{orderProductPhase}/edit', [Products::getController('orderProductPhase', 'edit'), 'edit'])->name('orderProductPhases.edit');
 	Route::put('{orderProductPhase}', [Products::getController('orderProductPhase', 'edit'), 'update'])->name('orderProductPhases.update');
 });
 
