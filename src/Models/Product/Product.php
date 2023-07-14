@@ -4,6 +4,7 @@ namespace IlBronza\Products\Models\Product;
 
 use Carbon\Carbon;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
+use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeTrait;
 use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\ProductPackageBaseModel;
@@ -12,10 +13,13 @@ use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductQueriesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Product\ProductScopesTrait;
+use Spatie\MediaLibrary\HasMedia;
 
-class Product extends ProductPackageBaseModel
+class Product extends ProductPackageBaseModel implements HasMedia
 {
 	static $modelConfigPrefix = 'product';
+
+    use InteractsWithMedia;
 
 	use CRUDSluggableTrait;
 	use ProductRelationshipsTrait;

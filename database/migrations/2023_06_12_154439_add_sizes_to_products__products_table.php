@@ -18,6 +18,9 @@ class AddSizesToProductsProductsTable extends Migration
             $table->string('sizeable_type')->nullable();
             $table->string('sizeable_id', 36)->nullable();
 
+            $table->timestamp('calculated_at')->nullable();
+            $table->timestamp('verified_at')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });
