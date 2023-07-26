@@ -62,6 +62,11 @@ trait ProductScopesTrait
 		);
 	}
 
+    public function scopeByName($query, string $name)
+    {
+        $query->where('name', $name);
+    }
+
 	public function scopeWithLastOrderProduct($query)
 	{
 		$query->withLastOrderProductId()->with('lastOrderProduct');

@@ -23,6 +23,29 @@ trait ProductRelationshipsTrait
 		return $this->belongsTo(Size::class);
 	}
 
+	public function getSize() : Size
+	{
+		return $this->provideSizeModelForExtraFields();
+	}
+
+	public function provideSizeModelForExtraFields() : Size
+	{
+		if(! $this->size)
+		{
+			$size = Size::create();
+
+			$size->sizeable_type = static::getProjectClassName();
+			$size->sizeable_id = $this->getKey();
+
+			$this->size()->associate($size);
+			$this->save();
+
+			return $this->size;
+		}
+
+		return $this->size;
+	}
+
 	public function packing()
     {
         return $this->belongsTo(Packing::class);
@@ -121,6 +144,11 @@ trait ProductRelationshipsTrait
 	public function activeOrders()
 	{
 		return $this->orders()->active();
+	}
+
+	public function getLastOrderProduct()
+	{
+		return $this->orderProducts()->orderBy('created_at', 'DESC')->first();
 	}
 
 	public function getCountRelation(string $relationName, int $value = null)

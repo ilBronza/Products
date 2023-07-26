@@ -19,6 +19,10 @@ class Phase extends ProductPackageBaseModel
 	use PhaseRelationshipsTrait;
 	use PhaseScopesTrait;
 
+	static $deletingRelationships = [
+		'orderProductPhases'
+	];
+
 	static $modelConfigPrefix = 'phase';
 
 	public function getProductKey()
@@ -45,4 +49,18 @@ class Phase extends ProductPackageBaseModel
 		]);
 	}
 
+	public function setProductId(string $value, bool $save = false)
+	{
+		$this->_customSetter('product_id', $value, $save);
+	}
+
+	public function setWorkstationId(string $value, bool $save = false)
+	{
+		$this->_customSetter('workstation_id', $value, $save);
+	}
+
+	public function setName(string $value, bool $save = false)
+	{
+		$this->_customSetter('name', $value, $save);
+	}
 }

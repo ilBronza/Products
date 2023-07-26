@@ -79,7 +79,20 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 
 
+    public function setOrderProductId(string $value, bool $save = false)
+    {
+        $this->_customSetter('order_product_id', $value, $save);
+    }
 
+    public function setPhaseId(string $value, bool $save = false)
+    {
+        $this->_customSetter('phase_id', $value, $save);
+    }
+
+    public function setQuantityRequired(float $value = null, bool $save = false)
+    {
+        $this->_customSetter('quantity_required', $value, $save);
+    }
 
 
 	//DA SISTEMARE CON QUERY

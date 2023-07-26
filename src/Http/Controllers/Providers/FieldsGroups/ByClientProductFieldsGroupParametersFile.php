@@ -13,7 +13,7 @@ class ByClientProductFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
-                // 'mySelfEdit' => 'links.edit',
+                'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
                 'created_at' => 'dates.datetime',
                 'name' => 'flat',

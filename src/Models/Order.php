@@ -40,13 +40,18 @@ class Order extends ProductPackageBaseModel
 		$query->whereIn('client_id', $clientsIds);
 	}
 
-	public function setName(string $name, bool $save = false)
-	{
-		return $this->_customSetter('name', $name, $save);
-	}
-
 	public function getFilteredByClientUrl()
 	{
 		return IbRouter::route(app('products'), 'orders.active.byClient', ['client' => $this->getClientId()]);
+	}
+
+	public function setName(string $value, bool $save = false)
+	{
+		return $this->_customSetter('name', $value, $save);
+	}
+
+	public function setClientId(string $value, bool $save = false)
+	{
+		$this->_customSetter('client_id', $value, $save);
 	}
 }

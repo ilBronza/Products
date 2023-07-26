@@ -104,8 +104,8 @@ trait CompletionScopesTrait
 
     public function scopeActive($_query)
     {
-            $_query->whereNull(static::make()->getTable() . '.completed_at');
-            $_query->orWhere(static::make()->getTable() . '.completed_at', '>=', Carbon::today()->subDay(2));
+        $_query->whereNull(static::make()->getTable() . '.completed_at');
+        $_query->orWhere(static::make()->getTable() . '.completed_at', '>=', Carbon::today()->subDay(2));
     }
 
 

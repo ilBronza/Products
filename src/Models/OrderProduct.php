@@ -25,11 +25,6 @@ class OrderProduct extends ProductPackageBaseModel
 		return null;
 	}
 
-	public function getQuantityRequired() : int
-	{
-		return $this->quantity_required;
-	}
-
 	public function getCalculatedDestinationIdAttribute() : string
 	{
 		if($this->destination_id)

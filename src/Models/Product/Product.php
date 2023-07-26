@@ -30,6 +30,12 @@ class Product extends ProductPackageBaseModel implements HasMedia
 
 	use CRUDManyToManyTreeTrait;
 
+	static $deletingRelationships = [
+		'orders',
+		'orderProducts',
+		'phases'
+	];
+
 	public function getManyToManyRelationClass() : string
 	{
 		return ProductRelation::class;
@@ -62,4 +68,23 @@ class Product extends ProductPackageBaseModel implements HasMedia
 		return $this->short_description;
 	}
 
+	public function setName(string $value, bool $save = false)
+	{
+		return $this->_customSetter('name', $value, $save);
+	}
+
+	public function setClientId(string $value, bool $save = false)
+	{
+		$this->_customSetter('client_id', $value, $save);
+	}
+
+	public function setStencilId(string $value, bool $save = false)
+	{
+		$this->_customSetter('stencil_id', $value, $save);		
+	}
+
+	public function setShortDescription(string $value, bool $save = false)
+	{
+		$this->_customSetter('short_description', $value, $save);
+	}
 }

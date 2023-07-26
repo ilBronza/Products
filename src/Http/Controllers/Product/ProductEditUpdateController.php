@@ -18,9 +18,16 @@ class ProductEditUpdateController extends ProductCRUD
         return config('products.models.product.parametersFiles.edit');
     }
 
+    public function addEditExtraViews()
+    {
+        $this->addFormExtraView('outherTop', 'preventivatore.quotations.sizesScripts', [
+            'product' => $this->getModel()
+        ]);
+    }
+
     public function edit($product)
     {
-        $product = $this->findModel($product);
+        $product = $this->findModel($product, ['size', 'extraFields']);
 
         return $this->_edit($product);
     }

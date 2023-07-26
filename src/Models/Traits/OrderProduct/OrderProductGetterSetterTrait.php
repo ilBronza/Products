@@ -6,6 +6,11 @@ use IlBronza\Products\Models\Product\Product;
 
 trait OrderProductGetterSetterTrait
 {
+    public function getQuantityRequired() : int
+    {
+        return $this->quantity_required;
+    }
+
     public function getOrderId() : string
     {
         return $this->order_id;
@@ -27,6 +32,21 @@ trait OrderProductGetterSetterTrait
     public function setQuantityDone(float $value = null, bool $save = false)
     {
         $this->_customSetter('quantity_done', $value, $save);
+    }
+
+    public function setQuantityRequired(float $value = null, bool $save = false)
+    {
+        $this->_customSetter('quantity_required', $value, $save);
+    }
+
+    public function setProductId(string $value, bool $save = false)
+    {
+        $this->_customSetter('product_id', $value, $save);
+    }
+
+    public function setOrderId(string $value, bool $save = false)
+    {
+        $this->_customSetter('order_id', $value, $save);
     }
 
 

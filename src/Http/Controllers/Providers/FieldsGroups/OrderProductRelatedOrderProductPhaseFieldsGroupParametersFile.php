@@ -19,10 +19,18 @@ class OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile extends Fiel
 
                 'live_order_id' => [
                     'type' => 'links.LinkCachedProperty',
-                    'modelClass' => Order::getProjectClassName(),
+                    'modelClass' => Order::class,
+                    'function' => 'getOldShowOrderUrl',
                     'property' => 'name',
                     'avoidIcon' => true
                 ],
+
+                // 'live_order_id' => [
+                //     'type' => 'links.LinkCachedProperty',
+                //     'modelClass' => Order::getProjectClassName(),
+                //     'property' => 'name',
+                //     'avoidIcon' => true
+                // ],
 
                 'live_product_id' => [
                     'type' => 'links.LinkCachedProperty',

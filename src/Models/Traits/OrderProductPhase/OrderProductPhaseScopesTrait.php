@@ -57,6 +57,15 @@ trait OrderProductPhaseScopesTrait
         ->orWhere('workstation_overridden_id', $id);
     }
 
+    public function scopeExcludingWorkstationId($query, string $id)
+    {
+        $query->whereHas('phase', function($_query) use($id)
+        {
+            $_query->where('workstation_id', '!=', $id);
+        })
+        ->where('workstation_overridden_id', '!=', $id);
+    }
+
     public function scopeWithClientId($query)
     {
         $orderProductPhasePlaceholder = OrderProduct::getProjectClassName()::make();
