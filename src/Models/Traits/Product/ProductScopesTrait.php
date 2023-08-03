@@ -78,7 +78,7 @@ trait ProductScopesTrait
 			'orderProducts',
 			function($_query)
 			{
-				$_query->where('created_at', '>' , Carbon::now()->subYears(1));
+				$_query->where('completed_at', '>' , Carbon::now()->subMonths(6));
 			}
 		);
 	}

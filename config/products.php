@@ -117,6 +117,31 @@ return [
                 // 'current' => ProductCurrentController::class
             ],
         ],
+        'material' => [
+            'class' => Material::class,
+            'table' => 'products___materials',
+            // 'fieldsGroupsFiles' => [
+            //     'index' => ProductFieldsGroupParametersFile::class
+            // ],
+            // 'relationshipsManagerClasses' => [
+            //     'show' => ProductRelationManager::class
+            // ],
+            'parametersFiles' => [
+                // 'edit' => PackingEditFieldsetsParameters::class,
+                // 'show' => ProductShowFieldsetsParameters::class,
+                // 'teaser' => ProductShowFieldsetsParameters::class,
+            ],
+            'controllers' => [
+                // 'crud' => AccessoryCrudController::class,
+                // 'create' => AccessoryCreateStoreController::class,
+                // 'edit' => PackingEditUpdateController::class,
+                // 'deleteMedia' => PackingDeleteMediaController::class,
+                // 'destroy' => AccessoryDeletionController::class,
+                // 'index' => AccessoryIndexController::class,
+                // 'byOrderProductIndex' => ByOrderProductIndexController::class,
+                // 'current' => ProductCurrentController::class
+            ],
+        ],
         'packing' => [
             'class' => Packing::class,
             'table' => 'products___packing',

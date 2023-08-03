@@ -27,6 +27,11 @@ class Packing extends BaseModel implements SizeInterface, HasMedia
 		'verified_at'
 	];
 
+	public function scopeVerified($query)
+	{
+		$query->whereNotNull('verified_at');
+	}
+
 	public function packable() : MorphTo
 	{
 		return $this->morphTo('packable');
@@ -113,6 +118,20 @@ class Packing extends BaseModel implements SizeInterface, HasMedia
 	}
 
 
+	public function getPackingLength() : ? float
+	{
+		return $this->packing_length;
+	}
+
+	public function getPackingWidth() : ? float
+	{
+		return $this->packing_width;
+	}
+
+	public function getPackingHeight() : ? float
+	{
+		return $this->packing_height;
+	}
 
 
 
@@ -123,45 +142,54 @@ class Packing extends BaseModel implements SizeInterface, HasMedia
 
 
 
-	public function getQuantityPerPacking() : float
+	public function getQuantityPerPacking() : ? float
 	{
 		return $this->quantity_per_packing;
 	}
 
-	public function getQuantityPerPackage() : float
+	public function getQuantityPerPackage() : ? float
 	{
 		return $this->quantity_per_package;
 	}
 
-	public function getLayersPerPacking() : float
+	public function getLayersPerPacking() : ? float
 	{
 		return $this->layers_per_packing;
 	}
 
-	public function getPackagePerLayer() : float
+	public function getPackagePerLayer() : ? float
 	{
 		return $this->package_per_layer;
 	}
 
-	public function getPackageHeight() : float
+	public function getPackageHeight() : ? float
 	{
 		return $this->package_height;
 	}
 
-	public function getPackageWidth() : float
+	public function getPackageWidth() : ? float
 	{
 		return $this->package_width;
 	}
 
-	public function getPackageLength() : float
+	public function getPackageLength() : ? float
 	{
 		return $this->package_length;
 	}
 
-	// public function getPackageWidth() : float
+	public function getVerifiedAt() : ? Carbon
+	{
+		return $this->verified_at;
+	}
+
+	// public function getPackageWidth() : ? float
 	// {
 	// 	return $this->package_width;
 	// }
 
+	public function hasBeenVerified() : bool
+	{
+		return !! $this->getVerifiedAt();
+	}
 
 }

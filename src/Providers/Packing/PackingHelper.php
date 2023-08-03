@@ -146,7 +146,7 @@ class PackingHelper
 		if($result = $this->getProduct()?->getMaxPackingHeight())
 			return $result;
 
-		throw new \Exception('gestire senza prodotto width');
+		return 1300;
 	}
 
 	public function getMaxPackingWidth()
@@ -154,7 +154,7 @@ class PackingHelper
 		if($result = $this->getProduct()?->getMaxPackingWidth())
 			return $result;
 
-		throw new \Exception('gestire senza prodotto width');
+		return 1700;
 	}
 
 	public function getMaxPackingLength()
@@ -162,7 +162,7 @@ class PackingHelper
 		if($result = $this->getProduct()?->getMaxPackingLength())
 			return $result;
 
-		throw new \Exception('gestire senza prodotto length');
+		return 1400;
 	}
 
 

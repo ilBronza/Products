@@ -16,11 +16,19 @@ class ByProductRelatedOrderProductFieldsGroupParametersFile extends FieldsGroupP
                 'mySelfPrimary' => 'primary',
                 'mySelfSee' => 'links.see',
                 'created_at' => 'dates.datetime',
-                'order_id' => [
-                    'type' => 'links.LinkCachedProperty',
-                    'modelClass' => Order::getProjectClassName(),
-                    'property' => 'name',
-                    'avoidIcon' => true
+                // 'order_id' => [
+                //     'type' => 'links.LinkCachedProperty',
+                //     'modelClass' => Order::getProjectClassName(),
+                //     'property' => 'name',
+                //     'avoidIcon' => true
+                // ],
+                'order' => [
+                    'type' => 'links.link',
+                    'function' => 'getOldShowOrderUrl',
+                    'textParameter' => 'name',
+                    'target' => '_blank',
+                    'icon' => false,
+                    'width' => '65px'
                 ],
                 'calculated_destination_id' => [
                     'type' => 'links.LinkCachedProperty',

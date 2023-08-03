@@ -72,6 +72,15 @@ trait OrderProductScopesTrait
         ]);
     }
 
+    public function scopeWithProductStencilId($query)
+    {
+        $query->addSelect([
+            'live_stencil_id' => Product::getProjectClassName()::select('stencil_id')
+                    ->whereColumn('product_id', 'products__products.id')
+                    ->take(1)
+        ]);
+    }
+
     public function scopeWithProductShortDescription($query)
     {
         $query->addSelect([

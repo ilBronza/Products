@@ -41,7 +41,7 @@ class ProductIndexController extends ProductCRUD
 
             function() use($scope)
             {
-                $query = $this->getModelClass()::withCount(['orders', 'activeOrders']);
+                $query = $this->getModelClass()::withCount(['media', 'orders', 'activeOrders']);
 
                 if($scope)
                     $query->$scope();

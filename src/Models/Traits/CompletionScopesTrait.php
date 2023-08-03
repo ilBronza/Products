@@ -169,7 +169,7 @@ trait CompletionScopesTrait
             return true;
     }
 
-    public function setCompletedAt($value, bool $save = false)
+    public function setCompletedAt($value = null, bool $save = false)
     {
         $this->completed_at = $value;
 
