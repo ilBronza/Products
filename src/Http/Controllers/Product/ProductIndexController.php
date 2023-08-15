@@ -25,6 +25,11 @@ class ProductIndexController extends ProductCRUD
         return config('products.models.product.fieldsGroupsFiles.index')::getFieldsGroup();
     }
 
+    public function getRelatedFieldsArray()
+    {
+        return config('products.models.product.fieldsGroupsFiles.index')::getFieldsGroup();
+    }
+
     public function getClientRelatedFieldsArray()
     {
         return config('products.models.product.fieldsGroupsFiles.byClientIndex')::getFieldsGroup();

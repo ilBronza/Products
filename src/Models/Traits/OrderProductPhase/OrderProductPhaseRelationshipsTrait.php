@@ -81,18 +81,18 @@ trait OrderProductPhaseRelationshipsTrait
 	public function product()
 	{
 		return $this->hasOneThrough(
-            Product::getProjectClassName(),
-            OrderProduct::getProjectClassName(),
-            'id', // refers to id column on order_products table
-            'id', // refers to id column on orders table
-            'order_product_id',
-            'product_id' // refers to order_id column on order_products table
-        );
+			Product::getProjectClassName(),
+			OrderProduct::getProjectClassName(),
+			'id', // refers to id column on order_products table
+			'id', // refers to id column on orders table
+			'order_product_id',
+			'product_id' // refers to order_id column on order_products table
+		);
 	}
 
 	public function getProduct() : ? Product
 	{
-		return $this->getOrFindCachedRelation('product');
+		return $this->product;
 	}
 
 	public function orderProductPhases()

@@ -30,6 +30,7 @@ class ToElaborateByWorkstationOrderProductIndexController extends OrderProductCR
             // ->byCompletionPeriod($this->dateFrom, $this->dateTo)
             ->withSupplierId()
             ->withProductSizes()
+            ->with('size')
             ->byWorkstationId($this->workstationId)
             ->get();
 

@@ -32,12 +32,7 @@ trait OrderProductRelationshipsTrait
 
     public function getProduct() : ? Product
     {
-    	if($product = $this->getOrFindCachedRelatedElement('product'))
-    		return $product;
-
-    	Ukn::e('Manca il prodotto per orderProduct <a href="' . $this->getEditUrl() . '">'  . $this->getKey() . '</a>');
-
-        return null;
+    	return $this->product;
     }
 
 	public function order()
