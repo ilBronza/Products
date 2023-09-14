@@ -15,7 +15,12 @@ class OrderIndexController extends OrderCRUD
     {
         return config('products.models.order.fieldsGroupsFiles.index')::getFieldsGroup();
     }
-	
+
+    public function getRelatedFieldsArray()
+    {
+        return config('products.models.order.fieldsGroupsFiles.related')::getFieldsGroup();
+    }
+
     public $allowedMethods = ['index'];
     public $avoidCreateButton = true;
 

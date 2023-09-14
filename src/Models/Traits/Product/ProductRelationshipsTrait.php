@@ -164,7 +164,7 @@ trait ProductRelationshipsTrait
 			3600,
 			function() use($relationName)
 			{
-				Log::warning('If you see this log too often, consider querying relation for ' . Str::snake($relationName) . '_count field');
+				// Log::warning('If you see this log too often, consider querying relation for ' . Str::snake($relationName) . '_count field');
 				return $this->{$relationName}()->count();
 			}
 		);

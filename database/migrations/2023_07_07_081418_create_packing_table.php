@@ -23,7 +23,7 @@ class CreatePackingTable extends Migration
 
             $table->decimal('package_width')->nullable();
             $table->decimal('package_height')->nullable();
-            $table->decimal('package_lenght')->nullable();
+            $table->decimal('package_length')->nullable();
             $table->decimal('package_weight')->nullable();
             $table->decimal('package_volume_mq')->nullable();
 

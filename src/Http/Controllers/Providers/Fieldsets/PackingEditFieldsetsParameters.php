@@ -13,7 +13,7 @@ class PackingEditFieldsetsParameters extends FieldsetParametersFile
                 'fields' => [
                     'package_width' => ['number' => 'integer|nullable|min:0'],
                     'package_height' => ['number' => 'integer|nullable|min:0'],
-                    'package_lenght' => ['number' => 'integer|nullable|min:0'],
+                    'package_length' => ['number' => 'integer|nullable|min:0'],
                     'package_weight' => ['number' => 'decimal|nullable|min:0'],
                     'package_volume_mq' => ['number' => 'decimal|nullable|min:0'],
                     'quantity_per_package' => ['number' => 'decimal|nullable|min:0'],

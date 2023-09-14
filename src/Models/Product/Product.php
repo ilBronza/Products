@@ -78,6 +78,11 @@ class Product extends ProductPackageBaseModel implements HasMedia
 		$this->_customSetter('client_id', $value, $save);
 	}
 
+	public function hasStencil() : bool
+	{
+		return !! $this->getStencil();
+	}
+
 	public function setStencilId(string $value, bool $save = false)
 	{
 		$this->_customSetter('stencil_id', $value, $save);		

@@ -19,6 +19,11 @@ trait OrderProductPhaseRelationshipsTrait
 		return $this->belongsTo(Client::getProjectClassName(), 'live_client_id', 'id');
 	}
 
+	public function getClient() : ? Client
+	{
+		return $this->client;
+	}
+
 	public function workstation()
     {
         return $this->belongsTo(
@@ -137,7 +142,7 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getLastOrderProductPhase() : static
 	{
-		Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
+		// Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
 
 		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();		
 	}

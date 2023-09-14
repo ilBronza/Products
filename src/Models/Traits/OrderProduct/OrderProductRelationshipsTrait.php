@@ -68,7 +68,7 @@ trait OrderProductRelationshipsTrait
 		return $this->orderProductPhases;
 	}
 
-	public function getLastOrderProductPhase() : OrderProductPhase
+	public function getLastOrderProductPhase() : ? OrderProductPhase
 	{
 		if($this->relationLoaded('lastorderProductPhases'))
 			return $this->lastorderProductPhases;
@@ -76,7 +76,7 @@ trait OrderProductRelationshipsTrait
 		if(! $this->relationLoaded('orderProductPhases'))
 			return $this->orderProductPhases()->orderByDesc('sequence')->first();
 
-		Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
+		// Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
 
 		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();
 	}
@@ -84,13 +84,13 @@ trait OrderProductRelationshipsTrait
 	public function client()
 	{
 		return $this->hasOneThrough(
-            Client::getProjectClassName(),
-            Product::getProjectClassName(),
-            'id', // refers to id column on product table
-            'id', // refers to id column on client table
-            'product_id',
-            'client_id' // refers to client_id column on products table
-        );
+			Client::getProjectClassName(),
+			Product::getProjectClassName(),
+			'id', // refers to id column on product table
+			'id', // refers to id column on client table
+			'product_id',
+			'client_id' // refers to client_id column on products table
+		);
 	}
 
 	public function getClient()

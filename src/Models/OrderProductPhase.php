@@ -27,7 +27,6 @@ class OrderProductPhase extends ProductPackageBaseModel
 			if($phase = $this->phase()->withTrashed()->first())
 			{
 				$phase->restore();
-				Log::critical('Ho usato una fase cancellata per orderProductPhase ' . $this->getKey());
 				return $phase->getWorkstationId();
 			}
 
