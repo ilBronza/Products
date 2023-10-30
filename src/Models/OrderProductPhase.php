@@ -17,6 +17,13 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	use CompletionScopesTrait;
 
+	public function isLast()
+	{
+		$last = $this->getLastOrderProductPhase();
+
+		return $this->is($last);
+	}
+
 	public function getWorkstationId()
 	{
 		if($this->workstation_overridden_id)
@@ -30,11 +37,30 @@ class OrderProductPhase extends ProductPackageBaseModel
 				return $phase->getWorkstationId();
 			}
 
-			Log::critical('Non trovo fase per orderProductPhase ' . $this->getKey());
 			return null;
 		}
 
 		return $phase->getWorkstationId();
+	}
+
+	public function checkForQuantityDoneSyncing()
+	{
+		if($this->isLast())
+			$this->getOrderProduct()->setQuantityDone(
+				$this->getQuantityDone(),
+				$save = true
+			);
+	}
+
+	protected static function boot()
+	{
+		parent::boot();
+	
+		static::saved(function ($model)
+		{
+			if($model->isDirty('quantity_done'))
+				$model->checkForQuantityDoneSyncing();
+		});
 	}
 
 	public function getCalculatedWorkstationIdAttribute()

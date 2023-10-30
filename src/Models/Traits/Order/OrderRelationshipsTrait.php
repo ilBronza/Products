@@ -62,7 +62,7 @@ trait OrderRelationshipsTrait
     public function getDestination() : ? Destination
     {
         if(! $this->destination_id)
-            return null;
+            return $this->getClient()?->getDefaultDestination();
 
         if($this->relationLoaded('destination'))
             return $this->destination;

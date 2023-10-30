@@ -144,7 +144,7 @@ trait OrderProductPhaseRelationshipsTrait
 	{
 		// Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
 
-		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();		
+		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();
 	}
 
 }

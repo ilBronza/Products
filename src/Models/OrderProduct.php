@@ -25,6 +25,14 @@ class OrderProduct extends ProductPackageBaseModel
 		return null;
 	}
 
+	public function getDestination()
+	{
+		if($this->destination)
+			return $this->destination;
+
+		return $this->getOrder()->getDestination();
+	}
+
 	public function getCalculatedDestinationIdAttribute() : string
 	{
 		if($this->destination_id)

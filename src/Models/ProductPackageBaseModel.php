@@ -12,7 +12,7 @@ class ProductPackageBaseModel extends BaseModel
 {
 	use ProductPackageBaseModelTrait;
 	use CRUDUseUuidTrait;
-    use InteractsWithNotesTrait;
+	use InteractsWithNotesTrait;
 
 	protected $keyType = 'string';
 }

@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models;
 
+use App\Models\Pallet;
 use Carbon\Carbon;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
@@ -27,6 +28,16 @@ class Packing extends BaseModel implements SizeInterface, HasMedia
 		'verified_at'
 	];
 
+	public function pallet()
+	{
+		return $this->belongsTo(Pallet::getProjectClassName());
+	}
+
+	public function getPallet() : ? Pallet
+	{
+		return $this->pallet;
+	}
+
 	public function scopeVerified($query)
 	{
 		$query->whereNotNull('verified_at');
@@ -42,72 +53,72 @@ class Packing extends BaseModel implements SizeInterface, HasMedia
 		return $this->packable;
 	}
 
-	public function setQuantityPerPackage(float $value, bool $save = false)
+	public function setQuantityPerPackage(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('quantity_per_package', $value, $save);
 	}
 
-	public function setPackageHeight(float $value, bool $save = false)
+	public function setPackageHeight(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('package_height', $value, $save);
 	}
 
-	public function setPackageLength(float $value, bool $save = false)
+	public function setPackageLength(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('package_length', $value, $save);
 	}
 
-	public function setPackageWidth(float $value, bool $save = false)
+	public function setPackageWidth(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('package_width', $value, $save);
 	}
 
-	public function setPackageWeight(float $value, bool $save = false)
+	public function setPackageWeight(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('package_weight', $value, $save);
 	}
 
-	public function setPackingWeight(float $value, bool $save = false)
+	public function setPackingWeight(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('packing_weight', $value, $save);
 	}
 
-	public function setPackageVolumeMq(float $value, bool $save = false)
+	public function setPackageVolumeMq(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('package_volume_mq', $value, $save);
 	}
 
-	public function setPackagePerLayer(float $value, bool $save = false)
+	public function setPackagePerLayer(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('package_per_layer', $value, $save);
 	}
 
-	public function setLayersPerPacking(float $value, bool $save = false)
+	public function setLayersPerPacking(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('layers_per_packing', $value, $save);
 	}
 
-	public function setQuantityPerPacking(float $value, bool $save = false)
+	public function setQuantityPerPacking(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('quantity_per_packing', $value, $save);
 	}
 
-	public function setPackingLength(float $value, bool $save = false)
+	public function setPackingLength(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('packing_length', $value, $save);
 	}
 
-	public function setPackingWidth(float $value, bool $save = false)
+	public function setPackingWidth(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('packing_width', $value, $save);
 	}
 
-	public function setPackingHeight(float $value, bool $save = false)
+	public function setPackingHeight(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('packing_height', $value, $save);
 	}
 
-	public function setPackingVolumeMq(float $value, bool $save = false)
+	public function setPackingVolumeMq(float $value = null, bool $save = false)
 	{
 		return $this->_customSetter('packing_volume_mq', $value, $save);
 	}

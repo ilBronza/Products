@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models\Product;
 
+use App\Models\Pallet;
 use Carbon\Carbon;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
@@ -83,13 +84,52 @@ class Product extends ProductPackageBaseModel implements HasMedia
 		return !! $this->getStencil();
 	}
 
-	public function setStencilId(string $value, bool $save = false)
+	public function setStencilId(string $value = null, bool $save = false)
 	{
 		$this->_customSetter('stencil_id', $value, $save);		
 	}
 
-	public function setShortDescription(string $value, bool $save = false)
+	public function setShortDescription(string $value = null, bool $save = false)
 	{
 		$this->_customSetter('short_description', $value, $save);
+	}
+
+	public function getLiveMaxPackingLength() : ?float
+	{
+		if($this->max_packing_length)
+			return $this->max_packing_length;
+
+		if($max = $this->getClient()?->getMaxPackingLength())
+			return $max;
+
+		$pallet = $this->getPallet();
+
+		return $pallet->getMaxLength();
+	}
+
+	public function getLiveMaxPackingHeight() : float
+	{
+		if($this->max_packing_height)
+			return $this->max_packing_height;
+
+		if($max = $this->getClient()?->getMaxPackingHeight())
+			return $max;
+
+		$pallet = $this->getPallet();
+
+		return $pallet->getMaxHeight();
+	}
+
+	public function getLiveMaxPackingWidth() : float
+	{
+		if($this->max_packing_width)
+			return $this->max_packing_width;
+
+		if($max = $this->getClient()?->getMaxPackingWidth())
+			return $max;
+
+		$pallet = $this->getPallet();
+
+		return $pallet->getMaxWidth();
 	}
 }

@@ -36,6 +36,24 @@ class ProductEditUpdateController extends ProductCRUD
     {
         $product = $this->findModel($product);
 
+        foreach([
+            'long_side_places',
+            'short_side_places',
+            'options_glued',
+            'options_glueing',
+            'options_double_manual_glueing',
+            'options_stretched',
+            'options_flat_cord',
+            'options_mounted',
+            'options_die_cut'
+        ] as $field)
+        {
+            if(in_array($field, array_keys($request->all())))
+                $product->getSize()->$field = $request->input($field);
+        }
+
+        $product->getSize()->save();
+
         return $this->_update($request, $product);
     }
 }

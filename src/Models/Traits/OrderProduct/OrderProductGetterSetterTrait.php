@@ -11,6 +11,11 @@ trait OrderProductGetterSetterTrait
         return $this->quantity_required;
     }
 
+    public function getQuantityDone() : ? int
+    {
+        return $this->quantity_done;
+    }
+
     public function getOrderId() : string
     {
         return $this->order_id;

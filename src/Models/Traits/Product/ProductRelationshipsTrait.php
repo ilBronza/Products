@@ -2,6 +2,8 @@
 
 namespace IlBronza\Products\Models\Traits\Product;
 
+use App\Models\Pallet;
+
 use App\Models\ProductsPackage\Size;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Accessory;
@@ -18,6 +20,22 @@ use Illuminate\Support\Str;
 
 trait ProductRelationshipsTrait
 {
+	public function pallet()
+	{
+		return $this->belongsTo(Pallet::class);
+	}
+
+	public function getPallet() : Pallet
+	{
+		if($pallet = $this->getPacking()?->getPallet())
+			return $pallet;
+
+		if($pallet = $this->getClient()?->getPallet())
+			return $pallet;
+
+		return Pallet::getProjectClassName()::getDefault();
+	}
+
 	public function size()
 	{
 		return $this->belongsTo(Size::class);
@@ -108,6 +126,11 @@ trait ProductRelationshipsTrait
 		return $this->belongsTo(Client::getProjectClassName());
 	}
 
+	public function getClient() : Client
+	{
+		return $this->getOrFindCachedRelatedElement('client');
+	}
+
 	public function phases()
 	{
 		return $this->hasMany(Phase::getProjectClassName())->orderBy('sequence');
@@ -123,6 +146,11 @@ trait ProductRelationshipsTrait
 		return $this->hasMany(OrderProduct::getProjectClassName());
 	}
 
+	public function getOrderProducts() : Collection
+	{
+		return $this->orderProducts;
+	}
+
 	public function lastOrderProduct()
 	{
 		return $this->belongsTo(OrderProduct::getProjectClassName(), 'live_last_order_product_id', 'id');
@@ -136,9 +164,19 @@ trait ProductRelationshipsTrait
         );		
 	}
 
+	public function getOrderProductPhases() : Collection
+	{
+		return $this->orderProductPhases;
+	}
+
 	public function orders()
 	{
 		return $this->belongsToMany(Order::getProjectClassName(), config('products.models.orderProduct.table'));
+	}
+
+	public function getOrders() : Collection
+	{
+		return $this->orders;
 	}
 
 	public function activeOrders()

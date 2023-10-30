@@ -176,45 +176,81 @@ class PackingHelper
 
 
 
-
-
-	public function getPackingSizes()
+	public function setBasePackingSizes()
 	{
-		$BL = $this->getMaxPackingWidth();
-		$BC = $this->getMaxPackingLength();
+		$maxPackingWidth = $this->getMaxPackingWidth();
+		$maxPackingLength = $this->getMaxPackingLength();
 
 		$packageWidth = $this->getPacking()->getPackageWidth();
 		$packageLength = $this->getPacking()->getPackageLength();
 
-		if($packageLength > $packageWidth)
+		if(! $packageLength)
+			throw new \Exception('Lunghezza pacco non valida');
+
+		if(! $packageWidth)
+			throw new \Exception('Larghezza pacco non valida');
+
+		if($packageWidth < $packageLength)
 		{
-			$PL = $packageLength;
-			$PC = $packageWidth;
+			$paccoCorto = $packageWidth;
+			$paccoLungo = $packageLength;
 		}
 		else
 		{
-			$PC = $packageLength;
-			$PL = $packageWidth;			
+			$paccoLungo = $packageWidth;
+			$paccoCorto = $packageLength;
 		}
 
-		$xL = $BL / $PL;
-		$xC = $BC / $PC;
+		if($maxPackingWidth < $maxPackingLength)
+		{
+			$bancaleCorto = $maxPackingWidth;
+			$bancaleLungo = $maxPackingLength;
+		}
+		else
+		{
+			$bancaleLungo = $maxPackingWidth;
+			$bancaleCorto = $maxPackingLength;
+		}
 
-		$ppl = (floor($xL) == 0) ? 1 : floor($xL);
-		$ppc = (floor($xC) == 0) ? 1 : floor($xC);
+		return [
+			'paccoCorto' => $paccoCorto,
+			'paccoLungo' => $paccoLungo,
+			'bancaleCorto' => $bancaleCorto,
+			'bancaleLungo' => $bancaleLungo
+		];
+	}
 
-		$palletLength = $ppl * $packageLength;
+	public function getPackingSizes()
+	{
+		extract($this->setBasePackingSizes());
 
-		$palletWidth = $ppc * $packageWidth;
-		// $palletHeight = ProductPackagingLayersNumberHelper::execute($product) * ProductPackagingPackageHeightHelper::execute($product);
-		$palletHeight = $this->getPacking()->getLayersPerPacking() * $this->getPacking()->getPackageHeight();
+		$result = [
+			'height' => $this->getPacking()->getLayersPerPacking() * $this->getPacking()->getPackageHeight()
+		];
 
-		$deltaL = floor(($xL - $ppl) * $PL);
+		$divisioneLunghi = $bancaleLungo / $paccoLungo;
+		$divisioneiCorti = $bancaleCorto / $paccoCorto;
 
+		$this->pacchiPerLungo = (($val = floor($divisioneLunghi)) == 0) ? 1 : $val;
+		$this->pacchiPerCorto = (($val = floor($divisioneiCorti)) == 0) ? 1 : $val;
 
+		if($this->pacchiPerLungo * $this->pacchiPerCorto == 1)
+		{
+			$result['length'] = $this->pacchiPerLungo * $paccoLungo;
+			$result['width'] = $this->pacchiPerCorto * $paccoCorto;
 
-		$xcl = $deltaL / $PC;
-		$xlc = $BC / $PL;
+			return $result;
+		}
+
+		$imballoLungo = $pacchiPerLungo * $paccoLungo;
+		$imballoCorto = $pacchiPerCorto * $paccoCorto;
+
+		$deltaL = floor(($divisioneLunghi - $pacchiPerLungo) * $packageLength);
+
+		mori($deltaL);
+
+		$xcl = $deltaL / $packageWidth;
+		$xlc = $maxPackingLength / $packageLength;
 
 		$ppcL = floor($xcl);
 		$pplC = floor($xlc);
@@ -229,7 +265,7 @@ class PackingHelper
 		return [
 			'length' => $palletLength,
 			'width' => $palletWidth,
-			'height' => $palletHeight
+			'height' => $this->getPacking()->getLayersPerPacking() * $this->getPacking()->getPackageHeight()
 		];
 	}
 
@@ -257,6 +293,9 @@ class PackingHelper
 		if($result == 0)
 			return 1;
 
+		if($this->getPacking()->getQuantityPerPackage() == 1)
+			return $result;
+
 		if($result > 9)
 			return 9;
 
@@ -281,6 +320,12 @@ class PackingHelper
 			$PC = $packageLength;
 			$PL = $packageWidth;
 		}
+
+		if(! $PL)
+			throw new \Exception('Lunghezza pacco non valida');
+
+		if(! $PC)
+			throw new \Exception('Larghezza pacco non valida');
 
 		$xL = $BL / $PL;
 		$xC = $BC / $PC;
@@ -324,19 +369,24 @@ class PackingHelper
 
 	public function getPackageWeight() : float
 	{
-		return $this->getPacking()->getQuantityPerPackage() * $this->getSize()->getPieceWeightGrams();
+		return $this->getPacking()->getQuantityPerPackage() * $this->getSize()->getPieceWeightGrams() / 1000;
+	}
+
+	public function getPackagesPerPacking() : int
+	{
+		return $this->getLayersPerPacking() * $this->getPackagePerLayer();
 	}
 
 	public function getPackingWeight() : float
 	{
-		return $this->getPacking()->getQuantityPerPacking() * $this->getSize()->getPieceWeightGrams();
+		return $this->getPackagesPerPacking() * $this->getPackageWeight();
 	}
 
 	public function getPackageWidth()
 	{
 		if($this->getSize()->isStretched())
 		{
-			$papers = $this->getSize()->getPapers();
+			$papers = $this->getSize()->getPapersNumber();
 
 			if($papers == 4)
 				throw new \Exception ('considerare i 4 fogli nelle misure');
@@ -357,11 +407,13 @@ class PackingHelper
 		if($this->getSize()->isStretched())
 		{
 			if($this->getSize()->getStencil()->requiresPlatina())
-				return match ($this->getSize()->wave)
+				return match ($this->getSize()->getWaveString())
 				{
+					'C' => 30,
+					'EB' => 30,
 					'BC' => 20,
-					'EB, C' => 30,
-					'B, EE' => 50,
+					'B' => 50,
+					'EE' => 50,
 					'E' => 100,
 					default => 50
 				};
@@ -369,32 +421,106 @@ class PackingHelper
 			if($this->getSize()->stretched_out_height < 1400)
 			{
 				if($this->getSize()->stretched_out_width < 1600)
-					return 90;
+					return match ($this->getSize()->getWaveString())
+					{
+						'EB' => 30,
+						'C' => 30,
+						'BC' => 20,
+						'E' => 50,
+						'EE' => 40,
+						'B' => 40,
+						default => 20
+					};
 
-				return static::calculateSmallAreaByWave($this->getSize());
+				return match ($this->getSize()->getWaveString())
+				{
+					// 'BC' => 180,
+					// 'EB, EE, C' => 270,
+					// 'B' => 360,
+					// default => 180
+					default => 1
+				};
+			}
+
+			if($this->getSize()->stretched_out_width < 1400)
+			{
+				if($this->getSize()->stretched_out_height < 1600)
+					return match ($this->getSize()->getWaveString())
+					{
+						'EB' => 30,
+						'C' => 30,
+						'BC' => 20,
+						'E' => 50,
+						'EE' => 40,
+						'B' => 40,
+						default => 20
+					};
+
+				return match ($this->getSize()->getWaveString())
+				{
+					// 'BC' => 180,
+					// 'EB, EE, C' => 270,
+					// 'B' => 360,
+					// default => 180
+					default => 1
+				};
 			}
 
 			if($this->getSize()->stretched_out_height < 1560)
 				if($this->getSize()->stretched_out_width < 1400)
-					return static::calculateSmallAreaByWave($this->getSize());
+					return match ($this->getSize()->getWaveString())
+					{
+						'BC' => 10,
+						'EB' => 15,
+						'EE' => 15,
+						'C' => 15,
+						'B' => 20,
+						default => 10
+					};
 
-			return 90;
+			return match ($this->getSize()->getWaveString())
+			{
+				// 'BC' => 180,
+				// 'EB, EE, C' => 270,
+				// 'B' => 360,
+				// default => 180
+				default => 1
+			};
 		}
 
 		if($this->getSize()->double_manual_glueing)
-			return 90;
+			return match ($this->getSize()->getWaveString())
+			{
+				// 'BC' => 90,
+				// 'EB, EE, C' => 135,
+				// 'B' => 180,
+				// default => 90
+				default => 1
+			};
+
+		if($this->getSize()->double_manual_sewing)
+			return match ($this->getSize()->getWaveString())
+			{
+				// 'BC' => 90,
+				// 'EB, EE, C' => 135,
+				// 'B' => 180,
+				// default => 90
+				default => 1
+			};
 
 		if($this->getSize()->getStencil()->requiresPlatina())
-			return match ($this->getSize()->wave)
+			return match ($this->getSize()->getWaveString())
 			{
-				'EB, C' => 15,
+				'C' => 15,
+				'EB' => 15,
 				'BC' => 10,
 				'E' => 25,
-				'B, EE' => 20,
+				'B' => 20,
+				'EE' => 20,
 				default => 25
 			};
 
-		if($this->getSize()->wave == 'BC')
+		if($this->getSize()->getWaveString() == 'BC')
 		{
 			if($this->getSize()->piece_weight_grams < 2100)
 				return 10;
@@ -402,16 +528,17 @@ class PackingHelper
 			return 5;
 		}
 
-		if(($this->getSize()->wave == 'EB')||($this->getSize()->wave == 'C'))
-			return 15;
-
-		if($this->getSize()->wave == 'B')
-			return 20;
-
-		return 10;
+		return match ($this->getSize()->getWaveString())
+		{
+			'EB' => 15,
+			'C' => 15,
+			'BC' => 10,
+			'E' => 25,
+			'B' => 20,
+			'EE' => 20,
+			default => 10
+		};
 	}
-
-
 
 	public function getPackageHeight() : float
 	{
