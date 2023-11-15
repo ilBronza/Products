@@ -4,6 +4,9 @@ namespace IlBronza\Products\Models;
 
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseCheckerTrait;
+use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseGetterTrait;
+use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessingsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +17,9 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	use OrderProductPhaseScopesTrait;
 	use OrderProductPhaseRelationshipsTrait;
+	use OrderProductPhaseProcessingsTrait;
+	use OrderProductPhaseCheckerTrait;
+	use OrderProductPhaseGetterTrait;
 
 	use CompletionScopesTrait;
 
@@ -103,6 +109,10 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 
 
+	public function setCoefficientOutput(float $value, bool $save = false)
+	{
+		$this->_customSetter('coefficient_output', $value, $save);
+	}
 
     public function setOrderProductId(string $value, bool $save = false)
     {

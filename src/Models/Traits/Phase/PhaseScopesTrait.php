@@ -12,8 +12,18 @@ trait PhaseScopesTrait
         $query->where('workstation_id', '!=', $id);
     }
 
+    public function scopeExcludingWorkstationIds($query, array $ids)
+    {
+        $query->whereNotIn('workstation_id', $ids);
+    }
+
     public function scopeByWorkstationsIds($query, array|Collection $ids)
     {
         $query->whereIn('workstation_id', $ids);
+    }
+
+    public function scopeByWorkstationsId($query, string $id)
+    {
+        $query->where('workstation_id', $id);
     }
 }

@@ -21,6 +21,11 @@ trait PhaseRelationshipsTrait
 		);
 	}
 
+	public function getClient() :  ? Client
+	{
+		return $this->client;
+	}
+
 	public function getProduct() : ? Product
 	{
 		return $this->product;

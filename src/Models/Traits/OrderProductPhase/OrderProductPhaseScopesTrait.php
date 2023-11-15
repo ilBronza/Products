@@ -41,9 +41,12 @@ trait OrderProductPhaseScopesTrait
 
     public function scopeByWorkstationsIds($query, array|Collection $ids)
     {
-        $query->whereHas('phase', function($_query) use($ids)
+        $query->where(function($_query) use($ids)
         {
-            $_query->whereIn('workstation_id', $ids);
+            $_query->whereHas('phase', function($__query) use($ids)
+            {
+                $__query->whereIn('workstation_id', $ids);
+            })->whereNull('workstation_overridden_id');
         })
         ->orWhereIn('workstation_overridden_id', $ids);
     }
@@ -64,6 +67,15 @@ trait OrderProductPhaseScopesTrait
             $_query->where('workstation_id', '!=', $id);
         })
         ->where('workstation_overridden_id', '!=', $id);
+    }
+
+    public function scopeExcludingWorkstationIds($query, array $ids)
+    {
+        $query->whereHas('phase', function($_query) use($ids)
+        {
+            $_query->whereNotIn('workstation_id', $ids);
+        })
+        ->whereNotIn('workstation_overridden_id', $ids);
     }
 
     public function scopeWithClientId($query)

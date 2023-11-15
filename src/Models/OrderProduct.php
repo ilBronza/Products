@@ -6,6 +6,8 @@ use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCalculatedTrait;
+use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCheckerTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
@@ -15,8 +17,13 @@ class OrderProduct extends ProductPackageBaseModel
 	use OrderProductRelationshipsTrait;
 	use OrderProductScopesTrait;
 	use OrderProductGetterSetterTrait;
+	use OrderProductCalculatedTrait;
+	use OrderProductCheckerTrait;
 
 	use CompletionScopesTrait;
+
+	static $deletingRelationships = ['orderProductPhases'];
+	static $restoringRelationships = ['orderProductPhases'];
 
 	static $modelConfigPrefix = 'orderProduct';
 

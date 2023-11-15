@@ -97,6 +97,8 @@ Route::group(['prefix' => 'orders'], function()
 
 Route::group(['prefix' => 'order-products'], function()
 {
+	Route::get('order-products/{orderProduct}/restore', [Products::getController('orderProduct', 'restore'), 'restore'])->name('orderProducts.restore');	
+
 	Route::group(['prefix' => 'by-workstation/{workstation}'], function()
 	{
 		Route::get('', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');
@@ -115,6 +117,13 @@ Route::group(['prefix' => 'order-product-phases'], function()
 		// Route::get('to-sort', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');
 		Route::get('to-elaborate', [Products::getController('orderProductPhase', 'toElaboratebyWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.toElaborate');
 	});
+
+	Route::group(['prefix' => '{orderProductPhase}'], function()
+	{
+		Route::get('terminate', [Products::getController('orderProductPhase', 'terminate'), 'terminate'])->name('orderProductPhases.terminate');
+	});
+
+
 
 	Route::get('by-order-product/{orderProduct}', [Products::getController('orderProductPhase', 'byOrderProductIndex'), 'index'])->name('orderProductPhases.byOrderProduct');
 

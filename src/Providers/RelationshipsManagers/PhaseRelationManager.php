@@ -2,12 +2,12 @@
 
 namespace IlBronza\Products\Providers\RelationshipsManagers;
 
-use IlBronza\CRUD\Providers\RelationshipsManager;
+use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 use IlBronza\Notes\Http\Controllers\CrudNoteController;
 
 class PhaseRelationManager Extends RelationshipsManager
 {
-	public function getAllRelationsParameters()
+	public  function getAllRelationsParameters() : array
 	{
 		return [
 			'show' => [

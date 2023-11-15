@@ -75,4 +75,8 @@ class Products implements RoutedObjectInterface
         return config('products.routePrefix') . $routeName;
     }
 
+    public function route(string $routeName, array $parameters)
+    {
+        return IbRouter::route($this, $routeName, $parameters);
+    }
 }

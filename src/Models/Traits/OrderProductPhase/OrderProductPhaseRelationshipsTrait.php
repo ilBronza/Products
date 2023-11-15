@@ -21,7 +21,10 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getClient() : ? Client
 	{
-		return $this->client;
+		if(in_array('live_client_id', $this->getAttributes()))
+			return $this->client;
+
+		return $this->getOrder()?->getClient();
 	}
 
 	public function workstation()

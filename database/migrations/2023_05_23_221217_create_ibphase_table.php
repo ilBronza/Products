@@ -25,6 +25,7 @@ class CreateIbphaseTable extends Migration
 
             $table->boolean('optional')->nullable();
 
+            $table->decimal('coefficient_output')->nullable();
             $table->string('workstation_id', 36)->nullable();
             $table->foreign('workstation_id')->references('alias')->on(
                 config('products.models.workstation.table')

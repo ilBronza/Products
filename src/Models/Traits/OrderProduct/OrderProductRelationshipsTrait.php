@@ -63,6 +63,17 @@ trait OrderProductRelationshipsTrait
 		return $this->belongsTo(OrderProductPhase::getProjectClassName(), 'live_first_order_product_phase_id', 'id');
 	}
 
+	public function getFirstOrderProductPhase() : ? OrderProductPhase
+	{
+		if($this->firstOrderProductPhase)
+			return $this->firstOrderProductPhase;
+
+		if(in_array('live_first_order_product_phase_id', $this->getAttributes()))
+			return null;
+
+		return $this->orderProductPhases()->orderBy('sequence')->first();
+	}
+
 	public function getOrderProductPhases() : Collection
 	{
 		return $this->orderProductPhases;

@@ -6,6 +6,11 @@ use IlBronza\Products\Models\Product\Product;
 
 trait OrderProductGetterSetterTrait
 {
+    public function getProductKey() : ? string
+    {
+        return $this->product_id;
+    }
+
     public function getQuantityRequired() : int
     {
         return $this->quantity_required;
@@ -26,12 +31,22 @@ trait OrderProductGetterSetterTrait
         return $this->product_id;
     }
 
-    public function getProductName() : string
+    public function getName() : string
+    {
+        return "{$this->getProductName()}-{$this->getOrderName()}";
+    }
+
+    public function getOrderName() : ? string
+    {
+        return $this->getOrder()?->getName();
+    }
+
+    public function getProductName() : ? string
     {
         if($this->live_product_name)
             return $this->live_product_name;
 
-        return $this->getProduct()->getName();
+        return $this->getProduct()?->getName();
     }
 
     public function setQuantityDone(float $value = null, bool $save = false)

@@ -28,6 +28,7 @@ class CreateIbOrderProductsPhasesTable extends Migration
 
             $table->unsignedInteger('sequence')->nullable();
 
+            $table->decimal('coefficient_output')->nullable();
             $table->unsignedInteger('quantity_required')->nullable();
             $table->unsignedInteger('quantity_done')->nullable();
 
