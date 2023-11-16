@@ -11,6 +11,7 @@ class Products implements RoutedObjectInterface
     use IlBronzaPackagesTrait;
 
     static $packageConfigPrefix = 'products';
+
     public function manageMenuButtons()
     {
         if(! $menu = app('menu'))
