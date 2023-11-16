@@ -6,6 +6,7 @@ use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowCont
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
+use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseTerminateController;
@@ -59,6 +60,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseShow
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PackingEditFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductRelationEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductShowFieldsetsParameters;
@@ -205,11 +207,12 @@ return [
             ],
             'parametersFiles' => [
                 'show' => PhaseShowFieldsetsParameters::class,
+                'edit' => PhaseEditFieldsetsParameters::class,
             ],
             'controllers' => [
                 'edit' => PhaseEditUpdateController::class,
+                'update' => PhaseEditUpdateController::class,
                 'show' => PhaseShowController::class,
-                'edit' => OrderEditUpdateController::class,
                 'reorder' => ProductPhaseReorderController::class,
                 'productPhaseIndex' => ProductPhaseIndexController::class
             ]
@@ -274,7 +277,8 @@ return [
             'fieldsGroupsFiles' => [
                 'related' => RelatedOrderProductPhaseFieldsGroupParametersFile::class,
                 'toElaborate' => ToElaborateOrderProductPhaseFieldsGroupParametersFile::class,
-                'orderProductRelated' => OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile::class
+                'orderProductRelated' => OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile::class,
+                'elaborated' => RelatedOrderProductPhaseFieldsGroupParametersFile::class
             ],
             'parametersFiles' => [
                 'edit' => OrderProductPhaseEditFieldsetsParameters::class,
@@ -282,6 +286,7 @@ return [
             ],
             'controllers' => [
                 'toElaboratebyWorkstation' => ToElaborateByWorkstationOrderProductPhaseIndexController::class,
+                'elaboratedByWorkstation' => ElaboratedByWorkstationOrderProductPhaseIndexController::class,
                 'byOrderProductIndex' => ByOrderProductOrderProductPhaseIndexController::class,
                 'show' => OrderProductPhaseShowController::class,
                 'edit' => OrderProductPhaseEditUpdateController::class,

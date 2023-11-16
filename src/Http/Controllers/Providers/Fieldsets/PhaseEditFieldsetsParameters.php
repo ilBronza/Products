@@ -4,7 +4,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\Fieldsets;
 
 use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
 
-class PhaseShowFieldsetsParameters extends FieldsetParametersFile
+class PhaseEditFieldsetsParameters extends FieldsetParametersFile
 {
     public function _getFieldsetsParameters() : array
     {

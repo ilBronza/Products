@@ -24,6 +24,11 @@ class PhaseEditUpdateController extends PhaseCRUD
         return $this->_edit($phase);
     }
 
+    public function getAfterUpdatedRedirectUrl()
+    {
+        return $this->getModel()?->getProduct()?->getShowUrl();
+    }
+
     public function update(Request $request, $phase)
     {
         $phase = $this->findModel($phase);

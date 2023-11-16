@@ -54,6 +54,7 @@ Route::group(['prefix' => 'phases'], function()
 {
 	Route::get('{phase}', [Products::getController('phase', 'show'), 'show'])->name('phases.show');
 	Route::get('{phase}/edit', [Products::getController('phase', 'edit'), 'edit'])->name('phases.edit');
+	Route::put('{phase}', [Products::getController('phase', 'update'), 'update'])->name('phases.update');
 });
 
 Route::group(['prefix' => 'accessories'], function()
@@ -116,6 +117,8 @@ Route::group(['prefix' => 'order-product-phases'], function()
 	{
 		// Route::get('to-sort', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');
 		Route::get('to-elaborate', [Products::getController('orderProductPhase', 'toElaboratebyWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.toElaborate');
+
+		Route::get('elaborated', [Products::getController('orderProductPhase', 'elaboratedByWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.elaborated');
 	});
 
 	Route::group(['prefix' => '{orderProductPhase}'], function()

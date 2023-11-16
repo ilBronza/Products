@@ -4,9 +4,13 @@ namespace IlBronza\Products;
 
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Providers\RouterProvider\RoutedObjectInterface;
+use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaPackagesTrait;
 
 class Products implements RoutedObjectInterface
 {
+    use IlBronzaPackagesTrait;
+
+    static $packageConfigPrefix = 'products';
     public function manageMenuButtons()
     {
         if(! $menu = app('menu'))
@@ -51,23 +55,6 @@ class Products implements RoutedObjectInterface
                 'href' => IbRouter::route($this, 'accessories.index')
             ])
         );
-    }
-
-    public function getRoutePrefix() : ? string
-    {
-        return config('products.routePrefix');
-    }
-
-    static function getController(string $target, string $controllerPrefix) : string
-    {
-        try
-        {
-            return config("products.models.{$target}.controllers.{$controllerPrefix}");
-        }
-        catch(\Throwable $e)
-        {
-            dd([$e->getMessage(), 'dichiara ' . "products.models.{$target}.controllers.{$controllerPrefix}"]);
-        }
     }
 
     static function getRouteName(string $routeName)
