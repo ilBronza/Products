@@ -87,6 +87,7 @@ Route::group(['prefix' => 'orders'], function()
 	Route::get('active-by-client/{client}', [Products::getController('order', 'activeByClient'), 'index'])->name('orders.active.byClient');
 
 	Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
+	Route::get('all-orders', [Products::getController('order', 'all'), 'index'])->name('orders.all');
 	Route::get('active', [Products::getController('order', 'active'), 'index'])->name('orders.active');
 	Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
 	Route::get('{order}', [Products::getController('order', 'show'), 'show'])->name('orders.show');

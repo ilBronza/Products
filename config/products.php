@@ -18,6 +18,7 @@ use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductShowController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ToElaborateByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveByClientOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\AllOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
@@ -41,6 +42,7 @@ use IlBronza\Products\Http\Controllers\Product\ProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ProductShowController;
 use IlBronza\Products\Http\Controllers\Product\ProductTeaserController;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByOrderRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedAccessoryProductFieldsGroupParametersFile;
@@ -225,6 +227,7 @@ return [
                 'active' => ActiveOrderIndexController::class,
                 'activeByClient' => ActiveByClientOrderIndexController::class,
                 'index' => OrderIndexController::class,
+                'all' => AllOrderIndexController::class,
                 'show' => OrderShowController::class,
                 'edit' => OrderEditUpdateController::class,
                 'teaser' => OrderTeaserController::class,
@@ -243,6 +246,7 @@ return [
                 'active' => ActiveOrdersFieldsGroupParametersFile::class,
                 'related' => ActiveOrdersFieldsGroupParametersFile::class,
                 'index' => OrderFieldsGroupParametersFile::class,
+                'all' => AllOrderFieldsGroupParametersFile::class,
             ]
         ],
         'orderProduct' => [
