@@ -33,9 +33,13 @@ class SizeCalculatorHelper
 	{
 		$helper = new static();
 
+		if(! $stencil = $size->getSizeable()->getStencilOrRtsStencil())
+			throw new \Exception('Modello mancante per questo prodotto ' . $this->orderProductPhase->getProduct()->getName());
+
+
 		$helper->setSize($size);
 		$helper->setPacking($size->getSizeable()->getPacking());
-		$helper->setStencil($size->getSizeable()->getStencil());
+		$helper->setStencil($stencil);
 
 		return $helper;
 	}

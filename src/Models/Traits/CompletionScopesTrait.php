@@ -99,7 +99,12 @@ trait CompletionScopesTrait
 
     public function scopeStarted($_query)
     {
-            $_query->whereNotNull('started_at');
+        $_query->whereNotNull('started_at');
+    }
+
+    public function scopeNotStarted($_query)
+    {
+        $_query->whereNull('started_at');
     }
 
     public function scopeActive($_query)
@@ -163,10 +168,9 @@ trait CompletionScopesTrait
         });
     }
 
-    public function isCompleted()
+    public function isCompleted() : bool
     {
-        if(!! $this->completed_at)
-            return true;
+        return !! $this->completed_at;
     }
 
     public function setCompletedAt($value = null, bool $save = false)
@@ -180,6 +184,22 @@ trait CompletionScopesTrait
     public function getCompletedAt() : ? Carbon
     {
         return $this->completed_at;
+    }
+
+    public function hasStarted() : bool
+    {
+        return !! $this->started_at;
+    }
+
+    public function start()
+    {
+        $this->setStartedAt(Carbon::now(), $save = true);
+    }
+
+    public function startIfNotYet()
+    {
+        if(! $this->hasStarted())
+            $this->start();
     }
 
 }

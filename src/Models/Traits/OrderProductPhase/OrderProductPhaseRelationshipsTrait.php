@@ -110,7 +110,8 @@ trait OrderProductPhaseRelationshipsTrait
 
 	public function getOrderProductPhases() : Collection
 	{
-		return $this->getOrFindCachedRelation('orderProductPhases');
+		return $this->orderProductPhases;
+		// return $this->getOrFindCachedRelation('orderProductPhases');
 	}
 
 	public function previous()
@@ -140,7 +141,7 @@ trait OrderProductPhaseRelationshipsTrait
 
 		// Log::critical('Check here, use withPrevious() scope');
 
-		return $this->getOrderProductPhases()->firstWhere('sequence', $this->getSequence() - 1);		
+		return $this->getOrderProductPhases()->sortByDesc('sequence')->firstWhere('sequence', '<', $this->getSequence());		
 	}
 
 	public function getLastOrderProductPhase() : static

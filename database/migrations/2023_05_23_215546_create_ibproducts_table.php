@@ -24,6 +24,7 @@ class CreateIbproductsTable extends Migration
             $table->string('slug')->unique();
             $table->string('name');
             $table->string('short_description')->nullable();
+            $table->decimal('coefficient_output')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

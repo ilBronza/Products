@@ -54,4 +54,33 @@ class Order extends ProductPackageBaseModel
 	{
 		$this->_customSetter('client_id', $value, $save);
 	}
+
+	public function checkCompletion()
+	{
+		if($this->orderProducts()->notCompleted()->count() > 0)
+			return $this->uncomplete();
+
+		return $this->complete();
+	}
+
+	private function bindDataFromLastOrderProduct()
+	{
+		if(! $lastOrderProduct = $this->orderProducts()->completed()->orderBy('completed_at', 'DESC')->first())
+			throw new \Exception('Ultimo componente non trovato per commessa ' . $this->getName() . ' <a href="' . $this->getOldEditUrl() . '">Controlla qui</a>');
+	}
+
+	private function uncomplete()
+	{
+		$this->setCompletedAt(null);
+
+		$this->setLoadedAt(null);
+		$this->save();		
+	}
+
+	private function complete()
+	{
+		$this->bindDataFromLastOrderProduct();
+		$this->save();
+	}
+
 }

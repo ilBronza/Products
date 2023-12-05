@@ -11,4 +11,9 @@ trait OrderProductPhaseCheckerTrait
 
 		return $this->getWorkstationId() == $workstationId;
 	}
+
+	public function isStarted() : bool
+	{
+		return !! $this->getStartedAt();
+	}
 }

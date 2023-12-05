@@ -4,15 +4,15 @@ namespace IlBronza\Products\Http\Controllers\OrderProductPhase;
 
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCRUD;
 
-class OrderProductPhaseTerminateController extends OrderProductPhaseCRUD
+class OrderProductPhaseCompleteController extends OrderProductPhaseCRUD
 {
-    public $allowedMethods = ['terminate'];
+    public $allowedMethods = ['complete'];
 
-    public function terminate($orderProductPhase)
+    public function complete($orderProductPhase)
     {
         $orderProductPhase = $this->findModel($orderProductPhase);
 
-        $orderProductPhase->terminate();
+        $orderProductPhase->forceCompletion();
 
         return back();
     }

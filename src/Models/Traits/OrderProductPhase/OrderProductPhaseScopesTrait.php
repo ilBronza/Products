@@ -121,6 +121,11 @@ trait OrderProductPhaseScopesTrait
         ])->with('next');
     }
 
+    public function scopeBySequence($query, string $type = 'ASC')
+    {
+        return $query->orderBy('sequence', $type);
+    }
+
     public function scopeWithOrderId($query)
     {
         $query->addSelect([

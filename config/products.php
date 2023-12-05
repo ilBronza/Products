@@ -9,7 +9,7 @@ use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProd
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
-use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseTerminateController;
+use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ElaboratedByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductEditUpdateController;
@@ -295,7 +295,8 @@ return [
                 'show' => OrderProductPhaseShowController::class,
                 'edit' => OrderProductPhaseEditUpdateController::class,
                 'phaseOrderProductPhaseIndex' => PhaseOrderProductPhaseIndexController::class,
-                'terminate' => OrderProductPhaseTerminateController::class,
+                'complete' => OrderProductPhaseCompleteController::class,
+                'reopen' => OrderProductPhaseReopenController::class,
             ]
         ],
         'productRelation' => [

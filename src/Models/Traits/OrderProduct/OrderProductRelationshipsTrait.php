@@ -45,6 +45,9 @@ trait OrderProductRelationshipsTrait
 		if($this->relationLoaded('order'))
 			return $this->order;
 
+		if(! $this->order_id)
+			return null;
+
 		return Order::getProjectClassName()::findCached($this->order_id);
 	}
 

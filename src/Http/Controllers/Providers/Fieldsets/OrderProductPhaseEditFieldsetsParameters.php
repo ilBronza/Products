@@ -13,6 +13,7 @@ class OrderProductPhaseEditFieldsetsParameters extends FieldsetParametersFile
                 'fields' => [
                     // 'name' => ['text' => 'string|nullable|max:255'],
                     'workstation_overridden_id' => ['text' => 'string|nullable|exists:workstations,alias'],
+                    'coefficient_output' => ['number' => 'numeric'],
                     // 'phase_id' => [
                     //     'type' => 'select',
                     //     'multiple' => false,

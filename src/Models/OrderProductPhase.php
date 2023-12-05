@@ -2,13 +2,16 @@
 
 namespace IlBronza\Products\Models;
 
+use Carbon\Carbon;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseButtonsAndRouting;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseCheckerTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseGetterTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessingsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
+use IlBronza\Ukn\Facades\Ukn;
 use Illuminate\Support\Facades\Log;
 
 class OrderProductPhase extends ProductPackageBaseModel
@@ -20,6 +23,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 	use OrderProductPhaseProcessingsTrait;
 	use OrderProductPhaseCheckerTrait;
 	use OrderProductPhaseGetterTrait;
+	use OrderProductPhaseButtonsAndRouting;
 
 	use CompletionScopesTrait;
 
@@ -84,7 +88,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 		return $this->quantity_done;
 	}
 
-	public function setQuantityDone(float $quantityDone, bool $save = false)
+	public function setQuantityDone(float $quantityDone = null, bool $save = false)
 	{
 		$this->quantity_done = $quantityDone;
 
@@ -107,7 +111,13 @@ class OrderProductPhase extends ProductPackageBaseModel
 		return $this->order_product_id;
 	}
 
+	public function getCoefficientOutput() : ? float
+	{
+		if($this->coefficient_output)
+			return $this->coefficient_output;
 
+		return $this->getPhase()?->getCoefficientOutput();
+	}
 
 	public function setCoefficientOutput(float $value, bool $save = false)
 	{
@@ -136,4 +146,76 @@ class OrderProductPhase extends ProductPackageBaseModel
 	{
 		return $this->getOrderProduct()->order_id;
 	}
+
+	public function checkCompletion()
+	{
+		if(! $this->processings()->forCompletion()->definitive()->byLast()->first())
+			return $this->uncomplete();
+
+		return $this->complete();
+	}
+
+	public function bindDataFromProcessings()
+	{
+		$processings = $this->processings()
+						->forCompletion()
+						->byLast()
+						->get();
+
+		$this->setQuantityDone(
+			$processings->sum('valid_pieces_done')
+		);
+	}
+
+	private function complete()
+	{
+		$this->bindDataFromProcessings();
+
+		if(! $lastCompletionProcessing = $this->processings()
+						->forCompletion()
+						->definitive()
+						->byLast()
+						->first())
+			throw new \Exception('non trovato il processo che termina la lavorazione ' . $this->getName() . ' <a href="' . $this->getShowUrl() . '">Controlla qui</a>');
+
+		$this->setCompletedAt($lastCompletionProcessing->getEndedAt());
+		$this->setStatus('completed');
+
+		$this->save();
+	}
+
+	private function uncomplete()
+	{
+		$this->bindDataFromProcessings();
+
+		$this->setCompletedAt(null);
+		$this->setStatus('waiting');
+
+		$this->timing()->forceDelete();
+
+		$this->save();
+	}
+
+    public function forceCompletion()
+    {
+		if(! $processing = $this->processings()->working()->byLast()->first())
+		{
+			$processing = $this->_createAndAssociateProcessing([
+				'processing_type' => 'production'
+			]);
+
+			$processing->setValidPiecesDone(
+				$this->getQuantityRequired() - $this->getQuantityDone()
+			);
+		}
+
+		if(! $processing->getEndedAt())
+			$processing->setEndedAt(
+				Carbon::now()
+			);
+
+		$processing->setAsDefinitive(true);
+    }
+
+
 }

@@ -68,4 +68,9 @@ class Phase extends ProductPackageBaseModel
 	{
 		$this->_customSetter('name', $value, $save);
 	}
+
+	public function getCoefficientOutput() : ? float
+	{
+		return $this->coefficient_output;
+	}
 }

@@ -24,6 +24,11 @@ class OrderProductPhaseEditUpdateController extends OrderProductPhaseCRUD
         return $this->_edit($orderProductPhase);
     }
 
+    public function getAfterUpdatedRedirectUrl()
+    {
+        return $this->getModel()->getOrder()->getOldShowOrderUrl();
+    }
+
     public function update(Request $request, $orderProductPhase)
     {
         $orderProductPhase = $this->findModel($orderProductPhase);

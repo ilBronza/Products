@@ -1,5 +1,6 @@
 <?php
 
+use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
 use IlBronza\Products\Products;
 
 Route::group([
@@ -99,6 +100,19 @@ Route::group(['prefix' => 'orders'], function()
 
 Route::group(['prefix' => 'order-products'], function()
 {
+	Route::group([
+		'prefix' => '{orderProduct}',
+		'as' => 'orderProducts.'
+	], function()
+	{
+		Route::get('notes-popup', [OrderProductNotesController::class, 'getPopupByModel'])->name('getNotesPopup');
+	});
+
+
+
+
+
+
 	Route::get('order-products/{orderProduct}/restore', [Products::getController('orderProduct', 'restore'), 'restore'])->name('orderProducts.restore');	
 
 	Route::group(['prefix' => 'by-workstation/{workstation}'], function()
@@ -124,7 +138,13 @@ Route::group(['prefix' => 'order-product-phases'], function()
 
 	Route::group(['prefix' => '{orderProductPhase}'], function()
 	{
-		Route::get('terminate', [Products::getController('orderProductPhase', 'terminate'), 'terminate'])->name('orderProductPhases.terminate');
+		Route::get('complete', [Products::getController('orderProductPhase', 'complete'), 'complete'])->name('orderProductPhases.complete');
+
+		Route::get('reopen', [Products::getController('orderProductPhase', 'reopen'), 'reopen'])->name('orderProductPhases.reopen');
+
+		Route::get('reopen', [Products::getController('orderProductPhase', 'reopen'), 'reopenMachineInitialization'])->name('orderProductPhases.reopenMachineInitialization');
+
+
 	});
 
 

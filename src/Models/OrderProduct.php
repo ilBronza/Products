@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models;
 
+use App\State;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\OrderProductPhase;
@@ -70,4 +71,52 @@ class OrderProduct extends ProductPackageBaseModel
 
 		return true;
 	}
+
+
+	public function checkCompletion()
+	{
+		if($this->orderProductPhases()->notCompleted()->count() > 0)
+			return $this->uncomplete();
+
+		return $this->complete();
+	}
+
+	private function bindDataFromLastOrderProductPhase()
+	{
+		if(! $lastOrderProductPhase = $this->getLastOrderProductPhase())
+			throw new \Exception('Ultima fase non trovata per componente ' . $this->getName() . ' <a href="' . $this->getEditUrl() . '">Controlla qui</a>');
+
+		$this->setCompletedAt(
+			$lastOrderProductPhase->getCompletedAt()
+		);
+
+		$this->setQuantityDone(
+			$lastOrderProductPhase->getQuantityDone()
+		);
+	}
+
+	private function uncomplete()
+	{
+		$this->bindDataFromLastOrderProductPhase();
+
+		$this->setStateId(null);
+		$this->save();
+
+		$timing = $this->timing()->get();
+
+		foreach($timing as $_timing)
+			$_timing->deleterForceDelete();
+	}
+
+	private function complete()
+	{
+		$this->bindDataFromLastOrderProductPhase();
+
+		$this->setStateId(
+			State::getTerminatedState()->id
+		);
+
+		$this->save();
+	}
+
 }

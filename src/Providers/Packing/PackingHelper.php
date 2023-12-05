@@ -222,6 +222,73 @@ class PackingHelper
 
 	public function getPackingSizes()
 	{
+		$palletLength = 1400;
+		$palletWidth = 1000;
+
+		$palletLength = 1000;
+		$palletWidth = 1400;
+
+		// $boxWidth = $this->getPacking()->getPackageWidth();
+		// $boxLength = $this->getPacking()->getPackageLength();
+
+		$boxWidth = 370;
+		$boxLength = 200;
+
+  		$basicRowCount = floor($palletLength / $boxLength);
+		$totalLength = $basicRowCount * $boxLength;
+
+		if($totalLength > $palletLength)  
+		{
+			$basicRowCount = $basicRowCount - 1;
+    		$totalLength = $totalLength - $boxLength;
+		}
+
+		$oddRowCount = 0;
+
+		if(($palletLength - $totalLength) > $boxWidth)
+		{
+			$oddRowCount = 1;
+		}
+
+		$basicColumnCount = floor($palletWidth / $boxWidth);
+		$totalWidth = $basicColumnCount * $boxWidth;
+
+		if($totalWidth > $palletWidth)
+		{
+			$basicColumnCount = $basicColumnCount - 1;
+		}
+
+		$oddColumnCount = 0;
+
+		if($oddRowCount > 0)
+		{
+			$oddColumnCount = floor($palletWidth  / $boxLength);
+			$totalWidth = $oddColumnCount * $boxLength;
+
+			if($totalWidth > $palletWidth)
+				$oddColumnCount = $oddColumnCount - 1;
+		}
+
+		$totalBoxesInBasicRows = $basicRowCount * $basicColumnCount;
+		$totalBoxesInOddRow = $oddRowCount * $oddColumnCount;
+		$totalBoxesOnPallet = $totalBoxesInBasicRows + $totalBoxesInOddRow;
+
+		return ;
+
+// 		dd($totalBoxesOnPallet);
+
+
+
+
+
+
+
+
+
+
+
+// die('qwe');
+
 		extract($this->setBasePackingSizes());
 
 		$result = [
