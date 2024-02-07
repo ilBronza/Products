@@ -11,7 +11,7 @@ trait OrderProductGetterSetterTrait
         return $this->product_id;
     }
 
-    public function getQuantityRequired() : int
+    public function getQuantityRequired() : ? int
     {
         return $this->quantity_required;
     }
@@ -69,6 +69,16 @@ trait OrderProductGetterSetterTrait
         $this->_customSetter('order_id', $value, $save);
     }
 
+    public function getQuantityDoneDiscrepancyAttribute() : ? int
+    {
+        if(! $this->isCompleted())
+            return null;
 
+        return $this->getQuantityDone() - $this->getQuantityRequired();
+    }
 
+    public function getQuantityDoneDiscrepancy() : ? int
+    {
+        return $this->quantity_done_discrepancy;
+    }
 }

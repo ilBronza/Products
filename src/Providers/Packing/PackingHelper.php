@@ -88,19 +88,19 @@ class PackingHelper
 		$packingSizes = $this->getPackingSizes();
 
 		$this->getPacking()->setPackingLength(
-			$packingSizes['length']
+			$packingSizes['length'] ?? null
 		);
 		$this->getPacking()->setPackingWidth(
-			$packingSizes['width']
+			$packingSizes['width'] ?? null
 		);
 		$this->getPacking()->setPackingHeight(
-			$packingSizes['height']
+			$packingSizes['height'] ?? null
 		);
 
 		$this->getPacking()->setPackingVolumeMq(
-			$packingSizes['length'] *
-			$packingSizes['width'] * 
-			$packingSizes['height'] / 
+			($packingSizes['length'] ?? null) *
+			($packingSizes['width'] ?? null) * 
+			($packingSizes['height'] ?? null) / 
 			1000000000
 		);
 

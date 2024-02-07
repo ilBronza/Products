@@ -2,8 +2,6 @@
 
 namespace IlBronza\Products\Models\Traits\OrderProduct;
 
-use IlBronza\Products\Models\Product\Product;
-
 trait OrderProductCalculatedTrait
 {
     public function getPiecesPerPacking() : ? float
@@ -13,7 +11,7 @@ trait OrderProductCalculatedTrait
 
     public function getPackageNumber() : ? int
     {
-        if(! $pieces = $this->getQuantityDone())
+        if((! $pieces = $this->getQuantityDone())&&(! $pieces = $this->getQuantityRequired()))
             return null;
 
         if(! $piecesPerPacking = $this->getPiecesPerPacking())

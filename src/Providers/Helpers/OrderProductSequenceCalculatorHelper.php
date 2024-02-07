@@ -18,12 +18,12 @@ class OrderProductSequenceCalculatorHelper
         	return $groups->count() > 1;
     	});
 
-    	if(count($dupes))
-			throw new \Exception ("trovato una sequenza duplicata in questo componente OrderProductSequenceCalculatorHelper@calculateByOrderProduct");
+		// if(count($dupes))
+		// 	throw new \Exception ("trovato una sequenza duplicata in questo componente OrderProductSequenceCalculatorHelper@calculateByOrderProduct");
 
 		$sequence = 0;
 
-		foreach($orderProductPhases as $orderProductPhase)
+		foreach($orderProductPhases->sortBy('sequence') as $orderProductPhase)
 			$orderProductPhase->setSequence($sequence ++, true);
 
 		return $orderProduct;

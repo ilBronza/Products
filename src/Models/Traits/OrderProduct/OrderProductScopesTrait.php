@@ -28,6 +28,19 @@ trait OrderProductScopesTrait
         ]);
     }
 
+    public function scopeWithFirstOrderProductPhase($query, array $relations = [], array $scopes = [])
+    {
+        $query->withFirstOrderProductPhaseId();
+        $query->with('firstOrderProductPhase', function($_query) use($relations, $scopes)
+            {
+                foreach($scopes as $scope)
+                    $_query->{$scope}();
+
+                if(count($relations) > 0)
+                    $_query->with($relations);
+            });
+    }
+
     public function scopeWithLastOrderProductPhase($query)
     {
         $query->withLastOrderProductPhaseId()->with('lastOrderProductPhase');

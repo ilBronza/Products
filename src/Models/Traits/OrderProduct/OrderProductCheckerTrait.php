@@ -14,4 +14,21 @@ trait OrderProductCheckerTrait
 
         return true;
     }
+
+    public function hasBeenPartialized() : bool
+    {
+        foreach($this->getOrderProductPhases() as $orderProductPhase)
+            if($orderProductPhase->isWorkstation99())
+                return true;
+
+        return false;
+    }
+
+    public function hasEnoughQuantityDone() : ? bool
+    {
+        if($this->hasBeenPartialized())
+            return null;
+
+        return $this->getQuantityDoneDiscrepancy() >= 0;
+    }
 }

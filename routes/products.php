@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CrudPalletController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
 use IlBronza\Products\Products;
 
@@ -10,6 +11,8 @@ Route::group([
 	],
 	function()
 	{
+
+Route::resource('pallets', CrudPalletController::class);
 
 Route::group(['prefix' => 'products'], function()
 {
@@ -138,13 +141,12 @@ Route::group(['prefix' => 'order-product-phases'], function()
 
 	Route::group(['prefix' => '{orderProductPhase}'], function()
 	{
+		Route::delete('destroy', [Products::getController('orderProductPhase', 'destroy'), 'destroy'])->name('orderProductPhases.destroy');
 		Route::get('complete', [Products::getController('orderProductPhase', 'complete'), 'complete'])->name('orderProductPhases.complete');
 
 		Route::get('reopen', [Products::getController('orderProductPhase', 'reopen'), 'reopen'])->name('orderProductPhases.reopen');
 
-		Route::get('reopen', [Products::getController('orderProductPhase', 'reopen'), 'reopenMachineInitialization'])->name('orderProductPhases.reopenMachineInitialization');
-
-
+		Route::get('reopen-initialization', [Products::getController('orderProductPhase', 'reopen'), 'reopenMachineInitialization'])->name('orderProductPhases.reopenMachineInitialization');
 	});
 
 

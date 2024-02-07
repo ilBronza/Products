@@ -48,7 +48,8 @@ trait OrderProductRelationshipsTrait
 		if(! $this->order_id)
 			return null;
 
-		return Order::getProjectClassName()::findCached($this->order_id);
+		return Order::getProjectClassName()::find($this->order_id);
+		// return Order::getProjectClassName()::findCached($this->order_id);
 	}
 
 	public function orderProductPhases()
@@ -68,11 +69,11 @@ trait OrderProductRelationshipsTrait
 
 	public function getFirstOrderProductPhase() : ? OrderProductPhase
 	{
-		if($this->firstOrderProductPhase)
+		if($this->relationLoaded('firstOrderProductPhase'))
 			return $this->firstOrderProductPhase;
 
-		if(in_array('live_first_order_product_phase_id', $this->getAttributes()))
-			return null;
+		if($this->relationLoaded('orderProductPhases'))
+			return $this->orderProductPhases->sortBy('sequence')->first();
 
 		return $this->orderProductPhases()->orderBy('sequence')->first();
 	}

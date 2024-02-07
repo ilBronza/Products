@@ -167,6 +167,16 @@ class OrderProductPhase extends ProductPackageBaseModel
 		);
 	}
 
+	public function _complete($lastCompletionProcessing = null)
+	{
+		$date = $lastCompletionProcessing ? $lastCompletionProcessing->getEndedAt() : Carbon::now();
+
+		$this->setCompletedAt($date);
+		$this->setStatus('completed');
+
+		$this->save();		
+	}
+
 	private function complete()
 	{
 		$this->bindDataFromProcessings();
@@ -178,10 +188,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 						->first())
 			throw new \Exception('non trovato il processo che termina la lavorazione ' . $this->getName() . ' <a href="' . $this->getShowUrl() . '">Controlla qui</a>');
 
-		$this->setCompletedAt($lastCompletionProcessing->getEndedAt());
-		$this->setStatus('completed');
-
-		$this->save();
+		$this->_complete($lastCompletionProcessing);
 	}
 
 	private function uncomplete()

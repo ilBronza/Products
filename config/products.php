@@ -7,9 +7,10 @@ use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
+use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
+use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseDestroyController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
-use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ElaboratedByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductEditUpdateController;
@@ -297,6 +298,7 @@ return [
                 'phaseOrderProductPhaseIndex' => PhaseOrderProductPhaseIndexController::class,
                 'complete' => OrderProductPhaseCompleteController::class,
                 'reopen' => OrderProductPhaseReopenController::class,
+                'destroy' => OrderProductPhaseDestroyController::class,
             ]
         ],
         'productRelation' => [
