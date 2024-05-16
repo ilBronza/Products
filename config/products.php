@@ -5,6 +5,7 @@ use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductIndexCon
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
+use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
@@ -122,6 +123,23 @@ return [
             ],
             'fieldsGroupsFiles' => [
                 'productRelated' => ByProductRelatedAccessoryProductFieldsGroupParametersFile::class
+            ],
+        ],
+        'assigneeTarget' => [
+            // 'class' => AssigneeTarget::class,
+            'table' => 'products___assignee_targets',
+            'controllers' => [
+                'orderProductPhasesAssignController' => AssigneeOrderProductPhaseController::class,
+                // 'show' => AccessoryProductShowController::class,
+                // 'edit' => AccessoryProductEditUpdateController::class,
+                // 'byProductIndex' => AccessoryProductIndexController::class,
+                // 'index' => AccessoryProductIndexController::class,
+            ],
+            'parametersFiles' => [
+                // 'edit' => AccessoryProductEditFieldsetsParameters::class,
+            ],
+            'fieldsGroupsFiles' => [
+                // 'productRelated' => ByProductRelatedAccessoryProductFieldsGroupParametersFile::class
             ],
         ],
         'material' => [

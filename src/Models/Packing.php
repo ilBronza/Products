@@ -2,7 +2,6 @@
 
 namespace IlBronza\Products\Models;
 
-use App\Models\Pallet;
 use Carbon\Carbon;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
@@ -10,6 +9,7 @@ use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\Products\Models\Interfaces\SizeInterface;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
+use IlBronza\Warehouse\Models\Pallettype\Pallettype;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -28,14 +28,14 @@ class Packing extends BaseModel implements SizeInterface, HasMedia
 		'verified_at'
 	];
 
-	public function pallet()
+	public function pallettype()
 	{
-		return $this->belongsTo(Pallet::getProjectClassName());
+		return $this->belongsTo(Pallettype::getProjectClassName());
 	}
 
-	public function getPallet() : ? Pallet
+	public function getPallettype() : ? Pallettype
 	{
-		return $this->pallet;
+		return $this->pallettype;
 	}
 
 	public function scopeVerified($query)

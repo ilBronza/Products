@@ -7,10 +7,21 @@ use IlBronza\Clients\Models\Destination;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Product\Product;
+use IlBronza\Warehouse\Models\Pallettype\Pallettype;
 use Illuminate\Support\Collection;
 
 trait OrderRelationshipsTrait
 {
+    public function pallettype()
+    {
+        return $this->belongsTo(Pallettype::getProjectClassName());
+    }
+
+    public function getPallettype() : ? Pallettype
+    {
+        return $this->pallettype;
+    }
+
 	public function products()
 	{
         return $this->belongsToMany(

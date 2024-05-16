@@ -32,11 +32,11 @@ class PackingEditFieldsetsParameters extends FieldsetParametersFile
             ],
             'total' => [
                 'fields' => [
-                    'pallet_id' => [
+                    'pallettype_id' => [
                         'type' => 'select',
                         'multiple' => false,
-                        'rules' => 'integer|nullable|exists:pallets,id',
-                        'relation' => 'pallet'
+                        'rules' => 'string|nullable|exists:warehouse__pallettypes,id',
+                        'relation' => 'pallettype'
                     ],
                     'package_per_layer' => ['number' => 'integer|nullable|min:0'],
                     'layers_per_packing' => ['number' => 'integer|nullable|min:0'],

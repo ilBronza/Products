@@ -6,6 +6,7 @@ use App\State;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\OrderProductPhase;
+use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCalculatedTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCheckerTrait;
@@ -21,12 +22,14 @@ class OrderProduct extends ProductPackageBaseModel
 	use OrderProductCalculatedTrait;
 	use OrderProductCheckerTrait;
 
+	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
 
 	static $deletingRelationships = ['orderProductPhases'];
 	static $restoringRelationships = ['orderProductPhases'];
 
 	static $modelConfigPrefix = 'orderProduct';
+	public $classnameAbbreviation = 'op';
 
 	public function getIndexUrl(array $data = [])
 	{

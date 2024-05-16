@@ -2,8 +2,6 @@
 
 namespace IlBronza\Products\Models\Traits\Product;
 
-use App\Models\Pallet;
-
 use App\Models\ProductsPackage\Size;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Accessory;
@@ -13,6 +11,7 @@ use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
+use IlBronza\Warehouse\Models\Pallettype\Pallettype;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -20,20 +19,20 @@ use Illuminate\Support\Str;
 
 trait ProductRelationshipsTrait
 {
-	public function pallet()
+	public function pallettype()
 	{
-		return $this->belongsTo(Pallet::class);
+		return $this->belongsTo(Pallettype::getProjectClassName());
 	}
 
-	public function getPallet() : Pallet
+	public function getPallettype() : Pallettype
 	{
-		if($pallet = $this->getPacking()?->getPallet())
-			return $pallet;
+		if($pallettype = $this->getPacking()?->getPallettype())
+			return $pallettype;
 
-		if($pallet = $this->getClient()?->getPallet())
-			return $pallet;
+		if($pallettype = $this->getClient()?->getPallettype())
+			return $pallettype;
 
-		return Pallet::getProjectClassName()::getDefault();
+		return Pallettype::getProjectClassName()::getDefault();
 	}
 
 	public function size()

@@ -12,7 +12,7 @@ Route::group([
 	function()
 	{
 
-Route::resource('pallets', CrudPalletController::class);
+// Route::resource('pallets', CrudPalletController::class);
 
 Route::group(['prefix' => 'products'], function()
 {
@@ -131,6 +131,20 @@ Route::group(['prefix' => 'order-products'], function()
 
 Route::group(['prefix' => 'order-product-phases'], function()
 {
+	Route::group(['prefix' => 'assignees'], function()
+	{
+		Route::get('set-assignee', [Products::getController('assigneeTarget', 'orderProductPhasesAssignController'), 'index'])->name('orderProductPhases.assignees.index');
+
+		Route::get('workstation-fetcher/{workstation}', [Products::getController('assigneeTarget', 'orderProductPhasesAssignController'), 'workstationFetcher'])->name('orderProductPhases.assignees.workstationFetcher');
+
+		Route::get('get-assignees-popup', [Products::getController('assigneeTarget', 'orderProductPhasesAssignController'), 'assigneesPopup'])->name('orderProductPhases.assignees.popup');
+
+		Route::post('set-assignees', [Products::getController('assigneeTarget', 'orderProductPhasesAssignController'), 'setAssignees'])->name('orderProductPhases.assignees.setAssignees');
+
+		Route::post('remove-assignees', [Products::getController('assigneeTarget', 'orderProductPhasesAssignController'), 'removeAssignees'])->name('orderProductPhases.assignees.removeAssignees');
+	});
+
+
 	Route::group(['prefix' => 'by-workstation/{workstation}'], function()
 	{
 		// Route::get('to-sort', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');

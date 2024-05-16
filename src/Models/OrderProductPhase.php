@@ -4,6 +4,7 @@ namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
+use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseButtonsAndRouting;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseCheckerTrait;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 
 class OrderProductPhase extends ProductPackageBaseModel
 {
+	public $classnameAbbreviation = 'opp';
 	static $modelConfigPrefix = 'orderProductPhase';
 
 	use OrderProductPhaseScopesTrait;
@@ -25,6 +27,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 	use OrderProductPhaseGetterTrait;
 	use OrderProductPhaseButtonsAndRouting;
 
+	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
 
 	public function isLast()
@@ -119,7 +122,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 		return $this->getPhase()?->getCoefficientOutput();
 	}
 
-	public function setCoefficientOutput(float $value, bool $save = false)
+	public function setCoefficientOutput(float $value = null, bool $save = false)
 	{
 		$this->_customSetter('coefficient_output', $value, $save);
 	}
@@ -162,22 +165,29 @@ class OrderProductPhase extends ProductPackageBaseModel
 						->byLast()
 						->get();
 
+		$this->setStartedAt($processings->min('created_at') ?? null);
+
 		$this->setQuantityDone(
 			$processings->sum('valid_pieces_done')
 		);
+	}
+
+	public function __complete(Carbon $date)
+	{
+		$this->setCompletedAt($date);
+		$this->setStatus('completed');
+
+		$this->save();
 	}
 
 	public function _complete($lastCompletionProcessing = null)
 	{
 		$date = $lastCompletionProcessing ? $lastCompletionProcessing->getEndedAt() : Carbon::now();
 
-		$this->setCompletedAt($date);
-		$this->setStatus('completed');
-
-		$this->save();		
+		$this->__complete($date);
 	}
 
-	private function complete()
+	public function complete()
 	{
 		$this->bindDataFromProcessings();
 
@@ -191,7 +201,14 @@ class OrderProductPhase extends ProductPackageBaseModel
 		$this->_complete($lastCompletionProcessing);
 	}
 
-	private function uncomplete()
+	public function forceUncomplete()
+	{
+		$this->processings()->delete();
+
+		$this->uncomplete();
+	}
+
+	public function uncomplete()
 	{
 		$this->bindDataFromProcessings();
 

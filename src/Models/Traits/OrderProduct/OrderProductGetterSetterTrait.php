@@ -31,7 +31,7 @@ trait OrderProductGetterSetterTrait
         return $this->product_id;
     }
 
-    public function getName() : string
+    public function getName() : ? string
     {
         return "{$this->getProductName()}-{$this->getOrderName()}";
     }

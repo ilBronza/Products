@@ -85,7 +85,7 @@ class ProductRelation extends Pivot
 		return $this->main_code;
 	}
 
-	public function getName()
+	public function getName() : ? string
 	{
 		$name = $this->getParent()->getName() . ' -> componente ' . $this->getComponent()->getName();
 

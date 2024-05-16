@@ -6,6 +6,7 @@ use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
+use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
@@ -19,9 +20,11 @@ class Order extends ProductPackageBaseModel
 	use OrderRelationshipsTrait;
 	use OrderScopesTrait;
 
+	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
 
 	static $modelConfigPrefix = 'order';
+	public $classnameAbbreviation = 'o';
 
 	static $deletingRelationships = ['orderProducts'];
 

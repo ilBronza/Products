@@ -2,10 +2,20 @@
 
 namespace IlBronza\Products\Models\Traits\Order;
 
+use IlBronza\Clients\Models\Client;
 use IlBronza\Clients\Models\Destination;
 
 trait OrderScopesTrait
 {
+    public function scopeWithClientName($query)
+    {
+        $query->addSelect([
+            'live_client_name' => Client::getProjectClassName()::select('name')
+                    ->whereColumn('id', 'products__orders.client_id')
+                    ->take(1)
+        ]);
+    }
+
     public function scopeWithDestinationCity($query)
     {
         $destinationTable = Destination::getProjectClassName()::make()->getTable();

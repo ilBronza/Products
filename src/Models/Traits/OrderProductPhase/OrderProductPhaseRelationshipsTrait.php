@@ -124,7 +124,17 @@ trait OrderProductPhaseRelationshipsTrait
 		return $this->belongsTo(static::class, 'live_next_id', 'id');
 	}
 
-	public function getNextOrderProductPhase()
+	public function first()
+	{
+		return $this->belongsTo(static::class, 'live_first_order_product_phase_id', 'id');
+	}
+
+	public function last()
+	{
+		return $this->belongsTo(static::class, 'live_last_order_product_phase_id', 'id');
+	}
+
+	public function getNextOrderProductPhase() : ? static
 	{
 		// if($this->relationLoaded('next'))
 		// 	return $this->next;
@@ -132,6 +142,22 @@ trait OrderProductPhaseRelationshipsTrait
 		// Log::critical('Check here, use withNext() scope');
 
 		return $this->getOrderProductPhases()->firstWhere('sequence', $this->getSequence() + 1);		
+	}
+
+	public function getFirstOrderProductPhase() : ? static
+	{
+		if($this->relationLoaded('first'))
+			return $this->first;
+
+		return $this->getOrderProductPhases()->sortBy('sequence')->first();
+	}
+
+	public function getLastOrderProductPhase() : ? static
+	{
+		if($this->relationLoaded('last'))
+			return $this->last;
+
+		return $this->getOrderProductPhases()->sortByDesc('sequence')->first();
 	}
 
 	public function getPreviousOrderProductPhase() : ? static
@@ -142,13 +168,6 @@ trait OrderProductPhaseRelationshipsTrait
 		// Log::critical('Check here, use withPrevious() scope');
 
 		return $this->getOrderProductPhases()->sortByDesc('sequence')->firstWhere('sequence', '<', $this->getSequence());		
-	}
-
-	public function getLastOrderProductPhase() : static
-	{
-		// Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
-
-		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();
 	}
 
 }

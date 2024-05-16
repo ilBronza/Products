@@ -13,13 +13,16 @@ class CreatePackingTable extends Migration
      */
     public function up()
     {
+        if(! config('warehouse.models.pallettype.table'))
+            throw new Exception("Warehouse package missing");
+            
         Schema::create(config('products.models.packing.table'), function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('packable_type')->nullable();
             $table->string('packable_id', 36)->nullable();
 
-            $table->unsignedBigInteger('pallet_id')->nullable();
-            $table->foreign('pallet_id')->references('id')->on('pallets');
+            $table->uuid('pallettype_id')->nullable();
+            $table->foreign('pallettype_id')->references('id')->on(config('warehouse.models.pallettype.table'));
 
             $table->decimal('package_width')->nullable();
             $table->decimal('package_height')->nullable();

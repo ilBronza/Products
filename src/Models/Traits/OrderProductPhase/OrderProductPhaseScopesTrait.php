@@ -95,6 +95,28 @@ trait OrderProductPhaseScopesTrait
         ]);
     }
 
+    public function scopeWithFirst($query)
+    {
+        $query->addSelect([
+            'live_first_order_product_phase_id' => static::select('id')
+                    ->fromRaw($this->getTable() . ' oop')
+                    ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
+                    ->orderBy('sequence')
+                    ->take(1)
+        ])->with('first');
+    }
+
+    public function scopeWithLast($query)
+    {
+        $query->addSelect([
+            'live_last_order_product_phase_id' => static::select('id')
+                    ->fromRaw($this->getTable() . ' oop')
+                    ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
+                    ->orderBy('sequence', 'DESC')
+                    ->take(1)
+        ])->with('last');
+    }
+
     public function scopeWithPrevious($query)
     {
         $orderProductPhasePlaceholder = static::make();

@@ -27,23 +27,23 @@ trait ProductScopesTrait
         ]);
 	}
 
-	public function scopeByPallet($query, string $palletId)
+	public function scopeByPallettype($query, string $pallettypeId)
 	{
-		$query->whereHas('packing', function($_query) use($palletId)
+		$query->whereHas('packing', function($_query) use($pallettypeId)
 			{
-				$_query->where('pallet_id', $palletId);
+				$_query->where('pallettype_id', $pallettypeId);
 			})
-			->orWhere(function($_query) use($palletId)
+			->orWhere(function($_query) use($pallettypeId)
 			{
 				$_query->whereHas('packing', function($__query)
 				{
-					$__query->whereNull('pallet_id');
+					$__query->whereNull('pallettype_id');
 				})
-				->whereHas('client', function($__query) use($palletId)
+				->whereHas('client', function($__query) use($pallettypeId)
 				{
-					$__query->whereHas('extraFields', function($___query) use($palletId)
+					$__query->whereHas('extraFields', function($___query) use($pallettypeId)
 					{
-						$___query->where('pallet_id', $palletId);
+						$___query->where('pallettype_id', $pallettypeId);
 					});
 				})
 				;

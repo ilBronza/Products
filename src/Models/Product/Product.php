@@ -2,7 +2,6 @@
 
 namespace IlBronza\Products\Models\Product;
 
-use App\Models\Pallet;
 use Carbon\Carbon;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
@@ -102,9 +101,9 @@ class Product extends ProductPackageBaseModel implements HasMedia
 		if($max = $this->getClient()?->getMaxPackingLength())
 			return $max;
 
-		$pallet = $this->getPallet();
+		$pallettype = $this->getPallettype();
 
-		return $pallet->getMaxLength();
+		return $pallettype->getMaxLength();
 	}
 
 	public function getLiveMaxPackingHeight() : float
@@ -115,9 +114,9 @@ class Product extends ProductPackageBaseModel implements HasMedia
 		if($max = $this->getClient()?->getMaxPackingHeight())
 			return $max;
 
-		$pallet = $this->getPallet();
+		$pallettype = $this->getPallettype();
 
-		return $pallet->getMaxHeight();
+		return $pallettype->getMaxHeight();
 	}
 
 	public function getLiveMaxPackingWidth() : float
@@ -128,8 +127,8 @@ class Product extends ProductPackageBaseModel implements HasMedia
 		if($max = $this->getClient()?->getMaxPackingWidth())
 			return $max;
 
-		$pallet = $this->getPallet();
+		$pallettype = $this->getPallettype();
 
-		return $pallet->getMaxWidth();
+		return $pallettype->getMaxWidth();
 	}
 }

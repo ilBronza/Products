@@ -49,7 +49,7 @@ class Phase extends ProductPackageBaseModel
 		]);
 	}
 
-	public function setCoefficientOutput(float $value, bool $save = false)
+	public function setCoefficientOutput(float $value = null, bool $save = false)
 	{
 		$this->_customSetter('coefficient_output', $value, $save);
 	}

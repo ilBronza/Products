@@ -31,4 +31,9 @@ trait OrderProductCheckerTrait
 
         return $this->getQuantityDoneDiscrepancy() >= 0;
     }
+
+    public function isElaborable() : bool
+    {
+        return true;
+    }
 }

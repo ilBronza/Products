@@ -14,7 +14,7 @@ class ProductsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'products');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'ilbronza');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'products');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/products.php');
 
