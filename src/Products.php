@@ -24,11 +24,67 @@ class Products implements RoutedObjectInterface
                 'roles' => ['administrator']
             ]);
 
-        $productsManagerButton = $menu->createButton([
+        $productsGeneralManagerButton = $menu->createButton([
             'name' => 'productsManager',
             'icon' => 'user-gear',
-            'text' => 'products::products.list'
+            'text' => 'products::products.productsManagement'
         ]);
+
+        $button->addChild($productsGeneralManagerButton);
+
+        $productsContainerButton = $menu->createButton([
+            'name' => 'productsContainer',
+            'icon' => 'user-gear',
+            'text' => 'products::products.products'
+        ]);
+
+        $projectsContainerButton = $menu->createButton([
+            'name' => 'projectsContainer',
+            'icon' => 'user-gear',
+            'text' => 'products::projects.projects',
+            'children' => [
+                [
+                    'icon' => 'list',
+                    'href' => $this->route('projects.index'),
+                    'text' => 'products::projects.index'
+                ],
+            ]
+        ]);
+
+        $servicesContainerButton = $menu->createButton([
+            'name' => 'servicesContainer',
+            'icon' => 'user-gear',
+            'text' => 'products::services.services'
+        ]);
+
+        $suppliesContainerButton = $menu->createButton([
+            'name' => 'suppliesContainer',
+            'icon' => 'user-gear',
+            'text' => 'products::supplies.supplies'
+        ]);
+
+        $suppliersButton = $menu->createButton([
+            'name' => 'suppliers',
+            'icon' => 'user-gear',
+            'href' => $this->route('suppliers.index'),
+            'text' => 'products::supplies.supplies'
+        ]);
+
+        $sellablesButton = $menu->createButton([
+            'name' => 'sellables',
+            'icon' => 'user-gear',
+            'href' => $this->route('sellables.index'),
+            'text' => 'products::sellables.supplies'
+        ]);
+
+        $suppliesContainerButton->addChild($suppliersButton);
+        $suppliesContainerButton->addChild($sellablesButton);
+
+
+        $productsGeneralManagerButton->addChild($projectsContainerButton);
+        $productsGeneralManagerButton->addChild($productsContainerButton);
+        $productsGeneralManagerButton->addChild($servicesContainerButton);
+        $productsGeneralManagerButton->addChild($suppliesContainerButton);
 
         $currentProductsButton = $menu->createButton([
             'name' => 'products.current',
@@ -44,11 +100,10 @@ class Products implements RoutedObjectInterface
             'href' => IbRouter::route($this, 'products.index')
         ]);
 
-        $button->addChild($productsManagerButton);
 
-        $productsManagerButton->addChild($currentProductsButton);
-        $productsManagerButton->addChild($productsButton);
-        $productsManagerButton->addChild(
+        $productsContainerButton->addChild($currentProductsButton);
+        $productsContainerButton->addChild($productsButton);
+        $productsContainerButton->addChild(
             $menu->createButton([
                 'name' => 'accessories.index',
                 'icon' => 'users',
@@ -56,6 +111,13 @@ class Products implements RoutedObjectInterface
                 'href' => IbRouter::route($this, 'accessories.index')
             ])
         );
+    }
+
+    public function getSellablesModelsClasses() : array
+    {
+        $models = config('products.sellables.models');
+
+        return array_column($models, 'class');
     }
 
     static function getRouteName(string $routeName)

@@ -7,6 +7,11 @@ use IlBronza\Clients\Models\Destination;
 
 trait OrderScopesTrait
 {
+    public function scopeNotShipped($query)
+    {
+        // $query->whereNull('shipped_at');
+    }
+
     public function scopeWithClientName($query)
     {
         $query->addSelect([

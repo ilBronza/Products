@@ -13,6 +13,7 @@ use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCheckerTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
+use Illuminate\Support\Facades\Log;
 
 class OrderProduct extends ProductPackageBaseModel
 {
@@ -40,6 +41,8 @@ class OrderProduct extends ProductPackageBaseModel
 	{
 		if($this->destination)
 			return $this->destination;
+
+		Log::critical('qua forse è da usare un getParent e chiamare getDestination là');
 
 		return $this->getOrder()->getDestination();
 	}

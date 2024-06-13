@@ -43,6 +43,11 @@ use IlBronza\Products\Http\Controllers\Product\ProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\Product\ProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ProductShowController;
 use IlBronza\Products\Http\Controllers\Product\ProductTeaserController;
+use IlBronza\Products\Http\Controllers\Project\ProjectCreateStoreController;
+use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
+use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
+use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
+use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -53,8 +58,10 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedPr
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProjectFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedPhaseFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderCreateFieldsetsParameters;
@@ -68,6 +75,10 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseEditFieldsetsPar
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductRelationEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProjectCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
+use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
 use IlBronza\Products\Models\Order;
@@ -77,13 +88,31 @@ use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\ProductRelation;
 use IlBronza\Products\Models\Product\Product;
+use IlBronza\Products\Models\Quotations\Project;
+use IlBronza\Products\Models\Quotations\Quotation;
+use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Models\Supplier;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\ProductRelationManager;
+use IlBronza\Products\Providers\RelationshipsManagers\ProjectRelationManager;
 
 return [
     'routePrefix' => 'ibProducts',
+
+    'sellables' => [
+        'enabled' => true,
+        // 'models' => [
+        //     'vehicle' => [
+        //         'class' => Vehicle::class
+        //     ],
+        //     'contracttype' => [
+        //         'class' => Contracttype::class
+        //     ]
+        // ]
+    ],
 
     'models' => [
         'accessory' => [
@@ -333,6 +362,63 @@ return [
             ],
             'fieldsGroupsFiles' => [
                 'productRelated' => ByProductRelatedProductRelationFieldsGroupParametersFile::class
+            ],
+        ],
+        'project' => [
+            'table' => 'products__quotations__projects',
+            'class' => Project::class,
+            'fieldsGroupsFiles' => [
+                'index' => ProjectFieldsGroupParametersFile::class
+            ],
+            'relationshipsManagerClasses' => [
+                'show' => ProjectRelationManager::class
+            ],
+            'parametersFiles' => [
+                'create' => ProjectCreateStoreFieldsetsParameters::class,
+                'show' => ProjectCreateStoreFieldsetsParameters::class,
+            ],
+            'controllers' => [
+                'index' => ProjectIndexController::class,
+                'create' => ProjectCreateStoreController::class,
+                'store' => ProjectCreateStoreController::class,
+                'show' => ProjectShowController::class,
+                'edit' => ProjectEditUpdateController::class,
+                'update' => ProjectEditUpdateController::class,
+                'destroy' => ProjectDestroyController::class,
+            ]
+        ],
+        'quotation' => [
+            'table' => 'products__quotations__quotations',
+            'class' => Quotation::class,
+        ],
+        'quotationrow' => [
+            'table' => 'products__quotations__quotationrows',
+            'class' => Quotationrow::class,
+        ],
+        'sellable' => [
+            'table' => 'products__sellables__sellables',
+            'class' => Sellable::class,
+        ],
+        'sellableSupplier' => [
+            'table' => 'products__sellables__sellable_suppliers',
+            'class' => SellableSupplier::class,
+        ],
+        'sellableOption' => [
+            'table' => 'products__sellables__sellable_options',
+            'class' => SellableOption::class,
+        ],
+        'supplier' => [
+            'table' => config('clients.models.client.table'),
+            'class' => Supplier::class,
+              'controllers' => [
+                'index' => SupplierIndexController::class,
+                'show' => SupplierShowController::class,
+                ],
+            'parametersFiles' => [
+                'show' => SupplierShowFieldsetsParameters::class,
+            ],
+          'fieldsGroupsFiles' => [
+                'index' => SupplierFieldsGroupParametersFile::class
             ],
         ],
         'workstation' => [

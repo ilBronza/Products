@@ -14,6 +14,92 @@ Route::group([
 
 // Route::resource('pallets', CrudPalletController::class);
 
+
+Route::group(['prefix' => 'projects'], function()
+{
+	Route::get('', [Products::getController('project', 'index'), 'index'])->name('projects.index');
+	Route::get('create', [Products::getController('project', 'create'), 'create'])->name('projects.create');
+	Route::post('', [Products::getController('project', 'store'), 'store'])->name('projects.store');
+	Route::get('{project}', [Products::getController('project', 'show'), 'show'])->name('projects.show');
+	Route::get('{project}/edit', [Products::getController('project', 'edit'), 'edit'])->name('projects.edit');
+	Route::put('{project}', [Products::getController('project', 'edit'), 'update'])->name('projects.update');
+
+	Route::delete('{project}/delete', [Products::getController('project', 'destroy'), 'destroy'])->name('projects.destroy');
+});
+
+
+Route::group(['prefix' => 'quotations'], function()
+{
+	Route::get('', [Products::getController('quotation', 'index'), 'index'])->name('quotations.index');
+	Route::get('create', [Products::getController('quotation', 'create'), 'create'])->name('quotations.create');
+	Route::post('', [Products::getController('quotation', 'store'), 'store'])->name('quotations.store');
+	Route::get('{quotation}', [Products::getController('quotation', 'show'), 'show'])->name('quotations.show');
+	Route::get('{quotation}/edit', [Products::getController('quotation', 'edit'), 'edit'])->name('quotations.edit');
+	Route::put('{quotation}', [Products::getController('quotation', 'edit'), 'update'])->name('quotations.update');
+
+	Route::delete('{quotation}/delete', [Products::getController('quotation', 'destroy'), 'destroy'])->name('quotations.destroy');
+});
+
+Route::group(['prefix' => 'quotationrows'], function()
+{
+	Route::get('', [Products::getController('quotationrow', 'index'), 'index'])->name('quotationrows.index');
+	Route::get('create', [Products::getController('quotationrow', 'create'), 'create'])->name('quotationrows.create');
+	Route::post('', [Products::getController('quotationrow', 'store'), 'store'])->name('quotationrows.store');
+	Route::get('{quotationrow}', [Products::getController('quotationrow', 'show'), 'show'])->name('quotationrows.show');
+	Route::get('{quotationrow}/edit', [Products::getController('quotationrow', 'edit'), 'edit'])->name('quotationrows.edit');
+	Route::put('{quotationrow}', [Products::getController('quotationrow', 'edit'), 'update'])->name('quotationrows.update');
+
+	Route::delete('{quotationrow}/delete', [Products::getController('quotationrow', 'destroy'), 'destroy'])->name('quotationrows.destroy');
+});
+
+
+
+
+Route::group(['prefix' => 'suppliers'], function()
+{
+	Route::get('', [Products::getController('supplier', 'index'), 'index'])->name('suppliers.index');
+	Route::get('{supplier}', [Products::getController('supplier', 'show'), 'show'])->name('suppliers.show');
+
+	Route::get('create', [Products::getController('supplier', 'crud'), 'create'])->name('suppliers.create');
+	Route::post('', [Products::getController('supplier', 'crud'), 'store'])->name('suppliers.store');
+
+	Route::get('{supplier}/edit', [Products::getController('supplier', 'edit'), 'edit'])->name('suppliers.edit');
+	Route::put('{supplier}', [Products::getController('supplier', 'edit'), 'update'])->name('suppliers.update');
+
+	Route::delete('{supplier}/delete', [Products::getController('supplier', 'destroy'), 'destroy'])->name('suppliers.destroy');
+});
+
+Route::group(['prefix' => 'sellables'], function()
+{
+	Route::get('', [Products::getController('sellable', 'index'), 'index'])->name('sellables.index');
+	Route::get('{sellable}', [Products::getController('sellable', 'show'), 'show'])->name('sellables.show');
+
+	Route::get('create', [Products::getController('sellable', 'crud'), 'create'])->name('sellables.create');
+	Route::post('', [Products::getController('sellable', 'crud'), 'store'])->name('sellables.store');
+
+	Route::get('{sellable}/edit', [Products::getController('sellable', 'edit'), 'edit'])->name('sellables.edit');
+	Route::put('{sellable}', [Products::getController('sellable', 'edit'), 'update'])->name('sellables.update');
+
+	Route::delete('{sellable}/delete', [Products::getController('sellable', 'destroy'), 'destroy'])->name('sellables.destroy');
+});
+
+Route::group(['prefix' => 'sellable-suppliers'], function()
+{
+	Route::get('', [Products::getController('sellableSupplier', 'index'), 'index'])->name('sellableSuppliers.index');
+	Route::get('{sellableSupplier}', [Products::getController('sellableSupplier', 'show'), 'show'])->name('sellableSuppliers.show');
+
+	Route::get('create', [Products::getController('sellableSupplier', 'crud'), 'create'])->name('sellableSuppliers.create');
+	Route::post('', [Products::getController('sellableSupplier', 'crud'), 'store'])->name('sellableSuppliers.store');
+
+	Route::get('{sellableSupplier}/edit', [Products::getController('sellableSupplier', 'edit'), 'edit'])->name('sellableSuppliers.edit');
+	Route::put('{sellableSupplier}', [Products::getController('sellableSupplier', 'edit'), 'update'])->name('sellableSuppliers.update');
+
+	Route::delete('{sellableSupplier}/delete', [Products::getController('sellableSupplier', 'destroy'), 'destroy'])->name('sellableSuppliers.destroy');
+});
+
+
+
+
 Route::group(['prefix' => 'products'], function()
 {
 	Route::get('current', [Products::getController('product', 'current'), 'index'])->name('products.current');

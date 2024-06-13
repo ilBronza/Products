@@ -2,6 +2,11 @@
 
 namespace IlBronza\Products;
 
+use IlBronza\Products\Models\Quotations\Quotation;
+use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Models\Sellables\Supplier;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class ProductsServiceProvider extends ServiceProvider
@@ -13,6 +18,13 @@ class ProductsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Relation::morphMap([
+            'Quotationrow' => Quotationrow::getProjectClassname(),
+            'Quotation' => Quotation::getProjectClassname(),
+            'Supplier' => Supplier::getProjectClassname(),
+            'SellableSupplier' => SellableSupplier::getProjectClassname(),
+        ]);
+
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'products');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'products');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
