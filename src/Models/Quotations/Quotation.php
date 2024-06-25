@@ -17,6 +17,10 @@ use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 
 class Quotation extends BaseModel
 {
+	protected $casts = [
+		'date' => 'date'
+	];
+
 	use InteractsWithPriceTrait;
 
     public function getPriceModelClassName() : string

@@ -99,9 +99,26 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
         // return $manufacturerWave->getValidTo();
     }
 
+    public function getDirectPriceString() : ? string
+    {
+        if(! $directPrice = $this->getDirectPrice())
+            return null;
 
+        return $directPrice->getName();
+    }
 
+    public function getPricedName()
+    {
+        if(! $directPrice = $this->getDirectPrice())
+            return $this->getSellable()?->getName() ?? '-';
 
+        return $directPrice->price . "/" . $directPrice->getMeasurementUnitId() . " - " . $this->getSellable()?->getName() ?? '-';
+    }
+
+    public function getSellableName() : ? string
+    {
+        return $this->getSellable()?->getName();
+    }
 
     public function getPriceModelClassName() : string
     {

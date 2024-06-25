@@ -33,7 +33,7 @@ return new class extends Migration
 
             $table->enum('type', ['phisycal', 'service', 'virtual', 'rent'])->nullable();
 
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->uuid('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on(config('category.models.category.table'));
 
             $table->softDeletes();
@@ -50,7 +50,7 @@ return new class extends Migration
             $table->foreign('supplier_id')->references('id')->on(config('products.models.supplier.table'));
 
             $table->unsignedBigInteger('price_id')->nullable();
-            $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
+            // $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
 
             $table->softDeletes();
             $table->timestamps();

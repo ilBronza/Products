@@ -57,6 +57,8 @@ Route::group(['prefix' => 'quotationrows'], function()
 
 Route::group(['prefix' => 'suppliers'], function()
 {
+	Route::get('by-category/{category}', [Products::getController('supplier', 'byCategory'), 'byCategory'])->name('suppliers.byCategory');
+
 	Route::get('', [Products::getController('supplier', 'index'), 'index'])->name('suppliers.index');
 	Route::get('{supplier}', [Products::getController('supplier', 'show'), 'show'])->name('suppliers.show');
 
@@ -186,6 +188,23 @@ Route::group(['prefix' => 'orders'], function()
 
 	Route::delete('{order}/delete', [Products::getController('order', 'destroy'), 'destroy'])->name('orders.destroy');
 });
+
+
+
+Route::group(['prefix' => 'orderrows'], function()
+{
+	Route::get('', [Products::getController('orderrow', 'index'), 'index'])->name('orderrows.index');
+	Route::get('create', [Products::getController('orderrow', 'create'), 'create'])->name('orderrows.create');
+	Route::post('', [Products::getController('orderrow', 'store'), 'store'])->name('orderrows.store');
+	Route::get('{orderrow}', [Products::getController('orderrow', 'show'), 'show'])->name('orderrows.show');
+	Route::get('{orderrow}/edit', [Products::getController('orderrow', 'edit'), 'edit'])->name('orderrows.edit');
+	Route::put('{orderrow}', [Products::getController('orderrow', 'edit'), 'update'])->name('orderrows.update');
+
+	Route::delete('{orderrow}/delete', [Products::getController('orderrow', 'destroy'), 'destroy'])->name('orderrows.destroy');
+});
+
+
+
 
 Route::group(['prefix' => 'order-products'], function()
 {

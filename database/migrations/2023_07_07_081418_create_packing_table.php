@@ -14,7 +14,10 @@ class CreatePackingTable extends Migration
     public function up()
     {
         if(! config('warehouse.models.pallettype.table'))
+        {
+            return false;
             throw new Exception("Warehouse package missing");
+        }
             
         Schema::create(config('products.models.packing.table'), function (Blueprint $table) {
             $table->uuid('id')->primary();

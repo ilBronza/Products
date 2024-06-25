@@ -23,6 +23,11 @@ class Quotationrow extends BaseModel
 	use InteractsWithNotesTrait;
     use CRUDParentingTrait;
 
+    protected $casts = [
+        'starts_at' => 'date',
+        'ends_at' => 'date'
+    ];
+
 	static $modelConfigPrefix = 'quotationrow';
     protected $deletingRelationships = [];
 

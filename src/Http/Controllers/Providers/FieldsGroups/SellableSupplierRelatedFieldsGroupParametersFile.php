@@ -22,14 +22,10 @@ class SellableSupplierRelatedFieldsGroupParametersFile extends FieldsGroupParame
                     'suffix' => '€'
                 ],
                 'directPrice.measurement_unit_id' => 'flat',
+                'prices' => 'relations.hasMany',
 
-                // 'category' => 'relations.belongsTo',
-                // 'target' => 'relations.belongsTo',
-                // 'sellableSuppliers' => [
-                //     'type' => 'relations.hasMany'
-                // ],
-                // 'suppliers' => 'relations.belongsToMany',
-                // 'quotations_count' => 'flat',
+                'sellable' => 'relations.belongsTo',
+                'supplier' => 'relations.belongsTo',
 
                 'mySelfDelete' => 'links.delete'
             ]

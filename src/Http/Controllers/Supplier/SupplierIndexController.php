@@ -28,9 +28,11 @@ class SupplierIndexController extends SupplierCRUD
     {
         return $this->getModelClass()::with(
             'categories',
-            'target',
+            'target.destinations.address',
             'sellables'
-        )->get();
+        )
+        ->withCount('quotationrows')
+        ->get();
     }
 
 }

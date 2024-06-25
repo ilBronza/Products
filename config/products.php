@@ -77,6 +77,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductRelationEditFi
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProjectCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Supplier\SupplierByCategoryController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Models\Accessory;
@@ -92,12 +93,13 @@ use IlBronza\Products\Models\Quotations\Project;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
-use IlBronza\Products\Models\Supplier;
+use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\ProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\ProjectRelationManager;
+use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 
 return [
     'routePrefix' => 'ibProducts',
@@ -297,6 +299,36 @@ return [
                 'all' => AllOrderFieldsGroupParametersFile::class,
             ]
         ],
+        'orderrow' => [
+            'class' => Orderrow::class,
+            'table' => 'products__orderrows',
+            // 'controllers' => [
+            //     'create' => OrderCreateController::class,
+            //     'active' => ActiveOrderIndexController::class,
+            //     'activeByClient' => ActiveByClientOrderIndexController::class,
+            //     'index' => OrderIndexController::class,
+            //     'all' => AllOrderIndexController::class,
+            //     'show' => OrderShowController::class,
+            //     'edit' => OrderEditUpdateController::class,
+            //     'teaser' => OrderTeaserController::class,
+            //     'destroy' => OrderDeletionController::class,
+            // ],
+            // 'parametersFiles' => [
+            //     'create' => OrderCreateFieldsetsParameters::class,
+            //     'show' => OrderShowFieldsetsParameters::class,
+            //     'teaser' => OrderShowFieldsetsParameters::class,
+            //     'edit' => OrderEditFieldsetsParameters::class,
+            // ],
+            // 'relationshipsManagerClasses' => [
+            //     'show' => OrderRelationManager::class
+            // ],
+            // 'fieldsGroupsFiles' => [
+            //     'active' => ActiveOrdersFieldsGroupParametersFile::class,
+            //     'related' => ActiveOrdersFieldsGroupParametersFile::class,
+            //     'index' => OrderFieldsGroupParametersFile::class,
+            //     'all' => AllOrderFieldsGroupParametersFile::class,
+            // ]
+        ],
         'orderProduct' => [
             'class' => OrderProduct::class,
             'table' => 'products__order_products',
@@ -395,6 +427,10 @@ return [
             'table' => 'products__quotations__quotationrows',
             'class' => Quotationrow::class,
         ],
+        'quotationrowCandidates' => [
+            'table' => 'products__quotations__quotationrows_candidates',
+            'class' => QuotationrowCandidate::class,
+        ],
         'sellable' => [
             'table' => 'products__sellables__sellables',
             'class' => Sellable::class,
@@ -407,17 +443,25 @@ return [
             'table' => 'products__sellables__sellable_options',
             'class' => SellableOption::class,
         ],
+        'sellableRelation' => [
+            'table' => 'products__sellables__sellable_relations',
+            'class' => SellableRelation::class,
+        ],
         'supplier' => [
-            'table' => config('clients.models.client.table'),
+            'table' => 'products__sellables__suppliers',
             'class' => Supplier::class,
               'controllers' => [
+                'byCategory' => SupplierByCategoryController::class,
                 'index' => SupplierIndexController::class,
                 'show' => SupplierShowController::class,
                 ],
+            'relationshipsManagerClasses' => [
+                'show' => SupplierRelationManager::class
+            ],
             'parametersFiles' => [
                 'show' => SupplierShowFieldsetsParameters::class,
             ],
-          'fieldsGroupsFiles' => [
+            'fieldsGroupsFiles' => [
                 'index' => SupplierFieldsGroupParametersFile::class
             ],
         ],

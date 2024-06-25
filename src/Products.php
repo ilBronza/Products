@@ -5,12 +5,48 @@ namespace IlBronza\Products;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Providers\RouterProvider\RoutedObjectInterface;
 use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaPackagesTrait;
+// use IlBronza\Category\Models\Categorizable;
+use IlBronza\Category\Models\Category;
+use IlBronza\Products\Models\Sellables\Supplier;
 
 class Products implements RoutedObjectInterface
 {
     use IlBronzaPackagesTrait;
 
     static $packageConfigPrefix = 'products';
+
+
+    public function getSuppliersChildren() : array
+    {
+        // $categories = Category::getProjectClassname()::whereIn(
+        //     'id', 
+        //     Categorizable::select('category_id')
+        //         ->distinct()
+        //         ->where('categorizable_type', 'Supplier')
+        //         ->pluck('category_id')
+        // )->get();
+
+        $categories = Category::where('name', 'fornitore')->with('children')->first()->children;
+
+        $result = [];
+
+        $result[] = [
+                'name' => 'allSuppliers',
+                'icon' => 'list',
+                'text' => 'suppliers.all',
+                'href' => $this->route('suppliers.index')
+            ];
+
+        foreach($categories as $category)
+            $result[] = [
+                'name' => 'suppliersbycategory' . $category->getKey(),
+                'icon' => 'list',
+                'translatedText' => trans('products::suppliers.byCategory', ['category' => $category->getName()]),
+                'href' => $this->route('suppliers.byCategory', [$category])
+            ];
+
+        return $result;
+    }
 
     public function manageMenuButtons()
     {
@@ -67,7 +103,8 @@ class Products implements RoutedObjectInterface
             'name' => 'suppliers',
             'icon' => 'user-gear',
             'href' => $this->route('suppliers.index'),
-            'text' => 'products::supplies.supplies'
+            'text' => 'products::supplies.supplies',
+            'children' => $this->getSuppliersChildren()
         ]);
 
         $sellablesButton = $menu->createButton([

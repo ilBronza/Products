@@ -15,6 +15,10 @@ return new class extends Migration
             $table->unsignedBigInteger('quotation_id')->nullable();
             $table->foreign('quotation_id')->references('id')->on(config('products.models.quotation.table'));
 
+
+            $table->uuid('project_id')->nullable();
+            $table->foreign('project_id')->references('id')->on(config('products.models.project.table'));
+
         });
 
         Schema::create(config('products.models.orderrow.table'), function (Blueprint $table) {
@@ -27,7 +31,7 @@ return new class extends Migration
             $table->foreign('sellable_supplier_id')->references('id')->on(config('products.models.sellableSupplier.table'));
 
             $table->unsignedBigInteger('price_id')->nullable();
-            $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
+            // $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
 
             $table->unsignedBigInteger('parent_id')->nullable();
 
@@ -60,7 +64,10 @@ return new class extends Migration
 
         Schema::table(config('products.models.order.table'), function (Blueprint $table) {
                 $table->dropForeign(['quotation_id']);
+                $table->dropForeign(['project_id']);
+
                 $table->dropColumn('quotation_id');
+                $table->dropColumn('project_id');
         });
     }
 };

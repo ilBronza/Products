@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
 
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->uuid('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on(config('category.models.category.table'));
 
             $table->softDeletes();

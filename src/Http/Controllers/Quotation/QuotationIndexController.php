@@ -20,8 +20,7 @@ class QuotationIndexController extends QuotationCRUD
 
     public function getRelatedFieldsArray()
     {
-        return $this->getIndexFieldsArray();
-        // return config('products.models.quotation.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.quotation.fieldsGroupsFiles.related')::getFieldsGroup();
     }
 
     public function getIndexElements()

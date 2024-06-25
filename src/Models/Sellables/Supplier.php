@@ -9,8 +9,10 @@ use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
 use IlBronza\Products\Models\ProductPackageBaseModel;
+use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use Illuminate\Support\Collection;
 
 class Supplier extends ProductPackageBaseModel
 {
@@ -52,11 +54,46 @@ class Supplier extends ProductPackageBaseModel
 		)->using(SellableSupplier::getProjectClassName());
 	}
 
+	public function getSellables() : Collection
+	{
+		return $this->sellables;
+	}
+
 	public function sellableSuppliers()
 	{
 		return $this->hasMany(
 			SellableSupplier::getProjectClassName(),
 		);
+	}
+
+    public function quotationrows()
+    {
+        return $this->hasManyThrough(
+            Quotationrow::getProjectClassName(),
+            SellableSupplier::getProjectClassName(),
+            'supplier_id',
+            'sellable_supplier_id'
+        );
+    }
+
+    public function getRelatedQuotationrows() : Collection
+    {
+    	return $this->quotationrows()->with(
+    		'directPrice',
+    		'sellableSupplier.directPrice',
+    		'sellable',
+    		'quotation.client',
+    		'quotation.project'
+    	)->get();
+    }
+
+	public function getSellableSuppliers() : Collection
+	{
+		return $this->sellableSuppliers()->with(
+			'directPrice.measurementUnit',
+			'sellable.target',
+			'supplier.target'
+		)->get();
 	}
 
 	public function getCategoriesCollection() : ? string

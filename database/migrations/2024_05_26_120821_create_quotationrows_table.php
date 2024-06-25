@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('sellable_supplier_id')->references('id')->on(config('products.models.sellableSupplier.table'));
 
             $table->unsignedBigInteger('price_id')->nullable();
-            $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
+            // $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
 
             $table->uuid('parent_id')->nullable();
 
@@ -53,7 +53,7 @@ return new class extends Migration
             $table->foreign('quotationrow_id', 'qrow_candidate_quotationrow')->references('id')->on(config('products.models.quotationrow.table'));
 
             $table->unsignedBigInteger('price_id')->nullable();
-            $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
+            // $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
 
             $table->uuid('sellable_supplier_id', 'sellable_supplier_id')->nullable();
             $table->foreign('sellable_supplier_id', 'qotacandida_sellable_supplier')->references('id')->on(config('products.models.sellableSupplier.table'));
