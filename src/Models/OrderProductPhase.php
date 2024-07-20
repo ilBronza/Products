@@ -220,17 +220,18 @@ class OrderProductPhase extends ProductPackageBaseModel
 		$this->save();
 	}
 
-    public function forceCompletion()
+    public function forceCompletion(string $processingType = 'production')
     {
 		if(! $processing = $this->processings()->working()->byLast()->first())
 		{
 			$processing = $this->_createAndAssociateProcessing([
-				'processing_type' => 'production'
+				'processing_type' => $processingType
 			]);
 
-			$processing->setValidPiecesDone(
-				$this->getQuantityRequired() - $this->getQuantityDone()
-			);
+			if($processingType == 'production')
+				$processing->setValidPiecesDone(
+					$this->getQuantityRequired() - $this->getQuantityDone()
+				);
 		}
 
 		if(! $processing->getEndedAt())

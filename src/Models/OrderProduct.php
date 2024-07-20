@@ -42,8 +42,6 @@ class OrderProduct extends ProductPackageBaseModel
 		if($this->destination)
 			return $this->destination;
 
-		Log::critical('qua forse è da usare un getParent e chiamare getDestination là');
-
 		return $this->getOrder()->getDestination();
 	}
 

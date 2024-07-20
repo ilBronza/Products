@@ -22,6 +22,8 @@ class CreateIbordersTable extends Migration
             );
 
             $table->uuid('destination_id')->nullable();
+
+            //se questa dà problemi è perché destinations non ha la chiave primaria, può essere molto molto
             $table->foreign('destination_id')->references('id')->on(
                 config('clients.models.destination.table')
             );

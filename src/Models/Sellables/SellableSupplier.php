@@ -157,12 +157,14 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
         return $this->supplier;
     }
 
-    public function setStandardPrices() : Collection
+    public function setStandardPrices() : ? Collection
     {
-        $this->priceCreator = $this->getSellableTarget()->getPriceCreator();
-        $this->priceCreator->setModel($this);
-        
-        return $this->priceCreator->createPrices();
+        if(! $priceCreator = $this->getSellableTarget()->getPriceCreator())
+            return null;
+
+        $priceCreator->setModel($this);
+
+        return $priceCreator->createPrices();
     }
 
 }

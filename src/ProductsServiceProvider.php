@@ -2,6 +2,12 @@
 
 namespace IlBronza\Products;
 
+use IlBronza\Products\Models\Order;
+use IlBronza\Products\Models\OrderProduct;
+use IlBronza\Products\Models\OrderProductPhase;
+use IlBronza\Products\Models\Packing;
+use IlBronza\Products\Models\Phase;
+use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
@@ -23,6 +29,12 @@ class ProductsServiceProvider extends ServiceProvider
             'Quotation' => Quotation::getProjectClassname(),
             'Supplier' => Supplier::getProjectClassname(),
             'SellableSupplier' => SellableSupplier::getProjectClassname(),
+            'Product' => Product::getProjectClassname(),
+            'Phase' => Phase::getProjectClassname(),
+            'Packing' => Packing::getProjectClassname(),
+            'Order' => Order::getProjectClassname(),
+            'OrderProduct' => OrderProduct::getProjectClassname(),
+            'OrderProductPhase' => OrderProductPhase::getProjectClassname(),
         ]);
 
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'products');

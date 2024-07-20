@@ -27,6 +27,9 @@ return new class extends Migration
             $table->uuid('destination_id')->nullable();
             $table->foreign('destination_id')->references('id')->on(config('clients.models.destination.table'));
 
+            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
+
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
 

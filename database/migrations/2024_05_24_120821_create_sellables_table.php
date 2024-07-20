@@ -26,12 +26,12 @@ return new class extends Migration
         Schema::create(config('products.models.sellable.table'), function (Blueprint $table) {
             $table->id('id');
 
-            $table->string('name');
+            $table->string('name')->index();
             $table->string('slug')->nullable();
 
             $table->nullableUuidMorphs('target');
 
-            $table->enum('type', ['phisycal', 'service', 'virtual', 'rent'])->nullable();
+            $table->string('type', 32)->index()->nullable();
 
             $table->uuid('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on(config('category.models.category.table'));

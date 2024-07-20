@@ -26,7 +26,7 @@ class Products implements RoutedObjectInterface
         //         ->pluck('category_id')
         // )->get();
 
-        $categories = Category::where('name', 'fornitore')->with('children')->first()->children;
+        $categories = Category::where('name', 'fornitore')->with('children')->first()?->children ?? [];
 
         $result = [];
 
@@ -93,17 +93,17 @@ class Products implements RoutedObjectInterface
             'text' => 'products::services.services'
         ]);
 
-        $suppliesContainerButton = $menu->createButton([
-            'name' => 'suppliesContainer',
+        $suppliersContainerButton = $menu->createButton([
+            'name' => 'suppliersContainer',
             'icon' => 'user-gear',
-            'text' => 'products::supplies.supplies'
+            'text' => 'products::suppliers.suppliers'
         ]);
 
         $suppliersButton = $menu->createButton([
             'name' => 'suppliers',
             'icon' => 'user-gear',
             'href' => $this->route('suppliers.index'),
-            'text' => 'products::supplies.supplies',
+            'text' => 'products::suppliers.suppliers',
             'children' => $this->getSuppliersChildren()
         ]);
 
@@ -111,17 +111,17 @@ class Products implements RoutedObjectInterface
             'name' => 'sellables',
             'icon' => 'user-gear',
             'href' => $this->route('sellables.index'),
-            'text' => 'products::sellables.supplies'
+            'text' => 'products::sellables.index'
         ]);
 
-        $suppliesContainerButton->addChild($suppliersButton);
-        $suppliesContainerButton->addChild($sellablesButton);
+        $suppliersContainerButton->addChild($suppliersButton);
+        $suppliersContainerButton->addChild($sellablesButton);
 
 
         $productsGeneralManagerButton->addChild($projectsContainerButton);
         $productsGeneralManagerButton->addChild($productsContainerButton);
         $productsGeneralManagerButton->addChild($servicesContainerButton);
-        $productsGeneralManagerButton->addChild($suppliesContainerButton);
+        $productsGeneralManagerButton->addChild($suppliersContainerButton);
 
         $currentProductsButton = $menu->createButton([
             'name' => 'products.current',
