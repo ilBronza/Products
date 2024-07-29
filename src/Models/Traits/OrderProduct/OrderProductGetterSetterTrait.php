@@ -49,6 +49,18 @@ trait OrderProductGetterSetterTrait
         return $this->getProduct()?->getName();
     }
 
+    public function getTimingEstimator()
+    {
+        $class = config('products.models.orderProduct.timingEstimator');
+
+        return new $class($this);
+    }
+
+    public function getEstimatedTimeSecondsAttribute($value)
+    {
+        return $this->getTimingEstimator()->getEstimatedTimeSeconds();
+    }
+
     public function setQuantityDone(float $value = null, bool $save = false)
     {
         $this->_customSetter('quantity_done', $value, $save);

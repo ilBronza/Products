@@ -341,6 +341,7 @@ return [
                 'byProductIndex' => ByProductOrderProductIndexController::class,
                 'byOrderIndex' => ByOrderOrderProductIndexController::class,
             ],
+            'timingEstimator' => TimingEstimatorOrderProduct::class,
             'parametersFiles' => [
                 'show' => OrderProductShowFieldsetsParameters::class,
                 'teaser' => OrderProductShowFieldsetsParameters::class,
@@ -368,6 +369,7 @@ return [
                 'edit' => OrderProductPhaseEditFieldsetsParameters::class,
                 'show' => OrderProductPhaseShowFieldsetsParameters::class,
             ],
+            'timingEstimator' => TimingEstimatorOrderProductPhase::class,
             'controllers' => [
                 'toElaboratebyWorkstation' => ToElaborateByWorkstationOrderProductPhaseIndexController::class,
                 'elaboratedByWorkstation' => ElaboratedByWorkstationOrderProductPhaseIndexController::class,
