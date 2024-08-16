@@ -17,10 +17,10 @@ return new class extends Migration
         Schema::create(config('products.models.quotationrow.table'), function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->unsignedBigInteger('quotation_id')->nullable();
+            $table->uuid('quotation_id')->nullable();
             $table->foreign('quotation_id')->references('id')->on(config('products.models.quotation.table'));
 
-            $table->unsignedBigInteger('sellable_id')->nullable();
+            $table->uuid('sellable_id')->nullable();
             $table->foreign('sellable_id')->references('id')->on(config('products.models.sellable.table'));
 
             $table->uuid('sellable_supplier_id', 'sellable_supplier_id')->nullable();

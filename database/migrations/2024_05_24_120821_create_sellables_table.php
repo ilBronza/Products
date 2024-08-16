@@ -24,7 +24,7 @@ return new class extends Migration
         });
 
         Schema::create(config('products.models.sellable.table'), function (Blueprint $table) {
-            $table->id('id');
+            $table->uuid('id')->primary();
 
             $table->string('name')->index();
             $table->string('slug')->nullable();
@@ -43,7 +43,7 @@ return new class extends Migration
         Schema::create(config('products.models.sellableSupplier.table'), function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->unsignedBigInteger('sellable_id')->nullable();
+            $table->uuid('sellable_id')->nullable();
             $table->foreign('sellable_id')->references('id')->on(config('products.models.sellable.table'));
 
             $table->uuid('supplier_id')->nullable();
@@ -59,10 +59,10 @@ return new class extends Migration
         Schema::create(config('products.models.sellableRelation.table'), function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->uuid('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on(config('products.models.sellable.table'));
 
-            $table->unsignedBigInteger('child_id')->nullable();
+            $table->uuid('child_id')->nullable();
             $table->foreign('child_id')->references('id')->on(config('products.models.sellable.table'));
 
             $table->string('main_code')->nullable();

@@ -8,11 +8,11 @@ use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
+use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Price;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-use IlBronza\Products\Models\Quotations\Project;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 
 class Quotation extends BaseModel
@@ -21,6 +21,7 @@ class Quotation extends BaseModel
 		'date' => 'date'
 	];
 
+	use CRUDUseUuidTrait;
 	use InteractsWithPriceTrait;
 
     public function getPriceModelClassName() : string

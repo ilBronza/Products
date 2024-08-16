@@ -74,11 +74,7 @@ class SellableCreatorHelper
             throw new \Exception('manca il target per questo sellable ' . $sellable->getKey());
 
         foreach($target->getPossibleSuppliersElements() as $supplier)
-        {
-            dd($supplier);
-
             static::createSellableSupplierWithStandardPrices($supplier, $sellable);
-        }
     }
 
     static function getOrcreateSellableByTarget(SellableItemInterface $target, Collection|array $categories = [], string $type = null) : Sellable

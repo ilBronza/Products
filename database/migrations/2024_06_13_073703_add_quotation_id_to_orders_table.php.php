@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table(config('products.models.order.table'), function (Blueprint $table) {
-            $table->unsignedBigInteger('quotation_id')->nullable();
+            $table->uuid('quotation_id')->nullable();
             $table->foreign('quotation_id')->references('id')->on(config('products.models.quotation.table'));
 
 
@@ -22,7 +22,7 @@ return new class extends Migration
         });
 
         Schema::create(config('products.models.orderrow.table'), function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
 
             $table->uuid('order_id');
             $table->foreign('order_id')->references('id')->on(config('products.models.order.table'));
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->unsignedBigInteger('price_id')->nullable();
             // $table->foreign('price_id')->references('id')->on(config('prices.models.price.table'));
 
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->uuid('parent_id')->nullable();
 
             $table->unsignedInteger('sorting_index')->nullable();
 

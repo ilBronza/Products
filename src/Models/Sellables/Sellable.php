@@ -7,6 +7,7 @@ use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
+use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Quotations\Quotation;
@@ -21,6 +22,7 @@ class Sellable extends BaseModel
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
 
+	use CRUDUseUuidTrait;
 
 	use CRUDParentingTrait;
 	use CRUDSluggableTrait;
