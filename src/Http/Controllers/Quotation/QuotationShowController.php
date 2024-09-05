@@ -14,6 +14,7 @@ class QuotationShowController extends QuotationCRUD
 
     public function getGenericParametersFile() : ? string
     {
+		//QuotationEditUpdateFieldsetsParameters;
         return config('products.models.quotation.parametersFiles.show');
     }
 

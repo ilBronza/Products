@@ -13,31 +13,27 @@ trait InteractsWithSupplierTrait
 {
 	public function supplier() : MorphOne
 	{
-        return $this->morphOne(Supplier::getProjectClassname(), 'target');
+		return $this->morphOne(Supplier::getProjectClassName(), 'target');
 	}
 
-	public function getSupplier() : ? Model
+	public function getSupplier() : ?Model
 	{
 		return $this->supplier;
 	}
 
-    public function scopeWithSupplierId($query)
-    {
-        $query->addSelect([
-            'live_supplier_id' => Supplier::getProjectClassName()::select(
-            	'id')
-                    ->whereColumn('target_id', $this->getTable() . '.id')
-                    ->where('target_type', $this->getMorphClass())
-                    ->take(1)
-        ]);
-    }
+	public function scopeWithSupplierId($query)
+	{
+		$query->addSelect([
+			'live_supplier_id' => Supplier::getProjectClassName()::select(
+				'id'
+			)->whereColumn('target_id', $this->getTable() . '.id')->where('target_type', $this->getMorphClass())->take(1)
+		]);
+	}
 
 	public function sellableSuppliers()
 	{
 		return $this->hasMany(
-			SellableSupplier::getProjectClassName(),
-			'supplier_id',
-			'live_supplier_id'
+			SellableSupplier::getProjectClassName(), 'supplier_id', 'live_supplier_id'
 		);
 	}
 
@@ -55,11 +51,7 @@ trait InteractsWithSupplierTrait
 	public function sellables()
 	{
 		return $this->belongsToMany(
-			Sellable::getProjectClassName(),
-			config('products.models.sellableSupplier.table'),
-			'supplier_id',
-			null,
-			'live_supplier_id'
+			Sellable::getProjectClassName(), config('products.models.sellableSupplier.table'), 'supplier_id', null, 'live_supplier_id'
 		)->using(SellableSupplier::getProjectClassName());
 	}
 

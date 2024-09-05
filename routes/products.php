@@ -30,6 +30,9 @@ Route::group(['prefix' => 'projects'], function()
 
 Route::group(['prefix' => 'quotations'], function()
 {
+	Route::get('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
+	Route::post('{quotation}/store-row', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
+
 	Route::get('', [Products::getController('quotation', 'index'), 'index'])->name('quotations.index');
 	Route::get('create', [Products::getController('quotation', 'create'), 'create'])->name('quotations.create');
 	Route::post('', [Products::getController('quotation', 'store'), 'store'])->name('quotations.store');
@@ -42,6 +45,11 @@ Route::group(['prefix' => 'quotations'], function()
 
 Route::group(['prefix' => 'quotationrows'], function()
 {
+	Route::get('{quotationrow}/assign-sellable-supplier/{sellableSupplier}', [Products::getController('quotationrow', 'assignSellableSupplier'), 'associateSellableSupplier'])->name('quotationrows.associateSellableSupplier');
+	Route::get('{quotationrow}/assign-sellable-supplier', [Products::getController('quotationrow', 'assignSellableSupplier'), 'assignSellableSupplier'])->name('quotationrows.assignSellableSupplier');
+
+
+
 	Route::get('', [Products::getController('quotationrow', 'index'), 'index'])->name('quotationrows.index');
 	Route::get('create', [Products::getController('quotationrow', 'create'), 'create'])->name('quotationrows.create');
 	Route::post('', [Products::getController('quotationrow', 'store'), 'store'])->name('quotationrows.store');
@@ -62,8 +70,8 @@ Route::group(['prefix' => 'suppliers'], function()
 	Route::get('', [Products::getController('supplier', 'index'), 'index'])->name('suppliers.index');
 	Route::get('{supplier}', [Products::getController('supplier', 'show'), 'show'])->name('suppliers.show');
 
-	Route::get('create', [Products::getController('supplier', 'crud'), 'create'])->name('suppliers.create');
-	Route::post('', [Products::getController('supplier', 'crud'), 'store'])->name('suppliers.store');
+//	Route::get('create', [Products::getController('supplier', 'create'), 'create'])->name('suppliers.create');
+//	Route::post('', [Products::getController('supplier', 'create'), 'store'])->name('suppliers.store');
 
 	Route::get('{supplier}/edit', [Products::getController('supplier', 'edit'), 'edit'])->name('suppliers.edit');
 	Route::put('{supplier}', [Products::getController('supplier', 'edit'), 'update'])->name('suppliers.update');
@@ -76,8 +84,8 @@ Route::group(['prefix' => 'sellables'], function()
 	Route::get('', [Products::getController('sellable', 'index'), 'index'])->name('sellables.index');
 	Route::get('{sellable}', [Products::getController('sellable', 'show'), 'show'])->name('sellables.show');
 
-	Route::get('create', [Products::getController('sellable', 'crud'), 'create'])->name('sellables.create');
-	Route::post('', [Products::getController('sellable', 'crud'), 'store'])->name('sellables.store');
+	Route::get('create', [Products::getController('sellable', 'create'), 'create'])->name('sellables.create');
+	Route::post('', [Products::getController('sellable', 'create'), 'store'])->name('sellables.store');
 
 	Route::get('{sellable}/edit', [Products::getController('sellable', 'edit'), 'edit'])->name('sellables.edit');
 	Route::put('{sellable}', [Products::getController('sellable', 'edit'), 'update'])->name('sellables.update');
@@ -90,8 +98,8 @@ Route::group(['prefix' => 'sellable-suppliers'], function()
 	Route::get('', [Products::getController('sellableSupplier', 'index'), 'index'])->name('sellableSuppliers.index');
 	Route::get('{sellableSupplier}', [Products::getController('sellableSupplier', 'show'), 'show'])->name('sellableSuppliers.show');
 
-	Route::get('create', [Products::getController('sellableSupplier', 'crud'), 'create'])->name('sellableSuppliers.create');
-	Route::post('', [Products::getController('sellableSupplier', 'crud'), 'store'])->name('sellableSuppliers.store');
+	Route::get('create', [Products::getController('sellableSupplier', 'create'), 'create'])->name('sellableSuppliers.create');
+	Route::post('', [Products::getController('sellableSupplier', 'create'), 'store'])->name('sellableSuppliers.store');
 
 	Route::get('{sellableSupplier}/edit', [Products::getController('sellableSupplier', 'edit'), 'edit'])->name('sellableSuppliers.edit');
 	Route::put('{sellableSupplier}', [Products::getController('sellableSupplier', 'edit'), 'update'])->name('sellableSuppliers.update');

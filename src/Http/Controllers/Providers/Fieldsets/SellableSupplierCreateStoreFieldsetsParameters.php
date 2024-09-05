@@ -13,8 +13,8 @@ class SellableSupplierCreateStoreFieldsetsParameters extends FieldsetParametersF
                 'translationPrefix' => 'products::fields',
                 'translatedLegend' => 'IPOTETICI OCCHIO ZIO CULO',
                 'fields' => [
-                    'company_cost' => ['number' => 'numeric|required'],
-                    'client_cost' => ['number' => 'numeric|required'],
+                    'cost_company' => ['number' => 'numeric|required'],
+                    'cost_client' => ['number' => 'numeric|required'],
 
                     // 'name' => ['text' => 'string|required'],
                     // 'slug' => ['text' => 'string|required'],

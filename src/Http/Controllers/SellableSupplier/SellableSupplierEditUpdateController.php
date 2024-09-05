@@ -5,6 +5,9 @@ namespace IlBronza\Products\Http\Controllers\SellableSupplier;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use Illuminate\Http\Request;
 
+use function config;
+use function dd;
+
 class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 {
     use CRUDEditUpdateTrait;
@@ -13,6 +16,12 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
     public function getGenericParametersFile() : ? string
     {
+		if(($sellable = $this->getModel()->getSellable())->isContracttype())
+			return config('products.models.sellableSupplier.parametersFiles.contracttype');
+
+		dd('duduhere');
+	    dd('altro tipo di sellable: ' . $targetType);
+
         return config('products.models.sellableSupplier.parametersFiles.create');
     }
 

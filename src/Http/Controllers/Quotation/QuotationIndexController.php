@@ -6,6 +6,8 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCRUD;
 
+use function ini_set;
+
 class QuotationIndexController extends QuotationCRUD
 {
     use CRUDPlainIndexTrait;
@@ -25,7 +27,10 @@ class QuotationIndexController extends QuotationCRUD
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with(
+		ini_set('max_execution_time', 300);
+		ini_set('memory_limit', - 1);
+
+		return $this->getModelClass()::with(
             'project',
             'destination',
             'parent',

@@ -23,9 +23,9 @@ class QuotationrowRelatedFieldsGroupParametersFile extends QuotationrowFieldsGro
                 'starts_at' => 'dates.date',
                 'ends_at' => 'dates.date',
                 'quantity' => 'flat',
-                'sellableSupplier.directPrice' => '_fn_getName',
-                'directPrice' => '_fn_getName',
-
+//                'sellableSupplier.directPrice' => '_fn_getName',
+//                'directPrice' => '_fn_getName',
+//
                 'mySelfDelete' => 'links.delete'
             ]
         ];

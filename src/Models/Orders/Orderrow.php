@@ -18,11 +18,6 @@ class Orderrow extends BaseModel
 	use InteractsWithPriceTrait;
     use InteractsWithFormTrait;
 
-    public function getPriceModelClassName() : string
-    {
-        return Price::getProjectClassName();
-    }
-
 	static $modelConfigPrefix = 'orderrow';
 	public $classnameAbbreviation = 'or';
 }

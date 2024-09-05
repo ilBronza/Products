@@ -24,8 +24,8 @@ class QuotationFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'parent' => 'relations.belongsTo',
                 // 'category' => 'relations.belongsTo',
                 'quotationrows' => 'relations.hasMany',
-                'price.own_cost' => 'flat',
-                'price.price' => 'flat',
+//                'price.own_cost' => 'flat',
+//                'price.price' => 'flat',
 
                 // 'created_at' => 'dates.date',
                 // 'updated_at' => 'dates.date',

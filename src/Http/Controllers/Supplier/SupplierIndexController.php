@@ -27,7 +27,7 @@ class SupplierIndexController extends SupplierCRUD
     public function getIndexElements()
     {
         return $this->getModelClass()::with(
-            'categories',
+            'target.categories',
             'target.destinations.address',
             'sellables'
         )

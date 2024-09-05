@@ -1,9 +1,11 @@
 <?php
 
 return [
-  'list' => 'Lista prodotti',
-  'current' => 'Recenti',
-  'productsManagement' => 'Gestore prodotti',
-  'products' => 'Prodotti',
-  'sellableSuppliers' => 'Articoli fornitore',
+	'list' => 'Lista prodotti',
+	'current' => 'Recenti',
+	'productsManagement' => 'Gestore prodotti',
+	'products' => 'Prodotti',
+	'project' => 'Progetto',
+	'projects' => 'Progetti',
+	'sellableSuppliers' => 'Articoli fornitore',
 ];

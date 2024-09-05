@@ -16,16 +16,19 @@ class SellableSupplierFieldsGroupParametersFile extends FieldsGroupParametersFil
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-                'name' => 'flat',
-                'slug' => 'flat',
-                'type' => 'flat',
-                // 'category' => 'relations.belongsTo',
-                // 'target' => 'relations.belongsTo',
-                // 'sellableSuppliers' => [
-                //     'type' => 'relations.hasMany'
-                // ],
-                // 'suppliers' => 'relations.belongsToMany',
-                // 'quotations_count' => 'flat',
+				'id' => 'flat',
+				'supplier.target.name' => 'flat',
+				'sellable.name' => 'flat',
+
+				'prices' => [
+					'type' => 'iterators.each',
+					'childParameters' => [
+						'type' => 'function',
+						'function' => 'getPriceDescriptionString'
+					],
+				],
+
+				'quotationrows_count' => 'flat',
 
                 'mySelfDelete' => 'links.delete'
             ]

@@ -5,6 +5,8 @@ namespace IlBronza\Products\Http\Controllers\Sellable;
 use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 use IlBronza\CRUD\Traits\CRUDShowTrait;
 
+use function config;
+
 class SellableShowController extends SellableCRUD
 {
     use CRUDShowTrait;
@@ -14,6 +16,7 @@ class SellableShowController extends SellableCRUD
 
     public function getGenericParametersFile() : ? string
     {
+		//SellableCreateStoreFieldsetsParameters
         return config('products.models.sellable.parametersFiles.show');
     }
 

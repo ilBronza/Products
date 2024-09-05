@@ -5,6 +5,8 @@ namespace IlBronza\Products\Http\Controllers\Quotation;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use Illuminate\Http\Request;
 
+use function config;
+
 class QuotationEditUpdateController extends QuotationCRUD
 {
     use CRUDEditUpdateTrait;
@@ -13,10 +15,15 @@ class QuotationEditUpdateController extends QuotationCRUD
 
     public function getGenericParametersFile() : ? string
     {
-        return config('products.models.quotation.parametersFiles.create');
+        return config('products.models.quotation.parametersFiles.edit');
     }
 
-    public function edit(string $quotation)
+	public function getRelationshipsManagerClass()
+	{
+		return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.show");
+	}
+
+	public function edit(string $quotation)
     {
         $quotation = $this->findModel($quotation);
 

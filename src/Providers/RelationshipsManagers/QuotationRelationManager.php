@@ -4,6 +4,8 @@ namespace IlBronza\Products\Providers\RelationshipsManagers;
 
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 
+use function config;
+
 class QuotationRelationManager Extends RelationshipsManager
 {
 	public  function getAllRelationsParameters() : array
@@ -11,9 +13,13 @@ class QuotationRelationManager Extends RelationshipsManager
 		return [
 			'show' => [
 				'relations' => [
-					'quotationrows' => config('products.models.quotationrow.controllers.index'),
+					'quotationrows' => [
+ 						'controller' => config('products.models.quotationrow.controllers.index'),
+//						'elementGetterMethod' => 'getQuotationrowsForShowRelation',
+						'fieldsGroupsParametersFile' => config('products.models.quotationrow.fieldsGroupsFiles.byQuotation')
+					],
 					'project' => config('products.models.project.controllers.show'),
-					'dossiers' => config('filecabinet.models.dossier.controllers.index'),
+//					'dossiers' => config('filecabinet.models.dossier.controllers.index'),
 				]
 			]
 		];

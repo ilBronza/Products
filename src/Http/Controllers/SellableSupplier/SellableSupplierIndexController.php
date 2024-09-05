@@ -6,6 +6,8 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCRUD;
 
+use function config;
+
 class SellableSupplierIndexController extends SellableSupplierCRUD
 {
     use CRUDPlainIndexTrait;
@@ -15,17 +17,19 @@ class SellableSupplierIndexController extends SellableSupplierCRUD
 
     public function getIndexFieldsArray()
     {
+		//SellableSupplierFieldsGroupParametersFile
         return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getFieldsGroup();
-    }
-
-    public function getRelatedFieldsArray()
-    {
-        return config('products.models.sellableSupplier.fieldsGroupsFiles.related')::getFieldsGroup();
     }
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with('target', 'category', 'suppliers')->withCount('quotations')->get();
+        return $this->getModelClass()::with(
+			'supplier.target',
+			'sellable.target',
+			'prices'
+		)
+			->withCount('quotationrows')
+			->get();
     }
 
 }

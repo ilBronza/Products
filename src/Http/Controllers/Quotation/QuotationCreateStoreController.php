@@ -15,6 +15,11 @@ class QuotationCreateStoreController extends QuotationCRUD
         'store',
     ];
 
+	public function getAfterStoredRedirectUrl()
+	{
+		return $this->getModel()->getEditUrl();
+	}
+
     public function getGenericParametersFile() : ? string
     {
         return config('products.models.quotation.parametersFiles.create');

@@ -3,7 +3,6 @@
 namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
-use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\Products\Models\Interfaces\SizeInterface;
@@ -13,7 +12,7 @@ use IlBronza\Warehouse\Models\Pallettype\Pallettype;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 
-class Packing extends BaseModel implements SizeInterface, HasMedia
+class Packing extends ProductPackageBaseModel implements SizeInterface, HasMedia
 {
     use InteractsWithMedia;
 	use ProductPackageBaseModelTrait;

@@ -13,7 +13,7 @@ class QuotationrowEditUpdateController extends QuotationrowCRUD
 
     public function getGenericParametersFile() : ? string
     {
-        return config('products.models.quotationrow.parametersFiles.create');
+        return config('products.models.quotationrow.parametersFiles.edit');
     }
 
     public function edit(string $quotationrow)

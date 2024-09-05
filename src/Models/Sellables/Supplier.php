@@ -14,9 +14,11 @@ use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use Illuminate\Support\Collection;
 
+use function is_array;
+
 class Supplier extends ProductPackageBaseModel
 {
-	use InteractsWithCategoryTrait;
+//	use InteractsWithCategoryTrait;
 	use InteractsWithPaymenttypes;
 	use InteractsWithContact;
 	use InteractsWithFormTrait;
@@ -38,6 +40,9 @@ class Supplier extends ProductPackageBaseModel
 
 	public function getTarget() : ? SupplierInterface
 	{
+		if(is_array($this->target))
+			return $this->target()->first();
+
 		return $this->target;
 	}
 

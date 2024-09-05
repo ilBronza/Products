@@ -17,25 +17,42 @@ class SupplierFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
                 'created_at' => 'dates.datetime',
-                'target.name' => 'flat',
-                'target.destinations' => [
-                    'type' => 'iterators.each',
-                    'childParameters' => [
-                        'type' => 'flat',
-                        'property' => 'province'
-                    ],
-                ],
-                'mySelfFullAddress.target.destinations' => [
-                    'type' => 'iterators.each',
-                    'childParameters' => [
-                        'type' => 'function',
-                        'function' => 'getFlatDescriptionString'
-                    ],
-                    'width' => '450px'
-                ],
+				'target' => 'links.see',
+				'target.name' => 'flat',
+				'mySelfTargetClass.target' => 'models.classBasename',
+//                'target.destinations' => [
+//                    'type' => 'iterators.each',
+//                    'childParameters' => [
+//                        'type' => 'flat',
+//                        'property' => 'province'
+//                    ],
+//                ],
+//                'mySelfFullAddress.target.destinations' => [
+//                    'type' => 'iterators.each',
+//                    'childParameters' => [
+//                        'type' => 'function',
+//                        'function' => 'getFlatDescriptionString'
+//                    ],
+//                    'width' => '450px'
+//                ],
                 'quotationrows_count' => 'flat',
                 // 'target' => 'json',
-                'categories' => 'relations.belongsToMany',
+//				'target.categories' => [
+//					'type' => 'iterators.each',
+//					'childParameters' => [
+//						'type' => 'function',
+//						'function' => 'getName'
+//					],
+//					'width' => '450px'
+//				],
+				'target.categories' => [
+					'type' => 'iterators.each',
+					'childParameters' => [
+						'type' => 'function',
+						'function' => 'getName'
+					],
+					'width' => '450px'
+				],
                 'sellables' => 'relations.belongsToMany',
                 'mySelfDelete' => 'links.delete'
             ]

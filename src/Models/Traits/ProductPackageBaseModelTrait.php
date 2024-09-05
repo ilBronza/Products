@@ -2,26 +2,31 @@
 
 namespace IlBronza\Products\Models\Traits;
 
+use function config;
+
 trait ProductPackageBaseModelTrait
 {
-	public function getRouteBaseNamePrefix() : ? string
-	{
-		return config('products.routePrefix');
-	}
+	//TODO rimuovere tutto questo se fila liscio
 
-	static function getModelConfigPrefix()
-	{
-		return static::$modelConfigPrefix;
-	}
+//	public function getRouteBaseNamePrefix() : ? string
+//	{
+//		dd(config('products.routePrefix'));
+//		return config('products.routePrefix');
+//	}
 
-	static function getProjectClassName()
-	{
-		return config('products.models.' . static::getModelConfigPrefix() . '.class');
-	}
+//	static function getModelConfigPrefix()
+//	{
+//		return static::$modelConfigPrefix;
+//	}
 
-	public function getTable()
-	{
-		return config("products.models.{$this->getModelConfigPrefix()}.table");
-	}
+//	static function getProjectClassName()
+//	{
+//		return config('products.models.' . static::getModelConfigPrefix() . '.class');
+//	}
+
+//	public function getTable()
+//	{
+//		return config("products.models.{$this->getModelConfigPrefix()}.table");
+//	}
 
 }

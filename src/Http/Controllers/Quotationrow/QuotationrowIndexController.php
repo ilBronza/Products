@@ -6,6 +6,8 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowCRUD;
 
+use function config;
+
 class QuotationrowIndexController extends QuotationrowCRUD
 {
     use CRUDPlainIndexTrait;

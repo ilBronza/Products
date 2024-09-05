@@ -4,6 +4,8 @@ namespace IlBronza\Products\Providers\RelationshipsManagers;
 
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 
+use function config;
+
 class SupplierRelationManager Extends RelationshipsManager
 {
 	public  function getAllRelationsParameters() : array
@@ -11,22 +13,18 @@ class SupplierRelationManager Extends RelationshipsManager
 		$relations = [
 		];
 
-		// if($target = $this->getModel()->getTarget())
-		// 	$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
-
-
-		// $relations['sellables'] = config('products.models.sellable.controllers.index');
-		// $relations['sellableSuppliers'] = config('products.models.sellableSupplier.controllers.index');
+		$relations['sellableSuppliers'] = [
+			'controller' => config('products.models.sellableSupplier.controllers.index'),
+			'fieldsGroupsParametersFile' => config('products.models.sellableSupplier.fieldsGroupsFiles.byOperator')
+		];
 
 		$relations['quotationrows'] = [
 			'controller' =>  config('products.models.quotationrow.controllers.index'),
 			'elementGetterMethod' => 'getRelatedQuotationrows'
 		];
 
-
-
-
-
+		if($target = $this->getModel()->getTarget())
+			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
 
 
 		return [

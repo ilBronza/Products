@@ -14,12 +14,12 @@ class QuotationCreateStoreFieldsetsParameters extends FieldsetParametersFile
                 'fields' => [
                     'name' => ['text' => 'string|required'],
                     'slug' => ['text' => 'string|required'],
-                    // 'client' => [
-                    //     'type' => 'select',
-                    //     'multiple' => false,
-                    //     'rules' => 'string|required|exists:' . config('clients.models.client.table') . ',id',
-                    //     'relation' => 'client'
-                    // ],
+                     'client' => [
+                         'type' => 'select',
+                         'multiple' => false,
+                         'rules' => 'string|required|exists:' . config('clients.models.client.table') . ',id',
+                         'relation' => 'client'
+                     ],
                 ],
                 'width' => ["1-3@l", '1-2@m']
             ],

@@ -7,13 +7,13 @@ use IlBronza\Products\Models\Sellables\SellableSupplier;
 
 trait OrderrowRelationsScopesTrait
 {
-    public function sellableSupplier()
-    {
-        return $this->belongsTo(SellableSupplier::getProjectClassname());
-    }
+	public function sellableSupplier()
+	{
+		return $this->belongsTo(SellableSupplier::getProjectClassName());
+	}
 
-    public function order()
-    {
-    	return $this->belongsTo(Order::getProjectClassname());
-    }
+	public function order()
+	{
+		return $this->belongsTo(Order::getProjectClassName());
+	}
 }

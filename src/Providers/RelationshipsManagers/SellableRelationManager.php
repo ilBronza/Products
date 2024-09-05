@@ -4,30 +4,32 @@ namespace IlBronza\Products\Providers\RelationshipsManagers;
 
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 
+use function config;
+
 class SellableRelationManager Extends RelationshipsManager
 {
 	public  function getAllRelationsParameters() : array
 	{
 		$relations = [];
 
+		$relations['sellableSuppliers'] = [
+			'controller' => config('products.models.sellableSupplier.controllers.index'),
+			'elementGetterMethod' => 'getFullrelatedSellableSupplierElements'
+		];
+
 		if($target = $this->getModel()->getTarget())
 			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
 
+			$relations['quotations'] = config('products.models.quotation.controllers.index');
+
+//			$relations['suppliers'] = [
+//							'controller' => config('products.models.supplier.controllers.index'),
+//							'elementGetterMethod' => 'getFullrelatedSupplierElements'
+//						];
+
 		return [
 			'show' => [
-				'relations' => $relations + [
-					'quotations' => config('products.models.quotation.controllers.index'),
-					'quotationrows' => config('products.models.quotationrow.controllers.index'),
-					'sellableSuppliers' => [
-						'controller' => config('products.models.sellableSupplier.controllers.index'),
-						'elementGetterMethod' => 'getFullrelatedSellableSupplierElements'
-					],
-					'suppliers' => [
-						'controller' => config('products.models.supplier.controllers.index'),
-						'elementGetterMethod' => 'getFullrelatedSupplierElements'
-					],
-					// 'dossiers' => config('filecabinet.models.dossier.controllers.index'),
-				]
+				'relations' => $relations
 			]
 		];
 	}

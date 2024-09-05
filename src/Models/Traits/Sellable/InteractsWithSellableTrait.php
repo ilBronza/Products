@@ -10,19 +10,21 @@ use Illuminate\Support\Collection;
 
 trait InteractsWithSellableTrait
 {
-	public function getNameForSellable(... $parameters) : string
+	public function getNameForSellable(...$parameters) : string
 	{
 		return $this->getName();
 	}
 
-    static public function getPossibleSellableElements() : Collection
-    {
-        return static::all();
-    }
+	static public function getPossibleSellableElements() : Collection
+	{
+		return static::all();
+	}
 
 	public function sellables()
 	{
-		return $this->morphMany(Sellable::getProjectClassname(), 'target');
+		return $this->morphMany(
+			Sellable::getProjectClassName(), 'target'
+		);
 	}
 
 	public function getSellables() : Collection
@@ -33,16 +35,13 @@ trait InteractsWithSellableTrait
 	public function sellableSuppliers()
 	{
 		return $this->hasManyThrough(
-			SellableSupplier::getProjectClassname(),
-			Sellable::getProjectClassname(),
-			'target_id',
-			'sellable_id'
+			SellableSupplier::getProjectClassName(), Sellable::getProjectClassName(), 'target_id', 'sellable_id'
 		)->where('target_type', $this->getMorphClass());
 	}
 
 	public function quotations()
 	{
-		return $this->belongsToMany(Quotation::getProjectClassname());
+		return $this->belongsToMany(Quotation::getProjectClassName());
 	}
 
 	public function getRelatedQuotations() : Collection
@@ -50,40 +49,25 @@ trait InteractsWithSellableTrait
 		$quotationsTable = config('products.models.quotation.table');
 		$quotationrowsTable = config('products.models.quotationrow.table');
 
-		return Quotation::getProjectClassname()::whereIn(
-			"{$quotationsTable}.id", 
-			$this->quotationrows()->select("{$quotationrowsTable}.id")->pluck('id')
-		)
-		->with(
-			'project',
-			'client',
-			'directPrice'
-		)
-		->withCount('quotationrows')
-		->get();
+		return Quotation::getProjectClassName()::whereIn(
+			"{$quotationsTable}.id", $this->quotationrows()->select("{$quotationrowsTable}.id")->pluck('id')
+		)->with(
+				'project', 'client', 'directPrice'
+			)->withCount('quotationrows')->get();
 	}
 
 	public function quotationrows()
 	{
-		$sellableTable = Sellable::getProjectClassname()::make()->getTable();
+		$sellableTable = Sellable::getProjectClassName()::make()->getTable();
 
 		return $this->hasManyThrough(
-			Quotationrow::getProjectClassName(),
-			Sellable::getProjectClassname(),
-			'target_id',
-			'sellable_id'
+			Quotationrow::getProjectClassName(), Sellable::getProjectClassName(), 'target_id', 'sellable_id'
 		)->where($sellableTable . '.target_type', $this->getMorphClass());
 	}
 
 	public function getRelatedQuotationrows()
 	{
-		return $this->quotationrows()
-			->with('quotation.project')
-			->with('quotation.client')
-			->with('directPrice')
-			->with('sellableSupplier.directPrice')
-			->with('sellableSupplier.sellable.target')
-			->get();
+		return $this->quotationrows()->with('quotation.project')->with('quotation.client')->with('directPrice')->with('sellableSupplier.directPrice')->with('sellableSupplier.sellable.target')->get();
 	}
 
 }
