@@ -11,6 +11,8 @@ class QuotationEditUpdateController extends QuotationCRUD
 {
     use CRUDEditUpdateTrait;
 
+	public ? bool $updateEditor = true;
+
     public $allowedMethods = ['edit', 'update'];
 
     public function getGenericParametersFile() : ? string

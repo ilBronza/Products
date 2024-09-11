@@ -15,6 +15,7 @@ class QuotationFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
+	            'created_at' => 'dates.datetime',
                 'name' => 'flat',
                 'slug' => 'flat',
                 'date' => 'dates.datetime',

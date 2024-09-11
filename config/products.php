@@ -51,6 +51,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationCreateStoreF
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
@@ -70,6 +71,8 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationrowFields
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationrowRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedPhaseFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierBaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierByOperatorFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierContracttypeFieldsGroupParametersFile;
@@ -103,6 +106,11 @@ use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowDestroyControlle
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowEditUpdateController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowShowController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableCreateStoreController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableDestroyController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableEditUpdateController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableIndexController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableShowController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCreateStoreController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierDestroyController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierEditUpdateController;
@@ -110,6 +118,7 @@ use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierIndexCon
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierShowController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierByCategoryController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierDestroyController;
+use IlBronza\Products\Http\Controllers\Supplier\SupplierEditUpdateController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Models\Accessory;
@@ -134,6 +143,7 @@ use IlBronza\Products\Providers\RelationshipsManagers\ProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\ProjectRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\QuotationRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\QuotationrowRelationManager;
+use IlBronza\Products\Providers\RelationshipsManagers\SellableRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\SellableSupplierRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 
@@ -511,7 +521,27 @@ return [
 		],
 		'sellable' => [
 			'table' => 'products__sellables__sellables',
-			'class' => Sellable::class,
+			'class' => \App\Models\ProjectSpecific\Sellable::class,
+			'fieldsGroupsFiles' => [
+				'index' => SellableFieldsGroupParametersFile::class,
+				'related' => SellableRelatedFieldsGroupParametersFile::class
+			],
+			'relationshipsManagerClasses' => [
+				'show' => SellableRelationManager::class
+			],
+			'parametersFiles' => [
+				'create' => SellableCreateStoreFieldsetsParameters::class,
+				'show' => SellableCreateStoreFieldsetsParameters::class
+			],
+			'controllers' => [
+				'index' => SellableIndexController::class,
+				'create' => SellableCreateStoreController::class,
+				'store' => SellableCreateStoreController::class,
+				'show' => SellableShowController::class,
+				'edit' => SellableEditUpdateController::class,
+				'update' => SellableEditUpdateController::class,
+				'destroy' => SellableDestroyController::class,
+			]
 		],
 		'sellableSupplier' => [
 			'table' => 'products__sellables__sellable_suppliers',
@@ -555,6 +585,7 @@ return [
 			'controllers' => [
 				'byCategory' => SupplierByCategoryController::class,
 				'index' => SupplierIndexController::class,
+				'edit' => SupplierEditUpdateController::class,
 				'show' => SupplierShowController::class,
 				'destroy' => SupplierDestroyController::class,
 			],

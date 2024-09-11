@@ -12,8 +12,10 @@ use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 
+use function dd;
 use function method_exists;
 
 class Quotationrow extends ProductPackageBaseModel
@@ -65,6 +67,11 @@ class Quotationrow extends ProductPackageBaseModel
 	public function getSellableSupplier() : ? SellableSupplier
 	{
 		return $this->sellableSupplier;
+	}
+
+	public function getSupplier() : ? Supplier
+	{
+		return $this->getSellableSupplier()?->getSupplier();
 	}
 
 	public function quotation()
@@ -135,10 +142,29 @@ class Quotationrow extends ProductPackageBaseModel
 			return $value;
 
 		if($sellableSupplier = $this->getSellableSupplier())
-			if($sellableSupplier->cost_company_day)
-				return $sellableSupplier->cost_company_day;
+			if($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
+				if($value = $price->price)
+					return $value;
 
 		return $this->getSellable()->getCostCompany();
+	}
+
+	/**
+	 * @return string
+	 *
+	 *
+	 */
+	public function getCalculatedCostCompanyHtmlClass() : string
+	{
+		if($value = $this->cost_company)
+			return 'costcompanyforced';
+
+		if($sellableSupplier = $this->getSellableSupplier())
+			if($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
+				if($value = $price->price)
+					return 'costcompanysellsupp';
+
+		return 'costcompanysell';
 	}
 
 	public function setCalculatedCostCompanyAttribute($value)
@@ -151,11 +177,15 @@ class Quotationrow extends ProductPackageBaseModel
 		if($value = $this->client_price)
 			return $value;
 
-		if($sellableSupplier = $this->getSellableSupplier())
-			if(method_exists($sellableSupplier, 'getClientPrice'))
-				return $sellableSupplier->getClientPrice();
-
 		return $this->getSellable()->getClientPrice();
+	}
+
+	public function getCalculatedClientPriceHtmlClass()
+	{
+		if($value = $this->client_price)
+			return 'clientpriceforced';
+
+		return 'clientpricecalculated';
 	}
 
 	public function setCalculatedClientPriceAttribute($value)
@@ -171,6 +201,19 @@ class Quotationrow extends ProductPackageBaseModel
 		return $this->getQuantity() * $this->calculated_cost_company;
 	}
 
+	public function getCalculatedCostCompanyTotal() : float
+	{
+		return $this->calculated_cost_company_total;
+	}
+
+	public function getCalculatedCostCompanyTotalHtmlClass()
+	{
+		if($value = $this->cost_company_total)
+			return 'costcompanytotalforced';
+
+		return 'costcompanytotalcalculated';
+	}
+
 	public function setCalculatedCostCompanyTotalAttribute($value)
 	{
 		$this->cost_company_total = $value;
@@ -184,9 +227,40 @@ class Quotationrow extends ProductPackageBaseModel
 		return $this->getQuantity() * $this->calculated_client_price;
 	}
 
+	public function getCalculatedClientPriceTotalHtmlClass()
+	{
+		if($value = $this->client_price_total)
+			return 'clientpricetotalforced';
+
+		return 'clientpricetotalcalculated';
+	}
+
+
+
 	public function setCalculatedClientPriceTotalAttribute($value)
 	{
 		$this->client_price_total = $value;
 	}
 
+	public function getParameter(string $key, mixed $default = null) : mixed
+	{
+		$parameters = $this->getParameters();
+
+		return $parameters[$key] ?? $default;
+	}
+
+	public function setParameter(string $key, mixed $value = null)
+	{
+		$parameters = $this->getParameters();
+
+		$parameters[$key] = $value;
+
+		$this->parameters = $parameters;
+		$this->save();
+	}
+
+	public function getParameters() : array
+	{
+		return $this->parameters ?? [];
+	}
 }
