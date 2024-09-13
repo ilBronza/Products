@@ -85,7 +85,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 		$parameters = $request->validate($validationParameters);
 
-		$quotationrowSortingIndex = $quotation->quotationrows()->max('sorting_index');
+		$quotationrowSortingIndex = $quotation->quotationrows()->max('sorting_index') + 1;
 
 		foreach ($parameters as $type => $sellables)
 		{
