@@ -70,6 +70,7 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'multiple' => false,
 						'rules' => 'string|nullable|exists:' . config('clients.models.destination.table') . ',id',
 						'relation' => 'destination',
+						'data' => ['reloadalltables' => true],
 						'fetchFieldValue' => [
 							'national',
 							'daily_allowance'
@@ -80,17 +81,30 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'type' => 'boolean',
 						'rules'=> 'boolean|nullable'
 					],
-					'km' => ['number' => 'decimal|nullable'],
-					'daily_allowance' => ['number' => 'decimal|nullable'],
+					'km' => [
+						'type' => 'number',
+						'rules'=> 'numeric|nullable',
+						'data' => ['reloadalltables' => true],
+					],
+					'round_trip' => [
+						'type' => 'boolean',
+						'rules'=> 'boolean|nullable',
+						'data' => ['reloadalltables' => true],
+					],
+					'daily_allowance' => [
+						'type' => 'number',
+						'data' => ['reloadalltables' => true],
+						'rules'=> 'numeric|nullable'
+					],
 				],
 				'width' => ['large']
 			],
 			'costi' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
-					'tot_ricavo' => ['number' => 'decimal|nullable'],
-					'tot_proposto' => ['number' => 'decimal|nullable'],
-					'tot_preventivo' => ['number' => 'decimal|nullable'],
+					'tot_ricavo' => ['number' => 'numeric|nullable'],
+					'tot_proposto' => ['number' => 'numeric|nullable'],
+					'tot_preventivo' => ['number' => 'numeric|nullable'],
 				],
 				'width' => ['medium']
 			]

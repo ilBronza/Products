@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
 use function array_filter;
+use function dd;
 use function strpos;
 
 class SellableSupplier extends BasePivotModel implements WithPriceInterface

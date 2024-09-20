@@ -17,6 +17,8 @@ use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Support\Collection;
 
+use function json_encode;
+
 class Sellable extends ProductPackageBaseModel
 {
 	use ProductPackageBaseModelTrait;
@@ -95,7 +97,7 @@ class Sellable extends ProductPackageBaseModel
 		if($this->cost_company)
 			return $this->cost_company;
 
-		return $this->getTarget()->getCostCompany();
+		return $this->getTarget()?->getCostCompany() ?? 0;
 	}
 
 	public function getClientPrice()
@@ -111,4 +113,5 @@ class Sellable extends ProductPackageBaseModel
 	//			'sellables.target'
 	//		)->get();
 	//	}
+
 }

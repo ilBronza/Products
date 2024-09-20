@@ -13,7 +13,7 @@ class QuotationrowDestroyController extends QuotationrowCRUD
     public function destroy($quotationrow)
     {
         $quotationrow = $this->findModel($quotationrow);
-
+		
         return $this->_destroy($quotationrow);
     }
 }

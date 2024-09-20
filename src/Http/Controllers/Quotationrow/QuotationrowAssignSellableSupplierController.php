@@ -4,6 +4,7 @@ namespace IlBronza\Products\Http\Controllers\Quotationrow;
 
 use Exception;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVehicletypeFieldsGroupParametersFile;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use function class_basename;
 use function compact;
 use function config;
+use function ff;
 
 class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 {
@@ -25,11 +27,23 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 
 	public function getIndexFieldsArray()
 	{
+		if(! $this->getTargetType())
+		{
+			//SellableSupplierHotelFieldsGroupParametersFile
+			if($this->getSellable()->isHotelType())
+				return config('products.models.sellableSupplier.fieldsGroupsFiles.hotel')::getFieldsGroup();
+
+		}
+
 		if ($this->getTargetType() == 'Contracttype')
 			//SellableSupplierContracttypeFieldsGroupParametersFile
 			return config('products.models.sellableSupplier.fieldsGroupsFiles.contracttype')::getFieldsGroup();
 
-		dd('altro tipo di sellable: ' . $targetType);
+		if ($this->getTargetType() == 'Type')
+			//SellableSupplierVehicletypeFieldsGroupParametersFile
+			return config('products.models.sellableSupplier.fieldsGroupsFiles.vehicletype')::getFieldsGroup();
+
+		throw new Exception("Unsupported type");
 	}
 
 	/**
@@ -38,6 +52,11 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 	public function getTargetType() : string
 	{
 		return $this->targetType;
+	}
+
+	public function getSellable() : Sellable
+	{
+		return $this->sellable;
 	}
 
 	public function assignSellableSupplier(Request $request, $quotationrow)
@@ -58,6 +77,19 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 
 	public function getSellableSupplierRelationsByTargetType() : array
 	{
+		if(! $this->getTargetType())
+		{
+			if($this->getSellable()->isHotelType())
+				return [
+					'supplier.target'
+				];
+		}
+
+		if ($this->getTargetType() == 'Type')
+			return [
+				'supplier.target'
+			];
+
 		if ($this->getTargetType() == 'Contracttype')
 			return [
 				'supplier.target.operatorContracttypes.contracttype',
@@ -75,6 +107,12 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 
 		if($sellableSupplier->getSellable()->isContracttype())
 			$tablesToRefresh = ['operatorQuotationrows'];
+
+		else if($sellableSupplier->getSellable()->isVehicleType())
+			$tablesToRefresh = ['vehicleQuotationrows'];
+
+		else if($sellableSupplier->getSellable()->isHotelType())
+			$tablesToRefresh = ['hotelQuotationrows'];
 
 		else
 			throw new \Exception('gestire gli altri tipi');

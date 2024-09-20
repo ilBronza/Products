@@ -29,6 +29,16 @@ abstract class SellableSupplierPriceCreatorBaseClass
 		return $this->sellableSupplier;
 	}
 
+	public function getSupplier() : Supplier
+	{
+		return $this->supplier;
+	}
+
+	public function getSellable() : Sellable
+	{
+		return $this->sellable;
+	}
+
 	public function getModel() : SellableSupplier
 	{
 		return $this->sellableSupplier;

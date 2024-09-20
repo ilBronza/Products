@@ -68,14 +68,17 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		$quotation = $this->findModel($quotation);
 
 		$types = [
-			'Contracttype'
+			'Contracttype',
+			'VehicleType',
+			'Hotel',
+			'Reimbursement'
 		];
 
 		$validationParameters = [];
 
 		foreach ($types as $type)
 		{
-			$validationParameters[$type] = 'array|required';
+			$validationParameters[$type] = 'array|nullable';
 			$validationParameters[$type . '.*.sellable'] = 'string|required|in:' . implode(',', array_keys($quotation->getPossibleSellablesByType($type)));
 			$validationParameters[$type . '.*.quantity'] = 'integer|required|min:1';
 		}
@@ -84,6 +87,9 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		//		dd($validationParameters);
 
 		$parameters = $request->validate($validationParameters);
+
+		if(count($parameters) == 0)
+			dd(['Manca la chiave per questo tipo', $request->all()]);
 
 		$quotationrowSortingIndex = $quotation->quotationrows()->max('sorting_index') + 1;
 

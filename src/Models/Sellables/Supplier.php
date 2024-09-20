@@ -14,7 +14,9 @@ use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use Illuminate\Support\Collection;
 
+use function get_class;
 use function is_array;
+use function json_encode;
 
 class Supplier extends ProductPackageBaseModel
 {
@@ -110,5 +112,9 @@ class Supplier extends ProductPackageBaseModel
 	{
 		return config('category.models.category.class');
 	}
-	
+
+	public function getTargetString()
+	{
+		return json_encode($this->target->defaultDestination->address);
+	}
 }

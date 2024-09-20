@@ -15,8 +15,7 @@ use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 
-use function dd;
-use function method_exists;
+use function round;
 
 class Quotationrow extends ProductPackageBaseModel
 {
@@ -29,9 +28,23 @@ class Quotationrow extends ProductPackageBaseModel
 	use InteractsWithNotesTrait;
 	use CRUDParentingTrait;
 
-	public function getStartsAt() : ? Carbon
+	protected $keyType = 'string';
+
+	protected $casts = [
+		'starts_at' => 'date',
+		'ends_at' => 'date'
+	];
+	static $deletingRelationships = [];
+	protected $with = ['sellable'];
+
+	public function getStartsAt() : ?Carbon
 	{
 		return $this->starts_at ?? $this->getQuotation()->getStartsAt();
+	}
+
+	public function getQuotation() : ?Quotation
+	{
+		return $this->quotation;
 	}
 
 	public function setStartsAt(string|Carbon $startsAt = null) : void
@@ -39,7 +52,7 @@ class Quotationrow extends ProductPackageBaseModel
 		$this->starts_at = $startsAt;
 	}
 
-	public function getEndsAt() : ? Carbon
+	public function getEndsAt() : ?Carbon
 	{
 		return $this->ends_at ?? $this->getQuotation()->getEndsAt();
 	}
@@ -49,39 +62,24 @@ class Quotationrow extends ProductPackageBaseModel
 		$this->ends_at = $endsAt;
 	}
 
-	protected $keyType = 'string';
-	protected $casts = [
-		'starts_at' => 'date',
-		'ends_at' => 'date'
-	];
-
-	protected $deletingRelationships = [];
-
-	protected $with = ['sellable'];
-
 	public function sellableSupplier()
 	{
 		return $this->belongsTo(SellableSupplier::getProjectClassName());
 	}
 
-	public function getSellableSupplier() : ? SellableSupplier
-	{
-		return $this->sellableSupplier;
-	}
-
-	public function getSupplier() : ? Supplier
+	public function getSupplier() : ?Supplier
 	{
 		return $this->getSellableSupplier()?->getSupplier();
+	}
+
+	public function getSellableSupplier() : ?SellableSupplier
+	{
+		return $this->sellableSupplier;
 	}
 
 	public function quotation()
 	{
 		return $this->belongsTo(Quotation::getProjectClassName());
-	}
-
-	public function getQuotation() : Quotation
-	{
-		return $this->quotation;
 	}
 
 	public function getName() : ?string
@@ -126,24 +124,14 @@ class Quotationrow extends ProductPackageBaseModel
 		return $this->getKeyedRoute('assignSellableSupplier');
 	}
 
-	public function getQuantity() : ? float
-	{
-		return $this->quantity;
-	}
-
-	public function getClientPrice() : ? float
-	{
-		return $this->client_price;
-	}
-
 	public function getCalculatedCostCompanyAttribute()
 	{
-		if($value = $this->cost_company)
+		if ($value = $this->cost_company)
 			return $value;
 
-		if($sellableSupplier = $this->getSellableSupplier())
-			if($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-				if($value = $price->price)
+		if ($sellableSupplier = $this->getSellableSupplier())
+			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
+				if ($value = $price->price)
 					return $value;
 
 		return $this->getSellable()->getCostCompany();
@@ -156,12 +144,12 @@ class Quotationrow extends ProductPackageBaseModel
 	 */
 	public function getCalculatedCostCompanyHtmlClass() : string
 	{
-		if($value = $this->cost_company)
+		if ($value = $this->cost_company)
 			return 'costcompanyforced';
 
-		if($sellableSupplier = $this->getSellableSupplier())
-			if($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-				if($value = $price->price)
+		if ($sellableSupplier = $this->getSellableSupplier())
+			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
+				if ($value = $price->price)
 					return 'costcompanysellsupp';
 
 		return 'costcompanysell';
@@ -172,21 +160,26 @@ class Quotationrow extends ProductPackageBaseModel
 		$this->cost_company = $value;
 	}
 
-	public function getCalculatedClientPriceAttribute()
-	{
-		if($value = $this->client_price)
-			return $value;
+	//	public function getCalculatedClientPriceAttribute()
+	//	{
+	//		if ($value = $this->client_price)
+	//			return $value;
+	//
+	//		return $this->getSellable()->getClientPrice();
+	//	}
 
-		return $this->getSellable()->getClientPrice();
-	}
+	//	public function getClientPrice() : ?float
+	//	{
+	//		return $this->client_price;
+	//	}
 
-	public function getCalculatedClientPriceHtmlClass()
-	{
-		if($value = $this->client_price)
-			return 'clientpriceforced';
-
-		return 'clientpricecalculated';
-	}
+	//	public function getCalculatedClientPriceHtmlClass()
+	//	{
+	//		if ($value = $this->client_price)
+	//			return 'clientpriceforced';
+	//
+	//		return 'clientpricecalculated';
+	//	}
 
 	public function setCalculatedClientPriceAttribute($value)
 	{
@@ -195,10 +188,23 @@ class Quotationrow extends ProductPackageBaseModel
 
 	public function getCalculatedCostCompanyTotalAttribute()
 	{
-		if($value = $this->cost_company_total)
-			return $value;
+		if ($value = $this->cost_company_total)
+			return round($value, 2);
 
-		return $this->getQuantity() * $this->calculated_cost_company;
+		return round($this->getQuantity() * $this->calculated_cost_company, 2);
+	}
+
+	public function getQuantity() : ?float
+	{
+		return $this->quantity;
+	}
+
+	public function getCalculatedKmAttribute()
+	{
+		if ($value = $this->km)
+			return round($value, 2);
+
+		return $this->getQuotation()->getKm();
 	}
 
 	public function getCalculatedCostCompanyTotal() : float
@@ -208,7 +214,7 @@ class Quotationrow extends ProductPackageBaseModel
 
 	public function getCalculatedCostCompanyTotalHtmlClass()
 	{
-		if($value = $this->cost_company_total)
+		if ($value = $this->cost_company_total)
 			return 'costcompanytotalforced';
 
 		return 'costcompanytotalcalculated';
@@ -219,34 +225,38 @@ class Quotationrow extends ProductPackageBaseModel
 		$this->cost_company_total = $value;
 	}
 
-	public function getCalculatedClientPriceTotalAttribute()
-	{
-		if($value = $this->client_price_total)
-			return $value;
 
-		return $this->getQuantity() * $this->calculated_client_price;
-	}
+	//	public function getCalculatedClientPriceTotalAttribute()
+	//	{
+	//		if ($value = $this->client_price_total)
+	//			return $value;
+	//
+	//		return $this->getQuantity() * $this->calculated_client_price;
+	//	}
 
-	public function getCalculatedClientPriceTotalHtmlClass()
-	{
-		if($value = $this->client_price_total)
-			return 'clientpricetotalforced';
+	//	public function getCalculatedClientPriceTotalHtmlClass()
+	//	{
+	//		if ($value = $this->client_price_total)
+	//			return 'clientpricetotalforced';
+	//
+	//		return 'clientpricetotalcalculated';
+	//	}
 
-		return 'clientpricetotalcalculated';
-	}
-
-
-
-	public function setCalculatedClientPriceTotalAttribute($value)
-	{
-		$this->client_price_total = $value;
-	}
+	//	public function setCalculatedClientPriceTotalAttribute($value)
+	//	{
+	//		$this->client_price_total = $value;
+	//	}
 
 	public function getParameter(string $key, mixed $default = null) : mixed
 	{
 		$parameters = $this->getParameters();
 
 		return $parameters[$key] ?? $default;
+	}
+
+	public function getParameters() : array
+	{
+		return $this->parameters ?? [];
 	}
 
 	public function setParameter(string $key, mixed $value = null)
@@ -257,10 +267,5 @@ class Quotationrow extends ProductPackageBaseModel
 
 		$this->parameters = $parameters;
 		$this->save();
-	}
-
-	public function getParameters() : array
-	{
-		return $this->parameters ?? [];
 	}
 }

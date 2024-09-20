@@ -14,31 +14,31 @@ return new class extends Migration
         if(! config('products.sellables.enabled', false))
             return ;
 
-//        Schema::create(config('products.models.project.table'), function (Blueprint $table) {
-//            $table->uuid('id')->primary();
-//
-//            $table->string('name');
-//            $table->string('slug')->nullable();
-//            $table->text('description')->nullable();
-//
-//            $table->uuid('client_id')->nullable();
-//            $table->foreign('client_id')->references('id')->on(config('clients.models.client.table'));
-//
-//            $table->uuid('destination_id')->nullable();
-//            $table->foreign('destination_id')->references('id')->on(config('clients.models.destination.table'));
-//
-//            $table->timestamp('starts_at')->nullable();
-//            $table->timestamp('ends_at')->nullable();
-//
-//            $table->timestamp('started_at')->nullable();
-//            $table->timestamp('completed_at')->nullable();
-//
-//            $table->uuid('category_id')->nullable();
-//            $table->foreign('category_id')->references('id')->on(config('category.models.category.table'));
-//
-//            $table->softDeletes();
-//            $table->timestamps();
-//        });
+       Schema::create(config('products.models.project.table'), function (Blueprint $table) {
+           $table->uuid('id')->primary();
+
+           $table->string('name');
+           $table->string('slug')->nullable();
+           $table->text('description')->nullable();
+
+           $table->uuid('client_id')->nullable();
+           $table->foreign('client_id')->references('id')->on(config('clients.models.client.table'));
+
+           $table->uuid('destination_id')->nullable();
+           $table->foreign('destination_id')->references('id')->on(config('clients.models.destination.table'));
+
+           $table->timestamp('starts_at')->nullable();
+           $table->timestamp('ends_at')->nullable();
+
+           $table->timestamp('started_at')->nullable();
+           $table->timestamp('completed_at')->nullable();
+
+           $table->uuid('category_id')->nullable();
+           $table->foreign('category_id')->references('id')->on(config('category.models.category.table'));
+
+           $table->softDeletes();
+           $table->timestamps();
+       });
 
         Schema::create(config('products.models.quotation.table'), function (Blueprint $table) {
 			$table->uuid('id')->primary();

@@ -78,6 +78,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierBy
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierContracttypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRelatedFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVehicletypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditFieldsetsParameters;
@@ -548,6 +549,7 @@ return [
 			'class' => SellableSupplier::class,
 			'fieldsGroupsFiles' => [
 				'contracttype' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
+				'vehicletype' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
 				'byOperator' => SellableSupplierByOperatorFieldsGroupParametersFile::class,
 				'base' => SellableSupplierBaseFieldsGroupParametersFile::class,
 				'index' => SellableSupplierFieldsGroupParametersFile::class,

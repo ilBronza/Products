@@ -31,7 +31,9 @@ Route::group(['prefix' => 'projects'], function()
 Route::group(['prefix' => 'quotations'], function()
 {
 	Route::get('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
-	Route::post('{quotation}/store-row', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
+
+	//QuotationAddQuotationrowIndexController
+	Route::post('{quotation}/store-new-quotationrows', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
 
 	Route::get('', [Products::getController('quotation', 'index'), 'index'])->name('quotations.index');
 	Route::get('create', [Products::getController('quotation', 'create'), 'create'])->name('quotations.create');
@@ -46,6 +48,8 @@ Route::group(['prefix' => 'quotations'], function()
 Route::group(['prefix' => 'quotationrows'], function()
 {
 	Route::get('{quotationrow}/assign-sellable-supplier/{sellableSupplier}', [Products::getController('quotationrow', 'assignSellableSupplier'), 'associateSellableSupplier'])->name('quotationrows.associateSellableSupplier');
+
+	//QuotationrowAssignSellableSupplierController
 	Route::get('{quotationrow}/assign-sellable-supplier', [Products::getController('quotationrow', 'assignSellableSupplier'), 'assignSellableSupplier'])->name('quotationrows.assignSellableSupplier');
 
 
@@ -57,6 +61,7 @@ Route::group(['prefix' => 'quotationrows'], function()
 	Route::get('{quotationrow}/edit', [Products::getController('quotationrow', 'edit'), 'edit'])->name('quotationrows.edit');
 	Route::put('{quotationrow}', [Products::getController('quotationrow', 'edit'), 'update'])->name('quotationrows.update');
 
+	//QuotationrowDestroyController
 	Route::delete('{quotationrow}/delete', [Products::getController('quotationrow', 'destroy'), 'destroy'])->name('quotationrows.destroy');
 });
 

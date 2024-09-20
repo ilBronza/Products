@@ -25,20 +25,18 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 	{
 		return [
 			'mySelfPrimary' => 'primary',
-			'mySelfEdit' => 'links.edit',
-			'mySelfSee' => 'links.see',
-			'name' => 'flat',
-			'supplier.target' => 'links.seeName',
-			'supplier.target.address.city' => 'flat',
-			'supplier.target.address.province' => 'flat',
-//			'mySelf' => 'json',
-//			'mySelfClass' => 'models.classname',
+			'supplier.target' => [
+				'type' => 'links.seeName',
+				'width' => '195px'
+			],
+			//			'mySelfJson' => 'json',
 		];
 	}
 
 	static function getEndingFields() : array
 	{
 		return [
+			'mySelfAssign' => 'products::quotationrows.assignSellableSupplier',
 			'mySelfDelete' => 'links.delete'
 		];
 	}

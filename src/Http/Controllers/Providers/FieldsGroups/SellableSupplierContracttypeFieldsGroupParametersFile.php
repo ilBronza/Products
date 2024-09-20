@@ -7,8 +7,8 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 	static function getTypedFields() : array
 	{
 		return [
-			'mySelfClass' => 'models.classBasename',
-			'id' => 'flat',
+			'supplier.target.address.city' => 'flat',
+			'supplier.target.address.province' => 'flat',
 			'supplier.target.operatorContracttypes' => [
 				'type' => 'iterators.each',
 				'childParameters' => [
@@ -17,8 +17,6 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 				],
 				'width' => '450px'
 			],
-
-			'mySelfAssign' => 'products::quotationrows.assignSellableSupplier',
 
 			'cost_company_day' => 'flat',
 			'cost_gross_day' => 'flat',
