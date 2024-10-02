@@ -33,6 +33,11 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 			if($this->getSellable()->isHotelType())
 				return config('products.models.sellableSupplier.fieldsGroupsFiles.hotel')::getFieldsGroup();
 
+			if($this->getSellable()->isRentType())
+				return config('products.models.sellableSupplier.fieldsGroupsFiles.rent')::getFieldsGroup();
+
+			if($this->getSellable()->isSurveillanceType())
+				return config('products.models.sellableSupplier.fieldsGroupsFiles.surveillance')::getFieldsGroup();
 		}
 
 		if ($this->getTargetType() == 'Contracttype')
@@ -83,6 +88,16 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 				return [
 					'supplier.target'
 				];
+
+			if($this->getSellable()->isRentType())
+				return [
+					'supplier.target'
+				];
+
+			if($this->getSellable()->isSurveillanceType())
+				return [
+					'supplier.target'
+				];
 		}
 
 		if ($this->getTargetType() == 'Type')
@@ -111,8 +126,14 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 		else if($sellableSupplier->getSellable()->isVehicleType())
 			$tablesToRefresh = ['vehicleQuotationrows'];
 
+		else if($sellableSupplier->getSellable()->isSurveillanceType())
+			$tablesToRefresh = ['surveillanceQuotationrows'];
+
 		else if($sellableSupplier->getSellable()->isHotelType())
 			$tablesToRefresh = ['hotelQuotationrows'];
+
+		else if($sellableSupplier->getSellable()->isRentType())
+			$tablesToRefresh = ['rentQuotationrows'];
 
 		else
 			throw new \Exception('gestire gli altri tipi');

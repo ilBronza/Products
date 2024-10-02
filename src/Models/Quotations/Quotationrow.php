@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models\Quotations;
 
+use App\Models\ProjectSpecific\Destination;
 use Carbon\Carbon;
 use IlBronza\Category\Models\Category;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
@@ -267,5 +268,20 @@ class Quotationrow extends ProductPackageBaseModel
 
 		$this->parameters = $parameters;
 		$this->save();
+	}
+
+	public function getFullname() : string
+	{
+		return $this->getSellable()?->getName() . ' ' . $this->getQuotation()?->getName();
+	}
+
+	public function getDestination() : ? Destination
+	{
+		return $this->getQuotation()?->getDestination();
+	}
+
+	public function getCalculatedRowtotal(): ? float
+	{
+		return $this->calculated_row_total;
 	}
 }

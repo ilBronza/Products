@@ -23,6 +23,12 @@ class SupplierRelationManager Extends RelationshipsManager
 			'elementGetterMethod' => 'getRelatedQuotationrows'
 		];
 
+		$relations['dossiers'] = [
+			'controller' => config('filecabinet.models.dossier.controllers.index'),
+			'buttonsMethods' => [
+			]
+		];
+
 		if($target = $this->getModel()->getTarget())
 			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
 

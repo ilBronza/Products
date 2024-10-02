@@ -70,7 +70,9 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		$types = [
 			'Contracttype',
 			'VehicleType',
+			'Surveillance',
 			'Hotel',
+			'Rent',
 			'Reimbursement'
 		];
 
@@ -82,6 +84,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			$validationParameters[$type . '.*.sellable'] = 'string|required|in:' . implode(',', array_keys($quotation->getPossibleSellablesByType($type)));
 			$validationParameters[$type . '.*.quantity'] = 'integer|required|min:1';
 		}
+
 
 		//		dd($request->all());
 		//		dd($validationParameters);

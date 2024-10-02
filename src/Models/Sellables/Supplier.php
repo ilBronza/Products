@@ -3,24 +3,21 @@
 namespace IlBronza\Products\Models\Sellables;
 
 use IlBronza\Category\Models\Category;
-use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Contacts\Models\Traits\InteractsWithContact;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
-use IlBronza\Products\Models\Sellables\Sellable;
-use IlBronza\Products\Models\Sellables\SellableSupplier;
 use Illuminate\Support\Collection;
 
-use function get_class;
+use function dd;
 use function is_array;
 use function json_encode;
 
 class Supplier extends ProductPackageBaseModel
 {
-//	use InteractsWithCategoryTrait;
+	//	use InteractsWithCategoryTrait;
 	use InteractsWithPaymenttypes;
 	use InteractsWithContact;
 	use InteractsWithFormTrait;
@@ -35,35 +32,60 @@ class Supplier extends ProductPackageBaseModel
 		return Category::getProjectClassName()::findCachedField('name', 'Fornitore');
 	}
 
-	public function target()
+	static function getInternalIds() : array
 	{
-		return $this->morphTo();
+		dd('estendere lista fornitori interni');
 	}
 
-	public function getTarget() : ? SupplierInterface
+	public function getName() : ?string
 	{
-		if(is_array($this->target))
+		return $this->getTarget()->getName();
+	}
+
+	public function getTarget() : ?SupplierInterface
+	{
+		if (is_array($this->target))
 			return $this->target()->first();
 
 		return $this->target;
 	}
 
-	public function getName() : ? string
+	public function target()
 	{
-		return $this->getTarget()->getName();
+		return $this->morphTo();
 	}
 
 	public function sellables()
 	{
 		return $this->belongsToMany(
-			Sellable::getProjectClassName(),
-			config('products.models.sellableSupplier.table')
+			Sellable::getProjectClassName(), config('products.models.sellableSupplier.table')
 		)->using(SellableSupplier::getProjectClassName());
 	}
 
 	public function getSellables() : Collection
 	{
 		return $this->sellables;
+	}
+
+	public function getRelatedQuotationrows() : Collection
+	{
+		return $this->quotationrows()->with(
+			'directPrice', 'sellableSupplier.directPrice', 'sellable', 'quotation.client', 'quotation.project'
+		)->get();
+	}
+
+	public function quotationrows()
+	{
+		return $this->hasManyThrough(
+			Quotationrow::getProjectClassName(), SellableSupplier::getProjectClassName(), 'supplier_id', 'sellable_supplier_id'
+		);
+	}
+
+	public function getSellableSuppliers() : Collection
+	{
+		return $this->sellableSuppliers()->with(
+			'directPrice.measurementUnit', 'sellable.target', 'supplier.target'
+		)->get();
 	}
 
 	public function sellableSuppliers()
@@ -73,37 +95,7 @@ class Supplier extends ProductPackageBaseModel
 		);
 	}
 
-    public function quotationrows()
-    {
-        return $this->hasManyThrough(
-            Quotationrow::getProjectClassName(),
-            SellableSupplier::getProjectClassName(),
-            'supplier_id',
-            'sellable_supplier_id'
-        );
-    }
-
-    public function getRelatedQuotationrows() : Collection
-    {
-    	return $this->quotationrows()->with(
-    		'directPrice',
-    		'sellableSupplier.directPrice',
-    		'sellable',
-    		'quotation.client',
-    		'quotation.project'
-    	)->get();
-    }
-
-	public function getSellableSuppliers() : Collection
-	{
-		return $this->sellableSuppliers()->with(
-			'directPrice.measurementUnit',
-			'sellable.target',
-			'supplier.target'
-		)->get();
-	}
-
-	public function getCategoriesCollection() : ? string
+	public function getCategoriesCollection() : ?string
 	{
 		return null;
 	}
@@ -116,5 +108,15 @@ class Supplier extends ProductPackageBaseModel
 	public function getTargetString()
 	{
 		return json_encode($this->target->defaultDestination->address);
+	}
+
+	public function scopeByTargetType($query, string $targetType)
+	{
+		$query->where('target_type', $targetType);
+	}
+
+	public function getSellableSuppliersIds() : array
+	{
+		return $this->sellableSuppliers()->select('id')->pluck('id')->toArray();
 	}
 }

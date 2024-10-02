@@ -7,7 +7,6 @@ use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Destination;
 use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
-use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
@@ -15,6 +14,8 @@ use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
+
+use Illuminate\Support\Collection;
 
 use function strtolower;
 
@@ -46,9 +47,19 @@ class Quotation extends ProductPackageBaseModel
 		return $this->hasMany(Quotationrow::getProjectClassName());
 	}
 
+	public function getQuotationrows() : Collection
+	{
+		return $this->quotationrows;
+	}
+
 	public function project()
 	{
 		return $this->belongsTo(Project::getProjectClassName());
+	}
+
+	public function getProject() : ? Project
+	{
+		return $this->project;
 	}
 
 	public function possibleProjects()
@@ -101,6 +112,18 @@ class Quotation extends ProductPackageBaseModel
 		$type = strtolower($type);
 
 		return $types[$type]();
+	}
+
+	public function getDescription()
+	{
+		return 'aggiungere la descrizione alle quotazioni e convertire in commessa';
+	}
+
+	public function scopeByEndingDateRange($query, $dateStart, $dateEnd)
+	{
+		return $query->whereHas('extrafields', function($q) use ($dateStart, $dateEnd) {
+			$q->whereBetween('ends_at', [$dateStart, $dateEnd]);
+		});
 	}
 
 }

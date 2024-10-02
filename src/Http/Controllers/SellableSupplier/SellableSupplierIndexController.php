@@ -15,13 +15,19 @@ class SellableSupplierIndexController extends SellableSupplierCRUD
 
     public $allowedMethods = ['index'];
 
-    public function getIndexFieldsArray()
-    {
+	public function getIndexFieldsArray()
+	{
 		//SellableSupplierFieldsGroupParametersFile
-        return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getFieldsGroup();
-    }
+		return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getFieldsGroup();
+	}
 
-    public function getIndexElements()
+	public function getRelatedFieldsArray()
+	{
+		//SellableSupplierFieldsGroupParametersFile
+		return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getFieldsGroup();
+	}
+
+	public function getIndexElements()
     {
         return $this->getModelClass()::with(
 			'supplier.target',

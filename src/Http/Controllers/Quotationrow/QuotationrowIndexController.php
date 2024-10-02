@@ -27,7 +27,7 @@ class QuotationrowIndexController extends QuotationrowCRUD
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with('client', 'category')->get();
+        return $this->getModelClass()::with('quotation', 'sellable', 'sellableSupplier.supplier.target', 'client', 'category', 'extraFields')->get();
     }
 
 }

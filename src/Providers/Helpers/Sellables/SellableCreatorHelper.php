@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Providers\Helpers\Sellables;
 
+use Exception;
 use IlBronza\Prices\Models\Price;
 use IlBronza\Prices\Providers\PriceCreatorHelper;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
@@ -12,80 +13,78 @@ use Illuminate\Support\Collection;
 
 class SellableCreatorHelper
 {
-    static function getSellableByTarget(SellableItemInterface $target, string $type = null) : ? Sellable
-    {
-        $query = $target->sellables();
+	static function createSellableSupplierCustomPrices(SellableSupplier $sellableSupplier, float $price) : Price
+	{
+		$price = (new PriceCreatorHelper($sellableSupplier))->createPrice();
 
-        if($type)
-            $query->where('type', $type);
+		$sellableSupplier->directPrice()->associate($price);
+		$sellableSupplier->save();
 
-        return $query->first();
-    }
+		return $price;
+	}
 
-    static function createSellableByTarget(SellableItemInterface $target, string $type = null) : Sellable
-    {
-        $sellable = Sellable::getProjectClassName()::make();
-        $sellable->name = $target->getNameForSellable();
-        $sellable->target()->associate($target);
-        $sellable->type = $type;
-        $sellable->save();
+	static function getOrcreateSellableByTarget(SellableItemInterface $target, Collection|array $categories = [], string $type = null) : Sellable
+	{
+		if (! $sellable = static::getSellableByTarget($target, $type))
+			$sellable = static::createSellableByTarget($target, $type);
 
-        return $sellable;
-    }
+		static::setSellableSuppliersBySellable($sellable);
 
-    static function getSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
-    {
-        return $supplier->sellableSuppliers()->where('sellable_id', $sellable->getKey())->first();
-    }
+		$sellable->categories()->syncWithoutDetaching($categories);
 
-    static function createSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
-    {
-        $supplier->sellables()->syncWithoutDetaching(
-            $sellable->getKey()
-        );
+		return $sellable;
+	}
 
-        return static::getSellableSupplier($supplier, $sellable);
-    }
+	static function getSellableByTarget(SellableItemInterface $target, string $type = null) : ?Sellable
+	{
+		$query = $target->sellables();
 
-    static function createSellableSupplierWithStandardPrices(Supplier $supplier, Sellable $sellable) : SellableSupplier
-    {
-        $sellableSupplier = static::createSellableSupplier($supplier, $sellable);
+		if ($type)
+			$query->where('type', $type);
 
-        $sellableSupplier->setStandardPrices();
+		return $query->first();
+	}
 
-        return $sellableSupplier;
-    }
+	static function createSellableByTarget(SellableItemInterface $target, string $type = null) : Sellable
+	{
+		$sellable = Sellable::getProjectClassName()::make();
+		$sellable->name = $target->getNameForSellable();
+		$sellable->target()->associate($target);
+		$sellable->type = $type;
+		$sellable->save();
 
-    static function createSellableSupplierCustomPrices(SellableSupplier $sellableSupplier, float $price) : Price
-    {
-        $price = (new PriceCreatorHelper($sellableSupplier))
-                ->createPrice();
+		return $sellable;
+	}
 
-        $sellableSupplier->directPrice()->associate($price);
-        $sellableSupplier->save();
+	static function setSellableSuppliersBySellable(Sellable $sellable)
+	{
+		if (! $target = $sellable->getTarget())
+			throw new Exception('manca il target per questo sellable ' . $sellable->getKey());
 
-        return $price;
-    }
+		foreach ($target->getPossibleSuppliersElements() as $supplier)
+			static::createSellableSupplierWithStandardPrices($supplier, $sellable);
+	}
 
+	static function createSellableSupplierWithStandardPrices(Supplier $supplier, Sellable $sellable) : SellableSupplier
+	{
+		$sellableSupplier = static::createSellableSupplier($supplier, $sellable);
 
-    static function setSellableSuppliersBySellable(Sellable $sellable)
-    {
-        if(! $target = $sellable->getTarget())
-            throw new \Exception('manca il target per questo sellable ' . $sellable->getKey());
+		$sellableSupplier->setStandardPrices();
 
-        foreach($target->getPossibleSuppliersElements() as $supplier)
-            static::createSellableSupplierWithStandardPrices($supplier, $sellable);
-    }
+		return $sellableSupplier;
+	}
 
-    static function getOrcreateSellableByTarget(SellableItemInterface $target, Collection|array $categories = [], string $type = null) : Sellable
-    {
-        if(! $sellable = static::getSellableByTarget($target, $type))
-            $sellable = static::createSellableByTarget($target, $type);
+	static function createSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
+	{
+		$supplier->sellables()->syncWithoutDetaching(
+			$sellable->getKey()
+		);
 
-        static::setSellableSuppliersBySellable($sellable);
+		return static::getSellableSupplier($supplier, $sellable);
+	}
 
-        $sellable->categories()->syncWithoutDetaching($categories);
-
-        return $sellable;
-    }
+	static function getSellableSupplier(Supplier $supplier, Sellable $sellable) : ?SellableSupplier
+	{
+		return $supplier->sellableSuppliers()->where('sellable_id', $sellable->getKey())->first();
+	}
 }

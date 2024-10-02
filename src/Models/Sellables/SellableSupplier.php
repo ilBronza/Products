@@ -33,6 +33,11 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 	static $modelConfigPrefix = 'sellableSupplier';
 	protected $keyType = 'string';
 
+	static function getInternalIds() : array
+	{
+		dd('estendere lista fornitori interni');
+	}
+
 	public function getPriceBaseAttributes()
 	{
 		return [
