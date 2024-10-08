@@ -13,7 +13,6 @@ class QuotationCreateStoreFieldsetsParameters extends FieldsetParametersFile
                 'translationPrefix' => 'products::fields',
                 'fields' => [
                     'name' => ['text' => 'string|required'],
-                    'slug' => ['text' => 'string|required'],
                      'client' => [
                          'type' => 'select',
                          'multiple' => false,
@@ -22,21 +21,7 @@ class QuotationCreateStoreFieldsetsParameters extends FieldsetParametersFile
                      ],
                 ],
                 'width' => ["1-3@l", '1-2@m']
-            ],
-            // 'status' => [
-            //     'translationPrefix' => 'products::fields',
-            //     'fields' => [
-            //         'category' => [
-            //             'type' => 'select',
-            //             'multiple' => false,
-            //             'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
-            //             'relation' => 'category'
-            //         ],
-            //         'started_at' => ['datetime' => 'date|nullable'],
-            //         'completed_at' => ['datetime' => 'date|nullable'],
-            //     ],
-            //     'width' => ["1-3@l", '1-2@m']
-            // ]
+            ]
         ];
     }
 }

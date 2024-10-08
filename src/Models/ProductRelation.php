@@ -19,12 +19,12 @@ class ProductRelation extends Pivot
 	use SoftDeletes;
 	use CRUDCacheTrait;
 	use CRUDRelationshipModelTrait;
-    use CRUDUseUuidTrait;
+	use CRUDUseUuidTrait;
 
-	use CRUDModelTrait, ProductPackageBaseModelTrait
-	{
-        ProductPackageBaseModelTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
-    }
+	use CRUDModelTrait, ProductPackageBaseModelTrait;
+	// {
+	// 	ProductPackageBaseModelTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
+	// }
 
 	protected $keyType = 'string';
 
@@ -36,7 +36,7 @@ class ProductRelation extends Pivot
 
 	protected $guarded = [];
 
-	public function getTable()
+	public function getTable() : string
 	{
 		return config("products.models.productRelation.table");
 	}
@@ -46,7 +46,8 @@ class ProductRelation extends Pivot
 		return Product::getProjectClassName();
 	}
 
-	public function getManyToManyRelationPivotFields() {
+	public function getManyToManyRelationPivotFields()
+	{
 		return [
 			'id',
 			'main_code',
@@ -57,16 +58,14 @@ class ProductRelation extends Pivot
 	public function component()
 	{
 		return $this->belongsTo(
-			Product::getProjectClassName(),
-			'child_id'
+			Product::getProjectClassName(), 'child_id'
 		);
 	}
 
 	public function parent()
 	{
 		return $this->belongsTo(
-			Product::getProjectClassName(),
-			'parent_id'
+			Product::getProjectClassName(), 'parent_id'
 		);
 	}
 
@@ -85,11 +84,11 @@ class ProductRelation extends Pivot
 		return $this->main_code;
 	}
 
-	public function getName() : ? string
+	public function getName() : ?string
 	{
 		$name = $this->getParent()->getName() . ' -> componente ' . $this->getComponent()->getName();
 
-		if($this->getMainCode())
+		if ($this->getMainCode())
 			return $name . ' per ' . $this->getMainCode();
 
 		return $name;

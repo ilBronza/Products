@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models\Quotations;
 
+use Carbon\Carbon;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Destination;
@@ -14,7 +15,6 @@ use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
-
 use Illuminate\Support\Collection;
 
 use function strtolower;
@@ -24,6 +24,7 @@ class Quotation extends ProductPackageBaseModel
 	static $modelConfigPrefix = 'quotation';
 
 	use CRUDUseUuidTrait;
+
 	protected $casts = [
 		'date' => 'date'
 	];
@@ -39,6 +40,7 @@ class Quotation extends ProductPackageBaseModel
 	use InteractsWithDestinationTrait;
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
+
 	protected $keyType = 'string';
 	protected $deletingRelationships = [];
 
@@ -57,7 +59,7 @@ class Quotation extends ProductPackageBaseModel
 		return $this->belongsTo(Project::getProjectClassName());
 	}
 
-	public function getProject() : ? Project
+	public function getProject() : ?Project
 	{
 		return $this->project;
 	}
@@ -121,9 +123,18 @@ class Quotation extends ProductPackageBaseModel
 
 	public function scopeByEndingDateRange($query, $dateStart, $dateEnd)
 	{
-		return $query->whereHas('extrafields', function($q) use ($dateStart, $dateEnd) {
+		return $query->whereHas('extrafields', function ($q) use ($dateStart, $dateEnd)
+		{
 			$q->whereBetween('ends_at', [$dateStart, $dateEnd]);
 		});
 	}
 
+	public function scopeCurrent($query)
+	{
+		$query->whereHas('extrafields', function ($_query)
+		{
+			$_query->whereNull('ends_at');
+			$_query->orWhere('ends_at', '>=', Carbon::now()->subMonths(1));
+		});
+	}
 }

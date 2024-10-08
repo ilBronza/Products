@@ -97,6 +97,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProjectCreateStoreFie
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCreateStoreController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationCurrentController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestroyController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationEditUpdateController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationIndexController;
@@ -481,6 +482,7 @@ return [
 			'controllers' => [
 				'addQuotationrow' => QuotationAddQuotationrowIndexController::class,
 				'index' => QuotationIndexController::class,
+				'current' => QuotationCurrentController::class,
 				'create' => QuotationCreateStoreController::class,
 				'store' => QuotationCreateStoreController::class,
 				'show' => QuotationShowController::class,

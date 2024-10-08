@@ -2,16 +2,18 @@
 
 namespace IlBronza\Products\Models;
 
+use IlBronza\CRUD\Models\BasePivotModel;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
+use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AccessoryProduct extends Pivot
+class AccessoryProduct extends BasePivotModel
 {
 	use SoftDeletes;
 
@@ -20,10 +22,19 @@ class AccessoryProduct extends Pivot
 	use CRUDUseUuidTrait;
 
 	static $modelConfigPrefix = 'accessoryProduct';
-	use CRUDModelTrait, ProductPackageBaseModelTrait
+	use CRUDModelTrait; 
+	use ProductPackageBaseModelTrait;
+	use PackagedModelsTrait
 	{
-		ProductPackageBaseModelTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
+		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
+
+		PackagedModelsTrait::getTranslatedClassname insteadof CRUDModelTrait;
+
+
+		PackagedModelsTrait::getPluralTranslatedClassname insteadof CRUDModelTrait;
 	}
+
+	static $packageConfigPrefix = 'products';
 
 	public $incrementing = true;
 

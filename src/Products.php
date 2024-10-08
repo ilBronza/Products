@@ -93,9 +93,14 @@ class Products implements RoutedObjectInterface
 			'text' => 'products::quotations.quotations',
 			'children' => [
 				[
-					'icon' => 'list',
+					'icon' => 'box-archive',
 					'href' => $this->route('quotations.index'),
-					'text' => 'products::quotations.index'
+					'text' => 'products::generals.all'
+				],
+				[
+					'icon' => 'list',
+					'href' => $this->route('quotations.current'),
+					'text' => 'products::generals.current'
 				],
 			]
 		]);

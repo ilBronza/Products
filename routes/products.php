@@ -30,6 +30,8 @@ Route::group(['prefix' => 'projects'], function()
 
 Route::group(['prefix' => 'quotations'], function()
 {
+	Route::get('current', [Products::getController('quotation', 'current'), 'index'])->name('quotations.current');
+
 	Route::get('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
 
 	//QuotationAddQuotationrowIndexController

@@ -8,25 +8,25 @@ trait ProductPackageBaseModelTrait
 {
 	//TODO rimuovere tutto questo se fila liscio
 
-//	public function getRouteBaseNamePrefix() : ? string
-//	{
-//		dd(config('products.routePrefix'));
-//		return config('products.routePrefix');
-//	}
+	//	public function getRouteBaseNamePrefix() : ? string
+	//	{
+	//		dd(config('products.routePrefix'));
+	//		return config('products.routePrefix');
+	//	}
 
-//	static function getModelConfigPrefix()
-//	{
-//		return static::$modelConfigPrefix;
-//	}
+	//	static function getModelConfigPrefix()
+	//	{
+	//		return static::$modelConfigPrefix;
+	//	}
 
-//	static function getProjectClassName()
-//	{
-//		return config('products.models.' . static::getModelConfigPrefix() . '.class');
-//	}
+	//	static function getProjectClassName()
+	//	{
+	//		return config('products.models.' . static::getModelConfigPrefix() . '.class');
+	//	}
 
-//	public function getTable()
-//	{
-//		return config("products.models.{$this->getModelConfigPrefix()}.table");
-//	}
+	//	public function getTable() : string
+	//	{
+	//		return config("products.models.{$this->getModelConfigPrefix()}.table");
+	//	}
 
 }
