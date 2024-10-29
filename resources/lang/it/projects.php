@@ -1,6 +1,6 @@
 <?php
 
-return array (
-  'projects' => 'Progetti',
-  'index' => 'Indice progetti',
-);
+return [
+	'projects' => 'Progetti',
+	'index' => 'Indice',
+];

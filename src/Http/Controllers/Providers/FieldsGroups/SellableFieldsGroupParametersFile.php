@@ -17,7 +17,6 @@ class SellableFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
                 'name' => 'flat',
-                'slug' => 'flat',
                 'type' => 'flat',
                 'category' => 'relations.belongsTo',
                 'target' => 'relations.belongsTo',

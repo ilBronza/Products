@@ -32,6 +32,8 @@ class QuotationrowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 					'convocated_when' => ['text' => 'string|nullable'],
 
 					'calculated_cost_company' => ['number' => 'numeric|nullable'],
+					'calculated_toll' => ['number' => 'numeric|nullable'],
+
 					//	                'calculated_client_price' => ['number' => 'numeric|nullable'],
 
 					'calculated_cost_company_total' => ['number' => 'numeric|nullable'],

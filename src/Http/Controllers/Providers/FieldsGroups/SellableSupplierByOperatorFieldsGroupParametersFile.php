@@ -15,7 +15,7 @@ class SellableSupplierByOperatorFieldsGroupParametersFile extends FieldsGroupPar
 				'mySelfEdit' => 'links.edit',
 				'mySelfSee' => 'links.see',
 
-				'sellable.target' => 'links.seeName',
+				'sellable' => 'links.seeName',
 
 				'cost_company_day' => 'editor.numeric',
 				'cost_gross_day' => 'editor.numeric',

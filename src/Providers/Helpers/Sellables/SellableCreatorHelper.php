@@ -11,6 +11,8 @@ use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
 use Illuminate\Support\Collection;
 
+use function dd;
+
 class SellableCreatorHelper
 {
 	static function createSellableSupplierCustomPrices(SellableSupplier $sellableSupplier, float $price) : Price
@@ -81,6 +83,16 @@ class SellableCreatorHelper
 		);
 
 		return static::getSellableSupplier($supplier, $sellable);
+	}
+
+	static function getOrCreateSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
+	{
+		if($sellableSupplier = SellableSupplier::where('sellable_id', $sellable->getKey())
+		                                       ->where('supplier_id', $supplier->getKey())
+		                                       ->first())
+			return $sellableSupplier;
+
+		return static::createSellableSupplier($supplier, $sellable);
 	}
 
 	static function getSellableSupplier(Supplier $supplier, Sellable $sellable) : ?SellableSupplier

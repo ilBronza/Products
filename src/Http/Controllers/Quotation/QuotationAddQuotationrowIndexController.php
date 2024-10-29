@@ -11,6 +11,7 @@ use IlBronza\UikitTemplate\Fetcher;
 use Illuminate\Http\Request;
 
 use function array_keys;
+use function compact;
 use function dd;
 use function implode;
 use function route;
@@ -114,6 +115,8 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 				}
 			}
 		}
+
+		return view('datatables::utilities.closeIframe', ['reloadAllTables' => true]);
 
 		return redirect()->to(
 			$quotation->getEditUrl()

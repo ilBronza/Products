@@ -8,6 +8,7 @@ class SellableSupplierVehicletypeFieldsGroupParametersFile extends SellableSuppl
 	{
 		return [
 			'supplier.target.plate' => 'flat',
+			'supplier.target.temp_codice' => 'flat',
 			'distance_price' => 'flat',
 		];
 	}

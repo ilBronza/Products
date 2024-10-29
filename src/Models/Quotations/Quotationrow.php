@@ -5,9 +5,12 @@ namespace IlBronza\Products\Models\Quotations;
 use App\Models\ProjectSpecific\Destination;
 use Carbon\Carbon;
 use IlBronza\Category\Models\Category;
+use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
+use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
+use IlBronza\FormField\Interfaces\FormfieldModelCompatibilityInterface;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\ProductPackageBaseModel;
@@ -18,9 +21,11 @@ use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 
 use function round;
 
-class Quotationrow extends ProductPackageBaseModel
+class Quotationrow extends ProductPackageBaseModel implements CrudReorderableModelInterface
 {
 	use CRUDUseUuidTrait;
+
+	use CRUDReorderableStandardTrait;
 
 	static $modelConfigPrefix = 'quotationrow';
 	use InteractsWithPriceTrait;
@@ -40,7 +45,39 @@ class Quotationrow extends ProductPackageBaseModel
 
 	public function getStartsAt() : ?Carbon
 	{
-		return $this->starts_at ?? $this->getQuotation()->getStartsAt();
+		return $this->starts_at;
+	}
+
+	public function getHasDifferentStartsAt()
+	{
+		if($this->getStartsAt() != $this->getQuotation()->getStartsAt())
+			return 'differentstart';
+
+		return null;
+	}
+
+	public function getHasDifferentEndsAt()
+	{
+		if($this->getEndsAt() != $this->getQuotation()->getEndsAt())
+			return 'differentend';
+
+		return null;
+	}
+
+	public function getStartsAtAttribute($value)
+	{
+		if($value)
+			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
+
+		return $this->getQuotation()?->getStartsAt();
+	}
+
+	public function getEndsAtAttribute($value)
+	{
+		if($value)
+			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
+
+		return $this->getQuotation()?->getEndsAt();
 	}
 
 	public function getQuotation() : ?Quotation
@@ -154,6 +191,14 @@ class Quotationrow extends ProductPackageBaseModel
 					return 'costcompanysellsupp';
 
 		return 'costcompanysell';
+	}
+
+	public function getCalculatedTollHtmlClass() : string
+	{
+		if ($value = $this->toll)
+			return 'tollforced';
+
+		return 'tollstandard';
 	}
 
 	public function setCalculatedCostCompanyAttribute($value)

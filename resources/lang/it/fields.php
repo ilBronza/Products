@@ -21,4 +21,13 @@ return [
 	'convocated_where' => 'Luogo',
 	'convocated_when' => 'Orario',
 	'mySelfMobile.sellableSupplier.supplier.target' => 'Mobile',
+	'street' => 'Via',
+	'number' => 'civico',
+	'address' => 'Indirizzo',
+	'zip' => 'Cap',
+	'city' => 'Comune',
+	'town' => 'Frazione',
+	'province' => 'Provincia',
+	'region' => 'Regione',
+	'state' => 'Nazione',
 ];

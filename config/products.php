@@ -6,6 +6,7 @@ use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowCont
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
+use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
@@ -32,6 +33,7 @@ use IlBronza\Products\Http\Controllers\Phase\PhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseShowController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseReorderController;
+use IlBronza\Products\Http\Controllers\Product\ProductReorderController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationEditUpdateController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationIndexController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationShowController;
@@ -98,6 +100,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsets
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCurrentController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationDestinationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestroyController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationEditUpdateController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationIndexController;
@@ -107,6 +110,7 @@ use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowCreateStoreContr
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowDestroyController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowEditUpdateController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowIndexController;
+use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowReorderController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowShowController;
 use IlBronza\Products\Http\Controllers\Sellable\SellableCreateStoreController;
 use IlBronza\Products\Http\Controllers\Sellable\SellableDestroyController;
@@ -125,6 +129,7 @@ use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
+use IlBronza\Products\Models\Client;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
@@ -202,6 +207,12 @@ return [
 			],
 			'fieldsGroupsFiles' => [
 				'productRelated' => ByProductRelatedAccessoryProductFieldsGroupParametersFile::class
+			],
+		],
+		'client' => [
+			'class' => Client::class,
+			'controllers' => [
+				'index' => ClientIndexController::class,
 			],
 		],
 		'assigneeTarget' => [
@@ -481,6 +492,7 @@ return [
 			],
 			'controllers' => [
 				'addQuotationrow' => QuotationAddQuotationrowIndexController::class,
+				'destination' => QuotationDestinationCreateStoreController::class,
 				'index' => QuotationIndexController::class,
 				'current' => QuotationCurrentController::class,
 				'create' => QuotationCreateStoreController::class,
@@ -508,6 +520,7 @@ return [
 				'show' => QuotationrowCreateStoreFieldsetsParameters::class
 			],
 			'controllers' => [
+				'reorder' => QuotationrowReorderController::class,
 				'assignSellableSupplier' => QuotationrowAssignSellableSupplierController::class,
 				'index' => QuotationrowIndexController::class,
 				'create' => QuotationrowCreateStoreController::class,

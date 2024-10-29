@@ -3,6 +3,8 @@
 namespace IlBronza\Products\Models\Quotations;
 
 use Carbon\Carbon;
+use IlBronza\Addresses\Models\Address;
+use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Destination;
@@ -121,6 +123,31 @@ class Quotation extends ProductPackageBaseModel
 		return 'aggiungere la descrizione alle quotazioni e convertire in commessa';
 	}
 
+	public function getDate() : ? Carbon
+	{
+		return $this->date;
+	}
+
+	public function provideDestinationModelForExtraFields() : ? Destination
+	{
+		return $this->destination;
+	}
+
+	public function provideAddressModelForExtraFields() : ? Address
+	{
+		return $this->address;
+	}
+
+	public function address()
+	{
+		return $this->hasOne(Address::gpc(), 'addressable_id', 'destination_id')->where('addressable_type', 'Destination');
+	}
+
+	public function getCreateDestinationUrl()
+	{
+		return $this->getKeyedRoute('createDestination');
+	}
+
 	public function scopeByEndingDateRange($query, $dateStart, $dateEnd)
 	{
 		return $query->whereHas('extrafields', function ($q) use ($dateStart, $dateEnd)
@@ -134,7 +161,7 @@ class Quotation extends ProductPackageBaseModel
 		$query->whereHas('extrafields', function ($_query)
 		{
 			$_query->whereNull('ends_at');
-			$_query->orWhere('ends_at', '>=', Carbon::now()->subMonths(1));
+			$_query->orWhere('ends_at', '>=', Carbon::now()->subMonths(6));
 		});
 	}
 }

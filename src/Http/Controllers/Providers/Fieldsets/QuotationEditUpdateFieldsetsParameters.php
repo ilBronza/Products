@@ -38,7 +38,7 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 					'category' => [
 						'type' => 'select',
 						'multiple' => false,
-						'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
+						'rules' => 'string|nullable|exists:' . config('category.models.category.table') . ',id',
 						'relation' => 'category'
 					],
 					'parent_id' => [
@@ -93,21 +93,23 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'type' => 'boolean',
 						'rules' => 'boolean|required'
 					],
-					'km' => [
-						'type' => 'number',
-						'rules' => 'numeric|nullable',
-						'data' => ['reloadalltables' => true],
-					],
-					'round_trip' => [
-						'type' => 'boolean',
-						'rules' => 'boolean|required',
-						'data' => ['reloadalltables' => true],
-					],
 					'daily_allowance' => [
 						'type' => 'number',
 						'data' => ['reloadalltables' => true],
 						'rules' => 'numeric|nullable'
 					],
+					'km' => [
+						'type' => 'number',
+						'rules' => 'numeric|nullable',
+						'data' => ['reloadalltables' => true],
+						'widthClass' => 'uk-width-1-3',
+						'vertical' => true					],
+					'round_trip' => [
+						'type' => 'boolean',
+						'rules' => 'boolean|required',
+						'data' => ['reloadalltables' => true],
+						'widthClass' => 'uk-width-1-3',
+						'vertical' => true					],
 				],
 				'width' => ['large']
 			],

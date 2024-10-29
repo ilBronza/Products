@@ -13,6 +13,7 @@ class SupplierRelationManager Extends RelationshipsManager
 		$relations = [
 		];
 
+		//SellableSupplierByOperatorFieldsGroupParametersFile
 		$relations['sellableSuppliers'] = [
 			'controller' => config('products.models.sellableSupplier.controllers.index'),
 			'fieldsGroupsParametersFile' => config('products.models.sellableSupplier.fieldsGroupsFiles.byOperator')
@@ -29,9 +30,9 @@ class SupplierRelationManager Extends RelationshipsManager
 			]
 		];
 
-		if($target = $this->getModel()->getTarget())
-			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
-
+//		if($target = $this->getModel()->getTarget())
+//			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
+//
 
 		return [
 			'show' => [

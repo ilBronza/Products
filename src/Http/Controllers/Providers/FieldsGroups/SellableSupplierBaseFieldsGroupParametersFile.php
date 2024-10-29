@@ -29,6 +29,7 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 				'type' => 'links.seeName',
 				'width' => '195px'
 			],
+			'mySelfAssign' => 'products::quotationrows.assignSellableSupplier',
 			//			'mySelfJson' => 'json',
 		];
 	}
@@ -36,7 +37,6 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 	static function getEndingFields() : array
 	{
 		return [
-			'mySelfAssign' => 'products::quotationrows.assignSellableSupplier',
 			'mySelfDelete' => 'links.delete'
 		];
 	}
