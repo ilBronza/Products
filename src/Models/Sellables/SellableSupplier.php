@@ -2,8 +2,10 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
+use App\Models\ProjectSpecific\Client;
 use Carbon\Carbon;
 use Exception;
+use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Models\BasePivotModel;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
@@ -17,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
 use function array_filter;
+use function class_basename;
 use function dd;
 use function strpos;
 
@@ -137,7 +140,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 		return $own + $sellablePrices + $targetPrices;
 	}
 
-	public function getSellable() : Sellable
+	public function getSellable() : ?Sellable
 	{
 		return $this->sellable;
 	}
@@ -177,11 +180,6 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 		);
 	}
 
-	public function getSupplier() : Supplier
-	{
-		return $this->supplier;
-	}
-
 	public function setStandardPrices() : ?Collection
 	{
 		if (! $priceCreator = $this->getSellableTarget()->getPriceCreator())
@@ -208,5 +206,37 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 			'quotationrow' => request()->quotationrow,
 			'sellableSupplier' => $this->getKey()
 		]);
+	}
+
+	public function getCreateSellableButton(Client|Supplier|Sellable $subject) : Button
+	{
+		if(class_basename($subject) == 'Client')
+			$subject = $client->getSupplier();
+
+			return Button::create([
+				'name' => 'sellable-supplier-create',
+				'icon' => 'plus',
+				'text' => 'products::sellableSuppliers.create',
+				'href' => $subject->getCreateSellableSupplierUrl(),
+			]);
+	}
+
+	public function getStoreBySupplierUrl()
+	{
+		$supplier = $this->getSupplier();
+
+		return $supplier->getStoreSellableSupplierUrl();
+	}
+
+	public function getStoreBySellableUrl()
+	{
+		$sellable = $this->getSellable();
+
+		return $sellable->getStoreSellableSupplierUrl();
+	}
+
+	public function getSupplier() : Supplier
+	{
+		return $this->supplier;
 	}
 }

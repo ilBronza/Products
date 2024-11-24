@@ -17,7 +17,9 @@ use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Support\Collection;
 
+use function array_filter;
 use function json_encode;
+use function trans;
 
 class Sellable extends ProductPackageBaseModel
 {
@@ -92,6 +94,21 @@ class Sellable extends ProductPackageBaseModel
 		$query->where('target_type', $targetType);
 	}
 
+	public function scopeByType($query, string $type)
+	{
+		$query->where('type', $type);
+	}
+
+	public function scopeByTypes($query, array|Collection $types)
+	{
+		$query->whereIn('type', $types);
+	}
+
+	public function scopeByTargetIds($query, array|Collection $targetIds)
+	{
+		$query->where('target_id', $targetIds);
+	}
+
 	public function getCostCompany() : float
 	{
 		if($this->cost_company)
@@ -113,5 +130,29 @@ class Sellable extends ProductPackageBaseModel
 	//			'sellables.target'
 	//		)->get();
 	//	}
+
+	public function getCreateSellableSupplierUrl() : string
+	{
+		return $this->getKeyedRoute('createSellableSupplier');
+	}
+
+	public function getStoreSellableSupplierUrl() : string
+	{
+		return $this->getKeyedRoute('storeSellableSupplier');
+	}
+
+	public function getPossibleTypeValuesArray() : array
+	{
+		$types = static::select('type')->distinct()->pluck('type')->toArray();
+
+		$types = array_filter($types);
+
+		$result = [];
+
+		foreach ($types as $type)
+			$result[$type] = trans('products:sellables.types.' . $type);
+
+		return $result;
+	}
 
 }

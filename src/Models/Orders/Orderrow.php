@@ -2,22 +2,30 @@
 
 namespace IlBronza\Products\Models\Orders;
 
-use IlBronza\CRUD\Models\BaseModel;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
-use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
-use IlBronza\Prices\Models\Price;
-use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
+use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
+use IlBronza\Products\Models\Order;
+use IlBronza\Products\Models\ProductPackageBaseRowModel;
+use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
 use IlBronza\Products\Models\Traits\Orderrow\OrderrowRelationsScopesTrait;
-use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 
-class Orderrow extends BaseModel
+class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface
 {
-	use CRUDParentingTrait;
-	use ProductPackageBaseModelTrait;
-	use OrderrowRelationsScopesTrait;
-	use InteractsWithPriceTrait;
-    use InteractsWithFormTrait;
-
 	static $modelConfigPrefix = 'orderrow';
+
+	use CommonOrderrowQuotationrowTrait;
+
+	use OrderrowRelationsScopesTrait;
+
 	public $classnameAbbreviation = 'or';
+
+	public function getModelContainer() : ? Order
+	{
+		return $this->getOrder();
+	}
+
+	public function getOrder() : ? Order
+	{
+		return $this->order;
+	}
+
 }

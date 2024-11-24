@@ -6,5 +6,7 @@ use IlBronza\Products\Http\Controllers\CRUDProductPackageController;
 
 class OrderCRUD extends CRUDProductPackageController
 {
-    public $configModelClassName = 'order';
+	static $modelConfigPrefix = 'order';
+
+	public $configModelClassName = 'order';
 }

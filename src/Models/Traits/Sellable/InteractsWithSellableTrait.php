@@ -2,11 +2,14 @@
 
 namespace IlBronza\Products\Models\Traits\Sellable;
 
+use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use Illuminate\Support\Collection;
+
+use function app;
 
 trait InteractsWithSellableTrait
 {

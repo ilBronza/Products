@@ -11,6 +11,16 @@ use Illuminate\Support\Collection;
 
 trait InteractsWithSupplierTrait
 {
+	public function getSellableSuppliers() : ? Collection
+	{
+		return $this->getSupplier()?->getSellableSuppliers();
+	}
+
+	public function isSupplier() : bool
+	{
+		return !! $this->getSupplier();
+	}
+
 	public function supplier() : MorphOne
 	{
 		return $this->morphOne(Supplier::getProjectClassName(), 'target');

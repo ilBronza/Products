@@ -14,7 +14,10 @@ class SellableRelationManager Extends RelationshipsManager
 
 		$relations['sellableSuppliers'] = [
 			'controller' => config('products.models.sellableSupplier.controllers.index'),
-			'elementGetterMethod' => 'getFullrelatedSellableSupplierElements'
+			'elementGetterMethod' => 'getSellableSuppliers',
+			'buttonsMethods' => [
+				'getCreateSellableButton',
+			],
 		];
 
 		if($target = $this->getModel()->getTarget())

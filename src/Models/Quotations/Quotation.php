@@ -3,96 +3,24 @@
 namespace IlBronza\Products\Models\Quotations;
 
 use Carbon\Carbon;
-use IlBronza\Addresses\Models\Address;
-use IlBronza\Products\Models\Quotations\Quotationrow;
-use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
-use IlBronza\Category\Traits\InteractsWithCategoryTrait;
-use IlBronza\Clients\Models\Destination;
-use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
-use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
-use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
-use IlBronza\Notes\Traits\InteractsWithNotesTrait;
-use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-use IlBronza\Products\Models\ProductPackageBaseModel;
-use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
-use Illuminate\Support\Collection;
+use IlBronza\Buttons\Button;
+use IlBronza\Products\Models\Order;
 
-use function strtolower;
+use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
+use IlBronza\Products\Models\Traits\Quotation\QuotationRelationshipsTrait;
 
-class Quotation extends ProductPackageBaseModel
+class Quotation extends ProductPackageBaseRowcontainerModel
 {
-	static $modelConfigPrefix = 'quotation';
+	use CommonOrderQuotationTrait;
+	use QuotationRelationshipsTrait;
 
-	use CRUDUseUuidTrait;
+	static $modelConfigPrefix = 'quotation';
+	protected $deletingRelationships = [];
 
 	protected $casts = [
 		'date' => 'date'
 	];
-
-	use InteractsWithPriceTrait;
-
-	use InteractsWithFormTrait;
-	use ProductPackageBaseModelTrait;
-	use CRUDParentingTrait;
-
-	use InteractsWithNotesTrait;
-	use InteractsWithClientsTrait;
-	use InteractsWithDestinationTrait;
-	use InteractsWithCategoryTrait;
-	use InteractsWithCategoryStandardMethodsTrait;
-
-	protected $keyType = 'string';
-	protected $deletingRelationships = [];
-
-	public function quotationrows()
-	{
-		return $this->hasMany(Quotationrow::getProjectClassName());
-	}
-
-	public function getQuotationrows() : Collection
-	{
-		return $this->quotationrows;
-	}
-
-	public function project()
-	{
-		return $this->belongsTo(Project::getProjectClassName());
-	}
-
-	public function getProject() : ?Project
-	{
-		return $this->project;
-	}
-
-	public function possibleProjects()
-	{
-		return $this->hasMany(
-			Project::getProjectClassName(), 'client_id', 'client_id'
-		);
-	}
-
-	public function possibleDestinations()
-	{
-		return $this->hasMany(
-			Destination::getProjectClassName(), 'client_id', 'client_id'
-		);
-	}
-
-	public function getPossibleProjectsValuesArray() : array
-	{
-		$possibleValues = $this->possibleProjects;
-
-		return $possibleValues->pluck('name', 'id')->toArray();
-	}
-
-	public function getPossibleDestinationsValuesArray() : array
-	{
-		$possibleValues = $this->possibleDestinations;
-
-		return $possibleValues->pluck('name', 'id')->toArray();
-	}
 
 	public function getStoreQuotationrowUrl() : string
 	{
@@ -106,6 +34,13 @@ class Quotation extends ProductPackageBaseModel
 		return $this->getKeyedRoute('addQuotationrow', [
 			'quotation' => $this->getKey(),
 			'type' => $type
+		]);
+	}
+
+	public function getConvertToOrderUrl() : string
+	{
+		return $this->getKeyedRoute('convertToOrder', [
+			'quotation' => $this->getKey()
 		]);
 	}
 
@@ -128,40 +63,45 @@ class Quotation extends ProductPackageBaseModel
 		return $this->date;
 	}
 
-	public function provideDestinationModelForExtraFields() : ? Destination
+	public function order()
 	{
-		return $this->destination;
+		return $this->hasOne(Order::gpc());
 	}
 
-	public function provideAddressModelForExtraFields() : ? Address
+	public function getOrderCode() : string
 	{
-		return $this->address;
+		return $this->getOrder()->getCode();
 	}
 
-	public function address()
+	public function getOrder() : ?Order
 	{
-		return $this->hasOne(Address::gpc(), 'addressable_id', 'destination_id')->where('addressable_type', 'Destination');
+		return $this->order;
 	}
 
-	public function getCreateDestinationUrl()
+	public function hasOrder() : bool
 	{
-		return $this->getKeyedRoute('createDestination');
+		return !! $this->getOrder();
 	}
 
-	public function scopeByEndingDateRange($query, $dateStart, $dateEnd)
+	public function convertToOrder()
 	{
-		return $query->whereHas('extrafields', function ($q) use ($dateStart, $dateEnd)
-		{
-			$q->whereBetween('ends_at', [$dateStart, $dateEnd]);
-		});
+		$helperClass = $this->getConfigByKey('quotationToOrderConverterHelper');
+
+		$helper = new $helperClass($this);
+
+		return $helper->convertQuotationToOrder();
 	}
 
-	public function scopeCurrent($query)
+	public function getConvertToOrderButton() : ? Button
 	{
-		$query->whereHas('extrafields', function ($_query)
-		{
-			$_query->whereNull('ends_at');
-			$_query->orWhere('ends_at', '>=', Carbon::now()->subMonths(6));
-		});
+		if($this->hasOrder())
+			return null;
+
+		return Button::create([
+			'href' => $this->getConvertToOrderUrl(),
+			'text' => 'products::quotations.convertToOrder',
+			'icon' => 'file-pdf'
+		]);
+
 	}
 }

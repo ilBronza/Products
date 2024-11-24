@@ -2,21 +2,16 @@
 
 namespace IlBronza\Products\Models\Traits\Order;
 
-use IlBronza\Clients\Models\Client;
 use IlBronza\Clients\Models\Destination;
-use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
-use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Product\Product;
+use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Warehouse\Models\Pallettype\Pallettype;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 trait OrderRelationshipsTrait
 {
-    use InteractsWithClientsTrait;
-    use InteractsWithDestinationTrait;
 
     public function pallettype()
     {
@@ -71,20 +66,6 @@ trait OrderRelationshipsTrait
         return $this->orderProductPhases;
     }
 
-    public function getDestination() : ? Destination
-    {
-        if(! $this->destination_id)
-        {
-            Log::critical('risolvere questa cosa con un destino default generico e non per cliente');
-            return $this->getClient()?->getDefaultDestination();
-        }
-
-        if($this->relationLoaded('destination'))
-            return $this->destination;
-
-        return Destination::getProjectClassName()::findCached($this->destination_id);
-    }
-
     public function provideDestination() : ? Destination
     {
         if($destination = $this->getDestination())
@@ -93,4 +74,13 @@ trait OrderRelationshipsTrait
         return $this->getClient()?->getDestination();
     }
 
+	public function getQuotation()
+	{
+		return $this->quotation;
+	}
+
+	public function quotation()
+	{
+		return $this->belongsTo(Quotation::gpc());
+	}
 }

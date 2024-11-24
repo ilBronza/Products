@@ -11,25 +11,19 @@ class SellableSupplierCreateStoreFieldsetsParameters extends FieldsetParametersF
         return [
             'package' => [
                 'translationPrefix' => 'products::fields',
-                'translatedLegend' => 'IPOTETICI OCCHIO ZIO CULO',
                 'fields' => [
-                    'cost_company' => ['number' => 'numeric|required'],
-                    'cost_client' => ['number' => 'numeric|required'],
-
-                    // 'name' => ['text' => 'string|required'],
-                    // 'slug' => ['text' => 'string|required'],
-                    // 'target' => [
-                    //     'type' => 'select',
-                    //     'multiple' => false,
-                    //     'rules' => 'string|nullable',
-                    //     'relation' => 'target'
-                    // ],
-                    // 'category' => [
-                    //     'type' => 'select',
-                    //     'multiple' => false,
-                    //     'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
-                    //     'relation' => 'category'
-                    // ],
+                    'supplier_id' => [
+                        'type' => 'select',
+                        'multiple' => false,
+                        'rules' => 'string|required',//|in:' . config('products.models.supplier.table') . ',id',
+                        'relation' => 'supplier'
+                    ],
+                    'sellable_id' => [
+                        'type' => 'select',
+                        'multiple' => false,
+                        'rules' => 'string|required',//|in:' . config('products.models.sellable.table') . ',id',
+                        'relation' => 'sellable'
+                    ]
                 ],
                 'width' => ["1-3@l", '1-2@m']
             ]

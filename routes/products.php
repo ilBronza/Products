@@ -26,12 +26,15 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		Route::get('{quotation}/convert-to-order', [Products::getController('quotation', 'convertToOrder'), 'convertToOrder'])->name('quotations.convertToOrder');
+
 		//DestinationCreateStoreController
 		Route::get('{quotation}/create-destination', [config('clients.models.destination.controllers.create'), 'createFromQuotation'])->name('quotations.createDestination');
 		//	Route::post('{quotation}/store-destination', [config('clients.models.destination.controllers.create'), 'store'])->name('quotations.storeDestination');
 
 		Route::get('current', [Products::getController('quotation', 'current'), 'index'])->name('quotations.current');
 
+		//QuotationAddQuotationrowIndexController
 		Route::post('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
 
 		//QuotationAddQuotationrowIndexController
@@ -76,6 +79,10 @@ Route::group([
 		Route::get('', [Products::getController('supplier', 'index'), 'index'])->name('suppliers.index');
 		Route::get('{supplier}', [Products::getController('supplier', 'show'), 'show'])->name('suppliers.show');
 
+		//SellableSupplierCreateStoreBySupplierController
+		Route::get('{supplier}/create-sellable-supplier', [Products::getController('sellableSupplier', 'createBySupplier'), 'createBySupplier'])->name('suppliers.createSellableSupplier');
+		Route::post('{supplier}/store-sellable-supplier', [Products::getController('sellableSupplier', 'createBySupplier'), 'storeBySupplier'])->name('suppliers.storeSellableSupplier');
+
 		//	Route::get('create', [Products::getController('supplier', 'create'), 'create'])->name('suppliers.create');
 		//	Route::post('', [Products::getController('supplier', 'create'), 'store'])->name('suppliers.store');
 
@@ -87,11 +94,15 @@ Route::group([
 
 	Route::group(['prefix' => 'sellables'], function ()
 	{
-		Route::get('', [Products::getController('sellable', 'index'), 'index'])->name('sellables.index');
-		Route::get('{sellable}', [Products::getController('sellable', 'show'), 'show'])->name('sellables.show');
+		Route::get('{sellable}/create-sellable-supplier', [Products::getController('sellableSupplier', 'createBySellable'), 'createBySellable'])->name('sellables.createSellableSupplier');
+		Route::post('{sellable}/store-sellable-supplier', [Products::getController('sellableSupplier', 'createBySellable'), 'storeBySellable'])->name('sellables.storeSellableSupplier');
 
+		//SellableCreateStoreController
 		Route::get('create', [Products::getController('sellable', 'create'), 'create'])->name('sellables.create');
 		Route::post('', [Products::getController('sellable', 'create'), 'store'])->name('sellables.store');
+
+		Route::get('', [Products::getController('sellable', 'index'), 'index'])->name('sellables.index');
+		Route::get('{sellable}', [Products::getController('sellable', 'show'), 'show'])->name('sellables.show');
 
 		Route::get('{sellable}/edit', [Products::getController('sellable', 'edit'), 'edit'])->name('sellables.edit');
 		Route::put('{sellable}', [Products::getController('sellable', 'edit'), 'update'])->name('sellables.update');
@@ -104,6 +115,7 @@ Route::group([
 		Route::get('', [Products::getController('sellableSupplier', 'index'), 'index'])->name('sellableSuppliers.index');
 		Route::get('{sellableSupplier}', [Products::getController('sellableSupplier', 'show'), 'show'])->name('sellableSuppliers.show');
 
+		//SellableSupplierCreateStoreController
 		Route::get('create', [Products::getController('sellableSupplier', 'create'), 'create'])->name('sellableSuppliers.create');
 		Route::post('', [Products::getController('sellableSupplier', 'create'), 'store'])->name('sellableSuppliers.store');
 
@@ -192,6 +204,11 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		Route::post('{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
+
+		//DestinationCreateStoreController
+		Route::get('{order}/create-destination', [config('clients.models.destination.controllers.create'), 'createFromOrder'])->name('orders.createDestination');
+
 		Route::get('active-by-client/{client}', [Products::getController('order', 'activeByClient'), 'index'])->name('orders.active.byClient');
 
 		Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
@@ -207,6 +224,8 @@ Route::group([
 
 	Route::group(['prefix' => 'orderrows'], function ()
 	{
+		Route::post('reorder', [Products::getController('orderrow', 'reorder'), 'storeMassReorder'])->name('orderrows.storeMassReorder');
+
 		Route::get('', [Products::getController('orderrow', 'index'), 'index'])->name('orderrows.index');
 		Route::get('create', [Products::getController('orderrow', 'create'), 'create'])->name('orderrows.create');
 		Route::post('', [Products::getController('orderrow', 'store'), 'store'])->name('orderrows.store');
@@ -260,7 +279,7 @@ Route::group([
 
 		Route::group(['prefix' => 'by-workstation/{workstation}'], function ()
 		{
-			// Route::get('to-sort', [Products::getController('orderProduct', 'toElaboratebyWorkstation'), 'index'])->name('orderProducts.byWorkstation.toElaborate');
+			//ToElaborateByWorkstationOrderProductPhaseIndexController
 			Route::get('to-elaborate', [Products::getController('orderProductPhase', 'toElaboratebyWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.toElaborate');
 
 			Route::get('elaborated', [Products::getController('orderProductPhase', 'elaboratedByWorkstation'), 'index'])->name('orderProductPhases.byWorkstation.elaborated');

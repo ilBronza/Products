@@ -7,13 +7,20 @@ use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use Illuminate\Http\Request;
 use IlBronza\Products\Http\Controllers\Order\OrderCRUD;
 
+use function config;
+
 class OrderEditUpdateController extends OrderCRUD
 {
     use CRUDEditUpdateTrait;
 
     public $allowedMethods = ['edit', 'update'];
 
-    public function getGenericParametersFile() : ? string
+	public function getRelationshipsManagerClass()
+	{
+		return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.show");
+	}
+
+	public function getGenericParametersFile() : ? string
     {
         return config('products.models.order.parametersFiles.edit');
     }

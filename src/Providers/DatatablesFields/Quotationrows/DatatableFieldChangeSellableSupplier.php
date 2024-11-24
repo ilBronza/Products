@@ -10,6 +10,7 @@ class DatatableFieldChangeSellableSupplier extends DatatableFieldLink
 {
 	public bool|string $lightbox = true;
 
+	public $defaultWidth = '25px';
 	public $faIcon = 'shuffle';
 	public ? string $translationPrefix = 'products::datatableFields';
 

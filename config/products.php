@@ -27,13 +27,13 @@ use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseShowController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseReorderController;
-use IlBronza\Products\Http\Controllers\Product\ProductReorderController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationEditUpdateController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationIndexController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationShowController;
@@ -42,6 +42,7 @@ use IlBronza\Products\Http\Controllers\Product\ProductCurrentController;
 use IlBronza\Products\Http\Controllers\Product\ProductDeletionController;
 use IlBronza\Products\Http\Controllers\Product\ProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\Product\ProductIndexController;
+use IlBronza\Products\Http\Controllers\Product\ProductReorderController;
 use IlBronza\Products\Http\Controllers\Product\ProductShowController;
 use IlBronza\Products\Http\Controllers\Product\ProductTeaserController;
 use IlBronza\Products\Http\Controllers\Project\ProjectCreateStoreController;
@@ -49,12 +50,8 @@ use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationCreateStoreFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationEditUpdateFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowCreateStoreFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowEditUpdateFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableCreateStoreFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySellableFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySupplierFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -96,8 +93,15 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseShowFieldsetsPar
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductRelationEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProjectCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationConvertToOrderController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCurrentController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestinationCreateStoreController;
@@ -112,16 +116,17 @@ use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowEditUpdateContro
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowReorderController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowShowController;
-use IlBronza\Products\Http\Controllers\Sellable\SellableCreateStoreController;
-use IlBronza\Products\Http\Controllers\Sellable\SellableDestroyController;
-use IlBronza\Products\Http\Controllers\Sellable\SellableEditUpdateController;
-use IlBronza\Products\Http\Controllers\Sellable\SellableIndexController;
-use IlBronza\Products\Http\Controllers\Sellable\SellableShowController;
+use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCreateStoreBySupplierController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCreateStoreController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierDestroyController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierEditUpdateController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierIndexController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierShowController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableCreateStoreController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableDestroyController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableEditUpdateController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableIndexController;
+use IlBronza\Products\Http\Controllers\Sellable\SellableShowController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierByCategoryController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierDestroyController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierEditUpdateController;
@@ -143,11 +148,13 @@ use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelper;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\ProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\ProjectRelationManager;
+use IlBronza\Products\Providers\RelationshipsManagers\QuotationEditRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\QuotationRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\QuotationrowRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\SellableRelationManager;
@@ -369,6 +376,7 @@ return [
 				'edit' => OrderrowEditUpdateController::class,
 				'update' => OrderrowEditUpdateController::class,
 				'destroy' => OrderrowDestroyController::class,
+				'reorder' => OrderrowReorderController::class,
 			],
 			'parametersFiles' => [
 				'create' => OrderrowCreateFieldsetsParameters::class,
@@ -478,11 +486,13 @@ return [
 		'quotation' => [
 			'table' => 'products__quotations__quotations',
 			'class' => \App\Models\ProjectSpecific\Quotation::class,
+			'quotationToOrderConverterHelper' => QuotationToOrderConverterHelper::class,
 			'fieldsGroupsFiles' => [
 				'index' => QuotationFieldsGroupParametersFile::class,
 				'related' => QuotationRelatedFieldsGroupParametersFile::class
 			],
 			'relationshipsManagerClasses' => [
+				'edit' => QuotationEditRelationManager::class,
 				'show' => QuotationRelationManager::class
 			],
 			'parametersFiles' => [
@@ -492,6 +502,7 @@ return [
 			],
 			'controllers' => [
 				'addQuotationrow' => QuotationAddQuotationrowIndexController::class,
+				'convertToOrder' => QuotationConvertToOrderController::class,
 				'destination' => QuotationDestinationCreateStoreController::class,
 				'index' => QuotationIndexController::class,
 				'current' => QuotationCurrentController::class,
@@ -576,11 +587,15 @@ return [
 			'parametersFiles' => [
 				'contracttype' => SellableSupplierContracttypeEditUpdateFieldsetsParameters::class,
 				'create' => SellableSupplierCreateStoreFieldsetsParameters::class,
+				'createBySupplier' => SellableSupplierCreateStoreBySupplierFieldsetsParameters::class,
+				'createBySellable' => SellableSupplierCreateStoreBySellableFieldsetsParameters::class,
 				'show' => SellableSupplierCreateStoreFieldsetsParameters::class
 			],
 			'controllers' => [
 				'index' => SellableSupplierIndexController::class,
 				'create' => SellableSupplierCreateStoreController::class,
+				'createBySupplier' => SellableSupplierCreateStoreBySupplierController::class,
+				'createBySellable' => SellableSupplierCreateStoreBySellableController::class,
 				'store' => SellableSupplierCreateStoreController::class,
 				'show' => SellableSupplierShowController::class,
 				'edit' => SellableSupplierEditUpdateController::class,

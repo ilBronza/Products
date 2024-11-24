@@ -2,17 +2,19 @@
 
 namespace IlBronza\Products\Http\Controllers;
 
-use IlBronza\CRUD\CRUD;
+use IlBronza\CRUD\Http\Controllers\BasePackageController;
 
-class CRUDProductPackageController extends CRUD
+class CRUDProductPackageController extends BasePackageController
 {
-    public function getRouteBaseNamePrefix() : ? string
-    {
-        return config('products.routePrefix');
-    }
+	static $packageConfigPrefix = 'products';
 
-    public function setModelClass()
-    {
-        $this->modelClass = config("products.models.{$this->configModelClassName}.class");
-    }
+//    public function getRouteBaseNamePrefix() : ? string
+//    {
+//        return config('products.routePrefix');
+//    }
+
+//    public function setModelClass()
+//    {
+//        $this->modelClass = config("products.models.{$this->configModelClassName}.class");
+//    }
 }

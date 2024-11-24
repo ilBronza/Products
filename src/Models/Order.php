@@ -6,15 +6,18 @@ use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
 use Illuminate\Support\Collection;
 
-class Order extends ProductPackageBaseModel
+class Order extends ProductPackageBaseRowcontainerModel
 {
-	use CRUDParentingTrait;
+	use CommonOrderQuotationTrait;
+
 	use CRUDSluggableTrait;
 
 	use OrderRelationshipsTrait;
@@ -27,21 +30,6 @@ class Order extends ProductPackageBaseModel
 	public $classnameAbbreviation = 'o';
 
 	static $deletingRelationships = ['orderProducts'];
-
-	public function scopeByClientId($query, string $clientId)
-	{
-		$query->where(static::getProjectClassName()::make()->getTable() . '.client_id', $clientId);
-	}
-
-	public function scopeByClientIds($query, array|Collection $clientsIds)
-	{
-		$query->whereIn('client_id', $clientsIds);
-	}
-
-	public function scopeByClientsIds($query, array|Collection $clientsIds)
-	{
-		$query->whereIn('client_id', $clientsIds);
-	}
 
 	public function getFilteredByClientUrl()
 	{
@@ -84,6 +72,19 @@ class Order extends ProductPackageBaseModel
 	{
 		$this->bindDataFromLastOrderProduct();
 		$this->save();
+	}
+
+	public function getAddOrderrowByTypeUrl(string $type) : string
+	{
+		return $this->getKeyedRoute('addOrderrow', [
+			'order' => $this->getKey(),
+			'type' => $type
+		]);
+	}
+
+	public function orderrows()
+	{
+		return $this->hasMany(Orderrow::gpc());
 	}
 
 }

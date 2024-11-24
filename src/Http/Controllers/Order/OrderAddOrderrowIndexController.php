@@ -74,8 +74,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			'Surveillance',
 			'Hotel',
 			'Rent',
-			'Reimbursement',
-			'ControlRoom'
+			'Reimbursement'
 		];
 
 		$validationParameters = [];

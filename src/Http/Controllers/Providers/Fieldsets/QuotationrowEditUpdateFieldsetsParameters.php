@@ -30,6 +30,8 @@ class QuotationrowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 
 					'convocated_where' => ['text' => 'string|nullable'],
 					'convocated_when' => ['text' => 'string|nullable'],
+					'description' => ['text' => 'string|nullable'],
+
 
 					'calculated_cost_company' => ['number' => 'numeric|nullable'],
 					'calculated_toll' => ['number' => 'numeric|nullable'],
@@ -105,6 +107,13 @@ class QuotationrowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 					'reimbursement_from_place' => ['text' => 'string|nullable|max:255'],
 					'reimbursement_to_place' => ['text' => 'string|nullable|max:255'],
 					'reimbursement_annotations' => ['text' => 'string|nullable|max:1024'],
+
+					'reimbursement_status' => [
+						'type' => 'select',
+						'multiple' => false,
+						'rules' => 'string|nullable',
+					],
+					
 					'invoice_number' => ['text' => 'string|nullable|max:64'],
 
 					'reimbursement_operator' => [

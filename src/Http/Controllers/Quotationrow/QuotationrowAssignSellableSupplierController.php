@@ -4,7 +4,6 @@ namespace IlBronza\Products\Http\Controllers\Quotationrow;
 
 use Exception;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
-use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVehicletypeFieldsGroupParametersFile;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
@@ -13,7 +12,6 @@ use Illuminate\Http\Request;
 use function class_basename;
 use function compact;
 use function config;
-use function ff;
 
 class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 {
@@ -27,17 +25,21 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 
 	public function getIndexFieldsArray()
 	{
-		if(! $this->getTargetType())
+		if (! $this->getTargetType())
 		{
 			//SellableSupplierHotelFieldsGroupParametersFile
-			if($this->getSellable()->isHotelType())
+			if ($this->getSellable()->isHotelType())
 				return config('products.models.sellableSupplier.fieldsGroupsFiles.hotel')::getFieldsGroup();
 
-			if($this->getSellable()->isRentType())
+			if ($this->getSellable()->isRentType())
 				return config('products.models.sellableSupplier.fieldsGroupsFiles.rent')::getFieldsGroup();
 
-			if($this->getSellable()->isSurveillanceType())
+			if ($this->getSellable()->isSurveillanceType())
 				return config('products.models.sellableSupplier.fieldsGroupsFiles.surveillance')::getFieldsGroup();
+
+			if ($this->getSellable()->isControlRoomType())
+				return config('products.models.sellableSupplier.fieldsGroupsFiles.controlRoom')::getFieldsGroup();
+
 		}
 
 		if ($this->getTargetType() == 'Contracttype')
@@ -48,6 +50,7 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 			//SellableSupplierVehicletypeFieldsGroupParametersFile
 			return config('products.models.sellableSupplier.fieldsGroupsFiles.vehicletype')::getFieldsGroup();
 
+		dd($this);
 		throw new Exception("Unsupported type");
 	}
 
@@ -82,19 +85,24 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 
 	public function getSellableSupplierRelationsByTargetType() : array
 	{
-		if(! $this->getTargetType())
+		if (! $this->getTargetType())
 		{
-			if($this->getSellable()->isHotelType())
+			if ($this->getSellable()->isHotelType())
 				return [
 					'supplier.target'
 				];
 
-			if($this->getSellable()->isRentType())
+			if ($this->getSellable()->isRentType())
 				return [
 					'supplier.target'
 				];
 
-			if($this->getSellable()->isSurveillanceType())
+			if ($this->getSellable()->isSurveillanceType())
+				return [
+					'supplier.target'
+				];
+
+			if ($this->getSellable()->isControlRoomType())
 				return [
 					'supplier.target'
 				];
@@ -120,23 +128,26 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 		$quotationrow = Quotationrow::getProjectClassName()::find($quotationrow);
 		$sellableSupplier = SellableSupplier::getProjectClassName()::find($sellableSupplier);
 
-		if($sellableSupplier->getSellable()->isContracttype())
-			$tablesToRefresh = ['operatorQuotationrows'];
+		if ($sellableSupplier->getSellable()->isContracttype())
+			$tablesToRefresh = ['operatorRows'];
 
-		else if($sellableSupplier->getSellable()->isVehicleType())
-			$tablesToRefresh = ['vehicleQuotationrows'];
+		else if ($sellableSupplier->getSellable()->isVehicleType())
+			$tablesToRefresh = ['vehicleRows'];
 
-		else if($sellableSupplier->getSellable()->isSurveillanceType())
+		else if ($sellableSupplier->getSellable()->isSurveillanceType())
 			$tablesToRefresh = ['surveillanceQuotationrows'];
 
-		else if($sellableSupplier->getSellable()->isHotelType())
-			$tablesToRefresh = ['hotelQuotationrows'];
+		else if ($sellableSupplier->getSellable()->isHotelType())
+			$tablesToRefresh = ['hotelRows'];
 
-		else if($sellableSupplier->getSellable()->isRentType())
-			$tablesToRefresh = ['rentQuotationrows'];
+		else if ($sellableSupplier->getSellable()->isRentType())
+			$tablesToRefresh = ['rentRows'];
+
+		else if ($sellableSupplier->getSellable()->isControlRoomType())
+			$tablesToRefresh = ['controlRoomRows'];
 
 		else
-			throw new \Exception('gestire gli altri tipi');
+			throw new Exception('gestire gli altri tipi');
 
 		$quotationrow->sellableSupplier()->associate($sellableSupplier);
 		$quotationrow->save();

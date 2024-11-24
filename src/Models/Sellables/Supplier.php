@@ -37,6 +37,16 @@ class Supplier extends ProductPackageBaseModel
 		dd('estendere lista fornitori interni');
 	}
 
+	public function getCreateSellableSupplierUrl() : string
+	{
+		return $this->getKeyedRoute('createSellableSupplier');
+	}
+
+	public function getStoreSellableSupplierUrl() : string
+	{
+		return $this->getKeyedRoute('storeSellableSupplier');
+	}
+
 	public function getName() : ?string
 	{
 		return $this->getTarget()->getName();

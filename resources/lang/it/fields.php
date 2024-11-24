@@ -20,6 +20,7 @@ return [
 	'sellableSupplier.supplier.target.model_alerts' => 'Avvisi',
 	'convocated_where' => 'Luogo',
 	'convocated_when' => 'Orario',
+	'order_id' => 'Commessa',
 	'mySelfMobile.sellableSupplier.supplier.target' => 'Mobile',
 	'street' => 'Via',
 	'number' => 'civico',

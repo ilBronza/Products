@@ -2,117 +2,33 @@
 
 namespace IlBronza\Products\Models\Quotations;
 
-use App\Models\ProjectSpecific\Destination;
-use Carbon\Carbon;
-use IlBronza\Category\Models\Category;
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
-use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
-use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
-use IlBronza\FormField\Interfaces\FormfieldModelCompatibilityInterface;
-use IlBronza\Notes\Traits\InteractsWithNotesTrait;
-use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-use IlBronza\Products\Models\ProductPackageBaseModel;
-use IlBronza\Products\Models\Sellables\Sellable;
-use IlBronza\Products\Models\Sellables\SellableSupplier;
-use IlBronza\Products\Models\Sellables\Supplier;
-use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
+use IlBronza\Products\Models\Orders\Orderrow;
+use IlBronza\Products\Models\ProductPackageBaseRowModel;
+use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
 
-use function round;
-
-class Quotationrow extends ProductPackageBaseModel implements CrudReorderableModelInterface
+class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface
 {
-	use CRUDUseUuidTrait;
-
-	use CRUDReorderableStandardTrait;
-
 	static $modelConfigPrefix = 'quotationrow';
-	use InteractsWithPriceTrait;
-	use InteractsWithFormTrait;
-	use ProductPackageBaseModelTrait;
-	use InteractsWithNotesTrait;
-	use CRUDParentingTrait;
 
-	protected $keyType = 'string';
+	use CommonOrderrowQuotationrowTrait;
 
 	protected $casts = [
 		'starts_at' => 'date',
 		'ends_at' => 'date'
 	];
+
 	static $deletingRelationships = [];
 	protected $with = ['sellable'];
 
-	public function getStartsAt() : ?Carbon
+	public function getModelContainer()
 	{
-		return $this->starts_at;
+		return $this->getQuotation();
 	}
 
-	public function getHasDifferentStartsAt()
-	{
-		if($this->getStartsAt() != $this->getQuotation()->getStartsAt())
-			return 'differentstart';
-
-		return null;
-	}
-
-	public function getHasDifferentEndsAt()
-	{
-		if($this->getEndsAt() != $this->getQuotation()->getEndsAt())
-			return 'differentend';
-
-		return null;
-	}
-
-	public function getStartsAtAttribute($value)
-	{
-		if($value)
-			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
-
-		return $this->getQuotation()?->getStartsAt();
-	}
-
-	public function getEndsAtAttribute($value)
-	{
-		if($value)
-			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
-
-		return $this->getQuotation()?->getEndsAt();
-	}
-
-	public function getQuotation() : ?Quotation
+	public function getQuotation() : ? Quotation
 	{
 		return $this->quotation;
-	}
-
-	public function setStartsAt(string|Carbon $startsAt = null) : void
-	{
-		$this->starts_at = $startsAt;
-	}
-
-	public function getEndsAt() : ?Carbon
-	{
-		return $this->ends_at ?? $this->getQuotation()->getEndsAt();
-	}
-
-	public function setEndsAt(string|Carbon $endsAt = null) : void
-	{
-		$this->ends_at = $endsAt;
-	}
-
-	public function sellableSupplier()
-	{
-		return $this->belongsTo(SellableSupplier::getProjectClassName());
-	}
-
-	public function getSupplier() : ?Supplier
-	{
-		return $this->getSellableSupplier()?->getSupplier();
-	}
-
-	public function getSellableSupplier() : ?SellableSupplier
-	{
-		return $this->sellableSupplier;
 	}
 
 	public function quotation()
@@ -120,213 +36,9 @@ class Quotationrow extends ProductPackageBaseModel implements CrudReorderableMod
 		return $this->belongsTo(Quotation::getProjectClassName());
 	}
 
-	public function getName() : ?string
+	public function orderrow()
 	{
-		return $this->getSellable()?->getName();
+		return $this->hasOne(Orderrow::gpc());
 	}
 
-	public function getSellable() : ?Sellable
-	{
-		if ($this->relationLoaded('sellable'))
-			return $this->sellable;
-
-		return $this->sellable()->first();
-	}
-
-	public function sellable()
-	{
-		return $this->belongsTo(Sellable::getProjectClassName());
-	}
-
-	public function scopeBySellableType($query, string $sellableClassname)
-	{
-		return $query->whereHas('sellable', function ($query) use ($sellableClassname)
-		{
-			$query->where('target_type', $sellableClassname);
-		});
-	}
-
-	public function scopeBySellableCategory($query, string|Category $category)
-	{
-		if (is_string($category))
-			$category = Category::getProjectClassName()::findCachedField('name', $category);
-
-		return $query->whereHas('sellable', function ($query) use ($category)
-		{
-			$query->where('category_id', $category->id);
-		});
-	}
-
-	public function getAssignSellablesupplierUrl()
-	{
-		return $this->getKeyedRoute('assignSellableSupplier');
-	}
-
-	public function getCalculatedCostCompanyAttribute()
-	{
-		if ($value = $this->cost_company)
-			return $value;
-
-		if ($sellableSupplier = $this->getSellableSupplier())
-			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-				if ($value = $price->price)
-					return $value;
-
-		return $this->getSellable()->getCostCompany();
-	}
-
-	/**
-	 * @return string
-	 *
-	 *
-	 */
-	public function getCalculatedCostCompanyHtmlClass() : string
-	{
-		if ($value = $this->cost_company)
-			return 'costcompanyforced';
-
-		if ($sellableSupplier = $this->getSellableSupplier())
-			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-				if ($value = $price->price)
-					return 'costcompanysellsupp';
-
-		return 'costcompanysell';
-	}
-
-	public function getCalculatedTollHtmlClass() : string
-	{
-		if ($value = $this->toll)
-			return 'tollforced';
-
-		return 'tollstandard';
-	}
-
-	public function setCalculatedCostCompanyAttribute($value)
-	{
-		$this->cost_company = $value;
-	}
-
-	//	public function getCalculatedClientPriceAttribute()
-	//	{
-	//		if ($value = $this->client_price)
-	//			return $value;
-	//
-	//		return $this->getSellable()->getClientPrice();
-	//	}
-
-	//	public function getClientPrice() : ?float
-	//	{
-	//		return $this->client_price;
-	//	}
-
-	//	public function getCalculatedClientPriceHtmlClass()
-	//	{
-	//		if ($value = $this->client_price)
-	//			return 'clientpriceforced';
-	//
-	//		return 'clientpricecalculated';
-	//	}
-
-	public function setCalculatedClientPriceAttribute($value)
-	{
-		$this->client_price = $value;
-	}
-
-	public function getCalculatedCostCompanyTotalAttribute()
-	{
-		if ($value = $this->cost_company_total)
-			return round($value, 2);
-
-		return round($this->getQuantity() * $this->calculated_cost_company, 2);
-	}
-
-	public function getQuantity() : ?float
-	{
-		return $this->quantity;
-	}
-
-	public function getCalculatedKmAttribute()
-	{
-		if ($value = $this->km)
-			return round($value, 2);
-
-		return $this->getQuotation()->getKm();
-	}
-
-	public function getCalculatedCostCompanyTotal() : float
-	{
-		return $this->calculated_cost_company_total;
-	}
-
-	public function getCalculatedCostCompanyTotalHtmlClass()
-	{
-		if ($value = $this->cost_company_total)
-			return 'costcompanytotalforced';
-
-		return 'costcompanytotalcalculated';
-	}
-
-	public function setCalculatedCostCompanyTotalAttribute($value)
-	{
-		$this->cost_company_total = $value;
-	}
-
-
-	//	public function getCalculatedClientPriceTotalAttribute()
-	//	{
-	//		if ($value = $this->client_price_total)
-	//			return $value;
-	//
-	//		return $this->getQuantity() * $this->calculated_client_price;
-	//	}
-
-	//	public function getCalculatedClientPriceTotalHtmlClass()
-	//	{
-	//		if ($value = $this->client_price_total)
-	//			return 'clientpricetotalforced';
-	//
-	//		return 'clientpricetotalcalculated';
-	//	}
-
-	//	public function setCalculatedClientPriceTotalAttribute($value)
-	//	{
-	//		$this->client_price_total = $value;
-	//	}
-
-	public function getParameter(string $key, mixed $default = null) : mixed
-	{
-		$parameters = $this->getParameters();
-
-		return $parameters[$key] ?? $default;
-	}
-
-	public function getParameters() : array
-	{
-		return $this->parameters ?? [];
-	}
-
-	public function setParameter(string $key, mixed $value = null)
-	{
-		$parameters = $this->getParameters();
-
-		$parameters[$key] = $value;
-
-		$this->parameters = $parameters;
-		$this->save();
-	}
-
-	public function getFullname() : string
-	{
-		return $this->getSellable()?->getName() . ' ' . $this->getQuotation()?->getName();
-	}
-
-	public function getDestination() : ? Destination
-	{
-		return $this->getQuotation()?->getDestination();
-	}
-
-	public function getCalculatedRowtotal(): ? float
-	{
-		return $this->calculated_row_total;
-	}
 }
