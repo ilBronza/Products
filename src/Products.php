@@ -87,6 +87,24 @@ class Products implements RoutedObjectInterface
 			]
 		]);
 
+		$ordersContainerButton = $menu->createButton([
+			'name' => 'ordersContainer',
+			'icon' => 'user-gear',
+			'text' => 'products::orders.orders',
+			'children' => [
+				[
+					'icon' => 'box-archive',
+					'href' => $this->route('orders.index'),
+					'text' => 'products::generals.all'
+				],
+				[
+					'icon' => 'list',
+					'href' => $this->route('orders.current'),
+					'text' => 'products::generals.current'
+				],
+			]
+		]);
+
 		$quotationsContainerButton = $menu->createButton([
 			'name' => 'quotationsContainer',
 			'icon' => 'user-gear',
@@ -143,6 +161,7 @@ class Products implements RoutedObjectInterface
 		$suppliersContainerButton->addChild($sellablesButton);
 		$suppliersContainerButton->addChild($sellableSuppliersButton);
 
+		$productsGeneralManagerButton->addChild($ordersContainerButton);
 		$productsGeneralManagerButton->addChild($quotationsContainerButton);
 		$productsGeneralManagerButton->addChild($projectsContainerButton);
 		$productsGeneralManagerButton->addChild($productsContainerButton);

@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\Fieldsets;
 
+use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
 
 use function config;
@@ -19,6 +20,9 @@ class QuotationrowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 
 					'round_trip' => ['boolean' => 'bool|nullable'],
 					'half_start' => ['boolean' => 'bool|nullable'],
+
+					'client_price_approver' => ['boolean' => 'bool|nullable'],
+					'cost_company_approver' => ['boolean' => 'bool|nullable'],
 
 					'starts_at' => ['date' => 'date|nullable'],
 					'ends_at' => ['date' => 'date|nullable'],
@@ -136,6 +140,17 @@ class QuotationrowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'possibleValuesArray' => $this->getModel()->getPossibleOperatorsArrayValues(),
 						'rules' => 'string|nullable|exists:' . config('operators.models.operator.table') . ',id',
 					],
+
+					'status' => [
+						'type' => 'select',
+						'multiple' => false,
+						'possibleValuesArray' => [
+							'inviare' => 'Da inviare',
+							'inviato' => 'Inviato',
+							'ricevuto' => 'Ricevuto',
+						],
+						'rules' => 'string|nullable|in:"Da inviare",Inviato,Ricevuto',
+					]
 
 					// 'client' => [
 					//     'type' => 'select',

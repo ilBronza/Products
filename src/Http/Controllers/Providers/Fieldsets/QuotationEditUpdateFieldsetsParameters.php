@@ -63,12 +63,12 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 				'fields' => [
 					'starts_at' => [
 						'type' => 'date',
-						'rules'=> 'date|nullable',
+						'rules' => 'date|nullable',
 						'data' => ['reloadalltables' => true],
 					],
 					'ends_at' => [
 						'type' => 'date',
-						'rules'=> 'date|nullable',
+						'rules' => 'date|nullable',
 						'data' => ['reloadalltables' => true],
 					],
 				],
@@ -103,13 +103,15 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'rules' => 'numeric|nullable',
 						'data' => ['reloadalltables' => true],
 						'widthClass' => 'uk-width-1-3',
-						'vertical' => true					],
+						'vertical' => true
+					],
 					'round_trip' => [
 						'type' => 'boolean',
 						'rules' => 'boolean|required',
 						'data' => ['reloadalltables' => true],
 						'widthClass' => 'uk-width-1-3',
-						'vertical' => true					],
+						'vertical' => true
+					],
 				],
 				'width' => ['large']
 			],
@@ -119,51 +121,56 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 
 					'total_reimbursements_cost' => [
 						'type' => 'money',
-						"step"=>'0.01',
-						'rules'=> 'numeric|nullable',
+						"step" => '0.01',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 					'total_vehicles_cost' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 					'total_operators_cost' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 					'total_daily_allowances_cost' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 					'total_hotels_cost' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 					'total_rents_cost' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 					'total_costs' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 
 					'total_proposal' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
 						'fetchFieldValue' => [
 							'total_gain'
 						]
 					],
 					'total_gain' => [
 						'type' => 'money',
-						'rules'=> 'numeric|nullable',
+						'rules' => 'numeric|nullable',
+						'readOnly' => true
+					],
+					'percentage_gain' => [
+						'type' => 'money',
+						'rules' => 'numeric|nullable',
 						'readOnly' => true
 					],
 				],

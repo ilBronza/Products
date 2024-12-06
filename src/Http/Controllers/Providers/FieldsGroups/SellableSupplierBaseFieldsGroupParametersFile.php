@@ -2,18 +2,15 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
-use IlBronza\Clients\Models\Client;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 
 abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroupParametersFile
 {
-	abstract static function getTypedFields() : array;
-
-	static function getFieldsGroup() : array
+	static function getFieldsGroupByContainerModel(string $containerModel) : array
 	{
-		$starting = static::getStartingFields();
-		$central = static::getTypedFields();
-		$ending = static::getEndingFields();
+		$starting = static::getStartingFields($containerModel);
+		$central = static::getTypedFields($containerModel);
+		$ending = static::getEndingFields($containerModel);
 
 		return [
 			'translationPrefix' => 'products::fields',
@@ -21,7 +18,7 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 		];
 	}
 
-	static function getStartingFields() : array
+	static function getStartingFields(string $containerModel) : array
 	{
 		return [
 			'mySelfPrimary' => 'primary',
@@ -29,15 +26,30 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 				'type' => 'links.seeName',
 				'width' => '195px'
 			],
-			'mySelfAssign' => 'products::quotationrows.assignSellableSupplier',
+			'mySelfAssign' => "products::{$containerModel}rows.assignSellableSupplier",
 			//			'mySelfJson' => 'json',
 		];
 	}
+
+	abstract static function getTypedFields() : array;
 
 	static function getEndingFields() : array
 	{
 		return [
 			'mySelfDelete' => 'links.delete'
+		];
+	}
+
+	static function getFieldsGroup() : array
+	{
+		dd('problema, usare quello tipizzato');
+		$starting = static::getStartingFields();
+		$central = static::getTypedFields();
+		$ending = static::getEndingFields();
+
+		return [
+			'translationPrefix' => 'products::fields',
+			'fields' => $starting + $central + $ending
 		];
 	}
 }

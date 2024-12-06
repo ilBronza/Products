@@ -14,13 +14,16 @@ use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Prices\Providers\PriceData;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
+use function app;
 use function array_filter;
 use function class_basename;
 use function dd;
+use function request;
 use function strpos;
 
 class SellableSupplier extends BasePivotModel implements WithPriceInterface
@@ -197,10 +200,15 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 
 	public function quotationrows()
 	{
-		return $this->hasMany(Quotationrow::getProjectClassName(), 'sellable_supplier_id');
+		return $this->hasMany(Quotationrow::gpc(), 'sellable_supplier_id');
 	}
 
-	public function getAssignSellableSupplierUrl()
+	public function orderrows()
+	{
+		return $this->hasMany(Orderrow::gpc(), 'sellable_supplier_id');
+	}
+
+	public function getAssignSellableSupplierToQuotationrowUrl()
 	{
 		return app('products')->route('quotationrows.associateSellableSupplier', [
 			'quotationrow' => request()->quotationrow,
@@ -208,17 +216,30 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 		]);
 	}
 
+	public function getAssignSellableSupplierToOrderrowUrl()
+	{
+		return app('products')->route('orderrows.associateSellableSupplier', [
+			'orderrow' => request()->orderrow,
+			'sellableSupplier' => $this->getKey()
+		]);
+	}
+
 	public function getCreateSellableButton(Client|Supplier|Sellable $subject) : Button
 	{
-		if(class_basename($subject) == 'Client')
+		if (class_basename($subject) == 'Client')
 			$subject = $client->getSupplier();
 
-			return Button::create([
-				'name' => 'sellable-supplier-create',
-				'icon' => 'plus',
-				'text' => 'products::sellableSuppliers.create',
-				'href' => $subject->getCreateSellableSupplierUrl(),
-			]);
+		return Button::create([
+			'name' => 'sellable-supplier-create',
+			'icon' => 'plus',
+			'text' => 'products::sellableSuppliers.create',
+			'href' => $subject->getCreateSellableSupplierUrl(),
+		]);
+	}
+
+	public function getSupplier() : Supplier
+	{
+		return $this->supplier;
 	}
 
 	public function getStoreBySupplierUrl()
@@ -233,10 +254,5 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 		$sellable = $this->getSellable();
 
 		return $sellable->getStoreSellableSupplierUrl();
-	}
-
-	public function getSupplier() : Supplier
-	{
-		return $this->supplier;
 	}
 }

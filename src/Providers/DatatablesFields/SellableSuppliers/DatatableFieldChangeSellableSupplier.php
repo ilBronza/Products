@@ -1,10 +1,8 @@
 <?php
 
-namespace IlBronza\Products\Providers\DatatablesFields\Quotationrows;
+namespace IlBronza\Products\Providers\DatatablesFields\SellableSuppliers;
 
 use IlBronza\Datatables\DatatablesFields\Links\DatatableFieldLink;
-
-use function json_encode;
 
 class DatatableFieldChangeSellableSupplier extends DatatableFieldLink
 {

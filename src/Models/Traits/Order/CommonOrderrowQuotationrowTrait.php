@@ -216,6 +216,13 @@ trait CommonOrderrowQuotationrowTrait
 		if ($value = $this->cost_company_total)
 			return round($value, 2);
 
+		if ($this->getSellable()->isVehicleType())
+			return round($this->getQuantity() * $this->calculated_cost_company * ($this->isRoundTrip() + 1), 2);
+
+			if ($this->getSellable()->isRentType())
+			if (! $this->cost_company_approver)
+				return 0;
+
 		return round($this->getQuantity() * $this->calculated_cost_company, 2);
 	}
 
@@ -254,6 +261,14 @@ trait CommonOrderrowQuotationrowTrait
 	{
 		if ($value = $this->cost_company)
 			return $value;
+
+		if ($this->getSellable()->isContracttype())
+		{
+			if($valid = $this->getSupplier()?->getTarget()?->getValidClientOperator())
+				return $valid->getPriceByCollectionId('costCompanyDay')->price;
+
+			return $this->getSupplier()?->getTarget()->clientOperators->first()?->getPriceByCollectionId('costCompanyDay')->price;
+		}
 
 		if ($sellableSupplier = $this->getSellableSupplier())
 			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))

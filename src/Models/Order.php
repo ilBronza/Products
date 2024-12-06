@@ -2,17 +2,20 @@
 
 namespace IlBronza\Products\Models;
 
+use Carbon\Carbon;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Orders\Orderrow;
+use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
 use Illuminate\Support\Collection;
+use League\CommonMark\Extension\SmartPunct\Quote;
 
 class Order extends ProductPackageBaseRowcontainerModel
 {
@@ -54,10 +57,25 @@ class Order extends ProductPackageBaseRowcontainerModel
 		return $this->complete();
 	}
 
+	public function getDate() : ? Carbon
+	{
+		return $this->date;
+	}
+
 	private function bindDataFromLastOrderProduct()
 	{
 		if(! $lastOrderProduct = $this->orderProducts()->completed()->orderBy('completed_at', 'DESC')->first())
 			throw new \Exception('Ultimo componente non trovato per commessa ' . $this->getName() . ' <a href="' . $this->getOldEditUrl() . '">Controlla qui</a>');
+	}
+
+	public function quotation()
+	{
+		return $this->belongsTo(Quotation::gpc());
+	}
+
+	public function hasQuotation()
+	{
+		return !! $this->quotation_id;
 	}
 
 	private function uncomplete()

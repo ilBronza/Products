@@ -64,6 +64,32 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		return view('form::uikit.form', ['form' => $form]);
 	}
 
+	public function getSortingIndexByType($quotation, string $type)
+	{
+		if ($type == 'Contracttype')
+			return $quotation->operatorRows()->max('sorting_index') + 1;
+
+		if ($type == 'VehicleType')
+			return $quotation->vehicleRows()->max('sorting_index') + 1;
+
+		if ($type == 'Surveillance')
+			return $quotation->surveillanceRows()->max('sorting_index') + 1;
+
+		if ($type == 'Hotel')
+			return $quotation->hotelRows()->max('sorting_index') + 1;
+
+		if ($type == 'Rent')
+			return $quotation->rentRows()->max('sorting_index') + 1;
+
+		if ($type == 'Reimbursement')
+			return $quotation->reimbursementRows()->max('sorting_index') + 1;
+
+		if ($type == 'ControlRoom')
+			return $quotation->controlRoomRows()->max('sorting_index') + 1;
+
+		dd('manca type ' . $type);
+	}
+
 	public function storeQuotationrow(Request $request, $quotation)
 	{
 		$quotation = $this->findModel($quotation);
@@ -96,10 +122,10 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		if(count($parameters) == 0)
 			dd(['Manca la chiave per questo tipo', $request->all()]);
 
-		$quotationrowSortingIndex = $quotation->quotationrows()->max('sorting_index') + 1;
-
 		foreach ($parameters as $type => $sellables)
 		{
+			$quotationrowSortingIndex = $this->getSortingIndexByType($quotation, $type);
+
 			foreach ($sellables as $key => $_parameters)
 			{
 				$sellable = Sellable::getProjectClassName()::find($_parameters['sellable']);

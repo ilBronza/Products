@@ -2,6 +2,7 @@
 
 return [
 	'base' => 'Dati base',
+	'mySelfCode' => 'Codice',
 	'name' => 'Nome',
 	'slug' => 'Sigla',
 	'event' => 'Evento',
@@ -13,9 +14,9 @@ return [
 	'total_operators_cost' => 'Operatori',
 	'total_daily_allowances_cost' => 'Diarie',
 	'total_hotels_cost' => 'Hotel',
-	'total_rents_cost' => 'Noleggi',
-	'total_costs' => 'Totale',
-	'total_vehicles_cost' => 'Veicoli',
+	'total_rents_cost' => 'Servizi',
+	'total_costs' => 'Costi totali',
+	'total_vehicles_cost' => 'Automezzi',
 	'sellableSupplier.supplier.target' => 'Fornitore',
 	'sellableSupplier.supplier.target.model_alerts' => 'Avvisi',
 	'convocated_where' => 'Luogo',
@@ -31,4 +32,5 @@ return [
 	'province' => 'Provincia',
 	'region' => 'Regione',
 	'state' => 'Nazione',
+	'quotation_id' => 'Preventivo'
 ];

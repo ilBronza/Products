@@ -27,6 +27,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
@@ -339,6 +340,7 @@ return [
 			'class' => Order::class,
 			'table' => 'products__orders',
 			'controllers' => [
+				'addOrderrow' => OrderAddOrderrowIndexController::class,
 				'create' => OrderCreateController::class,
 				'active' => ActiveOrderIndexController::class,
 				'activeByClient' => ActiveByClientOrderIndexController::class,
@@ -369,6 +371,8 @@ return [
 			'class' => Orderrow::class,
 			'table' => 'products__orderrows',
 			'controllers' => [
+				'reorder' => OrderrowReorderController::class,
+				'assignSellableSupplier' => OrderrowAssignSellableSupplierController::class,
 				'index' => OrderrowIndexController::class,
 				'create' => OrderrowCreateStoreController::class,
 				'store' => OrderrowCreateStoreController::class,
@@ -376,7 +380,6 @@ return [
 				'edit' => OrderrowEditUpdateController::class,
 				'update' => OrderrowEditUpdateController::class,
 				'destroy' => OrderrowDestroyController::class,
-				'reorder' => OrderrowReorderController::class,
 			],
 			'parametersFiles' => [
 				'create' => OrderrowCreateFieldsetsParameters::class,
