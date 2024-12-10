@@ -13,7 +13,7 @@ class OrderrowEditUpdateController extends OrderrowCRUD
 
     public function getGenericParametersFile() : ? string
     {
-        return config('products.models.orderrow.parametersFiles.create');
+        return config('products.models.orderrow.parametersFiles.edit');
     }
 
     public function edit(string $orderrow)

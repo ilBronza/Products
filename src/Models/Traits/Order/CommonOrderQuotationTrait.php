@@ -27,20 +27,19 @@ trait CommonOrderQuotationTrait
 	use InteractsWithFormTrait;
 	use InteractsWithPriceTrait;
 
-
-
-	public function getDestination() : ? Destination
+	public function getDestination() : ?Destination
 	{
-		if(! $this->destination_id)
+		if (! $this->destination_id)
 		{
 			Log::critical('risolvere questa cosa con un destino default generico e non per cliente');
+
 			return $this->getClient()?->getDefaultDestination();
 		}
 
-		if($this->relationLoaded('destination'))
+		if ($this->relationLoaded('destination'))
 			return $this->destination;
 
-		return Destination::gpc()::findCached($this->destination_id);
+		return $this->destination()->with('address')->first();
 	}
 
 	public function project()
@@ -106,7 +105,7 @@ trait CommonOrderQuotationTrait
 		return $this->getKeyedRoute('createDestination');
 	}
 
-	public function provideAddressModelForExtraFields() : ? Address
+	public function provideAddressModelForExtraFields() : ?Address
 	{
 		return $this->address;
 	}
@@ -116,7 +115,7 @@ trait CommonOrderQuotationTrait
 		return $this->hasOne(Address::gpc(), 'addressable_id', 'destination_id')->where('addressable_type', 'Destination');
 	}
 
-	public function provideDestinationModelForExtraFields() : ? Destination
+	public function provideDestinationModelForExtraFields() : ?Destination
 	{
 		return $this->destination;
 	}

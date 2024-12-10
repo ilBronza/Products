@@ -31,13 +31,12 @@ class QuotationIndexController extends QuotationCRUD
 		ini_set('memory_limit', - 1);
 
 		return $this->getModelClass()::with(
+			'extraFields',
             'project',
             'destination',
             'parent',
             'client',
-            'category',
-            'quotationrows.sellable',
-            'quotationrows.price',
+			'order',
         )->get();
     }
 

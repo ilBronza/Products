@@ -28,6 +28,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
@@ -51,8 +52,6 @@ use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySellableFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySupplierFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -88,6 +87,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseEdit
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderrowEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PackingEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseShowFieldsetsParameters;
@@ -99,6 +99,8 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationEditUpdateFi
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySellableFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySupplierFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexController;
@@ -384,7 +386,7 @@ return [
 			'parametersFiles' => [
 				'create' => OrderrowCreateFieldsetsParameters::class,
 				'show' => OrderrowShowFieldsetsParameters::class,
-				'edit' => OrderrowEditFieldsetsParameters::class,
+				'edit' => OrderrowEditUpdateFieldsetsParameters::class,
 			],
 			'relationshipsManagerClasses' => [
 				'show' => OrderrowRelationManager::class

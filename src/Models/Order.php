@@ -17,6 +17,8 @@ use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
 use Illuminate\Support\Collection;
 use League\CommonMark\Extension\SmartPunct\Quote;
 
+use function strtolower;
+
 class Order extends ProductPackageBaseRowcontainerModel
 {
 	use CommonOrderQuotationTrait;
@@ -33,6 +35,22 @@ class Order extends ProductPackageBaseRowcontainerModel
 	public $classnameAbbreviation = 'o';
 
 	static $deletingRelationships = ['orderProducts'];
+
+	public function getStoreOrderrowUrl() : string
+	{
+		return $this->getKeyedRoute('storeOrderrow', [
+			'quotation' => $this->getKey(),
+		]);
+	}
+
+	public function getPossibleSellablesByType(string $type) : array
+	{
+		$types = $this->getOrderrowsPossibleSellableTypes();
+
+		$type = strtolower($type);
+
+		return $types[$type]();
+	}
 
 	public function getFilteredByClientUrl()
 	{

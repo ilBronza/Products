@@ -1,10 +1,10 @@
 <?php
 
-namespace IlBronza\Products\Http\Controllers\Quotation;
+namespace IlBronza\Products\Http\Controllers\Order;
 
 use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
-use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\UikitTemplate\Fetcher;
 
@@ -18,20 +18,20 @@ use function route;
 use function trans;
 use function view;
 
-class QuotationAddQuotationrowIndexController extends QuotationCRUD
+class OrderAddOrderrowIndexController extends OrderCRUD
 {
-	public $allowedMethods = ['addQuotationrow', 'storeQuotationrow'];
+	public $allowedMethods = ['addOrderrow', 'storeOrderrow'];
 
-	public function addQuotationrow($quotation, string $type)
+	public function addOrderrow($order, string $type)
 	{
-		$quotation = $this->findModel($quotation);
+		$order = $this->findModel($order);
 
 		$types = [
 			$type
 		];
 
 		$form = Form::createFromArray([
-			'action' => $quotation->getStoreQuotationrowUrl(),
+			'action' => $order->getStoreOrderrowUrl(),
 			'method' => 'POST'
 		]);
 
@@ -53,8 +53,8 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 							'label' => $type,
 							'type' => 'select',
 							'select2' => false,
-							'rules' => 'string|required|in:' . implode(',', array_keys($quotation->getPossibleSellablesByType($type))),
-							'list' => $quotation->getPossibleSellablesByType($type)
+							'rules' => 'string|required|in:' . implode(',', array_keys($order->getPossibleSellablesByType($type))),
+							'list' => $order->getPossibleSellablesByType($type)
 						],
 						'quantity' => ['number' => 'integer|required|min:1']
 					]
@@ -64,9 +64,9 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		return view('form::uikit.form', ['form' => $form]);
 	}
 
-	public function storeQuotationrow(Request $request, $quotation)
+	public function storeOrderrow(Request $request, $order)
 	{
-		$quotation = $this->findModel($quotation);
+		$order = $this->findModel($order);
 
 		$types = [
 			'Contracttype',
@@ -82,7 +82,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		foreach ($types as $type)
 		{
 			$validationParameters[$type] = 'array|nullable';
-			$validationParameters[$type . '.*.sellable'] = 'string|required|in:' . implode(',', array_keys($quotation->getPossibleSellablesByType($type)));
+			$validationParameters[$type . '.*.sellable'] = 'string|required|in:' . implode(',', array_keys($order->getPossibleSellablesByType($type)));
 			$validationParameters[$type . '.*.quantity'] = 'integer|required|min:1';
 		}
 
@@ -95,7 +95,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		if(count($parameters) == 0)
 			dd(['Manca la chiave per questo tipo', $request->all()]);
 
-		$quotationrowSortingIndex = $quotation->quotationrows()->max('sorting_index') + 1;
+		$orderrowSortingIndex = $order->orderrows()->max('sorting_index') + 1;
 
 		foreach ($parameters as $type => $sellables)
 		{
@@ -105,13 +105,13 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 				for ($i = 0; $i < $_parameters['quantity']; $i ++)
 				{
-					$quotationrow = Quotationrow::getProjectClassName()::make();
-					$quotationrow->sellable()->associate($sellable);
-					$quotationrow->quotation()->associate($quotation);
+					$orderrow = Orderrow::getProjectClassName()::make();
+					$orderrow->sellable()->associate($sellable);
+					$orderrow->order()->associate($order);
 
-					$quotationrow->sorting_index = $quotationrowSortingIndex ++;
+					$orderrow->sorting_index = $orderrowSortingIndex ++;
 
-					$quotationrow->save();
+					$orderrow->save();
 				}
 			}
 		}
@@ -119,7 +119,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		return view('datatables::utilities.closeIframe', ['reloadAllTables' => true]);
 
 		return redirect()->to(
-			$quotation->getEditUrl()
+			$order->getEditUrl()
 		);
 	}
 

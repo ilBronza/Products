@@ -28,17 +28,16 @@ Route::group([
 	{
 		Route::get('{quotation}/convert-to-order', [Products::getController('quotation', 'convertToOrder'), 'convertToOrder'])->name('quotations.convertToOrder');
 
+		//QuotationAddQuotationrowIndexController
+		Route::post('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
+		//QuotationAddQuotationrowIndexController
+		Route::post('{quotation}/store-new-quotationrows', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
+
 		//DestinationCreateStoreController
 		Route::get('{quotation}/create-destination', [config('clients.models.destination.controllers.create'), 'createFromQuotation'])->name('quotations.createDestination');
 		//	Route::post('{quotation}/store-destination', [config('clients.models.destination.controllers.create'), 'store'])->name('quotations.storeDestination');
 
 		Route::get('current', [Products::getController('quotation', 'current'), 'index'])->name('quotations.current');
-
-		//QuotationAddQuotationrowIndexController
-		Route::post('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
-
-		//QuotationAddQuotationrowIndexController
-		Route::post('{quotation}/store-new-quotationrows', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
 
 		Route::get('', [Products::getController('quotation', 'index'), 'index'])->name('quotations.index');
 		Route::get('create', [Products::getController('quotation', 'create'), 'create'])->name('quotations.create');
@@ -184,7 +183,10 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		//OrderAddOrderrowIndexController
 		Route::post('{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
+
+		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeOrderrow'])->name('orders.storeOrderrow');
 
 		//DestinationCreateStoreController
 		Route::get('{order}/create-destination', [config('clients.models.destination.controllers.create'), 'createFromOrder'])->name('orders.createDestination');

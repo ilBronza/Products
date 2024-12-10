@@ -49,7 +49,7 @@ class SellableCreatorHelper
 
 	static function createSellableByTarget(SellableItemInterface $target, string $type = null) : Sellable
 	{
-		$sellable = Sellable::getProjectClassName()::make();
+		$sellable = Sellable::gpc()::make();
 		$sellable->name = $target->getNameForSellable();
 		$sellable->target()->associate($target);
 		$sellable->type = $type;
@@ -87,7 +87,7 @@ class SellableCreatorHelper
 
 	static function getOrCreateSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
 	{
-		if($sellableSupplier = SellableSupplier::where('sellable_id', $sellable->getKey())
+		if($sellableSupplier = SellableSupplier::gpc()::where('sellable_id', $sellable->getKey())
 		                                       ->where('supplier_id', $supplier->getKey())
 		                                       ->first())
 			return $sellableSupplier;

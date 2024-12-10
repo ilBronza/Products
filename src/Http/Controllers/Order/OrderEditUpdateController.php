@@ -13,6 +13,8 @@ class OrderEditUpdateController extends OrderCRUD
 {
     use CRUDEditUpdateTrait;
 
+	public ? bool $updateEditor = true;
+
     public $allowedMethods = ['edit', 'update'];
 
 	public function getRelationshipsManagerClass()

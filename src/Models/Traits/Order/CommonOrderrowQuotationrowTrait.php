@@ -216,10 +216,14 @@ trait CommonOrderrowQuotationrowTrait
 		if ($value = $this->cost_company_total)
 			return round($value, 2);
 
+		$this->calculated_cost_company;
+		return 123;
+
 		if ($this->getSellable()->isVehicleType())
 			return round($this->getQuantity() * $this->calculated_cost_company * ($this->isRoundTrip() + 1), 2);
 
-			if ($this->getSellable()->isRentType())
+		return 123;
+		if ($this->getSellable()->isRentType())
 			if (! $this->cost_company_approver)
 				return 0;
 
