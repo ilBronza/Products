@@ -2,9 +2,10 @@
 
 namespace IlBronza\Products\Models\Traits\Sellable;
 
-use App\Models\ProjectSpecific\Supplier;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Models\Sellables\Supplier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
@@ -23,7 +24,7 @@ trait InteractsWithSupplierTrait
 
 	public function supplier() : MorphOne
 	{
-		return $this->morphOne(Supplier::getProjectClassName(), 'target');
+		return $this->morphOne(Supplier::gpc(), 'target');
 	}
 
 	public function getSupplier() : ?Model
@@ -79,5 +80,15 @@ trait InteractsWithSupplierTrait
 	public function getQuotationsBySupplier() : Collection
 	{
 		return $this->getSupplier()->getQuotations();
+	}
+
+	public function getOrderrowsForShowRelation() : Collection
+	{
+		if(! $supplier = $this->getSupplier())
+			return collect();
+
+		$sellableSuppliersIds = SellableSupplier::gpc()::select('id')->where('supplier_id', $supplier->getKey())->get();
+
+		return Orderrow::gpc()::with('order.client', 'order.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $sellableSuppliersIds)->get();
 	}
 }

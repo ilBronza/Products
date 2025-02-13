@@ -22,14 +22,41 @@ trait SellableSupplierAssignmentTrait
 
 	public function getSellableSupplierRelationsByTargetType() : array
 	{
+		$sellable = $this->getSellable();
+
+		if ($sellable->isContracttype())
+			return [
+				'prices',
+				'supplier.target.operatorContracttypes.contracttype',
+				'supplier.target.operatorContracttypes.prices',
+				'supplier.target.validClientOperator.employment',
+				'supplier.target.user.userdata',
+				'supplier.target.extraFields',
+				'supplier.target.address'
+			];
+
+		if (($sellable->isControlRoomType())||($sellable->isVehicleType()))
+			return [
+				'prices',
+				'supplier.target.extraFields',
+				'supplier.target',
+			];
+
+		if (($this->getSellable()->isServiceType())||($sellable->isHotelType()))
+			return [
+				'supplier.target.address'
+			];
+
+		dd($sellable->getType());
+
+		dd('dopo');
+
+
+
+
 		if (! $this->getTargetType())
 		{
 			if ($this->getSellable()->isHotelType())
-				return [
-					'supplier.target'
-				];
-
-			if ($this->getSellable()->isRentType())
 				return [
 					'supplier.target'
 				];
@@ -38,23 +65,11 @@ trait SellableSupplierAssignmentTrait
 				return [
 					'supplier.target'
 				];
-
-			if ($this->getSellable()->isControlRoomType())
-				return [
-					'supplier.target'
-				];
 		}
 
 		if ($this->getTargetType() == 'Type')
 			return [
 				'supplier.target'
-			];
-
-		if ($this->getTargetType() == 'Contracttype')
-			return [
-				'supplier.target.operatorContracttypes.contracttype',
-				'supplier.target.operatorContracttypes.prices',
-				'supplier.target.address'
 			];
 
 		throw new Exception ('altro tipo di sellable: ' . $this->getTargetType());
@@ -103,32 +118,37 @@ trait SellableSupplierAssignmentTrait
 
 	public function getIndexFieldsArray()
 	{
-		if (! $this->getTargetType())
-		{
-			//SellableSupplierHotelFieldsGroupParametersFile
-			if ($this->getSellable()->isHotelType())
-				return config('products.models.sellableSupplier.fieldsGroupsFiles.hotel')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+		if(! $helper = config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}"))
+			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}");
 
-			if ($this->getSellable()->isRentType())
-				return config('products.models.sellableSupplier.fieldsGroupsFiles.rent')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+		return config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}")::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
 
-			if ($this->getSellable()->isSurveillanceType())
-				return config('products.models.sellableSupplier.fieldsGroupsFiles.surveillance')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-
-			if ($this->getSellable()->isControlRoomType())
-				return config('products.models.sellableSupplier.fieldsGroupsFiles.controlRoom')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-		}
-
-		if ($this->getTargetType() == 'Contracttype')
-			//SellableSupplierContracttypeFieldsGroupParametersFile
-			return config('products.models.sellableSupplier.fieldsGroupsFiles.contracttype')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-
-		if ($this->getTargetType() == 'Type')
-			//SellableSupplierVehicletypeFieldsGroupParametersFile
-			return config('products.models.sellableSupplier.fieldsGroupsFiles.vehicletype')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-
-		dd($this);
-		throw new Exception('Unsupported type');
+//		if (! $this->getTargetType())
+//		{
+//			//SellableSupplierHotelFieldsGroupParametersFile
+//			if ($this->getSellable()->isHotelType())
+//				return config('products.models.sellableSupplier.fieldsGroupsFiles.hotel')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+//
+//			if ($this->getSellable()->isRentType())
+//				return config('products.models.sellableSupplier.fieldsGroupsFiles.rent')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+//
+//			if ($this->getSellable()->isSurveillanceType())
+//				return config('products.models.sellableSupplier.fieldsGroupsFiles.surveillance')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+//
+//			if ($this->getSellable()->isControlRoomType())
+//				return config('products.models.sellableSupplier.fieldsGroupsFiles.controlRoom')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+//		}
+//
+//		if ($this->getTargetType() == 'Contracttype')
+//			//SellableSupplierContracttypeFieldsGroupParametersFile
+//			return config('products.models.sellableSupplier.fieldsGroupsFiles.contracttype')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+//
+//		if ($this->getTargetType() == 'Type')
+//			//SellableSupplierVehicletypeFieldsGroupParametersFile
+//			return config('products.models.sellableSupplier.fieldsGroupsFiles.vehicletype')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+//
+//		dd($this);
+//		throw new Exception('Unsupported type');
 	}
 
 	public function getContainerModelPrefix() : string

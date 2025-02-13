@@ -35,11 +35,6 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			'method' => 'POST'
 		]);
 
-		$form->addFetcher('outherRight', new Fetcher([
-			'title' => 'Files correnti',
-			'url' => route('docusign.filesList')
-		]));
-
 		foreach ($types as $type)
 			$form->addFormField(
 				FormField::createFromArray([
@@ -113,7 +108,6 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			$validationParameters[$type . '.*.quantity'] = 'integer|required|min:1';
 		}
 
-
 		//		dd($request->all());
 		//		dd($validationParameters);
 
@@ -128,7 +122,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 			foreach ($sellables as $key => $_parameters)
 			{
-				$sellable = Sellable::getProjectClassName()::find($_parameters['sellable']);
+				$sellable = Sellable::gpc()::find($_parameters['sellable']);
 
 				for ($i = 0; $i < $_parameters['quantity']; $i ++)
 				{

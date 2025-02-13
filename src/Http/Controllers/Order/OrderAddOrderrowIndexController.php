@@ -35,28 +35,27 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			'method' => 'POST'
 		]);
 
-		$form->addFetcher('outherRight', new Fetcher([
-			'title' => 'Files correnti',
-			'url' => route('docusign.filesList')
-		]));
-
 		foreach ($types as $type)
 			$form->addFormField(
 				FormField::createFromArray([
 					'name' => $type,
-					'label' => $type,
+					'label' => trans('products::sellables.pickSellables'),
 					'type' => 'json',
 					'rules' => 'array|required',
 					'fields' => [
 						'sellable' => [
 							'name' => 'sellable_' . $type,
-							'label' => $type,
+							'label' => trans('products::sellables.sellable'),
 							'type' => 'select',
 							'select2' => false,
 							'rules' => 'string|required|in:' . implode(',', array_keys($order->getPossibleSellablesByType($type))),
 							'list' => $order->getPossibleSellablesByType($type)
 						],
-						'quantity' => ['number' => 'integer|required|min:1']
+						'quantity' => [
+							'label' => trans('products::fields.quantity'),
+							'type' => 'number',
+							'rules'=> 'integer|required|min:1'
+						]
 					]
 				])
 			);

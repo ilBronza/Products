@@ -7,24 +7,26 @@ class SellableSupplierHotelFieldsGroupParametersFile extends SellableSupplierBas
 	static function getTypedFields() : array
 	{
 		return [
-			//			'supplier.target->defaultDestination->address' => '_fn_getTargetString',
+			'supplier.target.address.street_string' => 'flat',
+			'supplier.target.address.city' => 'flat',
+			'supplier.target.address.province' => [
+				'type' => 'flat',
+				'width' => '3em'
+			],
+			'supplier.target.address.state' => [
+				'type' => 'flat',
+				'width' => '3em'
+			],
 
-			'id' => 'flat',
+			'mySelfPhone.supplier.target.contacts' => [
+				'type' => 'contacts::single',
+				'contacttype' => 'backoffice'
+			],
 
-			'supplier.target.defaultDestination.address.street_string' => 'flat',
-
-			'supplier.target.defaultDestination.address.zip' => 'flat',
-
-			'supplier.target.defaultDestination.address.city' => 'flat',
-			'supplier.target.defaultDestination.address.province' => 'flat',
-			'supplier.target.defaultDestination.address.state' => 'flat',
-
-			'cost_company_day' => 'flat',
-
-			//			'supplier.target.address.city' => 'flat',
-			//			'supplier.target.address.province' => 'flat',
-			//			'id' => 'flat',
-			//			'supplier.target.plate' => 'flat',
+			'cost_company_day' => [
+				'type' => 'numbers.price',
+//				'width' => '5em'
+			],
 		];
 	}
 }

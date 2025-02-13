@@ -7,6 +7,7 @@ use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
 use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
+use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
@@ -28,7 +29,9 @@ use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowDestroyController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
@@ -52,6 +55,9 @@ use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierContracttypeEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierHotelEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierRentEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -61,6 +67,8 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedOr
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedProductRelationFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProjectFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationFieldsGroupParametersFile;
@@ -490,7 +498,7 @@ return [
 		],
 		'quotation' => [
 			'table' => 'products__quotations__quotations',
-			'class' => \App\Models\ProjectSpecific\Quotation::class,
+			'class' => Quotation::class,
 			'quotationToOrderConverterHelper' => QuotationToOrderConverterHelper::class,
 			'fieldsGroupsFiles' => [
 				'index' => QuotationFieldsGroupParametersFile::class,
@@ -553,7 +561,7 @@ return [
 		],
 		'sellable' => [
 			'table' => 'products__sellables__sellables',
-			'class' => \App\Models\ProjectSpecific\Sellable::class,
+			'class' => Sellable::class,
 			'fieldsGroupsFiles' => [
 				'index' => SellableFieldsGroupParametersFile::class,
 				'related' => SellableRelatedFieldsGroupParametersFile::class
@@ -591,6 +599,8 @@ return [
 			],
 			'parametersFiles' => [
 				'contracttype' => SellableSupplierContracttypeEditUpdateFieldsetsParameters::class,
+				'hotel' => SellableSupplierHotelEditUpdateFieldsetsParameters::class,
+				'rent' => SellableSupplierRentEditUpdateFieldsetsParameters::class,
 				'create' => SellableSupplierCreateStoreFieldsetsParameters::class,
 				'createBySupplier' => SellableSupplierCreateStoreBySupplierFieldsetsParameters::class,
 				'createBySellable' => SellableSupplierCreateStoreBySellableFieldsetsParameters::class,

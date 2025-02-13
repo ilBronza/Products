@@ -4,13 +4,13 @@ namespace IlBronza\Products\Models\Sellables;
 
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
-use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
+use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
@@ -18,7 +18,7 @@ use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Support\Collection;
 
 use function array_filter;
-use function json_encode;
+use function config;
 use function trans;
 
 class Sellable extends ProductPackageBaseModel
@@ -35,6 +35,7 @@ class Sellable extends ProductPackageBaseModel
 	use CRUDSluggableTrait;
 
 	use InteractsWithPriceTrait;
+
 	static $restoringRelationships = [];
 	static $modelConfigPrefix = 'sellable';
 	protected $keyType = 'string';
@@ -52,14 +53,42 @@ class Sellable extends ProductPackageBaseModel
 	public function quotationrows()
 	{
 		return $this->hasMany(
-			Quotationrow::getProjectClassName()
+			Quotationrow::gpc()
 		);
 	}
 
 	public function quotations()
 	{
 		return $this->belongsToMany(
-			Quotation::getProjectClassName(), config('products.models.quotationrow.table')
+			Quotation::gpc(), config('products.models.quotationrow.table')
+		);
+	}
+
+	public function getSellableSuppliersRelatedElements() : Collection
+	{
+		return $this->sellableSuppliers()->with(
+			'sellable', 'supplier.target', 'prices'
+		)->get();
+	}
+
+	public function getQuotationsRelatedElements() : Collection
+	{
+		return $this->quotations()->with(
+			'project', 'client'
+		)->get();
+	}
+
+	public function getOrdersRelatedElements() : Collection
+	{
+		return $this->orders()->with(
+			'project', 'client', 'destination.address', 'quotation', 'extraFields'
+		)->get();
+	}
+
+	public function orders()
+	{
+		return $this->belongsToMany(
+			Order::gpc(), config('products.models.orderrow.table')
 		);
 	}
 
@@ -104,6 +133,11 @@ class Sellable extends ProductPackageBaseModel
 		$query->whereIn('type', $types);
 	}
 
+	public function getType() : string
+	{
+		return $this->type;
+	}
+
 	public function scopeByTargetIds($query, array|Collection $targetIds)
 	{
 		$query->where('target_id', $targetIds);
@@ -111,7 +145,7 @@ class Sellable extends ProductPackageBaseModel
 
 	public function getCostCompany() : float
 	{
-		if($this->cost_company)
+		if ($this->cost_company)
 			return $this->cost_company;
 
 		return $this->getTarget()?->getCostCompany() ?? 0;
@@ -150,7 +184,7 @@ class Sellable extends ProductPackageBaseModel
 		$result = [];
 
 		foreach ($types as $type)
-			$result[$type] = trans('products:sellables.types.' . $type);
+			$result[$type] = trans('products::sellables.types.' . $type);
 
 		return $result;
 	}

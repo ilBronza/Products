@@ -2,7 +2,6 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\Fieldsets;
 
-use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
 
 use function config;
@@ -35,7 +34,6 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 					'convocated_where' => ['text' => 'string|nullable'],
 					'convocated_when' => ['text' => 'string|nullable'],
 					'description' => ['text' => 'string|nullable'],
-
 
 					'calculated_cost_company' => ['number' => 'numeric|nullable'],
 					'calculated_toll' => ['number' => 'numeric|nullable'],
@@ -117,8 +115,10 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'multiple' => false,
 						'rules' => 'string|nullable',
 					],
-					
+
 					'invoice_number' => ['text' => 'string|nullable|max:64'],
+
+					'invoice_date' => ['date' => 'date|nullable'],
 
 					'reimbursement_operator' => [
 						'type' => 'select',
@@ -150,7 +150,8 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 							'ricevuto' => 'Ricevuto',
 						],
 						'rules' => 'string|nullable|in:"Da inviare",Inviato,Ricevuto',
-					]
+					],
+					'confirmed' => ['boolean' => 'bool|nullable'],
 
 					// 'client' => [
 					//     'type' => 'select',

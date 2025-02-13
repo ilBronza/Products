@@ -18,6 +18,9 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 				'width' => '450px'
 			],
 
+			'supplier.target.validClientOperator.employment.label_text' => 'flat',
+			'supplier.target.validClientOperator.ended_at' => 'dates.date',
+
 			'cost_company_day' => 'flat',
 			'cost_gross_day' => 'flat',
 			'operator_neat_day' => 'flat',

@@ -26,6 +26,7 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		//QuotationConvertToOrderController
 		Route::get('{quotation}/convert-to-order', [Products::getController('quotation', 'convertToOrder'), 'convertToOrder'])->name('quotations.convertToOrder');
 
 		//QuotationAddQuotationrowIndexController
@@ -37,6 +38,7 @@ Route::group([
 		Route::get('{quotation}/create-destination', [config('clients.models.destination.controllers.create'), 'createFromQuotation'])->name('quotations.createDestination');
 		//	Route::post('{quotation}/store-destination', [config('clients.models.destination.controllers.create'), 'store'])->name('quotations.storeDestination');
 
+		//QuotationCurrentController
 		Route::get('current', [Products::getController('quotation', 'current'), 'index'])->name('quotations.current');
 
 		Route::get('', [Products::getController('quotation', 'index'), 'index'])->name('quotations.index');
@@ -106,6 +108,7 @@ Route::group([
 
 	Route::group(['prefix' => 'products-clients'], function ()
 	{
+		//IlBronza\Products\Http\Controllers\Clients\ClientIndexController
 		Route::get('current', [Products::getController('client', 'index'), 'index'])->name('clients.index');
 	});
 
@@ -196,6 +199,8 @@ Route::group([
 		Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
 		Route::get('all-orders', [Products::getController('order', 'all'), 'index'])->name('orders.all');
 		Route::get('current', [Products::getController('order', 'active'), 'index'])->name('orders.current');
+
+		//ActiveOrderIndexController
 		Route::get('active', [Products::getController('order', 'active'), 'index'])->name('orders.active');
 		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
 		Route::get('{order}', [Products::getController('order', 'show'), 'show'])->name('orders.show');

@@ -8,6 +8,7 @@ use IlBronza\Clients\Models\Destination;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
+use IlBronza\Payments\Models\Traits\InteractsWithInvoiceables;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
@@ -22,6 +23,7 @@ trait CommonOrderrowQuotationrowTrait
 	use InteractsWithPriceTrait;
 	use InteractsWithFormTrait;
 	use CRUDReorderableStandardTrait;
+	use InteractsWithInvoiceables;
 
 	public function setStartsAt(string|Carbon $startsAt = null) : void
 	{
@@ -111,6 +113,14 @@ trait CommonOrderrowQuotationrowTrait
 		return $query->whereHas('sellable', function ($query) use ($sellableType)
 		{
 			$query->where('type', $sellableType);
+		});
+	}
+
+	public function scopeBySellableTypes($query, array $sellableTypes)
+	{
+		return $query->whereHas('sellable', function ($query) use ($sellableTypes)
+		{
+			$query->whereIn('type', $sellableTypes);
 		});
 	}
 
@@ -213,16 +223,15 @@ trait CommonOrderrowQuotationrowTrait
 
 	public function getCalculatedCostCompanyTotalAttribute()
 	{
-		if ($value = $this->cost_company_total)
+		if (! is_null($value = $this->cost_company_total))
 			return round($value, 2);
 
-		$this->calculated_cost_company;
-		return 123;
-
 		if ($this->getSellable()->isVehicleType())
+		{
+			return 654321;
 			return round($this->getQuantity() * $this->calculated_cost_company * ($this->isRoundTrip() + 1), 2);
+		}
 
-		return 123;
 		if ($this->getSellable()->isRentType())
 			if (! $this->cost_company_approver)
 				return 0;
@@ -266,18 +275,19 @@ trait CommonOrderrowQuotationrowTrait
 		if ($value = $this->cost_company)
 			return $value;
 
-		if ($this->getSellable()->isContracttype())
+		if (($sellable = $this->getSellable())->isContracttype())
 		{
-			if($valid = $this->getSupplier()?->getTarget()?->getValidClientOperator())
+			if ($valid = $this->getSupplier()?->getTarget()?->getValidClientOperator())
 				return $valid->getPriceByCollectionId('costCompanyDay')->price;
 
 			return $this->getSupplier()?->getTarget()->clientOperators->first()?->getPriceByCollectionId('costCompanyDay')->price;
 		}
 
 		if ($sellableSupplier = $this->getSellableSupplier())
-			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-				if ($value = $price->price)
-					return $value;
+				if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
+					if ($value = $price->price)
+						return $value;
+
 
 		return $this->getSellable()->getCostCompany();
 	}
@@ -287,4 +297,11 @@ trait CommonOrderrowQuotationrowTrait
 		return $this->getModelContainer()?->getDestination();
 	}
 
+	public function getInvoiceableDetail() : string
+	{
+		if($this->description)
+			return $this->description;
+
+		return $this->getSellable()->getName();
+	}
 }

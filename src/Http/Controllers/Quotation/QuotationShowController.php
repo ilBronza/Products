@@ -5,6 +5,8 @@ namespace IlBronza\Products\Http\Controllers\Quotation;
 use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 use IlBronza\CRUD\Traits\CRUDShowTrait;
 
+use function config;
+
 class QuotationShowController extends QuotationCRUD
 {
     use CRUDShowTrait;
@@ -20,6 +22,7 @@ class QuotationShowController extends QuotationCRUD
 
     public function getRelationshipsManagerClass()
     {
+		//QuotationRelationManager
         return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.show");
     }
 

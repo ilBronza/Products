@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models\Quotations;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
+use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotation;
 
@@ -24,6 +25,11 @@ class Project extends ProductPackageBaseModel
 
 	public function quotations()
 	{
-		return $this->hasMany(Quotation::getProjectClassName());
+		return $this->hasMany(Quotation::gpc());
+	}
+
+	public function orders()
+	{
+		return $this->hasMany(Order::gpc());
 	}
 }

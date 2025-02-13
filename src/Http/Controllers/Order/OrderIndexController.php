@@ -6,6 +6,7 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use Illuminate\Support\Str;
 
+use function config;
 use function ini_set;
 
 class OrderIndexController extends OrderCRUD
@@ -20,6 +21,7 @@ class OrderIndexController extends OrderCRUD
 
     public function getRelatedFieldsArray()
     {
+		//OrderFieldsGroupParametersFile
         return config('products.models.order.fieldsGroupsFiles.related')::getFieldsGroup();
     }
 

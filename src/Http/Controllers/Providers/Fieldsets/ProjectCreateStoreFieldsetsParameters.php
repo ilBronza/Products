@@ -13,7 +13,7 @@ class ProjectCreateStoreFieldsetsParameters extends FieldsetParametersFile
                 'translationPrefix' => 'products::fields',
                 'fields' => [
                     'name' => ['text' => 'string|required'],
-                    'slug' => ['text' => 'string|required'],
+//                    'slug' => ['text' => 'string|nullable'],
                     'client' => [
                         'type' => 'select',
                         'multiple' => false,
@@ -29,7 +29,7 @@ class ProjectCreateStoreFieldsetsParameters extends FieldsetParametersFile
                     'category' => [
                         'type' => 'select',
                         'multiple' => false,
-                        'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
+                        'rules' => 'string|nullable|exists:' . config('category.models.category.table') . ',id',
                         'relation' => 'category'
                     ],
                     'started_at' => ['datetime' => 'date|nullable'],

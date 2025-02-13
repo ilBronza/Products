@@ -2,10 +2,10 @@
 
 namespace IlBronza\Products\Providers\Helpers\Quotations;
 
-use App\Models\ProjectSpecific\Quotationrow;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotation;
+use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Ukn\Ukn;
 
 use function collect;
@@ -25,6 +25,11 @@ class QuotationToOrderConverterHelper
 
 			return $order;
 		}
+	}
+
+	static function _bindQuotationrowToOrderrow(Quotationrow $quotationrow, Orderrow $orderrow) : Orderrow
+	{
+		dd($orderrow);
 	}
 
 	public function getQuotation() : Quotation
@@ -48,6 +53,8 @@ class QuotationToOrderConverterHelper
 		$this->order->name = $this->getOrderName();
 
 		$this->getQuotation()->order()->save($this->order);
+
+		$this->order = static::_bindQuotationToOrder($this->getQuotation(), $this->order);
 	}
 
 	static function _convertQuotationrowToOrderrow(Order $order, Quotationrow $quotationrow) : Orderrow
@@ -58,12 +65,12 @@ class QuotationToOrderConverterHelper
 
 		$quotationrow->orderrow()->save($orderrow);
 
-		return $orderrow;
+		return static::_bindQuotationrowToOrderrow($quotationrow, $orderrow);
 	}
 
-	public function convertQuotationrowToOrderrow(Quotationrow $quotationrow) : void
+	public function convertQuotationrowToOrderrow(Quotationrow $quotationrow) : Orderrow
 	{
-		static::_convertQuotationrowToOrderrow($this->getOrder(), $quotationrow);
+		return static::_convertQuotationrowToOrderrow($this->getOrder(), $quotationrow);
 	}
 
 	public function setOrderrows() : void

@@ -6,6 +6,7 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCRUD;
 
+use function config;
 use function ini_set;
 
 class QuotationIndexController extends QuotationCRUD
@@ -22,6 +23,7 @@ class QuotationIndexController extends QuotationCRUD
 
     public function getRelatedFieldsArray()
     {
+		//QuotationRelatedFieldsGroupParametersFile
         return config('products.models.quotation.fieldsGroupsFiles.related')::getFieldsGroup();
     }
 

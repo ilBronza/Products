@@ -2,5 +2,7 @@
 
 return array (
   'supplies' => 'Forniture',
-  'index' => 'Forniture'
+  'index' => 'Forniture',
+	'sellable' => 'Bene',
+	'pickSellables' => 'Scegli i beni/servizi'
 );

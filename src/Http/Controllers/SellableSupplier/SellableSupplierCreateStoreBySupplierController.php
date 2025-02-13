@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class SellableSupplierCreateStoreBySupplierController extends SellableSupplierCreateStoreController
 {
     public $returnBack = true;
+	public ?bool $updateEditor = false;
 
     use CRUDCreateStoreTrait;
     use CRUDRelationshipTrait;

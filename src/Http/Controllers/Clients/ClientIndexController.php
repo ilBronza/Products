@@ -11,15 +11,14 @@ class ClientIndexController extends BaseClientIndexController
 {
 	public function getIndexElements()
 	{
-		ini_set('max_execution_time', '120');
-		ini_set('memory_limit', '-1');
-
 		$category = Category::gpc()::where('name', 'cliente')->first();
 
 		$query = $this->getModelClass()::with([
 			'categories',
 			'destinations',
-			'referents'
+			'referents',
+			'contacts',
+			'address'
 		])->byGeneralCategory($category);
 
 		return $query->get();

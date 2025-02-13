@@ -25,12 +25,12 @@ class SellableCreateStoreFieldsetsParameters extends FieldsetParametersFile
 						'list' => $possibleTypesValues,
 						'rules' => 'string|required|in:' . implode(",", array_keys($possibleTypesValues))
 					],
-					'category' => [
-						'type' => 'select',
-						'multiple' => false,
-						'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
-						'relation' => 'category'
-					],
+//					'category' => [
+//						'type' => 'select',
+//						'multiple' => false,
+//						'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
+//						'relation' => 'category'
+//					],
 				],
 				'width' => ["1-3@l", '1-2@m']
 			]

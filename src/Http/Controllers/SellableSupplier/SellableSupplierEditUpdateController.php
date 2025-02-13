@@ -12,6 +12,8 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 {
     use CRUDEditUpdateTrait;
 
+	public ?bool $updateEditor = false;
+
     public $allowedMethods = ['edit', 'update'];
 
     public function getGenericParametersFile() : ? string
@@ -19,7 +21,28 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 		if(($sellable = $this->getModel()->getSellable())->isContracttype())
 			return config('products.models.sellableSupplier.parametersFiles.contracttype');
 
-		dd('duduhere');
+	    if($sellable->isHotelType())
+		    return config('products.models.sellableSupplier.parametersFiles.hotel');
+
+	    if($sellable->isVehicleType())
+	    {
+		    dd('gestire campti veicolo');
+	    }
+
+	    if($sellable->isReimbursementType())
+	    {
+		    dd('gestire campti rimborso');
+	    }
+
+	    if($sellable->isRentType())
+		    return config('products.models.sellableSupplier.parametersFiles.rent');
+
+		if($sellable->isControlRoomType())
+			dd('gestire campti control room');
+
+		if($sellable->isSurveillanceType())
+			dd('gestire campti sorveglianza');
+
 	    dd('altro tipo di sellable: ' . $targetType);
 
         return config('products.models.sellableSupplier.parametersFiles.create');
@@ -38,4 +61,8 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
         return $this->_update($request, $sellableSupplier);
     }
+
+	public function getAfterUpdatedRedirectUrl() {
+		return $this->getModel()->getSupplier()->getShowUrl();
+	}
 }

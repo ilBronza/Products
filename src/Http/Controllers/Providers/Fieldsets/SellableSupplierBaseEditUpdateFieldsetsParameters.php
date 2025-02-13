@@ -29,7 +29,8 @@ abstract class SellableSupplierBaseEditUpdateFieldsetsParameters extends Fieldse
 						'type' => 'select',
 						'multiple' => false,
 						'rules' => 'string|required',
-						'relation' => 'sellable'
+						'relation' => 'sellable',
+						'readOnly' => true,
 					]
 				],
 				'width' => ['1-3@l', '1-2@m']

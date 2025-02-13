@@ -10,6 +10,8 @@ use IlBronza\CRUD\Models\BasePivotModel;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
+use IlBronza\Operators\Models\Interfaces\HasWorkingDays;
+use IlBronza\Operators\Models\WorkingDay;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Prices\Providers\PriceData;
@@ -26,7 +28,7 @@ use function dd;
 use function request;
 use function strpos;
 
-class SellableSupplier extends BasePivotModel implements WithPriceInterface
+class SellableSupplier extends BasePivotModel implements WithPriceInterface, HasWorkingDays
 {
 	use CRUDUseUuidTrait;
 
@@ -42,6 +44,11 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 	static function getInternalIds() : array
 	{
 		dd('estendere lista fornitori interni');
+	}
+
+	public function workingDays()
+	{
+		return $this->hasMany(WorkingDay::gpc());
 	}
 
 	public function getPriceBaseAttributes()
@@ -224,10 +231,22 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface
 		]);
 	}
 
+	public function getCreateSellableSupplierButton($subject)
+	{
+		$supplier = $subject->getSupplier();
+
+		return Button::create([
+			'name' => 'sellable-supplier-create',
+			'icon' => 'plus',
+			'text' => 'products::sellableSuppliers.create',
+			'href' => $supplier->getCreateSellableSupplierUrl(),
+		]);
+	}
+
 	public function getCreateSellableButton(Client|Supplier|Sellable $subject) : Button
 	{
 		if (class_basename($subject) == 'Client')
-			$subject = $client->getSupplier();
+			$subject = $subject->getSupplier();
 
 		return Button::create([
 			'name' => 'sellable-supplier-create',

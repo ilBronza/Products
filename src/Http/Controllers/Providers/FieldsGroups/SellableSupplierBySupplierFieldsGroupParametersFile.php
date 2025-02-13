@@ -5,7 +5,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 
-class SellableFieldsGroupParametersFile extends FieldsGroupParametersFile
+class SellableSupplierBySupplierFieldsGroupParametersFile extends FieldsGroupParametersFile
 {
     static function getFieldsGroup() : array
     {
@@ -15,13 +15,17 @@ class SellableFieldsGroupParametersFile extends FieldsGroupParametersFile
             [
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
-                'mySelfSee' => 'links.see',
-                'name' => 'flat',
-//                'type' => 'flat',
-                'category' => 'relations.belongsTo',
-//                'target' => 'relations.belongsTo',
-                'suppliers_count' => 'flat',
-                'quotations_count' => 'flat',
+				'sellable.name' => 'flat',
+
+				'prices' => [
+					'type' => 'iterators.each',
+					'childParameters' => [
+						'type' => 'function',
+						'function' => 'getPriceDescriptionString'
+					],
+				],
+
+				'quotationrows_count' => 'flat',
 
                 'mySelfDelete' => 'links.delete'
             ]

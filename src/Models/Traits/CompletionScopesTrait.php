@@ -29,9 +29,8 @@ trait CompletionScopesTrait
 
     public function scopeNotCompletedOrToday($_query)
     {
-            $_query     ->whereNull(static::make()->getTable() . '.completed_at')
-                        ->orWhereDate(static::make()->getTable() . '.completed_at', Carbon::today()->format('Y-m-d'))
-                        ;
+            $_query->whereNull(static::make()->getTable() . '.completed_at')
+                    ->orWhereDate(static::make()->getTable() . '.completed_at', Carbon::today()->format('Y-m-d'));
     }
 
     public function scopeCompletedOrPartiallyCompletedDate($query, Carbon $date)

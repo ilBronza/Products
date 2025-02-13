@@ -2,8 +2,8 @@
 
 namespace IlBronza\Products\Providers\Helpers\Sellables;
 
-use App\Models\ProjectSpecific\Supplier;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
+use IlBronza\Products\Models\Sellables\Supplier;
 
 class SupplierCreatorHelper
 {

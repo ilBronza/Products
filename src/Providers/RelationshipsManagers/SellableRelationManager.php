@@ -12,23 +12,29 @@ class SellableRelationManager Extends RelationshipsManager
 	{
 		$relations = [];
 
+		//SellableSupplierIndexController
 		$relations['sellableSuppliers'] = [
 			'controller' => config('products.models.sellableSupplier.controllers.index'),
-			'elementGetterMethod' => 'getSellableSuppliers',
+			'elementGetterMethod' => 'getSellableSuppliersRelatedElements',
 			'buttonsMethods' => [
 				'getCreateSellableButton',
 			],
 		];
 
-		if($target = $this->getModel()->getTarget())
-			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
+//		if($target = $this->getModel()->getTarget())
+//			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
 
-			$relations['quotations'] = config('products.models.quotation.controllers.index');
+		//QuotationIndexController
+		$relations['quotations'] = [
+			'controller' => config('products.models.quotation.controllers.index'),
+			'elementGetterMethod' => 'getQuotationsRelatedElements',
+		];
 
-//			$relations['suppliers'] = [
-//							'controller' => config('products.models.supplier.controllers.index'),
-//							'elementGetterMethod' => 'getFullrelatedSupplierElements'
-//						];
+		//OrderIndexController
+		$relations['orders'] = [
+			'controller' => config('products.models.order.controllers.index'),
+			'elementGetterMethod' => 'getOrdersRelatedElements',
+		];
 
 		return [
 			'show' => [

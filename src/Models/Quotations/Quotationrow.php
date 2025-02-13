@@ -3,11 +3,12 @@
 namespace IlBronza\Products\Models\Quotations;
 
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
+use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
 
-class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface
+class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface
 {
 	static $modelConfigPrefix = 'quotationrow';
 

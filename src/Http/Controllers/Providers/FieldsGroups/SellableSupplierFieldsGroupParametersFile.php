@@ -16,9 +16,11 @@ class SellableSupplierFieldsGroupParametersFile extends FieldsGroupParametersFil
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-				'id' => 'flat',
-				'supplier.target.name' => 'flat',
-				'sellable.name' => 'flat',
+				'supplier.target' => [
+					'type' => 'links.seeName',
+					'width' => '14em'
+				],
+//				'sellable.name' => 'flat',
 
 				'prices' => [
 					'type' => 'iterators.each',

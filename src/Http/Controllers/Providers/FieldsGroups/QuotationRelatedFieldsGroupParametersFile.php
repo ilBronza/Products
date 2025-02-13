@@ -13,25 +13,21 @@ class QuotationRelatedFieldsGroupParametersFile extends FieldsGroupParametersFil
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
-                'mySelfEdit' => 'links.edit',
-                'mySelfSee' => 'links.see',
-                'name' => 'flat',
-                'slug' => 'flat',
-                'date' => 'dates.datetime',
+                'mySelfSee' => [
+					'type' => 'links.seeName',
+	                'width' => '8em'
+                ],
+                'date' => 'dates.date',
                 'quotationrows_count' => 'flat',
-                'project' => 'relations.belongsTo',
-                'client' => 'relations.belongsTo',
-                // 'destination' => 'relations.belongsTo',
-                // 'parent' => 'relations.belongsTo',
-                // 'category' => 'relations.belongsTo',
-                // 'quotationrows' => 'relations.hasMany',
-                // 'price.own_cost' => 'flat',
+	            'client' => [
+		            'type' => 'relations.belongsTo',
+		            'width' => '165px'
+	            ],
+	            'project' => [
+		            'type' => 'relations.belongsTo',
+		            'width' => '165px'
+	            ],
                 'directPrice.price' => 'flat',
-
-                // 'created_at' => 'dates.date',
-                // 'updated_at' => 'dates.date',
-                // 'started_at' => 'dates.date',
-                // 'completed_at' => 'dates.date',
 
                 'mySelfDelete' => 'links.delete'
             ]

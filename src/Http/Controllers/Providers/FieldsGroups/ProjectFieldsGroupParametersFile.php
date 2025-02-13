@@ -18,12 +18,12 @@ class ProjectFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfSee' => 'links.see',
                 'name' => 'flat',
                 'slug' => 'flat',
-                'client' => 'relations.belongsTo',
-                'category' => 'relations.belongsTo',
-                'quotations' => 'relations.hasMany',
+	            'client' => 'relations.belongsTo',
+	            'description' => 'flat',
+	            'category' => 'relations.belongsTo',
+	            'quotations' => 'relations.hasMany',
+	            'orders' => 'relations.hasMany',
 
-                'created_at' => 'dates.date',
-                'updated_at' => 'dates.date',
                 'started_at' => 'dates.date',
                 'completed_at' => 'dates.date',
 

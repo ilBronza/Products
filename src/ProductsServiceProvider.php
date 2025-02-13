@@ -2,9 +2,11 @@
 
 namespace IlBronza\Products;
 
+use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaServiceProviderPackagesTrait;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
@@ -17,6 +19,8 @@ use Illuminate\Support\ServiceProvider;
 
 class ProductsServiceProvider extends ServiceProvider
 {
+	use IlBronzaServiceProviderPackagesTrait;
+
 	/**
 	 * Perform post-registration booting of services.
 	 *
@@ -25,16 +29,17 @@ class ProductsServiceProvider extends ServiceProvider
 	public function boot() : void
 	{
 		Relation::morphMap([
-			'Quotationrow' => Quotationrow::getProjectClassName(),
-			'Quotation' => Quotation::getProjectClassName(),
-			'Supplier' => Supplier::getProjectClassName(),
-			'SellableSupplier' => SellableSupplier::getProjectClassName(),
-			'Product' => Product::getProjectClassName(),
-			'Phase' => Phase::getProjectClassName(),
-			'Packing' => Packing::getProjectClassName(),
-			'Order' => Order::getProjectClassName(),
-			'OrderProduct' => OrderProduct::getProjectClassName(),
-			'OrderProductPhase' => OrderProductPhase::getProjectClassName(),
+			'Quotationrow' => Quotationrow::gpc(),
+			'Quotation' => Quotation::gpc(),
+			'Supplier' => Supplier::gpc(),
+			'SellableSupplier' => SellableSupplier::gpc(),
+			'Product' => Product::gpc(),
+			'Phase' => Phase::gpc(),
+			'Packing' => Packing::gpc(),
+			'Orderrow' => Orderrow::gpc(),
+			'Order' => Order::gpc(),
+			'OrderProduct' => OrderProduct::gpc(),
+			'OrderProductPhase' => OrderProductPhase::gpc(),
 		]);
 
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'products');
