@@ -28,8 +28,8 @@ class ProductRelation extends Pivot
 
 	protected $keyType = 'string';
 
-	protected $dates = [
-		'deleted_at'
+	protected $casts = [
+		'deleted_at' => 'datetime'
 	];
 
 	public $incrementing = true;

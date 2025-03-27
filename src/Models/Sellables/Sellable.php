@@ -17,8 +17,10 @@ use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Support\Collection;
 
+use function app;
 use function array_filter;
 use function config;
+use function request;
 use function trans;
 
 class Sellable extends ProductPackageBaseModel

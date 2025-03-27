@@ -4,9 +4,10 @@ namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
 class SellableSupplierHotelFieldsGroupParametersFile extends SellableSupplierBaseFieldsGroupParametersFile
 {
-	static function getTypedFields() : array
+	static function getTypedFields(string $containerModel) : array
 	{
 		return [
+			'mySelfAssignBulk' => "products::{$containerModel}rows.assignBulkSellableSupplier",
 			'supplier.target.address.street_string' => 'flat',
 			'supplier.target.address.city' => 'flat',
 			'supplier.target.address.province' => [
@@ -25,7 +26,7 @@ class SellableSupplierHotelFieldsGroupParametersFile extends SellableSupplierBas
 
 			'cost_company_day' => [
 				'type' => 'numbers.price',
-//				'width' => '5em'
+				//				'width' => '5em'
 			],
 		];
 	}

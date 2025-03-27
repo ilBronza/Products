@@ -40,10 +40,11 @@ class QuotationEditUpdateController extends QuotationCRUD
 
 	public function edit(string $quotation)
     {
-	    $quotation = $this->findModel($quotation);
+	    if(! $quotation = $this->findModel($quotation))
+			abort(403);
 
-	    if($quotation->hasOrder())
-			return redirect()->to($quotation->getShowUrl());
+	    if(! $quotation->hasOrder())
+//			return redirect()->to($quotation->getShowUrl());
 
 		    if($button = $quotation->getConvertToOrderButton())
 			    $this->addNavbarButton(
@@ -72,4 +73,9 @@ class QuotationEditUpdateController extends QuotationCRUD
 
         return $this->_update($request, $quotation);
     }
+
+	public function getAfterUpdatedRedirectUrl()
+	{
+		return $this->getModel()->getEditUrl();
+	}
 }

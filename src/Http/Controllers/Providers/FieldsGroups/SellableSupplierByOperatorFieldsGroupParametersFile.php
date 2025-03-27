@@ -17,9 +17,9 @@ class SellableSupplierByOperatorFieldsGroupParametersFile extends FieldsGroupPar
 
 				'sellable' => 'links.seeName',
 
-				'cost_company_day' => 'editor.numeric',
-				'cost_gross_day' => 'editor.numeric',
-				'operator_neat_day' => 'editor.numeric',
+				'cost_company_day' => 'editor.price',
+				'cost_gross_day' => 'editor.price',
+				'operator_neat_day' => 'editor.price',
 
 				'mySelfDelete' => 'links.delete'
 

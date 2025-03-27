@@ -14,12 +14,12 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 
 	use CommonOrderrowQuotationrowTrait;
 
+	static $deletingRelationships = [];
 	protected $casts = [
 		'starts_at' => 'date',
 		'ends_at' => 'date'
 	];
 
-	static $deletingRelationships = [];
 	protected $with = ['sellable'];
 
 	public function getModelContainer()
@@ -27,14 +27,19 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 		return $this->getQuotation();
 	}
 
-	public function getQuotation() : ? Quotation
+	public function getQuotation() : ?Quotation
 	{
 		return $this->quotation;
 	}
 
+	public function modelContainer()
+	{
+		return $this->quotation();
+	}
+
 	public function quotation()
 	{
-		return $this->belongsTo(Quotation::getProjectClassName());
+		return $this->belongsTo(Quotation::gpc());
 	}
 
 	public function orderrow()

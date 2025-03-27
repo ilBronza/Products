@@ -14,6 +14,11 @@ class OrderShowController extends OrderCRUD
     {
         $order = $this->findModel($order);
 
-        return $this->_show($order);
+	    if(! $order->isFrozen())
+		    $this->addNavbarButton(
+			    $order->getFreezeButton()
+		    );
+
+	    return $this->_show($order);
     }
 }

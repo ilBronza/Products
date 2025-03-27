@@ -23,6 +23,4 @@ class ClientIndexController extends BaseClientIndexController
 
 		return $query->get();
 	}
-
-
 }

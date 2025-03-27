@@ -4,7 +4,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
 class SellableSupplierRentFieldsGroupParametersFile extends SellableSupplierBaseFieldsGroupParametersFile
 {
-	static function getTypedFields() : array
+	static function getTypedFields(string $containerModel) : array
 	{
 		return [
 			'supplier.target.address.street_string' => 'flat',

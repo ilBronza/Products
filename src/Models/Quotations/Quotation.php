@@ -16,7 +16,7 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 	use QuotationRelationshipsTrait;
 
 	static $modelConfigPrefix = 'quotation';
-	protected $deletingRelationships = [];
+	protected $deletingRelationships = ['quotationrows'];
 
 	protected $casts = [
 		'date' => 'date'
@@ -29,11 +29,12 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		]);
 	}
 
-	public function getAddQuotationrowByTypeUrl(string $type) : string
+	public function getAddQuotationrowByTypeUrl(string $type, bool $table = false) : string
 	{
 		return $this->getKeyedRoute('addQuotationrow', [
 			'quotation' => $this->getKey(),
-			'type' => $type
+			'type' => $type,
+			'table' => $table
 		]);
 	}
 

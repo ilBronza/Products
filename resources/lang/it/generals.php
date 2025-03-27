@@ -2,5 +2,5 @@
 
 return [
 	'all' => 'Tutti',
-	'current' => 'In corso'
+	'current' => 'In corso',
 ];

@@ -3,12 +3,16 @@
 namespace IlBronza\Products\Models\Traits\Orderrow;
 
 use IlBronza\Products\Models\Order;
-use IlBronza\Products\Models\Sellables\SellableSupplier;
 
 trait OrderrowRelationsScopesTrait
 {
+	public function modelContainer()
+	{
+		return $this->order();
+	}
+
 	public function order()
 	{
-		return $this->belongsTo(Order::getProjectClassName());
+		return $this->belongsTo(Order::gpc());
 	}
 }

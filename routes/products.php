@@ -26,12 +26,22 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		//QuotationReplicateRowController
+		Route::post('{quotation}/replicate-last-row-by-type/{type}', [Products::getController('quotation', 'replicateLastRow'), 'replicateLastRowByType'])->name('quotations.replicateLastRowByType');
+
+
 		//QuotationConvertToOrderController
 		Route::get('{quotation}/convert-to-order', [Products::getController('quotation', 'convertToOrder'), 'convertToOrder'])->name('quotations.convertToOrder');
 
+		//QuotationDuplicateController
+		Route::post('{quotation}/duplicate', [Products::getController('quotation', 'duplicate'), 'duplicate'])->name('quotations.duplicate');
+		Route::get('{quotation}/duplicate-form', [Products::getController('quotation', 'duplicate'), 'duplicateForm'])->name('quotations.duplicateForm');
+
+		//QuotationAddQuotationrowIndexByTableController
+		Route::get('{quotation}/add-row-by-type/type/{type}/table', [Products::getController('quotation', 'addQuotationrowsByTable'), 'index'])->name('quotations.addQuotationrowsByTable');
+
 		//QuotationAddQuotationrowIndexController
 		Route::post('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
-		//QuotationAddQuotationrowIndexController
 		Route::post('{quotation}/store-new-quotationrows', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
 
 		//DestinationCreateStoreController
@@ -53,6 +63,8 @@ Route::group([
 
 	Route::group(['prefix' => 'suppliers'], function ()
 	{
+		Route::get('orderrows-by-supplier/{supplier}', [Products::getController('orderrow', 'bySupplier'), 'index'])->name('suppliers.orderrows.index');
+
 		Route::get('by-category/{category}', [Products::getController('supplier', 'byCategory'), 'byCategory'])->name('suppliers.byCategory');
 
 		Route::get('', [Products::getController('supplier', 'index'), 'index'])->name('suppliers.index');
@@ -186,6 +198,15 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		//OrderReplicateOrderrowController
+		Route::post('{order}/replicate-last-row-by-type/{type}', [Products::getController('order', 'replicateLastRow'), 'replicateLastRowByType'])->name('orders.replicateLastRowByType');
+
+		//OrderFreezeController
+		Route::get('{order}/freeze', [Products::getController('order', 'freeze'), 'freeze'])->name('orders.freeze');
+
+		//OrderAddOrderrowIndexByTableController
+		Route::get('{order}/add-row-by-type/type/{type}/table', [Products::getController('order', 'addOrderrowsByTable'), 'index'])->name('orders.addOrderrowsByTable');
+
 		//OrderAddOrderrowIndexController
 		Route::post('{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
 
@@ -196,6 +217,7 @@ Route::group([
 
 		Route::get('active-by-client/{client}', [Products::getController('order', 'activeByClient'), 'index'])->name('orders.active.byClient');
 
+		//OrderIndexController
 		Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
 		Route::get('all-orders', [Products::getController('order', 'all'), 'index'])->name('orders.all');
 		Route::get('current', [Products::getController('order', 'active'), 'index'])->name('orders.current');
@@ -204,6 +226,8 @@ Route::group([
 		Route::get('active', [Products::getController('order', 'active'), 'index'])->name('orders.active');
 		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
 		Route::get('{order}', [Products::getController('order', 'show'), 'show'])->name('orders.show');
+
+		//OrderEditUpdateController
 		Route::get('{order}/edit', [Products::getController('order', 'edit'), 'edit'])->name('orders.edit');
 		Route::put('{order}', [Products::getController('order', 'edit'), 'update'])->name('orders.update');
 
@@ -214,13 +238,20 @@ Route::group([
 	{
 		Route::post('reorder', [Products::getController('orderrow', 'reorder'), 'storeMassReorder'])->name('orderrows.storeMassReorder');
 
-		Route::get('{orderrow}/assign-sellable-supplier/{sellableSupplier}', [
-			Products::getController('orderrow', 'assignSellableSupplier'),
-			'associateSellableSupplier'
-		])->name('orderrows.associateSellableSupplier');
+		//OrderrowAssignSellableSupplierController
+		Route::get('{orderrow}/assign-sellable-supplier/{sellableSupplier}', [Products::getController('orderrow', 'assignSellableSupplier'), 'associateSellableSupplier'])->name('orderrows.associateSellableSupplier');
+		Route::get('{orderrow}/assign-bulk-sellable-supplier/{sellableSupplier}', [Products::getController('orderrow', 'assignSellableSupplier'), 'associateBulkSellableSupplier'])->name('orderrows.associateBulkSellableSupplier');
 
 		//OrderrowAssignSellableSupplierController
 		Route::get('{orderrow}/assign-sellable-supplier', [Products::getController('orderrow', 'assignSellableSupplier'), 'assignSellableSupplier'])->name('orderrows.assignSellableSupplier');
+
+		//OrderrowFindOrAssociateSupplierController
+		Route::get('{orderrow}/find-or-associate-supplier', [Products::getController('orderrow', 'findOrAssociateSupplier'), 'index'])->name('orderrows.findOrAssociateSupplier');
+		Route::get('{orderrow}/associate-supplier-to-sellable-by-orderrow/{supplier}', [Products::getController('orderrow', 'findOrAssociateSupplier'), 'store'])->name('orderrows.associateSupplierToSellable');
+
+
+
+
 
 		Route::get('', [Products::getController('orderrow', 'index'), 'index'])->name('orderrows.index');
 		Route::get('create', [Products::getController('orderrow', 'create'), 'create'])->name('orderrows.create');
@@ -235,13 +266,15 @@ Route::group([
 	Route::group(['prefix' => 'quotationrows'], function ()
 	{
 		Route::post('reorder', [Products::getController('quotationrow', 'reorder'), 'storeMassReorder'])->name('quotationrows.storeMassReorder');
-		Route::get('{quotationrow}/assign-sellable-supplier/{sellableSupplier}', [
-			Products::getController('quotationrow', 'assignSellableSupplier'),
-			'associateSellableSupplier'
-		])->name('quotationrows.associateSellableSupplier');
+		Route::get('{quotationrow}/assign-sellable-supplier/{sellableSupplier}', [Products::getController('quotationrow', 'assignSellableSupplier'), 'associateSellableSupplier'])->name('quotationrows.associateSellableSupplier');
+		Route::get('{quotationrow}/assign-bulk-sellable-supplier/{sellableSupplier}', [Products::getController('quotationrow', 'assignSellableSupplier'), 'associateBulkSellableSupplier'])->name('quotationrows.associateBulkSellableSupplier');
 
 		//QuotationrowAssignSellableSupplierController
 		Route::get('{quotationrow}/assign-sellable-supplier', [Products::getController('quotationrow', 'assignSellableSupplier'), 'assignSellableSupplier'])->name('quotationrows.assignSellableSupplier');
+
+		//QuotationrowFindOrAssociateSupplierController
+		Route::get('{quotationrow}/find-or-associate-supplier', [Products::getController('quotationrow', 'findOrAssociateSupplier'), 'index'])->name('quotationrows.findOrAssociateSupplier');
+		Route::get('{quotationrow}/associate-supplier-to-sellable-by-quotationrow/{supplier}', [Products::getController('quotationrow', 'findOrAssociateSupplier'), 'store'])->name('quotationrows.associateSupplierToSellable');
 
 		Route::get('', [Products::getController('quotationrow', 'index'), 'index'])->name('quotationrows.index');
 		Route::get('create', [Products::getController('quotationrow', 'create'), 'create'])->name('quotationrows.create');

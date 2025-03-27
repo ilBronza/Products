@@ -39,8 +39,9 @@ class AccessoryProduct extends BasePivotModel
 	public $incrementing = true;
 
 	protected $keyType = 'string';
-	protected $dates = [
-		'deleted_at'
+
+	protected $casts = [
+		'deleted_at' => 'datetime'
 	];
 
 	public function product()

@@ -25,6 +25,8 @@ trait CommonOrderrowQuotationrowTrait
 	use CRUDReorderableStandardTrait;
 	use InteractsWithInvoiceables;
 
+	use CommonOrderrowQuotationrowRelationAndScopesTrait;
+
 	public function setStartsAt(string|Carbon $startsAt = null) : void
 	{
 		$this->starts_at = $startsAt;
@@ -77,67 +79,15 @@ trait CommonOrderrowQuotationrowTrait
 		return $this->getModelContainer()?->getEndsAt();
 	}
 
-	public function sellableSupplier()
-	{
-		return $this->belongsTo(SellableSupplier::getProjectClassName());
-	}
-
-	public function getSupplier() : ?Supplier
-	{
-		return $this->getSellableSupplier()?->getSupplier();
-	}
-
-	public function getSellableSupplier() : ?SellableSupplier
-	{
-		return $this->sellableSupplier;
-	}
-
-	public function scopeBySellableTargetIds($query, array|Collection $sellableIds)
-	{
-		return $query->whereHas('sellable', function ($query) use ($sellableIds)
-		{
-			$query->where('target_id', $sellableIds);
-		});
-	}
-
-	public function scopeBySellableTargetType($query, string $sellableClassname)
-	{
-		return $query->whereHas('sellable', function ($query) use ($sellableClassname)
-		{
-			$query->where('target_type', $sellableClassname);
-		});
-	}
-
-	public function scopeBySellableType($query, string $sellableType)
-	{
-		return $query->whereHas('sellable', function ($query) use ($sellableType)
-		{
-			$query->where('type', $sellableType);
-		});
-	}
-
-	public function scopeBySellableTypes($query, array $sellableTypes)
-	{
-		return $query->whereHas('sellable', function ($query) use ($sellableTypes)
-		{
-			$query->whereIn('type', $sellableTypes);
-		});
-	}
-
-	public function scopeBySellableCategory($query, string|Category $category)
-	{
-		if (is_string($category))
-			$category = Category::getProjectClassName()::findCachedField('name', $category);
-
-		return $query->whereHas('sellable', function ($query) use ($category)
-		{
-			$query->where('category_id', $category->id);
-		});
-	}
 
 	public function getAssignSellablesupplierUrl()
 	{
 		return $this->getKeyedRoute('assignSellableSupplier');
+	}
+
+	public function getFindOrAssociateSupplierUrl()
+	{
+		return $this->getKeyedRoute('findOrAssociateSupplier');
 	}
 
 	public function getFullname() : string
@@ -148,24 +98,6 @@ trait CommonOrderrowQuotationrowTrait
 	public function getName() : ?string
 	{
 		return $this->getSellable()?->getName();
-	}
-
-	public function getSellable() : ?Sellable
-	{
-		if ($this->relationLoaded('sellable'))
-			return $this->sellable;
-
-		return $this->sellable()->first();
-	}
-
-	public function sellable()
-	{
-		return $this->belongsTo(Sellable::getProjectClassName());
-	}
-
-	public function getCalculatedRowtotal() : ?float
-	{
-		return $this->calculated_row_total;
 	}
 
 	public function setParameter(string $key, mixed $value = null)
@@ -190,24 +122,6 @@ trait CommonOrderrowQuotationrowTrait
 		return $parameters[$key] ?? $default;
 	}
 
-	public function setCalculatedCostCompanyTotalAttribute($value)
-	{
-		$this->cost_company_total = $value;
-	}
-
-	public function getCalculatedCostCompanyTotalHtmlClass()
-	{
-		if ($value = $this->cost_company_total)
-			return 'costcompanytotalforced';
-
-		return 'costcompanytotalcalculated';
-	}
-
-	public function getCalculatedCostCompanyTotal() : float
-	{
-		return $this->calculated_cost_company_total;
-	}
-
 	public function getCalculatedKmAttribute()
 	{
 		if ($value = $this->km)
@@ -216,37 +130,9 @@ trait CommonOrderrowQuotationrowTrait
 		return $this->getModelContainer()->getKm();
 	}
 
-	public function setCalculatedClientPriceAttribute($value)
-	{
-		$this->client_price = $value;
-	}
-
-	public function getCalculatedCostCompanyTotalAttribute()
-	{
-		if (! is_null($value = $this->cost_company_total))
-			return round($value, 2);
-
-		if ($this->getSellable()->isVehicleType())
-		{
-			return 654321;
-			return round($this->getQuantity() * $this->calculated_cost_company * ($this->isRoundTrip() + 1), 2);
-		}
-
-		if ($this->getSellable()->isRentType())
-			if (! $this->cost_company_approver)
-				return 0;
-
-		return round($this->getQuantity() * $this->calculated_cost_company, 2);
-	}
-
 	public function getQuantity() : ?float
 	{
 		return $this->quantity;
-	}
-
-	public function setCalculatedCostCompanyAttribute($value)
-	{
-		$this->cost_company = $value;
 	}
 
 	public function getCalculatedTollHtmlClass() : string
@@ -257,49 +143,9 @@ trait CommonOrderrowQuotationrowTrait
 		return 'tollstandard';
 	}
 
-	public function getCalculatedCostCompanyHtmlClass() : string
-	{
-		if ($value = $this->cost_company)
-			return 'costcompanyforced';
-
-		if ($sellableSupplier = $this->getSellableSupplier())
-			if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-				if ($value = $price->price)
-					return 'costcompanysellsupp';
-
-		return 'costcompanysell';
-	}
-
-	public function getCalculatedCostCompanyAttribute()
-	{
-		if ($value = $this->cost_company)
-			return $value;
-
-		if (($sellable = $this->getSellable())->isContracttype())
-		{
-			if ($valid = $this->getSupplier()?->getTarget()?->getValidClientOperator())
-				return $valid->getPriceByCollectionId('costCompanyDay')->price;
-
-			return $this->getSupplier()?->getTarget()->clientOperators->first()?->getPriceByCollectionId('costCompanyDay')->price;
-		}
-
-		if ($sellableSupplier = $this->getSellableSupplier())
-				if ($price = $sellableSupplier->getPriceByCollectionId('costCompanyDay'))
-					if ($value = $price->price)
-						return $value;
-
-
-		return $this->getSellable()->getCostCompany();
-	}
-
-	public function getDestination() : ?Destination
-	{
-		return $this->getModelContainer()?->getDestination();
-	}
-
 	public function getInvoiceableDetail() : string
 	{
-		if($this->description)
+		if ($this->description)
 			return $this->description;
 
 		return $this->getSellable()->getName();

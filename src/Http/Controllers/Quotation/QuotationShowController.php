@@ -30,6 +30,12 @@ class QuotationShowController extends QuotationCRUD
     {
         $quotation = $this->findModel($quotation);
 
-        return $this->_show($quotation);
+	    if(! $quotation->hasOrder())
+			$this->addNavbarButton(
+				$quotation->getConvertToOrderButton()
+			);
+
+
+	    return $this->_show($quotation);
     }
 }

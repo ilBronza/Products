@@ -11,9 +11,11 @@ use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use Illuminate\Support\Collection;
 
+use function app;
 use function dd;
 use function is_array;
 use function json_encode;
+use function request;
 
 class Supplier extends ProductPackageBaseModel
 {
@@ -45,6 +47,11 @@ class Supplier extends ProductPackageBaseModel
 	public function getStoreSellableSupplierUrl() : string
 	{
 		return $this->getKeyedRoute('storeSellableSupplier');
+	}
+	
+	public function getOrderrowsIndexUrl() : string
+	{
+		return $this->getKeyedRoute('orderrows.index');
 	}
 
 	public function getName() : ?string
@@ -129,4 +136,21 @@ class Supplier extends ProductPackageBaseModel
 	{
 		return $this->sellableSuppliers()->select('id')->pluck('id')->toArray();
 	}
+
+	public function getAssociateSupplierToSellableByOrderrowUrl()
+	{
+		return app('products')->route('orderrows.associateSupplierToSellable', [
+			'orderrow' => request()->orderrow,
+			'supplier' => $this->getKey()
+		]);
+	}
+
+	public function getAssociateSupplierToSellableByQuotationrowUrl()
+	{
+		return app('products')->route('quotationrows.associateSupplierToSellable', [
+			'quotationrow' => request()->quotationrow,
+			'supplier' => $this->getKey()
+		]);
+	}
+
 }

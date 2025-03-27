@@ -12,4 +12,19 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel
 				->orWhere('status', 'opened');
 		});
 	}
+
+	public function getReplicateLastRowByTypeUrl(string $type)
+	{
+		return $this->getReplicateLastOrderrowByTypeUrl($type);
+	}
+
+	public function getReplicateLastOrderrowByTypeUrl(string $type) : string
+	{
+		return $this->getKeyedRoute('replicateLastRowByType', [
+			$this,
+			'type' => $type
+		]);
+	}
+
+
 }

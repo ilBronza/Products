@@ -7,13 +7,15 @@ use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
 use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
-use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
+use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
+use IlBronza\Products\Http\Controllers\Order\OrderReplicateOrderrowController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseDestroyController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
+use IlBronza\Products\Http\Controllers\OrderProduct\ByOrderOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ElaboratedByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductRestoreController;
@@ -22,15 +24,19 @@ use IlBronza\Products\Http\Controllers\OrderProduct\ToElaborateByWorkstationOrde
 use IlBronza\Products\Http\Controllers\Order\ActiveByClientOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AllOrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
+use IlBronza\Products\Http\Controllers\Order\OrderFreezeController;
 use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowBySupplierIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowDestroyController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowFindOrAssociateSupplierController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
@@ -55,9 +61,6 @@ use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierContracttypeEditUpdateFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierHotelEditUpdateFieldsetsParameters;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierRentEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -84,7 +87,9 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierBa
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierByOperatorFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierContracttypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierHotelFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRelatedFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRentFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVehicletypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
@@ -107,23 +112,30 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationEditUpdateFi
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\QuotationrowEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierContracttypeEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySellableFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySupplierFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierHotelEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierRentEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationConvertToOrderController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationCurrentController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestinationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestroyController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationDuplicateController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationEditUpdateController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationIndexController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationReplicateRowController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationShowController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowAssignSellableSupplierController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowCreateStoreController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowDestroyController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowEditUpdateController;
+use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowFindOrAssociateSupplierController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowReorderController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowShowController;
@@ -159,6 +171,9 @@ use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
+use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
+use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
 use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelper;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
@@ -349,12 +364,18 @@ return [
 		'order' => [
 			'class' => Order::class,
 			'table' => 'products__orders',
+			'helpers' => [
+				'freezerHelper' => OrderFreezerHelper::class
+			],
 			'controllers' => [
 				'addOrderrow' => OrderAddOrderrowIndexController::class,
+				'addOrderrowsByTable' => OrderAddOrderrowIndexByTableController::class,
+				'replicateLastRow' => OrderReplicateOrderrowController::class,
 				'create' => OrderCreateController::class,
 				'active' => ActiveOrderIndexController::class,
 				'activeByClient' => ActiveByClientOrderIndexController::class,
 				'index' => OrderIndexController::class,
+				'freeze' => OrderFreezeController::class,
 				'all' => AllOrderIndexController::class,
 				'show' => OrderShowController::class,
 				'edit' => OrderEditUpdateController::class,
@@ -383,7 +404,9 @@ return [
 			'controllers' => [
 				'reorder' => OrderrowReorderController::class,
 				'assignSellableSupplier' => OrderrowAssignSellableSupplierController::class,
+				'findOrAssociateSupplier' => OrderrowFindOrAssociateSupplierController::class,
 				'index' => OrderrowIndexController::class,
+				'bySupplier' => OrderrowBySupplierIndexController::class,
 				'create' => OrderrowCreateStoreController::class,
 				'store' => OrderrowCreateStoreController::class,
 				'show' => OrderrowShowController::class,
@@ -499,6 +522,10 @@ return [
 		'quotation' => [
 			'table' => 'products__quotations__quotations',
 			'class' => Quotation::class,
+			'helpers' => [
+				'freezerHelper' => QuotationFreezerHelper::class,
+				'duplicate' => QuotationDuplicatorHelper::class,
+			],
 			'quotationToOrderConverterHelper' => QuotationToOrderConverterHelper::class,
 			'fieldsGroupsFiles' => [
 				'index' => QuotationFieldsGroupParametersFile::class,
@@ -515,7 +542,10 @@ return [
 			],
 			'controllers' => [
 				'addQuotationrow' => QuotationAddQuotationrowIndexController::class,
+				'addQuotationrowsByTable' => QuotationAddQuotationrowIndexByTableController::class,
+				'replicateLastRow' => QuotationReplicateRowController::class,
 				'convertToOrder' => QuotationConvertToOrderController::class,
+				'duplicate' => QuotationDuplicateController::class,
 				'destination' => QuotationDestinationCreateStoreController::class,
 				'index' => QuotationIndexController::class,
 				'current' => QuotationCurrentController::class,
@@ -546,6 +576,7 @@ return [
 			'controllers' => [
 				'reorder' => QuotationrowReorderController::class,
 				'assignSellableSupplier' => QuotationrowAssignSellableSupplierController::class,
+				'findOrAssociateSupplier' => QuotationrowFindOrAssociateSupplierController::class,
 				'index' => QuotationrowIndexController::class,
 				'create' => QuotationrowCreateStoreController::class,
 				'store' => QuotationrowCreateStoreController::class,
@@ -587,8 +618,13 @@ return [
 			'table' => 'products__sellables__sellable_suppliers',
 			'class' => SellableSupplier::class,
 			'fieldsGroupsFiles' => [
+				'operator' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
 				'contracttype' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
 				'vehicletype' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
+				'vehicle' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
+				'service' => SellableSupplierRentFieldsGroupParametersFile::class,
+				'hotel' => SellableSupplierHotelFieldsGroupParametersFile::class,
+				'controlRoom' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
 				'byOperator' => SellableSupplierByOperatorFieldsGroupParametersFile::class,
 				'base' => SellableSupplierBaseFieldsGroupParametersFile::class,
 				'index' => SellableSupplierFieldsGroupParametersFile::class,

@@ -25,6 +25,7 @@ use function app;
 use function array_filter;
 use function class_basename;
 use function dd;
+use function is_string;
 use function request;
 use function strpos;
 
@@ -44,6 +45,14 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	static function getInternalIds() : array
 	{
 		dd('estendere lista fornitori interni');
+	}
+
+	public function scopeBySupplier($query, string|Supplier $supplier)
+	{
+		if(! is_string($supplier))
+			$supplier = $supplier->getKey();
+
+		return $query->where('supplier_id', $supplier);
 	}
 
 	public function workingDays()
@@ -223,9 +232,25 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		]);
 	}
 
+	public function getAssignBulkSellableSupplierToQuotationrowUrl()
+	{
+		return app('products')->route('quotationrows.associateBulkSellableSupplier', [
+			'quotationrow' => request()->quotationrow,
+			'sellableSupplier' => $this->getKey()
+		]);
+	}
+
 	public function getAssignSellableSupplierToOrderrowUrl()
 	{
 		return app('products')->route('orderrows.associateSellableSupplier', [
+			'orderrow' => request()->orderrow,
+			'sellableSupplier' => $this->getKey()
+		]);
+	}
+
+	public function getAssignBulkSellableSupplierToOrderrowUrl()
+	{
+		return app('products')->route('orderrows.associateBulkSellableSupplier', [
 			'orderrow' => request()->orderrow,
 			'sellableSupplier' => $this->getKey()
 		]);

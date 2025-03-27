@@ -3,10 +3,10 @@
 namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
-use IlBronza\CRUD\Models\BaseModel;
+use Exception;
+use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
@@ -14,8 +14,6 @@ use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
-use Illuminate\Support\Collection;
-use League\CommonMark\Extension\SmartPunct\Quote;
 
 use function strtolower;
 
@@ -32,9 +30,8 @@ class Order extends ProductPackageBaseRowcontainerModel
 	use CompletionScopesTrait;
 
 	static $modelConfigPrefix = 'order';
+	static $deletingRelationships = ['orderProducts', 'orderrows'];
 	public $classnameAbbreviation = 'o';
-
-	static $deletingRelationships = ['orderProducts'];
 
 	public function getStoreOrderrowUrl() : string
 	{
@@ -69,21 +66,15 @@ class Order extends ProductPackageBaseRowcontainerModel
 
 	public function checkCompletion()
 	{
-		if($this->orderProducts()->notCompleted()->count() > 0)
+		if ($this->orderProducts()->notCompleted()->count() > 0)
 			return $this->uncomplete();
 
 		return $this->complete();
 	}
 
-	public function getDate() : ? Carbon
+	public function getDate() : ?Carbon
 	{
 		return $this->date;
-	}
-
-	private function bindDataFromLastOrderProduct()
-	{
-		if(! $lastOrderProduct = $this->orderProducts()->completed()->orderBy('completed_at', 'DESC')->first())
-			throw new \Exception('Ultimo componente non trovato per commessa ' . $this->getName() . ' <a href="' . $this->getOldEditUrl() . '">Controlla qui</a>');
 	}
 
 	public function quotation()
@@ -93,28 +84,15 @@ class Order extends ProductPackageBaseRowcontainerModel
 
 	public function hasQuotation()
 	{
-		return !! $this->quotation_id;
+		return ! ! $this->quotation_id;
 	}
 
-	private function uncomplete()
-	{
-		$this->setCompletedAt(null);
-
-		$this->setLoadedAt(null);
-		$this->save();		
-	}
-
-	private function complete()
-	{
-		$this->bindDataFromLastOrderProduct();
-		$this->save();
-	}
-
-	public function getAddOrderrowByTypeUrl(string $type) : string
+	public function getAddOrderrowByTypeUrl(string $type, bool $table = false) : string
 	{
 		return $this->getKeyedRoute('addOrderrow', [
 			'order' => $this->getKey(),
-			'type' => $type
+			'type' => $type,
+			'table' => $table
 		]);
 	}
 
@@ -123,4 +101,46 @@ class Order extends ProductPackageBaseRowcontainerModel
 		return $this->hasMany(Orderrow::gpc());
 	}
 
+	public function isFrozen() : bool
+	{
+		return ! ! $this->frozen;
+	}
+
+	public function getFreezeUrl() : string
+	{
+		return $this->getKeyedRoute('freeze');
+	}
+
+	public function getFreezeButton() : ?Button
+	{
+		if ($this->isFrozen())
+			return null;
+
+		return Button::create([
+			'href' => $this->getFreezeUrl(),
+			'text' => 'products::orders.freeze',
+			'icon' => 'lock'
+		]);
+	}
+
+	private function bindDataFromLastOrderProduct()
+	{
+		if (! $lastOrderProduct = $this->orderProducts()->completed()->orderBy('completed_at', 'DESC')->first())
+			throw new Exception('Ultimo componente non trovato per commessa ' . $this->getName() . ' <a href="' . $this->getOldEditUrl() . '">Controlla qui</a>');
+	}
+
+	private function uncomplete()
+	{
+		$this->setCompletedAt(null);
+
+		$this->setLoadedAt(null);
+		$this->save();
+	}
+
+	private function complete()
+	{
+		$this->bindDataFromLastOrderProduct();
+		$this->save();
+	}
 }
+

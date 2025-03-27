@@ -6,14 +6,15 @@ use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
-use IlBronza\UikitTemplate\Fetcher;
 
 use Illuminate\Http\Request;
 
+use function app;
 use function array_keys;
 use function compact;
 use function dd;
 use function implode;
+use function redirect;
 use function route;
 use function trans;
 use function view;
@@ -22,9 +23,16 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 {
 	public $allowedMethods = ['addQuotationrow', 'storeQuotationrow'];
 
-	public function addQuotationrow($quotation, string $type)
+	public function addQuotationrow(Request $request, $quotation, string $type)
 	{
+		if($request->table)
+			return redirect()->to(app('products')->route('quotations.addQuotationrowsByTable', ['quotation' => $quotation, 'type' => $type]));
+
 		$quotation = $this->findModel($quotation);
+
+		$parameters = $request->validate([
+			'ids' => 'array|nullable|exists:' . Sellable::gpc()::make()->getTable() . ',id',
+		]);
 
 		$types = [
 			$type
@@ -35,6 +43,14 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			'method' => 'POST'
 		]);
 
+		$value = [];
+
+		foreach($request->ids ?? [] as $id)
+			$value[] = [
+				'sellable' => $id,
+				'quantity' => 1
+			];
+
 		foreach ($types as $type)
 			$form->addFormField(
 				FormField::createFromArray([
@@ -42,6 +58,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 					'label' => $type,
 					'type' => 'json',
 					'rules' => 'array|required',
+					'value' => $value,
 					'fields' => [
 						'sellable' => [
 							'name' => 'sellable_' . $type,
@@ -76,6 +93,9 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		if ($type == 'Rent')
 			return $quotation->rentRows()->max('sorting_index') + 1;
 
+		if ($type == 'service')
+			return $quotation->rentRows()->max('sorting_index') + 1;
+
 		if ($type == 'Reimbursement')
 			return $quotation->reimbursementRows()->max('sorting_index') + 1;
 
@@ -94,6 +114,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			'VehicleType',
 			'Surveillance',
 			'Hotel',
+			'service',
 			'Rent',
 			'Reimbursement',
 			'ControlRoom'

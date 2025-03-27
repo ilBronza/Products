@@ -21,7 +21,7 @@ class OrderrowAssignSellableSupplierController extends OrderrowCRUD
 	use SellableSupplierAssignmentTrait;
 	use CRUDIndexTrait;
 
-	public $allowedMethods = ['assignSellableSupplier', 'associateSellableSupplier'];
+	public $allowedMethods = ['assignSellableSupplier', 'associateSellableSupplier', 'associateBulkSellableSupplier'];
 
 	public function assignSellableSupplier(Request $request, $orderrow)
 	{
@@ -30,6 +30,14 @@ class OrderrowAssignSellableSupplierController extends OrderrowCRUD
 		$this->targetType = class_basename($this->sellable->getTarget());
 
 		return $this->_index($request);
+	}
+
+	public function associateBulkSellableSupplier($orderrow, $sellableSupplier)
+	{
+		$target = Orderrow::getProjectClassName()::find($orderrow);
+
+		return $this->_associateBulkSellableSupplier($target, $sellableSupplier);
+
 	}
 
 	public function associateSellableSupplier($orderrow, $sellableSupplier)

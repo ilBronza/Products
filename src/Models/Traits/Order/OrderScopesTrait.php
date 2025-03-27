@@ -2,11 +2,17 @@
 
 namespace IlBronza\Products\Models\Traits\Order;
 
+use Carbon\Carbon;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Clients\Models\Destination;
 
 trait OrderScopesTrait
 {
+	public function scopeDuringDate($query, Carbon $date)
+	{
+		dd('penzare a questo');
+	}
+
     public function scopeNotShipped($query)
     {
         // $query->whereNull('shipped_at');

@@ -6,7 +6,6 @@ use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
-use IlBronza\UikitTemplate\Fetcher;
 
 use Illuminate\Http\Request;
 
@@ -22,9 +21,16 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 {
 	public $allowedMethods = ['addOrderrow', 'storeOrderrow'];
 
-	public function addOrderrow($order, string $type)
+	public function addOrderrow(Request $request, $order, string $type)
 	{
+		if($request->table)
+			return redirect()->to(app('products')->route('orders.addOrderrowsByTable', ['order' => $order, 'type' => $type]));
+
 		$order = $this->findModel($order);
+
+		$parameters = $request->validate([
+			'ids' => 'array|nullable|exists:' . Sellable::gpc()::make()->getTable() . ',id',
+		]);
 
 		$types = [
 			$type
@@ -35,13 +41,23 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			'method' => 'POST'
 		]);
 
+		$value = [];
+
+		foreach($request->ids ?? [] as $id)
+			$value[] = [
+				'sellable' => $id,
+				'quantity' => 1
+			];
+
 		foreach ($types as $type)
+		{
 			$form->addFormField(
 				FormField::createFromArray([
 					'name' => $type,
 					'label' => trans('products::sellables.pickSellables'),
 					'type' => 'json',
 					'rules' => 'array|required',
+					'value' => $value,
 					'fields' => [
 						'sellable' => [
 							'name' => 'sellable_' . $type,
@@ -59,8 +75,38 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 					]
 				])
 			);
+		}
 
 		return view('form::uikit.form', ['form' => $form]);
+	}
+
+	public function getSortingIndexByType($order, string $type)
+	{
+		if ($type == 'Contracttype')
+			return $order->operatorRows()->max('sorting_index') + 1;
+
+		if ($type == 'VehicleType')
+			return $order->vehicleRows()->max('sorting_index') + 1;
+
+		if ($type == 'Surveillance')
+			return $order->surveillanceRows()->max('sorting_index') + 1;
+
+		if ($type == 'Hotel')
+			return $order->hotelRows()->max('sorting_index') + 1;
+
+		if ($type == 'Rent')
+			return $order->rentRows()->max('sorting_index') + 1;
+
+		if ($type == 'service')
+			return $order->rentRows()->max('sorting_index') + 1;
+
+		if ($type == 'Reimbursement')
+			return $order->reimbursementRows()->max('sorting_index') + 1;
+
+		if ($type == 'ControlRoom')
+			return $order->controlRoomRows()->max('sorting_index') + 1;
+
+		dd('manca type ' . $type);
 	}
 
 	public function storeOrderrow(Request $request, $order)
@@ -72,6 +118,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			'VehicleType',
 			'Surveillance',
 			'Hotel',
+			'service',
 			'Rent',
 			'Reimbursement'
 		];
@@ -94,10 +141,12 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		if(count($parameters) == 0)
 			dd(['Manca la chiave per questo tipo', $request->all()]);
 
-		$orderrowSortingIndex = $order->orderrows()->max('sorting_index') + 1;
-
+//		$orderrowSortingIndex = $order->orderrows()->max('sorting_index') + 1;
+//
 		foreach ($parameters as $type => $sellables)
 		{
+			$orderrowSortingIndex = $this->getSortingIndexByType($order, $type);
+
 			foreach ($sellables as $key => $_parameters)
 			{
 				$sellable = Sellable::getProjectClassName()::find($_parameters['sellable']);

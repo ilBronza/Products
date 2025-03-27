@@ -9,6 +9,7 @@ use IlBronza\Products\Models\Sellables\Sellable;
 use Illuminate\Http\Request;
 
 use function class_basename;
+use function dd;
 
 class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 {
@@ -21,15 +22,24 @@ class QuotationrowAssignSellableSupplierController extends QuotationrowCRUD
 	use SellableSupplierAssignmentTrait;
 	use CRUDIndexTrait;
 
-	public $allowedMethods = ['assignSellableSupplier', 'associateSellableSupplier'];
+	public $allowedMethods = ['assignSellableSupplier', 'associateSellableSupplier', 'associateBulkSellableSupplier'];
 
 	public function assignSellableSupplier(Request $request, $quotationrow)
 	{
 		$this->quotationrow = Quotationrow::getProjectClassName()::with('sellable')->find($quotationrow);
+
 		$this->sellable = $this->quotationrow->getSellable();
 		$this->targetType = class_basename($this->sellable->getTarget());
 
 		return $this->_index($request);
+	}
+
+	public function associateBulkSellableSupplier($quotationrow, $sellableSupplier)
+	{
+		$target = Quotationrow::getProjectClassName()::find($quotationrow);
+
+		return $this->_associateBulkSellableSupplier($target, $sellableSupplier);
+
 	}
 
 	public function associateSellableSupplier($quotationrow, $sellableSupplier)

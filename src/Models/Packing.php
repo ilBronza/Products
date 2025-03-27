@@ -21,10 +21,10 @@ class Packing extends ProductPackageBaseModel implements SizeInterface, HasMedia
 
 	static $modelConfigPrefix = 'packing';
 
-	protected $dates = [
-		'imported_at',
-		'calculated_at',
-		'verified_at'
+	protected $casts = [
+		'imported_at' => 'datetime',
+		'calculated_at' => 'datetime',
+		'verified_at' => 'datetime'
 	];
 
 	public function pallettype()

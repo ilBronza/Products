@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Size extends ProductPackageBaseModel implements SizeInterface
 {
-	protected $dates = [
-		'calculated_at'
+	protected $casts = [
+		'calculated_at' => 'datetime'
 	];
 
 	static $modelConfigPrefix = 'size';

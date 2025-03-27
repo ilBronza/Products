@@ -22,6 +22,7 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 
 					'client_price_approver' => ['boolean' => 'bool|nullable'],
 					'cost_company_approver' => ['boolean' => 'bool|nullable'],
+					'approve_daily_allowances_costs' => ['boolean' => 'bool|nullable'],
 
 					'starts_at' => ['date' => 'date|nullable'],
 					'ends_at' => ['date' => 'date|nullable'],
@@ -36,10 +37,13 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 					'description' => ['text' => 'string|nullable'],
 
 					'calculated_cost_company' => ['number' => 'numeric|nullable'],
+					'cost_gross_day' => ['number' => 'numeric|nullable'],
 					'calculated_toll' => ['number' => 'numeric|nullable'],
 
 					//	                'calculated_client_price' => ['number' => 'numeric|nullable'],
 
+
+					'client_price' => ['number' => 'numeric|nullable'],
 					'calculated_cost_company_total' => ['number' => 'numeric|nullable'],
 					//	                'calculated_client_price_total' => ['number' => 'numeric|nullable'],
 

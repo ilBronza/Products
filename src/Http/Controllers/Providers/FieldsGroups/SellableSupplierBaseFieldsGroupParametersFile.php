@@ -31,7 +31,7 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 		];
 	}
 
-	abstract static function getTypedFields() : array;
+	abstract static function getTypedFields(string $containerModel) : array;
 
 	static function getEndingFields() : array
 	{

@@ -14,17 +14,16 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 	static $modelConfigPrefix = 'orderrow';
 
 	use CommonOrderrowQuotationrowTrait;
-
 	use OrderrowRelationsScopesTrait;
 
 	public $classnameAbbreviation = 'or';
 
-	public function getModelContainer() : ? Order
+	public function getModelContainer() : ?Order
 	{
 		return $this->getOrder();
 	}
 
-	public function getOrder() : ? Order
+	public function getOrder() : ?Order
 	{
 		return $this->order;
 	}

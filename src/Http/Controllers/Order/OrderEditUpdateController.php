@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use IlBronza\Products\Http\Controllers\Order\OrderCRUD;
 
 use function config;
+use function dd;
 
 class OrderEditUpdateController extends OrderCRUD
 {
@@ -31,7 +32,12 @@ class OrderEditUpdateController extends OrderCRUD
     {
         $order = $this->findModel($order);
 
-        return $this->_edit($order);
+	    if(! $order->isFrozen())
+		    $this->addNavbarButton(
+			    $order->getFreezeButton()
+		    );
+
+	    return $this->_edit($order);
     }
 
     public function update(Request $request, $order)

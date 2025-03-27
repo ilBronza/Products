@@ -4,7 +4,7 @@ namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
 class SellableSupplierSurveillanceFieldsGroupParametersFile extends SellableSupplierBaseFieldsGroupParametersFile
 {
-	static function getTypedFields() : array
+	static function getTypedFields(string $containerModel) : array
 	{
 		return [
 			//			'supplier.target->defaultDestination->address' => '_fn_getTargetString',

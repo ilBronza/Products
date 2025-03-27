@@ -13,6 +13,7 @@ use function view;
 
 trait SellableSupplierAssignmentTrait
 {
+	public $avoidCreateButton = true;
 	public function getIndexElements()
 	{
 		return $this->sellable->sellableSuppliers()->with(
@@ -42,7 +43,7 @@ trait SellableSupplierAssignmentTrait
 				'supplier.target',
 			];
 
-		if (($this->getSellable()->isServiceType())||($sellable->isHotelType()))
+		if (($this->getSellable()->isServiceType())||($sellable->isHotelType())||($sellable->isReimbursementType()))
 			return [
 				'supplier.target.address'
 			];
@@ -85,7 +86,22 @@ trait SellableSupplierAssignmentTrait
 		return $this->sellable;
 	}
 
-	public function _associateSellableSupplier($target, $sellableSupplier)
+	public function _associateBulkSellableSupplier($target, $sellableSupplier)
+	{
+		$type = $target->getSellable()->getType();
+
+		$brothers = $target->getModelContainer()->rows()->bySellableType($type)->get();
+
+		$tablesToRefresh = [];
+
+		foreach($brothers as $brother)
+			if(! $brother->getSellableSupplier())
+				$tablesToRefresh = $this->__associateSellableSupplier($brother, $sellableSupplier);
+
+		return $this->closeIframe($tablesToRefresh);
+	}
+
+	public function __associateSellableSupplier($target, $sellableSupplier)
 	{
 		$sellableSupplier = SellableSupplier::getProjectClassName()::find($sellableSupplier);
 
@@ -107,17 +123,33 @@ trait SellableSupplierAssignmentTrait
 		else if ($sellableSupplier->getSellable()->isControlRoomType())
 			$tablesToRefresh = ['controlRoomRows'];
 
+		else if ($sellableSupplier->getSellable()->isReimbursementType())
+			$tablesToRefresh = ['reimbursementRows'];
+
 		else
 			throw new Exception('gestire gli altri tipi');
 
 		$target->sellableSupplier()->associate($sellableSupplier);
 		$target->save();
 
+		return $tablesToRefresh;
+	}
+
+	public function closeIframe($tablesToRefresh)
+	{
 		return view('datatables::utilities.closeIframe', compact('tablesToRefresh'));
+	}
+
+	public function _associateSellableSupplier($target, $sellableSupplier)
+	{
+		$tablesToRefresh = $this->__associateSellableSupplier($target, $sellableSupplier);
+
+		return $this->closeIframe($tablesToRefresh);
 	}
 
 	public function getIndexFieldsArray()
 	{
+		//SellableSupplierRentFieldsGroupParametersFile
 		if(! $helper = config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}"))
 			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}");
 
