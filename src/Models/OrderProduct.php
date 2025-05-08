@@ -3,9 +3,9 @@
 namespace IlBronza\Products\Models;
 
 use App\State;
-use IlBronza\CRUD\Models\BaseModel;
+
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
-use IlBronza\Products\Models\OrderProductPhase;
+
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCalculatedTrait;
@@ -13,7 +13,11 @@ use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCheckerTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
-use Illuminate\Support\Facades\Log;
+
+use IlBronza\Warehouse\Helpers\UnitloadCreatorHelper;
+use IlBronza\Warehouse\Models\Traits\InteractsWithDeliveryTrait;
+use IlBronza\Warehouse\Models\Unitload\Unitload;
+use Illuminate\Support\Collection;
 
 class OrderProduct extends ProductPackageBaseModel
 {
@@ -25,6 +29,8 @@ class OrderProduct extends ProductPackageBaseModel
 
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
+
+	use InteractsWithDeliveryTrait;
 
 	static $deletingRelationships = ['orderProductPhases'];
 	static $restoringRelationships = ['orderProductPhases'];
@@ -59,7 +65,10 @@ class OrderProduct extends ProductPackageBaseModel
 
 
 
-
+	public function getDestinationId() : ? string
+	{
+		return $this->getDestination()?->getKey();
+	}
 
 
 	public function getProductUrl()
@@ -123,4 +132,56 @@ class OrderProduct extends ProductPackageBaseModel
 		$this->save();
 	}
 
+	public function unitloads()
+	{
+		return $this->hasMany(
+			Unitload::gpc(),
+		);
+	}
+
+	public function getUnitloads() : Collection
+	{
+		return $this->unitloads()->get();
+	}
+
+	public function getPallettypeId()
+	{
+		return $this->getPallettypeItem()?->getKey();
+	}
+
+	public function getUnitloadsByClientQuantity()
+	{
+		$existingUnitloads = $this->getUnitloads();
+
+		$unitloadsQuantity = $existingUnitloads->sum('quantity');
+
+		$missingQuantity = $this->getClientQuantity() - $unitloadsQuantity;
+
+		$quantityPerUnitload = $this->getProduct()->getQuantityPerUnitload();
+
+		while($missingQuantity > 0)
+		{
+			$quantity = $missingQuantity > $quantityPerUnitload ? $quantityPerUnitload : $missingQuantity;
+
+			$unitloadParameters = [
+				'production' => $this->getLastOrderProductPhase(),
+				'loadable' => $this->getProduct(),
+				'sequence' => $existingUnitloads->max('sequence') + 1,
+				'quantity_capacity' => $quantityPerUnitload,
+				'quantity_expected' => $quantity,
+				'quantity' => $quantity,
+				'user_id' => \Auth::id(),
+				'destination_id' => $this->getDestinationId(),
+				'pallettype_id' => $this->getPallettypeId(),
+			];
+
+			$existingUnitloads->push(
+				UnitloadCreatorHelper::createPlaceholder($unitloadParameters)
+			);
+
+			$missingQuantity = $missingQuantity - $quantity;
+		}
+
+		return $existingUnitloads;
+	}
 }

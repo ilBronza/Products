@@ -2,24 +2,23 @@
 
 namespace IlBronza\Products\Models\Product;
 
-use Carbon\Carbon;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeTrait;
-use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\ProductRelation;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductQueriesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Product\ProductScopesTrait;
+use IlBronza\Warehouse\Models\Interfaces\UnitloadableInterface;
 use Spatie\MediaLibrary\HasMedia;
 
-class Product extends ProductPackageBaseModel implements HasMedia
+class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableInterface
 {
 	static $modelConfigPrefix = 'product';
 
-    use InteractsWithMedia;
+	use InteractsWithMedia;
 
 	use CRUDSluggableTrait;
 	use ProductRelationshipsTrait;
@@ -44,23 +43,21 @@ class Product extends ProductPackageBaseModel implements HasMedia
 	public function getChildrenCountAttribute()
 	{
 		return $this->getCachedCalculatedProperty(
-			$name = 'children_count',
-			function()
-			{
-				return $this->products()->count();
-			}
+			$name = 'children_count', function ()
+		{
+			return $this->products()->count();
+		}
 		);
 	}
 
 	public function getPhasesDescriptionStringAttribute()
 	{
 		return $this->getCachedCalculatedProperty(
-			$name = 'phases_description_string',
-			function()
-			{
-				return $this->getPhases()->implode('name', " - ");
-			}
-		);		
+			$name = 'phases_description_string', function ()
+		{
+			return $this->getPhases()->implode('name', " - ");
+		}
+		);
 	}
 
 	public function getShortDescription()
@@ -80,12 +77,12 @@ class Product extends ProductPackageBaseModel implements HasMedia
 
 	public function hasStencil() : bool
 	{
-		return !! $this->getStencil();
+		return ! ! $this->getStencil();
 	}
 
 	public function setStencilId(string $value = null, bool $save = false)
 	{
-		$this->_customSetter('stencil_id', $value, $save);		
+		$this->_customSetter('stencil_id', $value, $save);
 	}
 
 	public function setShortDescription(string $value = null, bool $save = false)
@@ -95,10 +92,10 @@ class Product extends ProductPackageBaseModel implements HasMedia
 
 	public function getLiveMaxPackingLength() : ?float
 	{
-		if($this->max_packing_length)
+		if ($this->max_packing_length)
 			return $this->max_packing_length;
 
-		if($max = $this->getClient()?->getMaxPackingLength())
+		if ($max = $this->getClient()?->getMaxPackingLength())
 			return $max;
 
 		$pallettype = $this->getPallettype();
@@ -108,10 +105,10 @@ class Product extends ProductPackageBaseModel implements HasMedia
 
 	public function getLiveMaxPackingHeight() : float
 	{
-		if($this->max_packing_height)
+		if ($this->max_packing_height)
 			return $this->max_packing_height;
 
-		if($max = $this->getClient()?->getMaxPackingHeight())
+		if ($max = $this->getClient()?->getMaxPackingHeight())
 			return $max;
 
 		$pallettype = $this->getPallettype();
@@ -121,14 +118,36 @@ class Product extends ProductPackageBaseModel implements HasMedia
 
 	public function getLiveMaxPackingWidth() : float
 	{
-		if($this->max_packing_width)
+		if ($this->max_packing_width)
 			return $this->max_packing_width;
 
-		if($max = $this->getClient()?->getMaxPackingWidth())
+		if ($max = $this->getClient()?->getMaxPackingWidth())
 			return $max;
 
 		$pallettype = $this->getPallettype();
 
 		return $pallettype->getMaxWidth();
+	}
+
+	public function getQuantityPerUnitload()
+	{
+		if(! ($packing = $this->getPacking()))
+			return false;
+
+		if($quantity = $packing->getQuantityPerPacking())
+			return $quantity;
+
+		return 99999999;
+	}
+
+	public function getVolumeCubicMeters() : ? float
+	{
+		if(! $packing = $this->getPacking())
+			dd('manca packing');
+
+		if($volume = $packing->getVolumeCubicMeters())
+			return $volume;
+
+		return config('warehouse.models.unitload.baseUnitloadVolumeCubicMeters');
 	}
 }

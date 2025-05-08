@@ -2,20 +2,50 @@
 
 namespace IlBronza\Products\Models\Traits\Sellable;
 
-use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
 use Illuminate\Support\Collection;
 
 use function app;
+use function class_basename;
+use function class_uses;
+use function dd;
+use function get_class_methods;
 
 trait InteractsWithSellableTrait
 {
+	abstract public function getPriceFieldsForSellable() : array;
+
+	protected static function bootInteractsWithSellableTrait()
+	{
+		\Event::listen('adjustPricesEvent', function ($model) {
+
+			//if model use InteractsWithSellableTrait
+			if (! in_array('IlBronza\Products\Models\Traits\Sellable\InteractsWithSellableTrait', class_uses_recursive($model)))
+				return;
+
+			SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
+		});
+
+		//if this has CRUDModelExtraFieldsTrait
+//		if (! in_array('IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait', class_uses(static::class)))
+			static::saved(function($model)
+			{
+				SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
+			});
+	}
+
 	public function getNameForSellable(...$parameters) : string
 	{
 		return $this->getName();
+	}
+
+	public function getSellableTypeName(...$parameters) : string
+	{
+		return class_basename($this);
 	}
 
 	static public function getPossibleSellableElements() : Collection

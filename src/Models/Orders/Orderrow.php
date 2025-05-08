@@ -28,4 +28,8 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 		return $this->order;
 	}
 
+	public function getModelContainerRelationName() : string
+	{
+		return 'order';
+	}
 }

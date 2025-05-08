@@ -122,6 +122,14 @@ class Packing extends ProductPackageBaseModel implements SizeInterface, HasMedia
 		return $this->_customSetter('packing_volume_mq', $value, $save);
 	}
 
+	public function getVolumeCubicMeters() : ? float
+	{
+		if($this->packing_volume_mq)
+			return $this->packing_volume_mq;
+
+		return $this->getPackingLength() * $this->getPackingWidth() * $this->getPackingHeight() / 1000000000;
+	}
+
 	public function setCalculatedAt(Carbon $value, bool $save = false)
 	{
 		return $this->_customSetter('calculated_at', $value, $save);

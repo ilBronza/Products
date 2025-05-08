@@ -3,18 +3,12 @@
 namespace IlBronza\Products\Models\Traits\Order;
 
 use Carbon\Carbon;
-use IlBronza\Category\Models\Category;
-use IlBronza\Clients\Models\Destination;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithInvoiceables;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-use IlBronza\Products\Models\Sellables\Sellable;
-use IlBronza\Products\Models\Sellables\SellableSupplier;
-use IlBronza\Products\Models\Sellables\Supplier;
 
-use function is_string;
 use function round;
 
 trait CommonOrderrowQuotationrowTrait
@@ -60,7 +54,7 @@ trait CommonOrderrowQuotationrowTrait
 
 	public function getEndsAt() : ?Carbon
 	{
-		return $this->ends_at ?? $this->getModelContainer()->getEndsAt();
+		return $this->ends_at ?? $this->getModelContainer()?->getEndsAt();
 	}
 
 	public function getStartsAtAttribute($value)
@@ -78,7 +72,6 @@ trait CommonOrderrowQuotationrowTrait
 
 		return $this->getModelContainer()?->getEndsAt();
 	}
-
 
 	public function getAssignSellablesupplierUrl()
 	{

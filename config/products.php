@@ -175,6 +175,7 @@ use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
 use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelper;
+use IlBronza\Products\Providers\Helpers\SellableSuppliers\SellableSupplierFindBySellableHelper;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
@@ -617,6 +618,9 @@ return [
 		'sellableSupplier' => [
 			'table' => 'products__sellables__sellable_suppliers',
 			'class' => SellableSupplier::class,
+			'helpers' => [
+				'findBySellableHelper' => SellableSupplierFindBySellableHelper::class,
+			],
 			'fieldsGroupsFiles' => [
 				'operator' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
 				'contracttype' => SellableSupplierContracttypeFieldsGroupParametersFile::class,

@@ -56,7 +56,7 @@ class Supplier extends ProductPackageBaseModel
 
 	public function getName() : ?string
 	{
-		return $this->getTarget()->getName();
+		return $this->getTarget()?->getName();
 	}
 
 	public function getTarget() : ?SupplierInterface

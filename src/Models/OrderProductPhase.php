@@ -2,6 +2,8 @@
 
 namespace IlBronza\Products\Models;
 
+use App\Providers\Helpers\Processings\ProcessingCreatorHelper;
+use Auth;
 use Carbon\Carbon;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
@@ -13,6 +15,7 @@ use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessin
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
 use IlBronza\Ukn\Facades\Ukn;
+use IlBronza\Warehouse\Helpers\UnitloadCreatorHelper;
 use Illuminate\Support\Facades\Log;
 
 class OrderProductPhase extends ProductPackageBaseModel
@@ -224,14 +227,51 @@ class OrderProductPhase extends ProductPackageBaseModel
     {
 		if(! $processing = $this->processings()->working()->byLast()->first())
 		{
-			$processing = $this->_createAndAssociateProcessing([
-				'processing_type' => $processingType
-			]);
+	        $processingParameters = [
+	            'processing_type' => $processingType,
+	            'order_product_phase_id' => $this->getKey(),
+	            'started_at' => Carbon::now(),
+	            'ended_at' => Carbon::now(),
+	            'workstation_alias' => $this->getWorkstationId(),
+	            'user_id' => Auth::id()
+	        ];
 
-			if($processingType == 'production')
-				$processing->setValidPiecesDone(
-					$this->getQuantityRequired() - $this->getQuantityDone()
-				);
+	        $processing = ProcessingCreatorHelper::createByParameters($processingParameters);
+	        $processing->terminate();
+	    }
+
+		$quantityPerPacking = $this->getProduct()->getQuantityPerPacking();
+		$quantityRequired = $this->getQuantityRequired();
+
+
+		$i = 1;
+
+
+		$previousUnitloadsCount = $this->getProductionUnitloads()->count();
+
+
+		while($remaining = $quantityRequired - $this->getQuantityDone())
+		{
+			$quantity = $remaining > $quantityPerPacking? $quantityPerPacking : $remaining;
+
+			$unitloadParameters = [
+				'production' => $this,
+				'loadable' => $this->getProduct(),
+				'sequence' => ($i ++) + $previousUnitloadsCount,
+				'quantity_capacity' => $quantityPerPacking,
+				'quantity_expected' => $quantity,
+				'quantity' => $quantity,
+				'user_id' => \Auth::id(),
+				'printed_at' => Carbon::now(),
+				'processing_id' => $processing->getKey(),
+				// 'destination_id' => $parameters['destination_id'],
+				// 'pallettype_id' => $parameters['pallettype_id'],
+			];
+
+			UnitloadCreatorHelper::createByArray($unitloadParameters);
+
+
+			$i++;
 		}
 
 		if(! $processing->getEndedAt())
@@ -240,7 +280,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 			);
 
 		$processing->setAsDefinitive(true);
+
+		$this->complete();
     }
-
-
 }

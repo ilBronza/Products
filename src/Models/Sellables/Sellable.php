@@ -2,12 +2,14 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
+use App\Models\ProjectSpecific\Traits\HasCustomPricesTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
+use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Order;
@@ -23,7 +25,7 @@ use function config;
 use function request;
 use function trans;
 
-class Sellable extends ProductPackageBaseModel
+class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 {
 	use ProductPackageBaseModelTrait;
 	use InteractsWithNotesTrait;
@@ -35,6 +37,8 @@ class Sellable extends ProductPackageBaseModel
 	static $deletingRelationships = [];
 	use CRUDParentingTrait;
 	use CRUDSluggableTrait;
+
+	use HasCustomPricesTrait;
 
 	use InteractsWithPriceTrait;
 

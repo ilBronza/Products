@@ -47,4 +47,8 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 		return $this->hasOne(Orderrow::gpc());
 	}
 
+	public function getModelContainerRelationName() : string
+	{
+		return 'quotation';
+	}
 }

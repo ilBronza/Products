@@ -16,64 +16,9 @@ trait SellableSupplierAssignmentTrait
 	public $avoidCreateButton = true;
 	public function getIndexElements()
 	{
-		return $this->sellable->sellableSuppliers()->with(
-			$this->getSellableSupplierRelationsByTargetType()
-		)->get();
-	}
+		$sellableSupplierHelper = config('products.models.sellableSupplier.helpers.findBySellableHelper');
 
-	public function getSellableSupplierRelationsByTargetType() : array
-	{
-		$sellable = $this->getSellable();
-
-		if ($sellable->isContracttype())
-			return [
-				'prices',
-				'supplier.target.operatorContracttypes.contracttype',
-				'supplier.target.operatorContracttypes.prices',
-				'supplier.target.validClientOperator.employment',
-				'supplier.target.user.userdata',
-				'supplier.target.extraFields',
-				'supplier.target.address'
-			];
-
-		if (($sellable->isControlRoomType())||($sellable->isVehicleType()))
-			return [
-				'prices',
-				'supplier.target.extraFields',
-				'supplier.target',
-			];
-
-		if (($this->getSellable()->isServiceType())||($sellable->isHotelType())||($sellable->isReimbursementType()))
-			return [
-				'supplier.target.address'
-			];
-
-		dd($sellable->getType());
-
-		dd('dopo');
-
-
-
-
-		if (! $this->getTargetType())
-		{
-			if ($this->getSellable()->isHotelType())
-				return [
-					'supplier.target'
-				];
-
-			if ($this->getSellable()->isSurveillanceType())
-				return [
-					'supplier.target'
-				];
-		}
-
-		if ($this->getTargetType() == 'Type')
-			return [
-				'supplier.target'
-			];
-
-		throw new Exception ('altro tipo di sellable: ' . $this->getTargetType());
+		return $sellableSupplierHelper::findBySellable($this->sellable);
 	}
 
 	public function getTargetType() : string

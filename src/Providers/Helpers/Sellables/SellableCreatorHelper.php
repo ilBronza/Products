@@ -25,7 +25,7 @@ class SellableCreatorHelper
 		return $price;
 	}
 
-	static function getOrcreateSellableByTarget(SellableItemInterface $target, Collection|array $categories = [], string $type = null) : Sellable
+	static function getOrcreateSellableByTarget(SellableItemInterface $target, null|Collection|array $categories = [], string $type = null) : Sellable
 	{
 		if (! $sellable = static::getSellableByTarget($target, $type))
 			$sellable = static::createSellableByTarget($target, $type);
@@ -33,6 +33,9 @@ class SellableCreatorHelper
 		static::setSellableSuppliersBySellable($sellable);
 
 		$sellable->categories()->syncWithoutDetaching($categories);
+
+		$priceHelper = new SellablePriceCreatorHelper($sellable);
+		$priceHelper->setPricesFromTarget();
 
 		return $sellable;
 	}
