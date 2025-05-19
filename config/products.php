@@ -7,13 +7,13 @@ use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
 use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
-use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
-use IlBronza\Products\Http\Controllers\Order\OrderReplicateOrderrowController;
+use IlBronza\Products\Http\Controllers\Generals\DashboardController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseDestroyController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUpdateController;
+use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseReopenController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ByOrderOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ElaboratedByWorkstationOrderProductIndexController;
@@ -24,21 +24,26 @@ use IlBronza\Products\Http\Controllers\OrderProduct\ToElaborateByWorkstationOrde
 use IlBronza\Products\Http\Controllers\Order\ActiveByClientOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AllOrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderFreezeController;
 use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\OrderReplicateOrderrowController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
+use IlBronza\Products\Http\Controllers\Order\ResetOrderRowsIndexesController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowBySupplierIndexController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowCreateStoreController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowDestroyController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowFindOrAssociateSupplierController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseEditUpdateController;
@@ -139,6 +144,7 @@ use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowFindOrAssociateS
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowReorderController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowShowController;
+use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCreateStoreBySellableController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCreateStoreBySupplierController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierCreateStoreController;
 use IlBronza\Products\Http\Controllers\SellableSupplier\SellableSupplierDestroyController;
@@ -201,6 +207,10 @@ return [
 		//         'class' => Contracttype::class
 		//     ]
 		// ]
+	],
+
+	'dashboard' => [
+		'controller' => DashboardController::class
 	],
 
 	'models' => [
@@ -371,6 +381,7 @@ return [
 			'controllers' => [
 				'addOrderrow' => OrderAddOrderrowIndexController::class,
 				'addOrderrowsByTable' => OrderAddOrderrowIndexByTableController::class,
+				'resetOrderRowsIndexes' => ResetOrderRowsIndexesController::class,
 				'replicateLastRow' => OrderReplicateOrderrowController::class,
 				'create' => OrderCreateController::class,
 				'active' => ActiveOrderIndexController::class,
@@ -397,7 +408,7 @@ return [
 				'related' => ActiveOrdersFieldsGroupParametersFile::class,
 				'index' => OrderFieldsGroupParametersFile::class,
 				'all' => AllOrderFieldsGroupParametersFile::class,
-			]
+			],
 		],
 		'orderrow' => [
 			'class' => Orderrow::class,

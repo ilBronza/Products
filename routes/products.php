@@ -10,6 +10,9 @@ Route::group([
 	'as' => config('products.routePrefix')
 ], function ()
 {
+
+	Route::get('dashboard', [Products::_getController(Products::getPackageConfigPrefix() . '.dashboard.controller'), 'execute'])->name('dashboard');
+
 	// Route::resource('pallets', CrudPalletController::class);
 
 	Route::group(['prefix' => 'projects'], function ()
@@ -203,6 +206,9 @@ Route::group([
 
 		//OrderFreezeController
 		Route::get('{order}/freeze', [Products::getController('order', 'freeze'), 'freeze'])->name('orders.freeze');
+
+		//OrderResetRowsIndexController
+		Route::get('{order}/reset-rows-indexes', [Products::getController('order', 'resetOrderRowsIndexes'), 'resetRowsIndexes'])->name('orders.resetRowsIndexes');
 
 		//OrderAddOrderrowIndexByTableController
 		Route::get('{order}/add-row-by-type/type/{type}/table', [Products::getController('order', 'addOrderrowsByTable'), 'index'])->name('orders.addOrderrowsByTable');

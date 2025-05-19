@@ -111,6 +111,11 @@ class Order extends ProductPackageBaseRowcontainerModel
 		return $this->getKeyedRoute('freeze');
 	}
 
+	public function getResetRowsIndexesUrl() : string
+	{
+		return $this->getKeyedRoute('resetRowsIndexes');
+	}
+
 	public function getFreezeButton() : ?Button
 	{
 		if ($this->isFrozen())
@@ -120,6 +125,15 @@ class Order extends ProductPackageBaseRowcontainerModel
 			'href' => $this->getFreezeUrl(),
 			'text' => 'products::orders.freeze',
 			'icon' => 'lock'
+		]);
+	}
+
+	public function getResetRowsIndexesButton() : Button
+	{
+		return Button::create([
+			'href' => $this->getResetRowsIndexesUrl(),
+			'text' => 'products::orders.resetRowsIndex',
+			'icon' => 'sort'
 		]);
 	}
 

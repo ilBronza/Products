@@ -59,7 +59,11 @@ class QuotationEditUpdateController extends QuotationCRUD
 		if($this->getModel()->hasOrder())
 		{
 			$this->getForm()->setTitle(
-				trans('products::orders.orderFromQuotation', ['order' => $this->getModel()->getOrder()->getName(), 'quotation' => $this->getModel()->getName()])
+				trans('products::orders.orderFromQuotation', [
+					'order' => $this->getModel()->getOrder()?->getName(),
+					'quotation' => $this->getModel()->getName(),
+					'orderUrl' => $this->getModel()->getOrder()?->getEditUrl()
+				])
 			);
 
 			app('uikittemplate')->addBodyHtmlClass('order-quotation');

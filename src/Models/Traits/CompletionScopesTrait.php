@@ -62,11 +62,11 @@ trait CompletionScopesTrait
 
     public function scopeByCompletionPeriod($_query, Carbon $from = null, Carbon $to = null)
     {
-            if($from)
-                $_query->whereDate(static::make()->getTable() . '.completed_at', '>=', $from);
+        if($from)
+            $_query->whereDate(static::make()->getTable() . '.completed_at', '>=', $from);
 
-            if($to)
-                $_query->whereDate(static::make()->getTable() . '.completed_at', '<=', $to);
+        if($to)
+            $_query->whereDate(static::make()->getTable() . '.completed_at', '<=', $to);
     }
 
     public function scopeCompletedAfter($_query, Carbon $from = null)

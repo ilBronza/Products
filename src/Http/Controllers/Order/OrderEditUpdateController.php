@@ -3,47 +3,49 @@
 namespace IlBronza\Products\Http\Controllers\Order;
 
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
-
 use Illuminate\Http\Request;
-use IlBronza\Products\Http\Controllers\Order\OrderCRUD;
 
 use function config;
-use function dd;
 
 class OrderEditUpdateController extends OrderCRUD
 {
-    use CRUDEditUpdateTrait;
+	use CRUDEditUpdateTrait;
 
-	public ? bool $updateEditor = true;
+	public ?bool $updateEditor = true;
 
-    public $allowedMethods = ['edit', 'update'];
+	public $allowedMethods = ['edit', 'update'];
 
 	public function getRelationshipsManagerClass()
 	{
 		return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.show");
 	}
 
-	public function getGenericParametersFile() : ? string
-    {
-        return config('products.models.order.parametersFiles.edit');
-    }
+	public function getGenericParametersFile() : ?string
+	{
+		return config('products.models.order.parametersFiles.edit');
+	}
 
-    public function edit($order)
-    {
-        $order = $this->findModel($order);
+	public function edit($order)
+	{
+		$order = $this->findModel($order);
 
-	    if(! $order->isFrozen())
-		    $this->addNavbarButton(
-			    $order->getFreezeButton()
-		    );
+		if (! $order->isFrozen())
+			$this->addNavbarButton(
+				$order->getResetRowsIndexesButton()
+			);
 
-	    return $this->_edit($order);
-    }
+		if (! $order->isFrozen())
+			$this->addNavbarButton(
+				$order->getFreezeButton()
+			);
 
-    public function update(Request $request, $order)
-    {
-        $order = $this->findModel($order);
+		return $this->_edit($order);
+	}
 
-        return $this->_update($request, $order);
-    }
+	public function update(Request $request, $order)
+	{
+		$order = $this->findModel($order);
+
+		return $this->_update($request, $order);
+	}
 }

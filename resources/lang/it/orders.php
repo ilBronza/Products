@@ -5,5 +5,6 @@ return [
 	'active' => 'Commesse in corso',
 	'index' => 'Commesse',
 	'orders' => 'Commesse',
-	'freeze' => 'Consolida valori'
+	'freeze' => 'Consolida valori',
+	'resetRowsIndex' => 'Riduci ordinamenti'
 ];
