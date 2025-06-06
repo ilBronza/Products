@@ -15,5 +15,12 @@ return [
 	'ibProductsorderrows.assignSellableSupplier' => 'Assegna fornitore',
 	'ibProductsquotationrows.findOrAssociateSupplier' => 'Trova o associa fornitore',
 	'ibProductsquotationrows.assignSellableSupplier' => 'Assegna fornitore',
-	'ibProductssuppliers.orderrows.index' => 'Righe per fornitore :model'
+	'ibProductssuppliers.orderrows.index' => 'Righe per fornitore :model',
+	'ibProducts.clientsorderProducts.index' => 'Ordini per cliente',
+
+
+	'ibProducts.clients.products.index' => 'Prodotti per cliente',
+
+
+	'ibProducts.clients.orderProducts.index' => 'Ordini per cliente'
 ];

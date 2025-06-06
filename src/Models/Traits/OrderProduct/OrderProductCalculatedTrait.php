@@ -7,10 +7,6 @@ trait OrderProductCalculatedTrait
 	public function getPiecesPerPacking() : ?float
 	{
 		return $this->getProduct()->getQuantityPerUnitload();
-
-		dd('deprecato, dichiarare getQuantityPerUnitload');
-
-		return $this->getProduct()->getPiecesPerPacking();
 	}
 
 	public function getPackageNumber() : ?int

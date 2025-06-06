@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\PackageOverriding\Products\FieldsParameters\ClientAreaProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductIndexController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
+use IlBronza\Products\Http\Controllers\ClientArea\ClientAreaOrderIndexController;
 use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
 use IlBronza\Products\Http\Controllers\Generals\DashboardController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
@@ -16,6 +18,7 @@ use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseEditUp
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseReopenController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseShowController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ByOrderOrderProductIndexController;
+use IlBronza\Products\Http\Controllers\OrderProduct\ClientAreaOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ElaboratedByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductRestoreController;
@@ -54,6 +57,7 @@ use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationEditUpdate
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationIndexController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationShowController;
 use IlBronza\Products\Http\Controllers\Product\ByOrderProductIndexController;
+use IlBronza\Products\Http\Controllers\Product\ClientAreaProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ProductCurrentController;
 use IlBronza\Products\Http\Controllers\Product\ProductDeletionController;
 use IlBronza\Products\Http\Controllers\Product\ProductEditUpdateController;
@@ -73,6 +77,8 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByOrderRelatedOrde
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedAccessoryProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedProductRelationFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowFieldsGroupParametersFile;
@@ -99,6 +105,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVe
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ClientAreaOrderProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderCreateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseEditFieldsetsParameters;
@@ -331,7 +338,8 @@ return [
 			'table' => 'products__products',
 			'fieldsGroupsFiles' => [
 				'index' => ProductFieldsGroupParametersFile::class,
-				'byClientIndex' => ByClientProductFieldsGroupParametersFile::class
+				'byClientIndex' => ByClientProductFieldsGroupParametersFile::class,
+				'clientArea' => ClientAreaProductFieldsGroupParametersFile::class
 			],
 			'relationshipsManagerClasses' => [
 				'show' => ProductRelationManager::class
@@ -340,6 +348,9 @@ return [
 				'edit' => ProductShowFieldsetsParameters::class,
 				'show' => ProductShowFieldsetsParameters::class,
 				'teaser' => ProductShowFieldsetsParameters::class,
+				'clientArea' => [
+					'edit' => ClientAreaProductEditFieldsetsParameters::class,
+				]
 			],
 			'controllers' => [
 				'show' => ProductShowController::class,
@@ -348,7 +359,8 @@ return [
 				'destroy' => ProductDeletionController::class,
 				'index' => ProductIndexController::class,
 				'byOrderProductIndex' => ByOrderProductIndexController::class,
-				'current' => ProductCurrentController::class
+				'current' => ProductCurrentController::class,
+				'clientArea' => ClientAreaProductIndexController::class,
 			],
 		],
 		'phase' => [
@@ -379,6 +391,7 @@ return [
 				'freezerHelper' => OrderFreezerHelper::class
 			],
 			'controllers' => [
+				'clientArea' => ClientAreaOrderIndexController::class,
 				'addOrderrow' => OrderAddOrderrowIndexController::class,
 				'addOrderrowsByTable' => OrderAddOrderrowIndexByTableController::class,
 				'resetOrderRowsIndexes' => ResetOrderRowsIndexesController::class,
@@ -407,6 +420,7 @@ return [
 				'active' => ActiveOrdersFieldsGroupParametersFile::class,
 				'related' => ActiveOrdersFieldsGroupParametersFile::class,
 				'index' => OrderFieldsGroupParametersFile::class,
+				'clientArea' => ClientAreaOrderFieldsGroupParametersFile::class,
 				'all' => AllOrderFieldsGroupParametersFile::class,
 			],
 		],
@@ -450,12 +464,17 @@ return [
 				'toElaboratebyWorkstation' => ToElaborateByWorkstationOrderProductIndexController::class,
 				'byProductIndex' => ByProductOrderProductIndexController::class,
 				'byOrderIndex' => ByOrderOrderProductIndexController::class,
+				'clientArea' => ClientAreaOrderProductIndexController::class,
 			],
 			'timingEstimator' => TimingEstimatorOrderProduct::class,
 			'parametersFiles' => [
 				'show' => OrderProductShowFieldsetsParameters::class,
 				'teaser' => OrderProductShowFieldsetsParameters::class,
 				'edit' => OrderProductShowFieldsetsParameters::class,
+
+				'clientArea' => [
+					'edit' => ClientAreaOrderProductEditFieldsetsParameters::class,
+				]
 			],
 			'relationshipsManagerClasses' => [
 				'show' => OrderProductRelationManager::class
@@ -463,7 +482,8 @@ return [
 			'fieldsGroupsFiles' => [
 				'workstationRelated' => ByWorkstationRelatedOrderProductFieldsGroupParametersFile::class,
 				'orderRelated' => ByOrderRelatedOrderProductFieldsGroupParametersFile::class,
-				'productRelated' => ByProductRelatedOrderProductFieldsGroupParametersFile::class
+				'productRelated' => ByProductRelatedOrderProductFieldsGroupParametersFile::class,
+				'clientArea' => ClientAreaOrderProductFieldsGroupParametersFile::class
 			]
 		],
 		'orderProductPhase' => [

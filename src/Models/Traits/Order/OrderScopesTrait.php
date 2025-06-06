@@ -27,6 +27,14 @@ trait OrderScopesTrait
         ]);
     }
 
+	public function scopeByClient($query, $client)
+	{
+		if($client instanceof Client)
+			$client = $client->getKey();
+
+		$query->where('client_id', $client);
+	}
+
     public function scopeWithDestinationCity($query)
     {
         $destinationTable = Destination::getProjectClassName()::make()->getTable();

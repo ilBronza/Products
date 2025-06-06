@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Traits\Product;
 
 use Carbon\Carbon;
+use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\OrderProduct;
 
 trait ProductScopesTrait
@@ -49,6 +50,14 @@ trait ProductScopesTrait
 				;
 			})
 			;
+	}
+
+	public function scopeByClient($query, mixed $client)
+	{
+		if($client instanceof Client)
+			$client = $client->getKey();
+
+		$query->where('client_id', $client);
 	}
 
 	public function scopeHavingActiveOrderProducts($query)

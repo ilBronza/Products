@@ -5,7 +5,24 @@ use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
 use IlBronza\Products\Products;
 
 Route::group([
-	'middleware' => ['web', 'auth'],
+	'middleware' => ['web', 'auth', 'role:client|superadmin'],
+	'prefix' => 'products-client-area',
+	'as' => config('products.routePrefix') . '.clients.'
+], function ()
+{
+	Route::get('{client}/orders', [Products::getController('order', 'clientArea'), 'index'])->name('orders.index');
+	Route::get('{client}/order-products', [Products::getController('orderProduct', 'clientArea'), 'index'])->name('orderProducts.index');
+	Route::put('{client}/order-products/{orderProduct}/update', [Products::getController('orderProduct', 'clientArea'), 'update'])->name('orderProducts.update');
+
+	Route::get('{client}/products', [Products::getController('product', 'clientArea'), 'index'])->name('products.index');
+
+	Route::put('{client}/products/{product}/update', [Products::getController('product', 'clientArea'), 'update'])->name('products.update');
+});
+
+
+
+Route::group([
+	'middleware' => ['web', 'auth', 'role:superdamin|administrator|worker'],
 	'prefix' => 'products-management',
 	'as' => config('products.routePrefix')
 ], function ()
