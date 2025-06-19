@@ -192,6 +192,15 @@ class Products implements RoutedObjectInterface
 				'href' => IbRouter::route($this, 'accessories.index')
 			])
 		);
+
+		$productsContainerButton->addChild(
+			$menu->createButton([
+				'name' => 'finishings.index',
+				'icon' => 'users',
+				'text' => 'products::finishings.list',
+				'href' => IbRouter::route($this, 'finishings.index')
+			])
+		);
 	}
 
 	public function getSellablesModelsClasses() : array

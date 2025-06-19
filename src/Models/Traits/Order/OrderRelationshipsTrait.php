@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Traits\Order;
 
 use IlBronza\Clients\Models\Destination;
+use IlBronza\Products\Models\Finishing;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Product\Product;
@@ -15,7 +16,7 @@ trait OrderRelationshipsTrait
 
     public function pallettype()
     {
-        return $this->belongsTo(Pallettype::getProjectClassName());
+        return $this->belongsTo(Pallettype::gpc());
     }
 
     public function getPallettype() : ? Pallettype
@@ -26,7 +27,7 @@ trait OrderRelationshipsTrait
 	public function products()
 	{
         return $this->belongsToMany(
-            Product::getProjectClassName(),
+            Product::gpc(),
             config('products.models.orderProduct.table')
         );
         // ->wherePivot('deleted_at', '!=', 'null');
@@ -45,7 +46,7 @@ trait OrderRelationshipsTrait
 
     public function orderProducts()
     {
-        return $this->hasMany(OrderProduct::getProjectClassName());
+        return $this->hasMany(OrderProduct::gpc());
     }
 
     public function getOrderProducts() : Collection
@@ -56,8 +57,8 @@ trait OrderRelationshipsTrait
     public function orderProductPhases()
     {
         return $this->hasManyThrough(
-            OrderProductPhase::getProjectClassName(),
-            OrderProduct::getProjectClassName()
+            OrderProductPhase::gpc(),
+            OrderProduct::gpc()
         );
     }
 

@@ -14,15 +14,15 @@ Route::group([
 	Route::get('{client}/order-products', [Products::getController('orderProduct', 'clientArea'), 'index'])->name('orderProducts.index');
 	Route::put('{client}/order-products/{orderProduct}/update', [Products::getController('orderProduct', 'clientArea'), 'update'])->name('orderProducts.update');
 
+	// ClientAreaProductIndexController
 	Route::get('{client}/products', [Products::getController('product', 'clientArea'), 'index'])->name('products.index');
 
+	//ClientAreaProductIndexController
 	Route::put('{client}/products/{product}/update', [Products::getController('product', 'clientArea'), 'update'])->name('products.update');
 });
 
-
-
 Route::group([
-	'middleware' => ['web', 'auth', 'role:superdamin|administrator|worker'],
+	'middleware' => ['web', 'auth', 'role:superadmin|administrator|products|worker'],
 	'prefix' => 'products-management',
 	'as' => config('products.routePrefix')
 ], function ()
@@ -191,6 +191,18 @@ Route::group([
 		Route::put('{phase}', [Products::getController('phase', 'update'), 'update'])->name('phases.update');
 	});
 
+	Route::group(['prefix' => 'finishings'], function()
+	{
+		Route::get('', [Products::getController('finishing', 'index'), 'index'])->name('finishings.index');
+		Route::get('create', [Products::getController('finishing', 'create'), 'create'])->name('finishings.create');
+		Route::post('', [Products::getController('finishing', 'store'), 'store'])->name('finishings.store');
+		Route::get('{finishing}', [Products::getController('finishing', 'show'), 'show'])->name('finishings.show');
+		Route::get('{finishing}/edit', [Products::getController('finishing', 'edit'), 'edit'])->name('finishings.edit');
+		Route::put('{finishing}', [Products::getController('finishing', 'edit'), 'update'])->name('finishings.update');
+
+		Route::delete('{finishing}/delete', [Products::getController('finishing', 'destroy'), 'destroy'])->name('finishings.destroy');
+	});
+
 	Route::group(['prefix' => 'accessories'], function ()
 	{
 		Route::delete('delete-media/{accessory}/{media}', [Products::getController('accessory', 'media'), 'deleteMedia'])->name('accessories.deleteMedia');
@@ -227,6 +239,10 @@ Route::group([
 		//OrderResetRowsIndexController
 		Route::get('{order}/reset-rows-indexes', [Products::getController('order', 'resetOrderRowsIndexes'), 'resetRowsIndexes'])->name('orders.resetRowsIndexes');
 
+		//OrderChangeClientController
+		Route::get('{order}/change-client', [Products::getController('order', 'changeClient'), 'edit'])->name('orders.changeClientForm');
+		Route::put('{order}/change-client', [Products::getController('order', 'changeClient'), 'update'])->name('orders.changeClientUpdate');
+
 		//OrderAddOrderrowIndexByTableController
 		Route::get('{order}/add-row-by-type/type/{type}/table', [Products::getController('order', 'addOrderrowsByTable'), 'index'])->name('orders.addOrderrowsByTable');
 
@@ -243,6 +259,8 @@ Route::group([
 		//OrderIndexController
 		Route::get('', [Products::getController('order', 'index'), 'index'])->name('orders.index');
 		Route::get('all-orders', [Products::getController('order', 'all'), 'index'])->name('orders.all');
+
+		//ActiveOrderIndexController
 		Route::get('current', [Products::getController('order', 'active'), 'index'])->name('orders.current');
 
 		//ActiveOrderIndexController

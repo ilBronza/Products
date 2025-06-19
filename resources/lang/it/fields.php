@@ -55,6 +55,6 @@ return [
 	'mySelfAlerts' => 'Avvisi',
 	'frozen' => 'Bloccata',
 	'sellableSupplier.supplier.target.valid_employment_type_string' => 'Impiego',
-	'findOrAssociateSupplier' => 'Associa nuovo fornitore',
+	'findOrAssociateSupplier' => 'Associa',
 	'approve_daily_allowances_costs' => 'Approva diarie',
 ];

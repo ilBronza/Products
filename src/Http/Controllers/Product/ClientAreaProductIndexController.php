@@ -19,6 +19,7 @@ class ClientAreaProductIndexController extends ProductCRUD
 
 	public function getIndexFieldsArray()
 	{
+		//ClientAreaProductFieldsGroupParametersFile
 		return config('products.models.product.fieldsGroupsFiles.clientArea')::getFieldsGroup();
 	}
 
@@ -36,6 +37,7 @@ class ClientAreaProductIndexController extends ProductCRUD
 
 	public function getEditParametersFile() : ? string
 	{
+		//ClientAreaProductEditFieldsetsParameters
 		return config('products.models.product.parametersFiles.clientArea.edit');
 	}
 

@@ -116,6 +116,11 @@ class Order extends ProductPackageBaseRowcontainerModel
 		return $this->getKeyedRoute('resetRowsIndexes');
 	}
 
+	public function getChangeClientUrl() : string
+	{
+		return $this->getKeyedRoute('changeClientForm');
+	}
+
 	public function getFreezeButton() : ?Button
 	{
 		if ($this->isFrozen())
@@ -134,6 +139,15 @@ class Order extends ProductPackageBaseRowcontainerModel
 			'href' => $this->getResetRowsIndexesUrl(),
 			'text' => 'products::orders.resetRowsIndex',
 			'icon' => 'sort'
+		]);
+	}
+
+	public function getChangeClientButton() : Button
+	{
+		return Button::create([
+			'href' => $this->getChangeClientUrl(),
+			'text' => 'products::orders.changeClient',
+			'icon' => 'edit'
 		]);
 	}
 

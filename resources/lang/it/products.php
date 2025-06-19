@@ -8,5 +8,6 @@ return [
 	'project' => 'Progetto',
 	'projects' => 'Progetti',
 	'sellableSuppliers' => 'Articoli fornitore',
-	'orders' => 'Commesse attive'
+	'orders' => 'Commesse attive',
+	'finishing' => 'Finitura'
 ];

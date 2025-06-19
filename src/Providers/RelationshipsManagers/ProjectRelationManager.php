@@ -4,6 +4,10 @@ namespace IlBronza\Products\Providers\RelationshipsManagers;
 
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 
+use IlBronza\Notes\Http\Controllers\CrudNoteController;
+
+use function config;
+
 class ProjectRelationManager Extends RelationshipsManager
 {
 	public  function getAllRelationsParameters() : array
@@ -12,8 +16,9 @@ class ProjectRelationManager Extends RelationshipsManager
 			'show' => [
 				'relations' => [
 					'quotations' => config('products.models.quotation.controllers.index'),
-					// 'client' => config('clients.models.client.controller'),
-					// 'notes' => CrudNoteController::class
+					'orders' => config('products.models.order.controllers.index'),
+					 'client' => config('clients.models.client.controller'),
+					 'notes' => CrudNoteController::class
 				]
 			]
 		];

@@ -1,14 +1,25 @@
 <?php
 
 return [
-	'ibProductsquotations.edit' => 'Modifica preventivo :model',
-	'ibProductsquotations.current' => 'Preventivi in corso',
-	'ibProductsquotations.show' => 'Mostra preventivo :model',
-	'ibProductsorders.active' => 'Commesse in corso',
-	'ibProductsorders.show' => 'Mostra ordine :model',
-	'ibProductsorders.edit' => 'Modifica ordine :model',
-	'ibProductsorders.index' => 'Indice commesse',
-	'ibProductsquotations.index' => 'Indice preventivi',
+	'ibProductsquotations' => [
+		'edit' => 'Modifica preventivo :model',
+		'current' => 'Preventivi in corso',
+		'show' => 'Mostra preventivo :model',
+		'index' => 'Indice preventivi',
+	],
+
+	'ibProductsorders' => [
+		'active' => 'Commesse in corso',
+		'show' => 'Mostra ordine :model',
+		'edit' => 'Modifica ordine :model',
+		'index' => 'Indice commesse',
+		'current' => 'Commesse attive'
+	],
+
+	'ibProductsfinishings' =>[
+		'index' => 'Finiture'
+	],
+
 	'ibProductsprojects.index' => 'Indice progetti',
 	'ibProductssellables.index' => 'Beni/Servizi',
 	'ibProductsorderrows.findOrAssociateSupplier' => 'Trova o associa fornitore',

@@ -26,7 +26,7 @@ class ProjectIndexController extends ProjectCRUD
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with('client', 'category')->get();
+        return $this->getModelClass()::with('client', 'category', 'orders', 'quotations')->withCount('orders', 'quotations')->get();
     }
 
 }

@@ -6,6 +6,7 @@ use App\Models\ProductsPackage\Size;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
+use IlBronza\Products\Models\Finishing;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
@@ -19,9 +20,14 @@ use Illuminate\Support\Str;
 
 trait ProductRelationshipsTrait
 {
+	public function finishing()
+	{
+		return $this->belongsTo(Finishing::gpc());
+	}
+
 	public function pallettype()
 	{
-		return $this->belongsTo(Pallettype::getProjectClassName());
+		return $this->belongsTo(Pallettype::gpc());
 	}
 
 	public function getPallettype() : Pallettype
@@ -32,7 +38,7 @@ trait ProductRelationshipsTrait
 		if($pallettype = $this->getClient()?->getPallettype())
 			return $pallettype;
 
-		return Pallettype::getProjectClassName()::getDefault();
+		return Pallettype::gpc()::getDefault();
 	}
 
 	public function size()
@@ -51,7 +57,7 @@ trait ProductRelationshipsTrait
 		{
 			$size = Size::create();
 
-			$size->sizeable_type = static::getProjectClassName();
+			$size->sizeable_type = static::gpc();
 			$size->sizeable_id = $this->getKey();
 
 			$this->size()->associate($size);
@@ -84,7 +90,7 @@ trait ProductRelationshipsTrait
 		{
 			$packing = Packing::create();
 
-			$packing->packable_type = static::getProjectClassName();
+			$packing->packable_type = static::gpc();
 			$packing->packable_id = $this->getKey();
 
 			$this->packing()->associate($packing);
@@ -99,15 +105,15 @@ trait ProductRelationshipsTrait
 	public function accessories()
 	{
 		return $this->belongsToMany(
-			Accessory::getProjectClassName(), config('products.models.accessoryProduct.table')
+			Accessory::gpc(), config('products.models.accessoryProduct.table')
 		)->using(
-			AccessoryProduct::getProjectClassName()
+			AccessoryProduct::gpc()
 		);
 	}
 
 	public function accessoryProducts()
 	{
-		return $this->hasMany(AccessoryProduct::getProjectClassName());
+		return $this->hasMany(AccessoryProduct::gpc());
 	}
 
 	public function products()
@@ -122,7 +128,7 @@ trait ProductRelationshipsTrait
 
 	public function client()
 	{
-		return $this->belongsTo(Client::getProjectClassName());
+		return $this->belongsTo(Client::gpc());
 	}
 
 	public function getClient() : Client
@@ -132,7 +138,7 @@ trait ProductRelationshipsTrait
 
 	public function phases()
 	{
-		return $this->hasMany(Phase::getProjectClassName())->orderBy('sequence');
+		return $this->hasMany(Phase::gpc())->orderBy('sequence');
 	}
 
 	public function getPhases() : Collection
@@ -142,7 +148,7 @@ trait ProductRelationshipsTrait
 
 	public function orderProducts()
 	{
-		return $this->hasMany(OrderProduct::getProjectClassName());
+		return $this->hasMany(OrderProduct::gpc());
 	}
 
 	public function getOrderProducts() : Collection
@@ -152,14 +158,14 @@ trait ProductRelationshipsTrait
 
 	public function lastOrderProduct()
 	{
-		return $this->belongsTo(OrderProduct::getProjectClassName(), 'live_last_order_product_id', 'id');
+		return $this->belongsTo(OrderProduct::gpc(), 'live_last_order_product_id', 'id');
 	}
 
 	public function orderProductPhases()
 	{
         return $this->hasManyThrough(
-            OrderProductPhase::getProjectClassName(),
-            OrderProduct::getProjectClassName()
+            OrderProductPhase::gpc(),
+            OrderProduct::gpc()
         );		
 	}
 
@@ -170,7 +176,7 @@ trait ProductRelationshipsTrait
 
 	public function orders()
 	{
-		return $this->belongsToMany(Order::getProjectClassName(), config('products.models.orderProduct.table'));
+		return $this->belongsToMany(Order::gpc(), config('products.models.orderProduct.table'));
 	}
 
 	public function getOrders() : Collection
