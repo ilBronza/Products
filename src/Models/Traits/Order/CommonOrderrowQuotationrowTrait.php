@@ -3,13 +3,19 @@
 namespace IlBronza\Products\Models\Traits\Order;
 
 use Carbon\Carbon;
+use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithInvoiceables;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 
+use IlBronza\Products\Models\Sellables\Supplier;
+
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
+
 use function round;
+use function route;
 
 trait CommonOrderrowQuotationrowTrait
 {
@@ -20,6 +26,31 @@ trait CommonOrderrowQuotationrowTrait
 	use InteractsWithInvoiceables;
 
 	use CommonOrderrowQuotationrowRelationAndScopesTrait;
+
+	public function getOperatorAlerts()
+	{
+		return $this->getSellableSupplier()?->getSupplier()?->getTarget()?->getModelAlertsAttribute($this->getModelContainer(), $this);
+	}
+
+	public function getBulkAssignManufacturerButton()
+	{
+		$button = Button::create([
+			'href' => route("project.{$className}.{$routeName}", [$container]),
+			'text' => 'buttons.' . $routeName,
+			'icon' => 'print'
+		]);
+
+		ff($button);
+
+		$button->setPrimary();
+		//		$button->setHtmlClass('uk-margin-large-right');
+
+		//		$button->setAjaxTableButton(null, [
+		//			'openIframe' => true
+		//		]);
+
+		return $button;
+	}
 
 	public function setStartsAt(string|Carbon $startsAt = null) : void
 	{
@@ -81,6 +112,17 @@ trait CommonOrderrowQuotationrowTrait
 	public function getFindOrAssociateSupplierUrl()
 	{
 		return $this->getKeyedRoute('findOrAssociateSupplier');
+	}
+
+	public function setSupplier(null|string|Supplier $supplier)
+	{
+		if(is_null($supplier))
+			return RowsSellableSupplierAssociatorHelper::emptySellableSupplier($this);
+
+		if (is_string($supplier))
+			$supplier = Supplier::gpc()::find($supplier);
+
+		return RowsSellableSupplierAssociatorHelper::associateSellableSupplierToRowBySupplier($this, $supplier);
 	}
 
 	public function getFullname() : string

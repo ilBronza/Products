@@ -26,6 +26,11 @@ trait CommonOrderrowQuotationrowRelationAndScopesTrait
 		return $this->sellableSupplier;
 	}
 
+	public function supplier()
+	{
+		return $this->hasOneThrough(Supplier::gpc(), SellableSupplier::gpc())->with('target');;
+	}
+
 	public function scopeBySellableTargetIds($query, array|Collection $sellableIds)
 	{
 		return $query->whereHas('sellable', function ($query) use ($sellableIds)

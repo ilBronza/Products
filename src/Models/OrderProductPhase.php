@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models;
 use App\Providers\Helpers\Processings\ProcessingCreatorHelper;
 use Auth;
 use Carbon\Carbon;
+use Exception;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
@@ -14,14 +15,14 @@ use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseGetterTra
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessingsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
-use IlBronza\Ukn\Facades\Ukn;
+use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Warehouse\Helpers\UnitloadCreatorHelper;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
-class OrderProductPhase extends ProductPackageBaseModel
+class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInterface
 {
-	public $classnameAbbreviation = 'opp';
 	static $modelConfigPrefix = 'orderProductPhase';
+	public $classnameAbbreviation = 'opp';
 
 	use OrderProductPhaseScopesTrait;
 	use OrderProductPhaseRelationshipsTrait;
@@ -33,6 +34,32 @@ class OrderProductPhase extends ProductPackageBaseModel
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
 
+	protected static function boot()
+	{
+		parent::boot();
+
+		static::saved(function ($model)
+		{
+			if ($model->isDirty('quantity_done'))
+				$model->checkForQuantityDoneSyncing();
+		});
+	}
+
+	public function getIndexUrl(array $data = [])
+	{
+		return IbRouter::route(app('products'), 'orderProductPhases.byOrderProduct', ['orderProduct' => $this->getOrderProductId()]);
+	}
+
+	public function getTimingChildren() : Collection
+	{
+		return collect();
+	}
+
+	public function getQuantityRequired() : ?float
+	{
+		return $this->quantity_required;
+	}
+
 	public function isLast()
 	{
 		$last = $this->getLastOrderProductPhase();
@@ -42,14 +69,15 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	public function getWorkstationId()
 	{
-		if($this->workstation_overridden_id)
+		if ($this->workstation_overridden_id)
 			return $this->workstation_overridden_id;
 
-		if(! $phase = $this->getPhase())
+		if (! $phase = $this->getPhase())
 		{
-			if($phase = $this->phase()->withTrashed()->first())
+			if ($phase = $this->phase()->withTrashed()->first())
 			{
 				$phase->restore();
+
 				return $phase->getWorkstationId();
 			}
 
@@ -61,32 +89,15 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	public function checkForQuantityDoneSyncing()
 	{
-		if($this->isLast())
+		if ($this->isLast())
 			$this->getOrderProduct()->setQuantityDone(
-				$this->getQuantityDone(),
-				$save = true
+				$this->getQuantityDone(), $save = true
 			);
-	}
-
-	protected static function boot()
-	{
-		parent::boot();
-	
-		static::saved(function ($model)
-		{
-			if($model->isDirty('quantity_done'))
-				$model->checkForQuantityDoneSyncing();
-		});
 	}
 
 	public function getCalculatedWorkstationIdAttribute()
 	{
 		return $this->getWorkstationId();
-	}
-
-	public function getQuantityRequired()
-	{
-		return $this->quantity_required;
 	}
 
 	public function getQuantityDone()
@@ -98,7 +109,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 	{
 		$this->quantity_done = $quantityDone;
 
-		if($save)
+		if ($save)
 			$this->save();
 	}
 
@@ -107,19 +118,14 @@ class OrderProductPhase extends ProductPackageBaseModel
 		return $this->sequence ?? 0;
 	}
 
-	public function getIndexUrl(array $data = [])
-	{
-        return IbRouter::route(app('products'), 'orderProductPhases.byOrderProduct', ['orderProduct' => $this->getOrderProductId()]);
-	}
-
 	public function getOrderProductId() : string
 	{
 		return $this->order_product_id;
 	}
 
-	public function getCoefficientOutput() : ? float
+	public function getCoefficientOutput() : ?float
 	{
-		if($this->coefficient_output)
+		if ($this->coefficient_output)
 			return $this->coefficient_output;
 
 		return $this->getPhase()?->getCoefficientOutput();
@@ -130,21 +136,20 @@ class OrderProductPhase extends ProductPackageBaseModel
 		$this->_customSetter('coefficient_output', $value, $save);
 	}
 
-    public function setOrderProductId(string $value, bool $save = false)
-    {
-        $this->_customSetter('order_product_id', $value, $save);
-    }
+	public function setOrderProductId(string $value, bool $save = false)
+	{
+		$this->_customSetter('order_product_id', $value, $save);
+	}
 
-    public function setPhaseId(string $value, bool $save = false)
-    {
-        $this->_customSetter('phase_id', $value, $save);
-    }
+	public function setPhaseId(string $value, bool $save = false)
+	{
+		$this->_customSetter('phase_id', $value, $save);
+	}
 
-    public function setQuantityRequired(float $value = null, bool $save = false)
-    {
-        $this->_customSetter('quantity_required', $value, $save);
-    }
-
+	public function setQuantityRequired(float $value = null, bool $save = false)
+	{
+		$this->_customSetter('quantity_required', $value, $save);
+	}
 
 	//DA SISTEMARE CON QUERY
 
@@ -155,7 +160,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	public function checkCompletion()
 	{
-		if(! $this->processings()->forCompletion()->definitive()->byLast()->first())
+		if (! $this->processings()->forCompletion()->definitive()->byLast()->first())
 			return $this->uncomplete();
 
 		return $this->complete();
@@ -163,10 +168,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 	public function bindDataFromProcessings()
 	{
-		$processings = $this->processings()
-						->forCompletion()
-						->byLast()
-						->get();
+		$processings = $this->processings()->forCompletion()->byLast()->get();
 
 		$this->setStartedAt($processings->min('created_at') ?? null);
 
@@ -194,12 +196,8 @@ class OrderProductPhase extends ProductPackageBaseModel
 	{
 		$this->bindDataFromProcessings();
 
-		if(! $lastCompletionProcessing = $this->processings()
-						->forCompletion()
-						->definitive()
-						->byLast()
-						->first())
-			throw new \Exception('non trovato il processo che termina la lavorazione ' . $this->getName() . ' <a href="' . $this->getShowUrl() . '">Controlla qui</a>');
+		if (! $lastCompletionProcessing = $this->processings()->forCompletion()->definitive()->byLast()->first())
+			throw new Exception('non trovato il processo che termina la lavorazione ' . $this->getName() . ' <a href="' . $this->getShowUrl() . '">Controlla qui</a>');
 
 		$this->_complete($lastCompletionProcessing);
 	}
@@ -223,36 +221,33 @@ class OrderProductPhase extends ProductPackageBaseModel
 		$this->save();
 	}
 
-    public function forceCompletion(string $processingType = 'production')
-    {
-		if(! $processing = $this->processings()->working()->byLast()->first())
+	public function forceCompletion(string $processingType = 'production')
+	{
+		if (! $processing = $this->processings()->working()->byLast()->first())
 		{
-	        $processingParameters = [
-	            'processing_type' => $processingType,
-	            'order_product_phase_id' => $this->getKey(),
-	            'started_at' => Carbon::now(),
-	            'ended_at' => Carbon::now(),
-	            'workstation_alias' => $this->getWorkstationId(),
-	            'user_id' => Auth::id()
-	        ];
+			$processingParameters = [
+				'processing_type' => $processingType,
+				'order_product_phase_id' => $this->getKey(),
+				'started_at' => Carbon::now(),
+				'ended_at' => Carbon::now(),
+				'workstation_alias' => $this->getWorkstationId(),
+				'user_id' => Auth::id()
+			];
 
-	        $processing = ProcessingCreatorHelper::createByParameters($processingParameters);
-	        $processing->terminate();
-	    }
+			$processing = ProcessingCreatorHelper::createByParameters($processingParameters);
+			$processing->terminate();
+		}
 
 		$quantityPerPacking = $this->getProduct()->getQuantityPerPacking();
 		$quantityRequired = $this->getQuantityRequired();
 
-
 		$i = 1;
-
 
 		$previousUnitloadsCount = $this->getProductionUnitloads()->count();
 
-
-		while($remaining = $quantityRequired - $this->getQuantityDone())
+		while ($remaining = $quantityRequired - $this->getQuantityDone())
 		{
-			$quantity = $remaining > $quantityPerPacking? $quantityPerPacking : $remaining;
+			$quantity = $remaining > $quantityPerPacking ? $quantityPerPacking : $remaining;
 
 			$unitloadParameters = [
 				'production' => $this,
@@ -261,7 +256,7 @@ class OrderProductPhase extends ProductPackageBaseModel
 				'quantity_capacity' => $quantityPerPacking,
 				'quantity_expected' => $quantity,
 				'quantity' => $quantity,
-				'user_id' => \Auth::id(),
+				'user_id' => Auth::id(),
 				'printed_at' => Carbon::now(),
 				'processing_id' => $processing->getKey(),
 				// 'destination_id' => $parameters['destination_id'],
@@ -270,11 +265,10 @@ class OrderProductPhase extends ProductPackageBaseModel
 
 			UnitloadCreatorHelper::createByArray($unitloadParameters);
 
-
-			$i++;
+			$i ++;
 		}
 
-		if(! $processing->getEndedAt())
+		if (! $processing->getEndedAt())
 			$processing->setEndedAt(
 				Carbon::now()
 			);
@@ -282,5 +276,5 @@ class OrderProductPhase extends ProductPackageBaseModel
 		$processing->setAsDefinitive(true);
 
 		$this->complete();
-    }
+	}
 }

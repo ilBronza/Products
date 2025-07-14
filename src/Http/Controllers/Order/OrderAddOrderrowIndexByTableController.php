@@ -2,15 +2,10 @@
 
 namespace IlBronza\Products\Http\Controllers\Order;
 
-use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
-use IlBronza\Notes\Models\Note;
 use IlBronza\Products\Http\Controllers\Sellable\SellableCRUD;
-
 use IlBronza\Products\Models\Order;
 use Illuminate\Http\Request;
-
-use function route;
 
 class OrderAddOrderrowIndexByTableController extends SellableCRUD
 {
@@ -27,17 +22,15 @@ class OrderAddOrderrowIndexByTableController extends SellableCRUD
 	public function getIndexElements()
 	{
 		return $this->getModelClass()::byType($this->type)->with(
-			'target',
-			'suppliers'
-		)
-		 ->get();
+			'target', 'suppliers.target'
+		)->get();
 	}
 
 	public function addIndexButtons()
 	{
-		$this->getTable()->createPostButton([
+		$this->getTable()->createPostButtonSamePage([
 			'href' => app('products')->route('orders.addOrderrow', ['order' => $this->order->getKey(), 'type' => $this->type]),
-			'text' => 'buttons.addRows',
+			'text' => 'products::buttons.addRows',
 			'icon' => 'plus'
 		]);
 	}
@@ -55,7 +48,6 @@ class OrderAddOrderrowIndexByTableController extends SellableCRUD
 		return [
 			'translationPrefix' => 'products::fields',
 			'fields' => [
-				'mySelfPrimary' => 'primary',
 				'name' => 'flat',
 				'suppliers' => 'relations.belongsToMany',
 			]

@@ -11,9 +11,10 @@ return [
 	'ibProductsorders' => [
 		'active' => 'Commesse in corso',
 		'show' => 'Mostra ordine :model',
-		'edit' => 'Modifica ordine :model',
+		'edit' => ':model',
 		'index' => 'Indice commesse',
-		'current' => 'Commesse attive'
+		'current' => 'Commesse attive',
+		'addOrderrowsByTable' => 'Aggiungi servizi/beni'
 	],
 
 	'ibProductsfinishings' =>[

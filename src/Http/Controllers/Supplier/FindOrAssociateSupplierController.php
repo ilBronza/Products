@@ -10,6 +10,7 @@ use IlBronza\Products\Http\Traits\SellableSupplierAssignmentTrait;
 use IlBronza\Products\Models\Sellables\Sellable;
 
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
 use Illuminate\Http\Request;
 
@@ -63,17 +64,17 @@ class FindOrAssociateSupplierController extends CRUDProductPackageController
 
 	public function _store(string $supplier)
 	{
-		$sellable = $this->row->getSellable();
+		$this->sellable = $this->row->getSellable();
 		$supplier = Supplier::gpc()::find($supplier);
 
-		if(! $sellableSupplier = SellableSupplier::gpc()::where('sellable_id', $sellable->getKey())
-		                                         ->where('supplier_id', $supplier->getKey())
-		                                         ->first())
-		{
-			$sellableSupplier = SellableCreatorHelper::getOrCreateSellableSupplier($supplier, $sellable);
-		}
+		$sellableSupplier = RowsSellableSupplierAssociatorHelper::associateSellableSupplierToRowBySupplier($this->row, $supplier);
 
-		return $this->_associateSellableSupplier($this->row, $sellableSupplier->getKey());
+		$tablesToRefresh = $this->getTablesToRefresh();
+
+		return $this->closeIframe($tablesToRefresh);
+
+
+//		return $this->_associateSellableSupplier($this->row, $sellableSupplier->getKey());
 
 	}
 }

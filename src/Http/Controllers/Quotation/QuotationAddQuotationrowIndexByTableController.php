@@ -4,7 +4,6 @@ namespace IlBronza\Products\Http\Controllers\Quotation;
 
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\Products\Http\Controllers\Sellable\SellableCRUD;
-
 use IlBronza\Products\Models\Quotations\Quotation;
 use Illuminate\Http\Request;
 
@@ -23,17 +22,15 @@ class QuotationAddQuotationrowIndexByTableController extends SellableCRUD
 	public function getIndexElements()
 	{
 		return $this->getModelClass()::byType($this->type)->with(
-			'target',
-			'suppliers'
-		)
-		 ->get();
+			'target', 'suppliers'
+		)->get();
 	}
 
 	public function addIndexButtons()
 	{
 		$this->getTable()->createPostButton([
 			'href' => app('products')->route('quotations.addQuotationrow', ['quotation' => $this->quotation->getKey(), 'type' => $this->type]),
-			'text' => 'buttons.addRows',
+			'text' => 'products::buttons.addRows',
 			'icon' => 'plus'
 		]);
 	}

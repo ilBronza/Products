@@ -14,12 +14,13 @@ use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
 
+use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Warehouse\Helpers\UnitloadCreatorHelper;
 use IlBronza\Warehouse\Models\Traits\InteractsWithDeliveryTrait;
 use IlBronza\Warehouse\Models\Unitload\Unitload;
 use Illuminate\Support\Collection;
 
-class OrderProduct extends ProductPackageBaseModel
+class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 {
 	use OrderProductRelationshipsTrait;
 	use OrderProductScopesTrait;
@@ -31,6 +32,11 @@ class OrderProduct extends ProductPackageBaseModel
 	use CompletionScopesTrait;
 
 	use InteractsWithDeliveryTrait;
+
+	public function getTimingChildren() : Collection
+	{
+		return $this->getOrderProductPhases();
+	}
 
 	static $deletingRelationships = ['orderProductPhases'];
 	static $restoringRelationships = ['orderProductPhases'];

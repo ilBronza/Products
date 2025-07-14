@@ -6,6 +6,8 @@ use Exception;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
+
 use function compact;
 use function config;
 use function dd;
@@ -37,47 +39,47 @@ trait SellableSupplierAssignmentTrait
 
 		$brothers = $target->getModelContainer()->rows()->bySellableType($type)->get();
 
-		$tablesToRefresh = [];
-
 		foreach($brothers as $brother)
 			if(! $brother->getSellableSupplier())
-				$tablesToRefresh = $this->__associateSellableSupplier($brother, $sellableSupplier);
+				$this->__associateSellableSupplier($brother, $sellableSupplier);
 
-		return $this->closeIframe($tablesToRefresh);
+		$this->setSellable($target->getSellable());
+
+		return $this->closeIframe($this->getTablesToRefresh());
 	}
 
-	public function __associateSellableSupplier($target, $sellableSupplier)
+	public function getTablesToRefresh() : array
 	{
-		$sellableSupplier = SellableSupplier::getProjectClassName()::find($sellableSupplier);
+		$sellable = $this->getSellable();
 
-		if ($sellableSupplier->getSellable()->isContracttype())
-			$tablesToRefresh = ['operatorRows'];
+		if ($sellable->isContracttype())
+			return ['operatorRows'];
 
-		else if ($sellableSupplier->getSellable()->isVehicleType())
-			$tablesToRefresh = ['vehicleRows'];
+		else if ($sellable->isVehicleType())
+			return ['vehicleRows'];
 
-		else if ($sellableSupplier->getSellable()->isSurveillanceType())
-			$tablesToRefresh = ['surveillanceRows'];
+		else if ($sellable->isSurveillanceType())
+			return ['surveillanceRows'];
 
-		else if ($sellableSupplier->getSellable()->isHotelType())
-			$tablesToRefresh = ['hotelRows'];
+		else if ($sellable->isHotelType())
+			return ['hotelRows'];
 
-		else if ($sellableSupplier->getSellable()->isRentType())
-			$tablesToRefresh = ['rentRows'];
+		else if ($sellable->isRentType())
+			return ['rentRows'];
 
-		else if ($sellableSupplier->getSellable()->isControlRoomType())
-			$tablesToRefresh = ['controlRoomRows'];
+		else if ($sellable->isControlRoomType())
+			return ['controlRoomRows'];
 
-		else if ($sellableSupplier->getSellable()->isReimbursementType())
-			$tablesToRefresh = ['reimbursementRows'];
+		else if ($sellable->isReimbursementType())
+			return ['reimbursementRows'];
 
 		else
 			throw new Exception('gestire gli altri tipi');
+	}
 
-		$target->sellableSupplier()->associate($sellableSupplier);
-		$target->save();
-
-		return $tablesToRefresh;
+	public function __associateSellableSupplier($target, $sellableSupplier) : void
+	{
+		RowsSellableSupplierAssociatorHelper::associateSellableSupplierToRow($target, $sellableSupplier);
 	}
 
 	public function closeIframe($tablesToRefresh)
@@ -85,11 +87,20 @@ trait SellableSupplierAssignmentTrait
 		return view('datatables::utilities.closeIframe', compact('tablesToRefresh'));
 	}
 
+	public function setSellable(Sellable $sellable)
+	{
+		$this->sellable = $sellable;
+	}
+
 	public function _associateSellableSupplier($target, $sellableSupplier)
 	{
-		$tablesToRefresh = $this->__associateSellableSupplier($target, $sellableSupplier);
+		$this->__associateSellableSupplier($target, $sellableSupplier);
 
-		return $this->closeIframe($tablesToRefresh);
+		$this->setSellable($target->getSellable());
+
+		return $this->closeIframe(
+			$this->getTablesToRefresh()
+		);
 	}
 
 	public function getIndexFieldsArray()
@@ -99,33 +110,6 @@ trait SellableSupplierAssignmentTrait
 			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}");
 
 		return config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}")::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-
-//		if (! $this->getTargetType())
-//		{
-//			//SellableSupplierHotelFieldsGroupParametersFile
-//			if ($this->getSellable()->isHotelType())
-//				return config('products.models.sellableSupplier.fieldsGroupsFiles.hotel')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-//
-//			if ($this->getSellable()->isRentType())
-//				return config('products.models.sellableSupplier.fieldsGroupsFiles.rent')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-//
-//			if ($this->getSellable()->isSurveillanceType())
-//				return config('products.models.sellableSupplier.fieldsGroupsFiles.surveillance')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-//
-//			if ($this->getSellable()->isControlRoomType())
-//				return config('products.models.sellableSupplier.fieldsGroupsFiles.controlRoom')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-//		}
-//
-//		if ($this->getTargetType() == 'Contracttype')
-//			//SellableSupplierContracttypeFieldsGroupParametersFile
-//			return config('products.models.sellableSupplier.fieldsGroupsFiles.contracttype')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-//
-//		if ($this->getTargetType() == 'Type')
-//			//SellableSupplierVehicletypeFieldsGroupParametersFile
-//			return config('products.models.sellableSupplier.fieldsGroupsFiles.vehicletype')::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-//
-//		dd($this);
-//		throw new Exception('Unsupported type');
 	}
 
 	public function getContainerModelPrefix() : string

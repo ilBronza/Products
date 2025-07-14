@@ -230,6 +230,13 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		//OrderBulkEditUpdateController
+		Route::post('bulk-actions/edit', [Products::getController('order', 'bulkEdit'), 'bulkEdit'])->name('orders.bulkEdit');
+
+		//OrderBulkEditUpdateController
+		Route::put('bulk-actions/update', [Products::getController('order', 'bulkUpdate'), 'bulkUpdate'])->name('orders.bulkUpdate');
+
+
 		//OrderReplicateOrderrowController
 		Route::post('{order}/replicate-last-row-by-type/{type}', [Products::getController('order', 'replicateLastRow'), 'replicateLastRowByType'])->name('orders.replicateLastRowByType');
 
@@ -290,10 +297,6 @@ Route::group([
 		Route::get('{orderrow}/find-or-associate-supplier', [Products::getController('orderrow', 'findOrAssociateSupplier'), 'index'])->name('orderrows.findOrAssociateSupplier');
 		Route::get('{orderrow}/associate-supplier-to-sellable-by-orderrow/{supplier}', [Products::getController('orderrow', 'findOrAssociateSupplier'), 'store'])->name('orderrows.associateSupplierToSellable');
 
-
-
-
-
 		Route::get('', [Products::getController('orderrow', 'index'), 'index'])->name('orderrows.index');
 		Route::get('create', [Products::getController('orderrow', 'create'), 'create'])->name('orderrows.create');
 		Route::post('', [Products::getController('orderrow', 'store'), 'store'])->name('orderrows.store');
@@ -302,6 +305,8 @@ Route::group([
 		Route::put('{orderrow}', [Products::getController('orderrow', 'edit'), 'update'])->name('orderrows.update');
 
 		Route::delete('{orderrow}/delete', [Products::getController('orderrow', 'destroy'), 'destroy'])->name('orderrows.destroy');
+
+		Route::get('{orderrow}/history', [Products::getController('orderrow', 'history'), 'history'])->name('orderrows.history');
 	});
 
 	Route::group(['prefix' => 'quotationrows'], function ()
@@ -326,6 +331,8 @@ Route::group([
 
 		//QuotationrowDestroyController
 		Route::delete('{quotationrow}/delete', [Products::getController('quotationrow', 'destroy'), 'destroy'])->name('quotationrows.destroy');
+
+		Route::get('{quotationrow}/history', [Products::getController('quotationrow', 'history'), 'history'])->name('quotationrows.history');
 	});
 
 	Route::group(['prefix' => 'order-products'], function ()
