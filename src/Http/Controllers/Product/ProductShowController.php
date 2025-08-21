@@ -12,7 +12,7 @@ class ProductShowController extends ProductCRUD
 
     public function show($product)
     {
-        $product = $this->findModel($product, ['extraFields', 'size']);
+        $product = $this->findModel($product);
 
         return $this->_show($product);
     }

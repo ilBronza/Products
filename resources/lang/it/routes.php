@@ -17,8 +17,16 @@ return [
 		'addOrderrowsByTable' => 'Aggiungi servizi/beni'
 	],
 
+	'ibProductsproducts' => [
+		'index' => 'Indice prodotti',
+	],
+
 	'ibProductsfinishings' =>[
 		'index' => 'Finiture'
+	],
+
+	'ibProductsworkstations' => [
+		'index' => 'Lista postazioni'
 	],
 
 	'ibProductsprojects.index' => 'Indice progetti',

@@ -9,17 +9,17 @@ use function ini_set;
 
 class ClientIndexController extends BaseClientIndexController
 {
+	public $avoidCreateButton = true;
+
 	public function getIndexElements()
 	{
-		$category = Category::gpc()::where('name', 'cliente')->first();
-
-		$query = $this->getModelClass()::with([
+		$query = $this->getModelClass()::asClient()->with([
 			'categories',
 			'destinations',
 			'referents',
 			'contacts',
 			'address'
-		])->byGeneralCategory($category);
+		]);
 
 		return $query->get();
 	}

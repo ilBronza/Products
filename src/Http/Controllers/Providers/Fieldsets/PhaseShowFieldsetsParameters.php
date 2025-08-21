@@ -22,7 +22,7 @@ class PhaseShowFieldsetsParameters extends FieldsetParametersFile
                             'administrator'
                         ]
                     ],
-                    'sequence' => ['number' => 'numeric|nullable'],
+                    'sorting_index' => ['number' => 'numeric|nullable'],
                     'coefficient_output' => ['number' => 'numeric|nullable'],
                     'slug' => ['text' => 'string|nullable|max:255'],
                 ],

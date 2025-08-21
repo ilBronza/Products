@@ -11,7 +11,8 @@ class ByProductRelatedOrderProductFieldsGroupParametersFile extends FieldsGroupP
 	static function getFieldsGroup() : array
 	{
 		return [
-            'fields' => 
+			'translationPrefix' => 'products::fields',
+            'fields' =>
             [
                 'mySelfPrimary' => 'primary',
                 'mySelfSee' => 'links.see',

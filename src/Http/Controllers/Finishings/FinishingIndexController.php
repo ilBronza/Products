@@ -2,7 +2,7 @@
 
 namespace IlBronza\Products\Http\Controllers\Finishings;
 
-use IlBronza\CRUD\Http\Controllers\Traits\PackageStandardIndexTrait;
+use IlBronza\CRUD\Http\Controllers\Traits\StandardTraits\PackageStandardIndexTrait;
 
 class FinishingIndexController extends FinishingCRUD
 {

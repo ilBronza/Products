@@ -138,7 +138,7 @@ trait ProductRelationshipsTrait
 
 	public function phases()
 	{
-		return $this->hasMany(Phase::gpc())->orderBy('sequence');
+		return $this->hasMany(Phase::gpc())->orderBy('sorting_index');
 	}
 
 	public function getPhases() : Collection

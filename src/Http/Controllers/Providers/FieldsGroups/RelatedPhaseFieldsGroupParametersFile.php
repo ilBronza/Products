@@ -14,7 +14,7 @@ class RelatedPhaseFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-                'sequence' => 'flat',
+                'sorting_index' => 'flat',
                 'coefficient_output' => 'flat',
                 'name' => 'flat',
                 // 'mySelfDelete' => 'links.delete'

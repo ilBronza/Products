@@ -5,18 +5,24 @@ namespace IlBronza\Products\Providers\RelationshipsManagers;
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 use IlBronza\Notes\Http\Controllers\CrudNoteController;
 
-class ProductRelationManager Extends RelationshipsManager
+use function config;
+
+class ProductRelationManager extends RelationshipsManager
 {
 	public  function getAllRelationsParameters() : array
 	{
 		return [
 			'show' => [
 				'relations' => [
-					'productRelations' => config('products.models.productRelation.controllers.byProductIndex'),
+					'productRelations' => [
+						'controller' => config('products.models.productRelation.controllers.byProductIndex'),
+						'hasCreateButton' => true,
+					],
 					'accessoryProducts' => config('products.models.accessoryProduct.controllers.byProductIndex'),
 					'phases' => [
 						'controller' => config('products.models.phase.controllers.productPhaseIndex'),
 						'selectRowCheckboxes' => false,
+						'hasCreateButton' => true,
 						'buttonsMethods' => [
 							'getReorderButtonByProduct'
 						],

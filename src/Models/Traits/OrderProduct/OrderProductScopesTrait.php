@@ -13,7 +13,7 @@ trait OrderProductScopesTrait
         $query->addSelect([
             'live_last_order_product_phase_id' => OrderProductPhase::getProjectClassName()::select('id')
                     ->whereColumn('products__order_product_phases.order_product_id', $this->getTable() . '.id')
-                    ->orderBy('sequence', 'DESC')
+                    ->orderBy('sorting_index', 'DESC')
                     ->take(1)
         ]);
     }
@@ -23,7 +23,7 @@ trait OrderProductScopesTrait
         $query->addSelect([
             'live_first_order_product_phase_id' => OrderProductPhase::getProjectClassName()::select('id')
                     ->whereColumn('products__order_product_phases.order_product_id', $this->getTable() . '.id')
-                    ->orderBy('sequence', 'ASC')
+                    ->orderBy('sorting_index', 'ASC')
                     ->take(1)
         ]);
     }

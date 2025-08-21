@@ -37,7 +37,7 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 
 	public function getManyToManyRelationClass() : string
 	{
-		return ProductRelation::class;
+		return ProductRelation::gpc();
 	}
 
 	public function getChildrenCountAttribute()
@@ -129,7 +129,7 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 		return $pallettype->getMaxWidth();
 	}
 
-	public function getQuantityPerUnitload()
+	public function getQuantityPerUnitload() : ? float
 	{
 		if(! ($packing = $this->getPacking()))
 			return false;
@@ -149,5 +149,10 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 			return $volume;
 
 		return config('warehouse.models.unitload.baseUnitloadVolumeCubicMeters');
+	}
+
+	public function getVolumeMc() : ? float
+	{
+		return $this->getVolumeCubicMeters();
 	}
 }

@@ -12,7 +12,7 @@ class OrderProductPhaseShowFieldsetsParameters extends FieldsetParametersFile
             'base' => [
                 'fields' => [
                     'name' => ['text' => 'string|nullable|max:255'],
-                    'sequence' => ['number' => 'integer|nullable'],
+                    'sorting_index' => ['number' => 'integer|nullable'],
                     'order_product_id' => [
                         'type' => 'select',
                         'multiple' => false,
@@ -42,13 +42,7 @@ class OrderProductPhaseShowFieldsetsParameters extends FieldsetParametersFile
                     'quantity_done' => ['number' => 'integer|nullable'],
                     'started_at' => ['datetime' => 'datetime|nullable'],
                     'completed_at' => ['datetime' => 'datetime|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
-                    'sequence' => ['number' => 'integer|nullable'],
+                    'sorting_index' => ['number' => 'integer|nullable'],
                 ],
                 'width' => ['1-2@m']
             ]

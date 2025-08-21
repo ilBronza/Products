@@ -2,29 +2,26 @@
 
 namespace IlBronza\Products\Models;
 
+use IlBronza\CRUD\Models\BasePivotModel;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeRelationalModelTrait;
-use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
-use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
+use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
+use IlBronza\MeasurementUnits\Traits\InteractsWithMeasurementUnit;
 use IlBronza\Products\Models\Product\Product;
-use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductRelation extends Pivot
+class ProductRelation extends BasePivotModel
 {
+	use CRUDUseUuidTrait;
+	use PackagedModelsTrait;
+	use InteractsWithMeasurementUnit;
+
+	static $packageConfigPrefix = 'products';
+	static $modelConfigPrefix = 'productRelation';
+
 	use CRUDManyToManyTreeRelationalModelTrait;
 
-	use SoftDeletes;
 	use CRUDCacheTrait;
-	use CRUDRelationshipModelTrait;
-	use CRUDUseUuidTrait;
-
-	use CRUDModelTrait, ProductPackageBaseModelTrait;
-	// {
-	// 	ProductPackageBaseModelTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
-	// }
 
 	protected $keyType = 'string';
 
@@ -86,6 +83,9 @@ class ProductRelation extends Pivot
 
 	public function getName() : ?string
 	{
+		if($this->exists === false)
+			return trans('products::productRelation.createRelation');
+
 		$name = $this->getParent()->getName() . ' -> componente ' . $this->getComponent()->getName();
 
 		if ($this->getMainCode())

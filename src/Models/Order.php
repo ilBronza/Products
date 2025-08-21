@@ -14,11 +14,16 @@ use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
+use IlBronza\Timings\Interfaces\HasTimingInterface;
+use IlBronza\Timings\Traits\InteractsWithTimingTrait;
+use Illuminate\Support\Collection;
 
+use function app;
 use function strtolower;
 
-class Order extends ProductPackageBaseRowcontainerModel
+class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInterface
 {
+	use InteractsWithTimingTrait;
 	use CommonOrderQuotationTrait;
 
 	use CRUDSluggableTrait;
@@ -38,6 +43,34 @@ class Order extends ProductPackageBaseRowcontainerModel
 		return $this->getKeyedRoute('storeOrderrow', [
 			'quotation' => $this->getKey(),
 		]);
+	}
+
+	public function getTimingChildren() : Collection
+	{
+		$result = $this->getChildren();
+		$result = $result->merge($this->getOrderrows());
+
+		return $result->merge($this->getOrderProducts());
+	}
+
+	public function getQuantityRequired() : ?float
+	{
+		return 0;
+	}
+
+	public function getQuantityDone() : ?float
+	{
+		return 0;
+	}
+
+	public function getTimingFather() : ?HasTimingInterface
+	{
+		return null;
+	}
+
+	public function getProcessings() : Collection
+	{
+		return collect();
 	}
 
 	public function getPossibleSellablesByType(string $type) : array
@@ -101,6 +134,11 @@ class Order extends ProductPackageBaseRowcontainerModel
 		return $this->hasMany(Orderrow::gpc());
 	}
 
+	public function getOrderrows() : Collection
+	{
+		return $this->orderrows;
+	}
+
 	public function isFrozen() : bool
 	{
 		return ! ! $this->frozen;
@@ -149,6 +187,50 @@ class Order extends ProductPackageBaseRowcontainerModel
 			'text' => 'products::orders.changeClient',
 			'icon' => 'edit'
 		]);
+	}
+
+	/****
+	 * DELIVERIES SECTION
+	 *
+	 *
+	 *
+	 *
+	 *
+	 */
+
+	public function getDeliveriesPopup()
+	{
+		return app('warehouse')->route('deliveries.orders.popup', ['order' => $this->getKey()]);
+	}
+
+	public function getDeliveringChildren() : Collection
+	{
+		$collect = $this->getOrderProducts();
+
+		return $collect->merge($this->getOrderrows());
+	}
+
+	public function getDeliveriesNamesArray() : array
+	{
+		$result = [];
+
+		foreach ($this->getDeliveringChildren() as $child)
+			$result = array_merge($child->getDeliveriesNamesArray());
+
+		return array_unique($result);
+	}
+
+	public function getDeliveriesNamesStringAttribute() : ?string
+	{
+		if (! $result = $this->getDeliveriesNamesArray())
+			return null;
+
+		return implode(", ", $result);
+	}
+
+	public function getDeliveries() : ?Collection
+	{
+		return $this->deliveries;
 	}
 
 	private function bindDataFromLastOrderProduct()

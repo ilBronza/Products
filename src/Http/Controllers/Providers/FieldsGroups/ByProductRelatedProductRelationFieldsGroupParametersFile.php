@@ -10,37 +10,21 @@ class ByProductRelatedProductRelationFieldsGroupParametersFile extends FieldsGro
 	static function getFieldsGroup() : array
 	{
 		return [
-            'fields' => 
+			'translationPrefix' => 'products::fields',
+            'fields' =>
             [
                 'mySelfPrimary' => 'primary',
                 'mySelfSee' => 'links.see',
-                'mySelfEdit' => [
-                    'type' => 'links.edit',
-                    'icon' => 'cog'
-                ],
+                'mySelfEdit' => 'links.edit',
                 'created_at' => 'dates.datetime',
-                'child_id' => [
-                    'type' => 'links.LinkCachedProperty',
-                    'modelClass' => Product::getProjectClassName(),
-                    'property' => 'name',
-                    'avoidIcon' => true
-                ],
+                'child' => 'products::products.product',
                 'mySelfChildrenPhases.child_id' => [
                     'type' => 'models.CachedModelProperty',
                     'modelClass' => Product::getProjectClassName(),
                     'property' => 'phases_description_string'
                 ],
-                'mySelfChildrenCount.child_id' => [
-                    'type' => 'models.CachedModelProperty',
-                    'modelClass' => Product::getProjectClassName(),
-                    'property' => 'children_count'
-                ],
                 'quantity_coefficient' => 'flat',
-                'mySelfPricePiece.child_id' => [
-                    'type' => 'models.CachedModelProperty',
-                    'modelClass' => Product::getProjectClassName(),
-                    'property' => 'price'
-                ],
+                'measurement_unit_id' => 'measurementUnits::measurementUnit.measurementUnit',
             ]
         ];
 	}

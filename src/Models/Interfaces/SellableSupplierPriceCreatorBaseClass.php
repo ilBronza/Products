@@ -7,6 +7,7 @@ use IlBronza\Prices\Providers\PriceCreatorHelper;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -44,8 +45,35 @@ abstract class SellableSupplierPriceCreatorBaseClass
 		return $this->sellableSupplier;
 	}
 
-	public function createPrice() : Price
+	public function getOrCreatePriceByCollectionId(string $collectionId) : Price
 	{
+		if($price = $this->getPriceByCollectionId($collectionId))
+			return $price;
+
+		$price = $this->createPrice($collectionId);
+		$price->setCollectionId($collectionId);
+
+		return $price;
+	}
+
+	public function getPriceByCollectionId(string $collectionId) : ? Price
+	{
+		return $this->getModel()
+			->getPriceByCollectionId($collectionId);
+	}
+
+	public function createPrice(string $collectionId = null) : Price
+	{
+		if($collectionId)
+			Ukn::s(trans('prices::prices.createdBy', [
+					'collection' => $collectionId,
+						'model' => $this->getModel()->getSupplier()->getName()
+					]));
+		else
+			Ukn::s(trans('prices::prices.createdFor', [
+					'model' => $this->getModel()->getSupplier()->getName()
+				]));
+
 		return (new PriceCreatorHelper($this->getModel()))
                 ->createPrice();
 	}

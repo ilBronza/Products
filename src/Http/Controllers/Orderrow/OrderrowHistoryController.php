@@ -3,8 +3,6 @@
 namespace IlBronza\Products\Http\Controllers\Orderrow;
 
 use IlBronza\AccountManager\Models\User;
-use IlBronza\CRUD\Traits\CRUDFlatSortingTrait;
-
 use Illuminate\Support\Str;
 
 use function array_diff_key;

@@ -12,7 +12,8 @@ class ByProductRelatedAccessoryProductFieldsGroupParametersFile extends FieldsGr
 	static function getFieldsGroup() : array
 	{
 		return [
-            'fields' => 
+			'translationPrefix' => 'products::fields',
+            'fields' =>
             [
                 'mySelfPrimary' => 'primary',
                 'mySelfSee' => 'links.see',

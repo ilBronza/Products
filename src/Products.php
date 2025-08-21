@@ -157,6 +157,13 @@ class Products implements RoutedObjectInterface
 			'text' => 'products::sellableSuppliers.index'
 		]);
 
+		$workstationsButton = $menu->createButton([
+			'name' => 'workstations',
+			'icon' => 'computer',
+			'href' => $this->route('workstations.index'),
+			'text' => 'products::workstations.index'
+		]);
+
 		$suppliersContainerButton->addChild($suppliersButton);
 		$suppliersContainerButton->addChild($sellablesButton);
 		$suppliersContainerButton->addChild($sellableSuppliersButton);
@@ -167,6 +174,7 @@ class Products implements RoutedObjectInterface
 		$productsGeneralManagerButton->addChild($productsContainerButton);
 		$productsGeneralManagerButton->addChild($servicesContainerButton);
 		$productsGeneralManagerButton->addChild($suppliersContainerButton);
+		$productsGeneralManagerButton->addChild($workstationsButton);
 
 		$currentProductsButton = $menu->createButton([
 			'name' => 'products.current',

@@ -2,7 +2,7 @@
 
 namespace IlBronza\Products\Http\Controllers\Finishings;
 
-use IlBronza\CRUD\Http\Controllers\Traits\PackageStandardEditUpdateTrait;
+use IlBronza\CRUD\Http\Controllers\Traits\StandardTraits\PackageStandardEditUpdateTrait;
 
 class FinishingEditUpdateController extends FinishingCRUD
 {

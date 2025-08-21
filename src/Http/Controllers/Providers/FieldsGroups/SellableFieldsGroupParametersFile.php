@@ -16,14 +16,17 @@ class SellableFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-                'name' => 'flat',
-//                'type' => 'flat',
-                'category' => 'relations.belongsTo',
-//                'target' => 'relations.belongsTo',
-                'suppliers_count' => 'flat',
-                'quotations_count' => 'flat',
+	            'name' => 'flat',
+	            'slug' => 'flat',
+	            'type' => 'flat',
+	            'prices' => 'relations.hasMany',
+	            'category' => 'relations.belongsTo',
+	            'target' => 'links.see',
+	            'suppliers_count' => 'flat',
+	            'quotations_count' => 'flat',
+	            'orders_count' => 'flat',
 
-                'mySelfDelete' => 'links.delete'
+	            'mySelfDelete' => 'links.delete'
             ]
         ];
     }

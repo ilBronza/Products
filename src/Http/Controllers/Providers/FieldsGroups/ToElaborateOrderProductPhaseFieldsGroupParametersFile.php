@@ -24,7 +24,7 @@ class ToElaborateOrderProductPhaseFieldsGroupParametersFile extends FieldsGroupP
                 //     'avoidIcon' => true
                 // ],
 
-                // 'sequence' => 'flat',
+                // 'sorting_index' => 'flat',
                 // 'name' => 'flat',
                 // 'mySelfDelete' => 'links.delete'
             ]

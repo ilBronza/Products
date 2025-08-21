@@ -9,7 +9,7 @@ use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Traits\Phase\PhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Phase\PhaseScopesTrait;
-
+use IlBronza\Products\Models\Traits\Workstation\InteractsWithWorkstation;
 
 class Phase extends ProductPackageBaseModel
 {
@@ -18,6 +18,8 @@ class Phase extends ProductPackageBaseModel
 
 	use PhaseRelationshipsTrait;
 	use PhaseScopesTrait;
+
+	use InteractsWithWorkstation;
 
 	static $deletingRelationships = [
 		'orderProductPhases'
@@ -33,11 +35,6 @@ class Phase extends ProductPackageBaseModel
 	public function getIndexUrl(array $data = [])
 	{
 		return false;
-	}
-
-	public function getWorkstationId()
-	{
-		return $this->workstation_id;
 	}
 
 	static function getReorderButtonByProduct(Product $product) : Button
@@ -59,11 +56,6 @@ class Phase extends ProductPackageBaseModel
 		$this->_customSetter('product_id', $value, $save);
 	}
 
-	public function setWorkstationId(string $value, bool $save = false)
-	{
-		$this->_customSetter('workstation_id', $value, $save);
-	}
-
 	public function setName(string $value, bool $save = false)
 	{
 		$this->_customSetter('name', $value, $save);
@@ -73,4 +65,5 @@ class Phase extends ProductPackageBaseModel
 	{
 		return $this->coefficient_output;
 	}
+
 }

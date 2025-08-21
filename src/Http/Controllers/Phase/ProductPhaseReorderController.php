@@ -29,7 +29,7 @@ class ProductPhaseReorderController extends PhaseCRUD
 
         $element = $this->getModel();
 
-        $element->childs = $this->getSortableElements($this->getModel())->sortBy('sequence');
+        $element->childs = $this->getSortableElements($this->getModel())->sortBy('sorting_index');
 
         return $return->push($element);
     }
@@ -77,7 +77,7 @@ class ProductPhaseReorderController extends PhaseCRUD
                 $siblingId = $this->removeLeadingControlCharacter($sibling);
 
                 $item = $this->getModelClass()::findOrFail($siblingId);
-                $item->sequence = $index;
+                $item->sorting_index = $index;
                 $item->save();
             }
         }

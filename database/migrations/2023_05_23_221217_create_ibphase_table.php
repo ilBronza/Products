@@ -13,7 +13,7 @@ class CreateIbphaseTable extends Migration
      */
     public function up()
     {
-        Schema::create('products__workstations', function (Blueprint $table) {
+        Schema::create(connfig('products.models.workstation.table'), function (Blueprint $table) {
             $table->uuid('id')->primary();
 
             $table->string('name');
@@ -38,7 +38,7 @@ class CreateIbphaseTable extends Migration
 
             $table->decimal('coefficient_output')->nullable();
             $table->string('workstation_id', 36)->nullable();
-            $table->foreign('workstation_id')->references('slug')->on('products__workstations');
+            $table->foreign('workstation_id')->references('slug')->on(connfig('products.models.workstation.table'));
 
             $table->string('name');
             $table->string('slug')->unique();
@@ -55,6 +55,7 @@ class CreateIbphaseTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists(connfig('products.models.workstation.table'));
         Schema::dropIfExists(config('products.models.phase.table'));
     }
 }

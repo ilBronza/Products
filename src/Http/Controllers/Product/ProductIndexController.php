@@ -39,21 +39,21 @@ class ProductIndexController extends ProductCRUD
 
     public function _getIndexElementsByScope(string $scope = null)
     {
-        return cache()->remember(
-
-            Str::slug(get_class($this) . __METHOD__),
-            3600 * 24,
-
-            function() use($scope)
-            {
-                $query = $this->getModelClass()::withCount(['media', 'orders', 'activeOrders']);
+//        return cache()->remember(
+//
+//            Str::slug(get_class($this) . __METHOD__),
+//            3600 * 24,
+//
+//            function() use($scope)
+//            {
+                $query = $this->getModelClass()::withCount(['media', 'orders', 'activeOrders', 'productRelations']);
 
                 if($scope)
                     $query->$scope();
 
                 return $query->get();
-            }
-        );        
+//            }
+//        );
     }
 
     public function getIndexElements()

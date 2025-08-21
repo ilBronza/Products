@@ -16,10 +16,12 @@ use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessin
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
-use IlBronza\Warehouse\Helpers\UnitloadCreatorHelper;
+use IlBronza\Warehouse\Helpers\Unitloads\UnitloadCreatorHelper;
+use IlBronza\Warehouse\Models\Interfaces\DeliverableInterface;
+use IlBronza\Warehouse\Models\Interfaces\UnitloadProducibleInterface;
 use Illuminate\Support\Collection;
 
-class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInterface
+class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInterface, UnitloadProducibleInterface
 {
 	static $modelConfigPrefix = 'orderProductPhase';
 	public $classnameAbbreviation = 'opp';
@@ -58,6 +60,16 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 	public function getQuantityRequired() : ?float
 	{
 		return $this->quantity_required;
+	}
+
+	public function getQuantityDone() : ?float
+	{
+		return $this->quantity_done;
+	}
+
+	public function getTimingFather() : ?HasTimingInterface
+	{
+		return $this->getOrderProduct();
 	}
 
 	public function isLast()
@@ -100,11 +112,6 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 		return $this->getWorkstationId();
 	}
 
-	public function getQuantityDone()
-	{
-		return $this->quantity_done;
-	}
-
 	public function setQuantityDone(float $quantityDone = null, bool $save = false)
 	{
 		$this->quantity_done = $quantityDone;
@@ -115,7 +122,7 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 	public function getSequence() : int
 	{
-		return $this->sequence ?? 0;
+		return $this->sorting_index ?? 0;
 	}
 
 	public function getOrderProductId() : string
@@ -238,35 +245,15 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 			$processing->terminate();
 		}
 
-		$quantityPerPacking = $this->getProduct()->getQuantityPerPacking();
-		$quantityRequired = $this->getQuantityRequired();
-
-		$i = 1;
-
-		$previousUnitloadsCount = $this->getProductionUnitloads()->count();
-
-		while ($remaining = $quantityRequired - $this->getQuantityDone())
-		{
-			$quantity = $remaining > $quantityPerPacking ? $quantityPerPacking : $remaining;
-
-			$unitloadParameters = [
-				'production' => $this,
-				'loadable' => $this->getProduct(),
-				'sequence' => ($i ++) + $previousUnitloadsCount,
-				'quantity_capacity' => $quantityPerPacking,
-				'quantity_expected' => $quantity,
-				'quantity' => $quantity,
-				'user_id' => Auth::id(),
-				'printed_at' => Carbon::now(),
-				'processing_id' => $processing->getKey(),
-				// 'destination_id' => $parameters['destination_id'],
-				// 'pallettype_id' => $parameters['pallettype_id'],
-			];
-
-			UnitloadCreatorHelper::createByArray($unitloadParameters);
-
-			$i ++;
-		}
+		UnitloadCreatorHelper::provideByModelsQuantity(
+			$this->getProduct(),
+			$this,
+			$this->getQuantityRequired(),
+			[
+				'placeholder' => false
+			],
+			$processing
+		);
 
 		if (! $processing->getEndedAt())
 			$processing->setEndedAt(
@@ -276,5 +263,10 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 		$processing->setAsDefinitive(true);
 
 		$this->complete();
+	}
+
+	public function getContentForDelivery() : ? DeliverableInterface
+	{
+		return $this->getOrderProduct();
 	}
 }

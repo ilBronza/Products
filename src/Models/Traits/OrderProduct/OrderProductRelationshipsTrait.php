@@ -73,9 +73,9 @@ trait OrderProductRelationshipsTrait
 			return $this->firstOrderProductPhase;
 
 		if($this->relationLoaded('orderProductPhases'))
-			return $this->orderProductPhases->sortBy('sequence')->first();
+			return $this->orderProductPhases->sortBy('sorting_index')->first();
 
-		return $this->orderProductPhases()->orderBy('sequence')->first();
+		return $this->orderProductPhases()->orderBy('sorting_index')->first();
 	}
 
 	public function getOrderProductPhases() : Collection
@@ -89,11 +89,11 @@ trait OrderProductRelationshipsTrait
 			return $this->lastorderProductPhases;
 
 		if(! $this->relationLoaded('orderProductPhases'))
-			return $this->orderProductPhases()->orderByDesc('sequence')->first();
+			return $this->orderProductPhases()->orderByDesc('sorting_index')->first();
 
 		// Log::critical('ottimizzare questa con uno scope se possibile (sì lo è)');
 
-		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();
+		return $this->orderProductPhases()->orderBy('sorting_index', 'DESC')->first();
 	}
 
 	public function client()

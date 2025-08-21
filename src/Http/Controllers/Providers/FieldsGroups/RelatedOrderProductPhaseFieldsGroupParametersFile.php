@@ -21,7 +21,7 @@ class RelatedOrderProductPhaseFieldsGroupParametersFile extends FieldsGroupParam
                     'property' => 'name',
                     'avoidIcon' => true
                 ],
-                'sequence' => 'flat',
+                'sorting_index' => 'flat',
                 'coefficient_output' => 'flat',
                 'quantity_required' => 'flat',
                 'quantity_done' => 'flat',

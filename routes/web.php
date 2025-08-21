@@ -3,6 +3,7 @@
 use App\Http\Controllers\CrudPalletController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
 use IlBronza\Products\Products;
+use IlBronza\Timings\Timings;
 
 Route::group([
 	'middleware' => ['web', 'auth', 'role:client|superadmin'],
@@ -177,6 +178,9 @@ Route::group([
 
 	Route::group(['prefix' => 'products-relations'], function ()
 	{
+		Route::get('create-by-product/{product}', [Products::getController('productRelation', 'createByProduct'), 'createByProduct'])->name('productRelations.createByProduct');
+		Route::post('', [Products::getController('productRelation', 'store'), 'store'])->name('productRelations.store');
+
 		Route::get('by-product/{product}', [Products::getController('productRelation', 'index'), 'index'])->name('productRelations.index');
 		Route::get('{productRelation}', [Products::getController('productRelation', 'show'), 'show'])->name('productRelations.show');
 
@@ -186,6 +190,9 @@ Route::group([
 
 	Route::group(['prefix' => 'phases'], function ()
 	{
+		Route::get('create-by-product/{product}', [Products::getController('phase', 'createByProduct'), 'createByProduct'])->name('phases.createByProduct');
+		Route::post('', [Products::getController('phase', 'store'), 'store'])->name('phases.store');
+
 		Route::get('{phase}', [Products::getController('phase', 'show'), 'show'])->name('phases.show');
 		Route::get('{phase}/edit', [Products::getController('phase', 'edit'), 'edit'])->name('phases.edit');
 		Route::put('{phase}', [Products::getController('phase', 'update'), 'update'])->name('phases.update');
@@ -401,4 +408,16 @@ Route::group([
 		Route::get('{orderProductPhase}/edit', [Products::getController('orderProductPhase', 'edit'), 'edit'])->name('orderProductPhases.edit');
 		Route::put('{orderProductPhase}', [Products::getController('orderProductPhase', 'edit'), 'update'])->name('orderProductPhases.update');
 	});
+
+	Route::group(['prefix' => 'workstations'], function ()
+	{
+		Route::get('', [Products::getController('workstation', 'index'), 'index'])->name('workstations.index');
+		Route::get('create', [Products::getController('workstation', 'create'), 'create'])->name('workstations.create');
+		Route::post('', [Products::getController('workstation', 'store'), 'store'])->name('workstations.store');
+		Route::get('{workstation}', [Products::getController('workstation', 'show'), 'show'])->name('workstations.show');
+		Route::get('{workstation}/edit', [Products::getController('workstation', 'edit'), 'edit'])->name('workstations.edit');
+		Route::put('{workstation}', [Products::getController('workstation', 'edit'), 'update'])->name('workstations.update');
+		Route::delete('{workstation}/delete', [Products::getController('workstation', 'destroy'), 'destroy'])->name('workstations.destroy');
+	});
+
 });

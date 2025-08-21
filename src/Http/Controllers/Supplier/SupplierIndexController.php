@@ -13,6 +13,7 @@ class SupplierIndexController extends SupplierCRUD
     use CRUDIndexTrait;
 
     public $allowedMethods = ['index'];
+    public $avoidCreateButton = true;
 
     public function getIndexFieldsArray()
     {

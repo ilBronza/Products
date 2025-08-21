@@ -9,10 +9,10 @@ class OrderProductSequenceCalculatorHelper
 {
 	static function calculateByOrderProduct(OrderProduct $orderProduct) : OrderProduct
 	{
-		$orderProductPhases = $orderProduct->orderProductPhases()->orderBy('sequence')->get();
-		// $orderProductPhases = OrderProductPhase::whereNotNull('sequence')->take(19)->get();
+		$orderProductPhases = $orderProduct->orderProductPhases()->orderBy('sorting_index')->get();
+		// $orderProductPhases = OrderProductPhase::whereNotNull('sorting_index')->take(19)->get();
 
-		$groupedByValue = $orderProductPhases->groupBy('sequence');
+		$groupedByValue = $orderProductPhases->groupBy('sorting_index');
 
     	$dupes = $groupedByValue->filter(function ( $groups) {
         	return $groups->count() > 1;
@@ -21,10 +21,10 @@ class OrderProductSequenceCalculatorHelper
 		// if(count($dupes))
 		// 	throw new \Exception ("trovato una sequenza duplicata in questo componente OrderProductSequenceCalculatorHelper@calculateByOrderProduct");
 
-		$sequence = 0;
+		$sortingIndex = 0;
 
-		foreach($orderProductPhases->sortBy('sequence') as $orderProductPhase)
-			$orderProductPhase->setSequence($sequence ++, true);
+		foreach($orderProductPhases->sortBy('sorting_index') as $orderProductPhase)
+			$orderProductPhase->setSequence($sortingIndex ++, true);
 
 		return $orderProduct;
 	}

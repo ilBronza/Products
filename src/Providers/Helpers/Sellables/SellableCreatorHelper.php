@@ -9,8 +9,9 @@ use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
-
+use Throwable;
 use function dd;
 
 class SellableCreatorHelper
@@ -67,23 +68,41 @@ class SellableCreatorHelper
 			throw new Exception('manca il target per questo sellable ' . $sellable->getKey());
 
 		foreach ($target->getPossibleSuppliersElements() as $supplier)
-			static::createSellableSupplierWithStandardPrices($supplier, $sellable);
+			static::getOrCreateSellableSupplierWithStandardPrices($supplier, $sellable);
 	}
 
-	static function createSellableSupplierWithStandardPrices(Supplier $supplier, Sellable $sellable) : SellableSupplier
+	static function getOrCreateSellableSupplierWithStandardPrices(Supplier $supplier, Sellable $sellable) : SellableSupplier
 	{
-		$sellableSupplier = static::createSellableSupplier($supplier, $sellable);
+		$sellableSupplier = static::getOrCreateSellableSupplier($supplier, $sellable);
 
 		$sellableSupplier->setStandardPrices();
 
 		return $sellableSupplier;
 	}
 
+
+	// static function createSellableSupplierWithStandardPrices(Supplier $supplier, Sellable $sellable) : SellableSupplier
+	// {
+	// 	$sellableSupplier = static::createSellableSupplier($supplier, $sellable);
+
+	// 	$sellableSupplier->setStandardPrices();
+
+	// 	return $sellableSupplier;
+	// }
+
 	static function createSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
 	{
-		$supplier->sellables()->syncWithoutDetaching(
-			$sellable->getKey()
+		$supplier->sellables()->attach(
+			$sellable->getKey(),
+			[
+				'deleted_at' => null
+			]
 		);
+
+		Ukn::s(trans('products::sellableSuppliers.createdBy', [
+					'supplier' => $supplier->getName(),
+					'sellable' => $sellable->getName()
+				]));
 
 		return static::getSellableSupplier($supplier, $sellable);
 	}

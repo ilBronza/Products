@@ -45,7 +45,7 @@ class ProductsServiceProvider extends ServiceProvider
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'products');
 		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'products');
 		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-		$this->loadRoutesFrom(__DIR__ . '/../routes/products.php');
+		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
 		// Publishing is only necessary when using the CLI.
 		if ($this->app->runningInConsole())

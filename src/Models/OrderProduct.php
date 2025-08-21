@@ -3,9 +3,9 @@
 namespace IlBronza\Products\Models;
 
 use App\State;
-
+use Auth;
+use Exception;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
-
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCalculatedTrait;
@@ -13,15 +13,18 @@ use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCheckerTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
-
+use IlBronza\Timings\Helpers\TimingRemoverHelper;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
-use IlBronza\Warehouse\Helpers\UnitloadCreatorHelper;
+use IlBronza\Timings\Traits\InteractsWithTimingTrait;
+use IlBronza\Warehouse\Helpers\Unitloads\UnitloadCreatorHelper;
+use IlBronza\Warehouse\Models\Interfaces\DeliverableInterface;
 use IlBronza\Warehouse\Models\Traits\InteractsWithDeliveryTrait;
 use IlBronza\Warehouse\Models\Unitload\Unitload;
 use Illuminate\Support\Collection;
 
-class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
+class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface, DeliverableInterface
 {
+	use InteractsWithTimingTrait;
 	use OrderProductRelationshipsTrait;
 	use OrderProductScopesTrait;
 	use OrderProductGetterSetterTrait;
@@ -33,16 +36,20 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 
 	use InteractsWithDeliveryTrait;
 
+	static $deletingRelationships = ['orderProductPhases'];
+	static $restoringRelationships = ['orderProductPhases'];
+	static $modelConfigPrefix = 'orderProduct';
+	public $classnameAbbreviation = 'op';
+
 	public function getTimingChildren() : Collection
 	{
 		return $this->getOrderProductPhases();
 	}
 
-	static $deletingRelationships = ['orderProductPhases'];
-	static $restoringRelationships = ['orderProductPhases'];
-
-	static $modelConfigPrefix = 'orderProduct';
-	public $classnameAbbreviation = 'op';
+	public function getTimingFather() : ?HasTimingInterface
+	{
+		return $this->getOrder();
+	}
 
 	public function getIndexUrl(array $data = [])
 	{
@@ -51,7 +58,7 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 
 	public function getDestination()
 	{
-		if($this->destination)
+		if ($this->destination)
 			return $this->destination;
 
 		return $this->getOrder()->getDestination();
@@ -59,23 +66,19 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 
 	public function getCalculatedDestinationIdAttribute() : string
 	{
-		if($this->destination_id)
+		if ($this->destination_id)
 			return $this->destination_id;
 
-		if($destinationId = $this->getOrder()?->getDestination()?->getKey())
+		if ($destinationId = $this->getOrder()?->getDestination()?->getKey())
 			return $destinationId;
 
 		return $this->getClient()->getDefaultDestination()->getKey();
 	}
 
-
-
-
-	public function getDestinationId() : ? string
+	public function getDestinationId() : ?string
 	{
 		return $this->getDestination()?->getKey();
 	}
-
 
 	public function getProductUrl()
 	{
@@ -84,58 +87,19 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 
 	public function hasAllOrderProductPhasesCompleted() : bool
 	{
-		foreach($this->getOrderProductPhases() as $orderProductPhase)
-			if(! $orderProductPhase->isCompleted())
+		foreach ($this->getOrderProductPhases() as $orderProductPhase)
+			if (! $orderProductPhase->isCompleted())
 				return false;
 
 		return true;
 	}
 
-
 	public function checkCompletion()
 	{
-		if($this->orderProductPhases()->notCompleted()->count() > 0)
+		if ($this->orderProductPhases()->notCompleted()->count() > 0)
 			return $this->uncomplete();
 
 		return $this->complete();
-	}
-
-	private function bindDataFromLastOrderProductPhase()
-	{
-		if(! $lastOrderProductPhase = $this->getLastOrderProductPhase())
-			throw new \Exception('Ultima fase non trovata per componente ' . $this->getName() . ' <a href="' . $this->getEditUrl() . '">Controlla qui</a>');
-
-		$this->setCompletedAt(
-			$lastOrderProductPhase->getCompletedAt()
-		);
-
-		$this->setQuantityDone(
-			$lastOrderProductPhase->getQuantityDone()
-		);
-	}
-
-	private function uncomplete()
-	{
-		$this->bindDataFromLastOrderProductPhase();
-
-		$this->setStateId(null);
-		$this->save();
-
-		$timing = $this->timing()->get();
-
-		foreach($timing as $_timing)
-			$_timing->deleterForceDelete();
-	}
-
-	private function complete()
-	{
-		$this->bindDataFromLastOrderProductPhase();
-
-		$this->setStateId(
-			State::getTerminatedState()->id
-		);
-
-		$this->save();
 	}
 
 	public function unitloads()
@@ -157,37 +121,59 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 
 	public function getUnitloadsByClientQuantity()
 	{
-		$existingUnitloads = $this->getUnitloads();
-
-		$unitloadsQuantity = $existingUnitloads->sum('quantity');
-
-		$missingQuantity = $this->getClientQuantity() - $unitloadsQuantity;
-
-		$quantityPerUnitload = $this->getProduct()->getQuantityPerUnitload();
-
-		while($missingQuantity > 0)
-		{
-			$quantity = $missingQuantity > $quantityPerUnitload ? $quantityPerUnitload : $missingQuantity;
-
-			$unitloadParameters = [
-				'production' => $this->getLastOrderProductPhase(),
-				'loadable' => $this->getProduct(),
-				'sequence' => $existingUnitloads->max('sequence') + 1,
-				'quantity_capacity' => $quantityPerUnitload,
-				'quantity_expected' => $quantity,
-				'quantity' => $quantity,
-				'user_id' => \Auth::id(),
+		return UnitloadCreatorHelper::provideByModelsQuantity(
+			$this->getProduct(),
+			$this->getLastOrderProductPhase(),
+			$this->getClientQuantity(),
+			[
 				'destination_id' => $this->getDestinationId(),
-				'pallettype_id' => $this->getPallettypeId(),
-			];
+				'pallettype_id' => $this->getPallettypeId()
+			]
+		);
+	}
 
-			$existingUnitloads->push(
-				UnitloadCreatorHelper::createPlaceholder($unitloadParameters)
-			);
+	public function getQuantityRequired() : ?float
+	{
+		return $this->quantity_required;
+	}
 
-			$missingQuantity = $missingQuantity - $quantity;
-		}
+	private function bindDataFromLastOrderProductPhase()
+	{
+		if (! $lastOrderProductPhase = $this->getLastOrderProductPhase())
+			throw new Exception('Ultima fase non trovata per componente ' . $this->getName() . ' <a href="' . $this->getEditUrl() . '">Controlla qui</a>');
 
-		return $existingUnitloads;
+		$this->setCompletedAt(
+			$lastOrderProductPhase->getCompletedAt()
+		);
+
+		$this->setQuantityDone(
+			$lastOrderProductPhase->getQuantityDone()
+		);
+	}
+
+	private function uncomplete()
+	{
+		$this->bindDataFromLastOrderProductPhase();
+
+		$this->setStateId(null);
+		$this->save();
+
+		TimingRemoverHelper::remove($this);
+	}
+
+	private function complete()
+	{
+		$this->bindDataFromLastOrderProductPhase();
+
+		$this->setStateId(
+			State::getTerminatedState()->id
+		);
+
+		$this->save();
+	}
+
+	public function getProductionUnitloads() : Collection
+	{
+		return $this->getUnitloadsByClientQuantity();
 	}
 }

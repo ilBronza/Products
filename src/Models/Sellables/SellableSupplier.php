@@ -39,6 +39,8 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	use CRUDModelExtraFieldsTrait;
 	use InteractsWithPriceTrait;
 
+	public $deletingRelationships = ['prices', 'extraFields'];
+
 	static $modelConfigPrefix = 'sellableSupplier';
 	protected $keyType = 'string';
 
@@ -64,7 +66,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	{
 		return [
 			'own_cost' => $this->getCost(),
-			'sequence' => $this->getPriceSequence(),
+			'sorting_index' => $this->getPriceSequence(),
 		];
 	}
 

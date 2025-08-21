@@ -39,7 +39,7 @@ class OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile extends Fiel
                     'avoidIcon' => true
                 ],
 
-                'sequence' => 'flat',
+                'sorting_index' => 'flat',
 
                 'quantity_required' => 'flat',
                 'quantity_done' => 'flat',

@@ -10,10 +10,11 @@ class ProductFieldsGroupParametersFile extends FieldsGroupParametersFile
 	static function getFieldsGroup() : array
 	{
 		return [
-            'fields' => 
+			'translationPrefix' => 'products::fields',
+            'fields' =>
             [
                 'mySelfPrimary' => 'primary',
-                // 'mySelfEdit' => 'links.edit',
+	            'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
                 'created_at' => 'dates.datetime',
                 'name' => 'flat',
@@ -22,8 +23,11 @@ class ProductFieldsGroupParametersFile extends FieldsGroupParametersFile
                     'modelClass' => Client::getProjectClassName(),
                     'property' => 'name'
                 ],
-                'orders_count' => 'flat',
-                // 'mySelfDelete' => 'links.delete'
+	            'product_relations_count' => 'flat',
+	            'media_count' => 'flat',
+	            'orders_count' => 'flat',
+	            'active_orders_count' => 'flat',
+	            'mySelfDelete' => 'links.delete'
             ]
         ];
 	}

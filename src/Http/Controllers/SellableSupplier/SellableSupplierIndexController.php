@@ -34,7 +34,8 @@ class SellableSupplierIndexController extends SellableSupplierCRUD
 			'sellable.target',
 			'prices'
 		)
-			->withCount('quotationrows')
+	        ->withCount('quotationrows')
+	        ->withCount('orderrows')
 			->get();
     }
 

@@ -10,6 +10,7 @@ class ProductShowFieldsetsParameters extends FieldsetParametersFile
     {
         return [
             'base' => [
+	            'translationPrefix' => 'products::fields',
                 'fields' => [
                     'name' => ['text' => 'string|nullable|max:255'],
                     'slug' => [
@@ -17,8 +18,8 @@ class ProductShowFieldsetsParameters extends FieldsetParametersFile
                         'rules' => 'string|nullable|max:255',
                         'disabled' => true
                     ],
-                    'fiscal_name' => ['text' => 'string|required|max:255'],
-                    'fiscal_code' => ['text' => 'string|nullable|max:255'],
+	                'short_description' => ['text' => 'string|nullable|max:255'],
+	                'coefficient_output' => ['number' => 'numeric|nullable|min:1'],
                 ],
                 'width' => ['1-2@m']
             ]

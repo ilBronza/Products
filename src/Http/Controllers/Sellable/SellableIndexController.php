@@ -29,7 +29,9 @@ class SellableIndexController extends SellableCRUD
             'target',
             'category',
         )->withCount('quotations')
-            ->withCount('suppliers')->get();
+	        ->withCount('orders')
+	        ->withCount('suppliers')
+            ->get();
     }
 
 }

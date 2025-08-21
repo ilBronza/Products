@@ -38,7 +38,7 @@ class ElaboratedByWorkstationOrderProductPhaseIndexController extends OrderProdu
             'notes',
             'order',
             'timing',
-            'timingestimation',
+            'timingEstimation',
             'orderProduct' => function($query)
             {
                 $query->withCount('reminds');

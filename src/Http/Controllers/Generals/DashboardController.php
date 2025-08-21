@@ -6,6 +6,6 @@ class DashboardController
 {
 	public function execute()
 	{
-		die('areo qua');
+		return view('products::dashboard.dashboard');
 	}
 }

@@ -2,10 +2,9 @@
 
 namespace IlBronza\Products\Models;
 
+use Carbon\Carbon;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
-
 use Illuminate\Support\Collection;
-
 use function get_class;
 use function get_class_methods;
 use function is_string;
@@ -22,6 +21,29 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 	public function getFieldsToFreeze() : array
 	{
 		return [];
+	}
+
+	public function scopeByDate($query, Carbon $date)
+	{
+		return $query->where(function($_query) use($date)
+		{
+			$_query->where(function($__query) use($date)
+			{
+				$__query->where('starts_at', '<=', $date)->where('ends_at', '>=', $date);
+			})->orWhere(function($__query) use($date)
+			{
+				$__query->whereNull('starts_at')->where('ends_at', '>=', $date);				
+			})->orWhere(function($__query) use($date)
+			{
+				$__query->whereNull('ends_at')->where('starts_at', '<=', $date);				
+			});
+		})->orWhere(function($_query) use($date)
+		{
+			$_query->having('orders', function($__query) use($date)
+			{
+				$__query->byDate($date);
+			});
+		});
 	}
 
 	public function scopeBySellableSuppliers($query, Collection $sellableSuppliers)

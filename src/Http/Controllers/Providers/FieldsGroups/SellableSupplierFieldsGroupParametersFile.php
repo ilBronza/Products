@@ -20,7 +20,8 @@ class SellableSupplierFieldsGroupParametersFile extends FieldsGroupParametersFil
 					'type' => 'links.seeName',
 					'width' => '14em'
 				],
-//				'sellable.name' => 'flat',
+	            'sellable.name' => 'flat',
+	            'sellable.type' => 'flat',
 
 				'prices' => [
 					'type' => 'iterators.each',
@@ -30,7 +31,8 @@ class SellableSupplierFieldsGroupParametersFile extends FieldsGroupParametersFil
 					],
 				],
 
-				'quotationrows_count' => 'flat',
+	            'quotationrows_count' => 'flat',
+	            'orderrows_count' => 'flat',
 
                 'mySelfDelete' => 'links.delete'
             ]

@@ -13,8 +13,12 @@ class OrderrowRelatedFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
-	            'sellable' => 'json',
-                'name' => 'flat',
+	            'sellable.name' => 'flat',
+                'order.client' => 'clients::client.client',
+                'order' => 'products::orders.order',
+                'order.project' => 'products::projects.project',
+                'starts_at' => 'dates.date',
+                'ends_at' => 'dates.date'
             ]
         ];
 	}

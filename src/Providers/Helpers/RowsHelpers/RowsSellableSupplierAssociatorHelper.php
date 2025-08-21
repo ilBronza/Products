@@ -29,6 +29,9 @@ class RowsSellableSupplierAssociatorHelper
 	public function setRow(ProductPackageBaseRowModel $row)
 	{
 		$this->row = $row;
+
+		foreach($row->getFieldsToReset() as $field)
+			$row->$field = null;
 	}
 
 	public function getRow() : ProductPackageBaseRowModel
@@ -82,8 +85,11 @@ class RowsSellableSupplierAssociatorHelper
 		$row = $this->getRow();
 
 		$row->sellableSupplier()->associate(
-			$this->provideSellableSupplier()
+			$sellableSupplier = $this->provideSellableSupplier()
 		);
+
+		foreach($row->getFieldsToReset() as $field)
+			$row->$field = $sellableSupplier->$field;
 
 		$row->save();
 	}

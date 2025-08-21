@@ -58,10 +58,12 @@ use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
+use IlBronza\Products\Http\Controllers\Phase\PhaseCreateStoreByProductController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseEditUpdateController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseShowController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\Phase\ProductPhaseReorderController;
+use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationCreateStoreController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationEditUpdateController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationIndexController;
 use IlBronza\Products\Http\Controllers\ProductRelation\ProductRelationShowController;
@@ -80,6 +82,10 @@ use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderBulkEditFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseCreateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ProductRelationCreateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\WorkstationCreateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\WorkstationEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -144,6 +150,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreat
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierHotelEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierRentEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\WorkstationFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationAddQuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationConvertToOrderController;
@@ -182,6 +189,11 @@ use IlBronza\Products\Http\Controllers\Supplier\SupplierDestroyController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierEditUpdateController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
+use IlBronza\Products\Http\Controllers\Workstations\WorkstationCreateStoreController;
+use IlBronza\Products\Http\Controllers\Workstations\WorkstationDestroyController;
+use IlBronza\Products\Http\Controllers\Workstations\WorkstationEditUpdateController;
+use IlBronza\Products\Http\Controllers\Workstations\WorkstationIndexController;
+use IlBronza\Products\Http\Controllers\Workstations\WorkstationShowController;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
 use IlBronza\Products\Models\Client;
@@ -199,6 +211,7 @@ use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Products\Models\Workstation;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
@@ -219,6 +232,22 @@ use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 
 return [
 	'routePrefix' => 'ibProducts',
+
+
+	'datatableFieldWidths' => [
+		'products' => [
+			'datatableFieldProduct' => '18em'
+		],
+		'orders' => [
+			'datatableFieldOrder' => '7em'
+		],
+		'projects' => [
+			'datatableFieldProject' => '12em'
+		],
+		'sellableSuppliers' => [
+			'datatableFieldFindOrAssociateSupplier' => '2em'
+		]
+	],
 
 	'sellables' => [
 		'enabled' => true,
@@ -408,11 +437,14 @@ return [
 				'show' => PhaseRelationManager::class
 			],
 			'parametersFiles' => [
+				'create' => PhaseCreateFieldsetsParameters::class,
 				'show' => PhaseShowFieldsetsParameters::class,
 				'edit' => PhaseEditFieldsetsParameters::class,
 			],
 			'controllers' => [
+				'createByProduct' => PhaseCreateStoreByProductController::class,
 				'edit' => PhaseEditUpdateController::class,
+				'store' => PhaseCreateStoreByProductController::class,
 				'update' => PhaseEditUpdateController::class,
 				'show' => PhaseShowController::class,
 				'reorder' => ProductPhaseReorderController::class,
@@ -558,12 +590,15 @@ return [
 			'class' => ProductRelation::class,
 			'table' => 'products__product_relations',
 			'controllers' => [
+				'createByProduct' => ProductRelationCreateStoreController::class,
+				'store' => ProductRelationCreateStoreController::class,
 				'show' => ProductRelationShowController::class,
 				'edit' => ProductRelationEditUpdateController::class,
 				'byProductIndex' => ProductRelationIndexController::class,
 				'index' => ProductRelationIndexController::class,
 			],
 			'parametersFiles' => [
+				'create' => ProductRelationCreateFieldsetsParameters::class,
 				'edit' => ProductRelationEditFieldsetsParameters::class,
 			],
 			'fieldsGroupsFiles' => [
@@ -763,7 +798,23 @@ return [
 		],
 		'workstation' => [
 			'class' => Workstation::class,
-			'table' => 'workstations',
+			'table' => 'products__workstations',
+			'controllers' => [
+				'index' => WorkstationIndexController::class,
+				'create' => WorkstationCreateStoreController::class,
+				'store' => WorkstationCreateStoreController::class,
+				'edit' => WorkstationEditUpdateController::class,
+				'update' => WorkstationEditUpdateController::class,
+				'show' => WorkstationShowController::class,
+				'destroy' => WorkstationDestroyController::class,
+			],
+			'fieldsGroupsFiles' => [
+				'index' => WorkstationFieldsGroupParametersFile::class
+			],
+			'parametersFiles' => [
+				'create' => WorkstationCreateFieldsetsParameters::class,
+				'edit' => WorkstationEditFieldsetsParameters::class,
+			],
 		]
 	]
 ];

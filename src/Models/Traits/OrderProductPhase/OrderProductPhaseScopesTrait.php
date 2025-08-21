@@ -101,7 +101,7 @@ trait OrderProductPhaseScopesTrait
             'live_first_order_product_phase_id' => static::select('id')
                     ->fromRaw($this->getTable() . ' oop')
                     ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
-                    ->orderBy('sequence')
+                    ->orderBy('sorting_index')
                     ->take(1)
         ])->with('first');
     }
@@ -112,7 +112,7 @@ trait OrderProductPhaseScopesTrait
             'live_last_order_product_phase_id' => static::select('id')
                     ->fromRaw($this->getTable() . ' oop')
                     ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
-                    ->orderBy('sequence', 'DESC')
+                    ->orderBy('sorting_index', 'DESC')
                     ->take(1)
         ])->with('last');
     }
@@ -125,7 +125,7 @@ trait OrderProductPhaseScopesTrait
             'live_previous_id' => static::select('id')
                     ->fromRaw($this->getTable() . ' oop')
                     ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
-                    ->where('sequence', \DB::raw('(' . $this->getTable() . '.sequence - 1)'))
+                    ->where('sorting_index', \DB::raw('(' . $this->getTable() . '.sorting_index - 1)'))
                     ->take(1)
         ])->with('previous');
     }
@@ -138,14 +138,14 @@ trait OrderProductPhaseScopesTrait
             'live_next_id' => static::select('id')
                     ->fromRaw($this->getTable() . ' oop')
                     ->whereColumn('order_product_id', $this->getTable() . '.order_product_id')
-                    ->where('sequence', \DB::raw('(' . $this->getTable() . '.sequence + 1)'))
+                    ->where('sorting_index', \DB::raw('(' . $this->getTable() . '.sorting_index + 1)'))
                     ->take(1)
         ])->with('next');
     }
 
     public function scopeBySequence($query, string $type = 'ASC')
     {
-        return $query->orderBy('sequence', $type);
+        return $query->orderBy('sorting_index', $type);
     }
 
     public function scopeWithOrderId($query)

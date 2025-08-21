@@ -16,14 +16,9 @@ trait OrderProductPhaseGetterTrait
 		return new $class($this);
 	}
 
-	public function getEstimatedTimeSecondsAttribute($value) : float
-	{
-		return $this->getTimingEstimator()->getEstimatedTimeSeconds();
-	}
-
 	public function getEstimatedTimeMinutesAttribute($value) : float
 	{
-		return $this->getTimingEstimator()->getEstimatedTimeSeconds() / 60;
+		return $this->getTimingEstimation()?->getSeconds() / 60;
 	}
 
 	public function getEstimatedMinutes() : float
@@ -36,8 +31,8 @@ trait OrderProductPhaseGetterTrait
 		return $this->estimated_time_minutes;
 	}
 
-	public function getEstimatedTimeSecondsDebugResults()
-	{
-		return $this->getTimingEstimator()->getEstimatedTimeSecondsDebugResults();		
-	}
+//	public function getEstimatedTimeSecondsDebugResults()
+//	{
+//		return $this->getTimingEstimator()->getEstimatedTimeSecondsDebugResults();
+//	}
 }
