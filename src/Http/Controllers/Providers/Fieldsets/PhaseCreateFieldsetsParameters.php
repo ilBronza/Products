@@ -29,16 +29,16 @@ class PhaseCreateFieldsetsParameters extends FieldsetParametersFile
                     'workstation_id' => [
                         'type' => 'select',
                         'multiple' => false,
-                        'rules' => 'integer|nullable|exists:' . $workstation->getTable() . ',' . $workstation->getKeyName(),
+                        'rules' => 'string|nullable|exists:' . $workstation->getTable() . ',slug',
                         'relation' => 'workstation',
                     ],
-                    'sorting_index' => [
-						'type' => 'number',
-	                    'rules'=> 'numeric|nullable',
-	                    'value' => ($this->getModel()?->getProduct()?->getPhases()?->max('sorting_index')) + 1,
-                    ],
-                    'coefficient_output' => ['number' => 'numeric|nullable'],
-                    'slug' => ['text' => 'string|nullable|max:255'],
+                    // 'sorting_index' => [
+					// 	'type' => 'number',
+	                //     'rules'=> 'numeric|nullable',
+	                //     'value' => ($this->getModel()?->getProduct()?->getPhases()?->max('sorting_index')) + 1,
+                    // ],
+                    // 'coefficient_output' => ['number' => 'numeric|nullable'],
+                    // 'slug' => ['text' => 'string|nullable|max:255'],
                 ],
                 'width' => ['1-2@m']
             ]

@@ -16,6 +16,7 @@ use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessin
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
+use IlBronza\Timings\Traits\InteractsWithTimingTrait;
 use IlBronza\Warehouse\Helpers\Unitloads\UnitloadCreatorHelper;
 use IlBronza\Warehouse\Models\Interfaces\DeliverableInterface;
 use IlBronza\Warehouse\Models\Interfaces\UnitloadProducibleInterface;
@@ -25,6 +26,8 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 {
 	static $modelConfigPrefix = 'orderProductPhase';
 	public $classnameAbbreviation = 'opp';
+
+	use InteractsWithTimingTrait;
 
 	use OrderProductPhaseScopesTrait;
 	use OrderProductPhaseRelationshipsTrait;
@@ -122,7 +125,7 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 	public function getSequence() : int
 	{
-		return $this->sorting_index ?? 0;
+		return $this->sequence ?? 0;
 	}
 
 	public function getOrderProductId() : string

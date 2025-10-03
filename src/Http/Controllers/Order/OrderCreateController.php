@@ -8,7 +8,7 @@ class OrderCreateController extends OrderCRUD
 {
     use CRUDCreateStoreTrait;
 
-    public $allowedMethods = ['create'];
+    public $allowedMethods = ['create', 'store'];
 
     public function getGenericParametersFile() : ? string
     {

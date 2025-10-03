@@ -17,7 +17,6 @@ use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Timings\Traits\InteractsWithTimingTrait;
 use Illuminate\Support\Collection;
-
 use function app;
 use function strtolower;
 
@@ -154,9 +153,9 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		return $this->getKeyedRoute('resetRowsIndexes');
 	}
 
-	public function getChangeClientUrl() : string
+	public function getAttachClientOperatorsToOrderrowsUrl()
 	{
-		return $this->getKeyedRoute('changeClientForm');
+		return $this->getKeyedRoute('attachClientOperatorsToOrderrows');		
 	}
 
 	public function getFreezeButton() : ?Button
@@ -180,12 +179,12 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		]);
 	}
 
-	public function getChangeClientButton() : Button
+	public function getAttachClientOperatorsToOrderrowsButton() : Button
 	{
 		return Button::create([
-			'href' => $this->getChangeClientUrl(),
-			'text' => 'products::orders.changeClient',
-			'icon' => 'edit'
+			'href' => $this->getAttachClientOperatorsToOrderrowsUrl(),
+			'text' => 'products::orders.attachClientOperatorsToOrderrows',
+			'icon' => 'rotate'
 		]);
 	}
 

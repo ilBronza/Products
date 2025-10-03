@@ -6,6 +6,8 @@ use IlBronza\Clients\Models\Client;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\Products\Models\Order;
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 
 use function config;
@@ -32,7 +34,10 @@ class ClientAreaOrderProductIndexController extends OrderProductCRUD
 
 	public function getIndexElements()
 	{
-		$orderIds = Order::gpc()::select('id')->byClient($this->client)->activeOrNotShipped()->get();
+		$orderIds = Order::gpc()::whereHas('extraFields', function($query)
+			{
+				$query->where('due_date', '>', Carbon::now()->subDays(14));
+			})->select('id')->byClient($this->client)->activeOrNotShipped()->get();
 
 		return $this->getModelClass()::whereIn('order_id', $orderIds)->get();
 	}

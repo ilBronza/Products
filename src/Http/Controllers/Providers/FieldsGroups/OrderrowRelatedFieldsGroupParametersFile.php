@@ -13,10 +13,17 @@ class OrderrowRelatedFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
-	            'sellable.name' => 'flat',
                 'order.client' => 'clients::client.client',
-                'order' => 'products::orders.order',
                 'order.project' => 'products::projects.project',
+                'order' => 'products::orders.order',
+                'order.event' => 'flat',
+	            'sellable.name' => 'flat',
+                'clientOperator.employment_label_text' => [
+                    'translatedName' => 'Rapporto',
+                    'type' => 'flat',
+                    'width' => '5em'
+                ],
+
                 'starts_at' => 'dates.date',
                 'ends_at' => 'dates.date'
             ]

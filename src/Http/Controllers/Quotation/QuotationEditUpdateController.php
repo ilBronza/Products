@@ -43,13 +43,19 @@ class QuotationEditUpdateController extends QuotationCRUD
 	    if(! $quotation = $this->findModel($quotation))
 			abort(403);
 
+		$this->addNavbarButton(
+			$quotation->getChangeClientButton()
+		);
+
 	    if(! $quotation->hasOrder())
+	    {
 //			return redirect()->to($quotation->getShowUrl());
 
 		    if($button = $quotation->getConvertToOrderButton())
 			    $this->addNavbarButton(
 				    $button
 			    );
+	    }
 
 	    return $this->_edit($quotation);
     }

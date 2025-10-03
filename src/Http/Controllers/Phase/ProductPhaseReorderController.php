@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Http\Controllers\Phase;
 
 use IlBronza\CRUD\Traits\CRUDNestableTrait;
+use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ class ProductPhaseReorderController extends PhaseCRUD
         'storeReorder'
     ];
 
-    public function getStoreReoderUrl()
+    public function getStoreReorderUrl()
     {
         return $this->getRouteUrlByType('storeReorder', [
             'product' => $this->product
@@ -29,7 +30,9 @@ class ProductPhaseReorderController extends PhaseCRUD
 
         $element = $this->getModel();
 
-        $element->childs = $this->getSortableElements($this->getModel())->sortBy('sorting_index');
+        $element->children = $this->getSortableElements(
+            $this->getModel()
+        )->sortBy('sorting_index');
 
         return $return->push($element);
     }
@@ -44,17 +47,19 @@ class ProductPhaseReorderController extends PhaseCRUD
         return null;
     }
 
-    public function reorder(Request $request, Product $product)
+    public function reorder(Request $request, $product)
     {
-        $this->product = $product;
+        $this->product = Product::gpc()::find($product);
 
-        return $this->_reorder($request, $product);
+        return $this->_reorder($request, $this->product);
     }
 
     public function storeReorder(Request $request)
     {
         $elementId = $this->removeLeadingControlCharacter($request->element_id);
         $parentId = $this->removeLeadingControlCharacter($request->parent_id);
+
+        dd("Le fasi non prevedono parents per ora? " . $parentId);
 
         if(($parentId == 0)||($parentId == "")||($parentId == null))
         {
@@ -66,7 +71,7 @@ class ProductPhaseReorderController extends PhaseCRUD
 
         $item = $this->getModelClass()::findOrFail($elementId);
 
-        $item->product_id = $parentId;
+        // $item->product_id = $parentId;
         $item->save();
 
         if ($request->filled('siblings')) {

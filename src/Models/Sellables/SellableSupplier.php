@@ -138,28 +138,28 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		return null;
 	}
 
-	public function getPriceExtraFieldsCasts() : array
-	{
-		$own = array_filter($this->getCasts(), function ($item)
-		{
-			if (strpos($item, 'CastFieldPrice') !== false)
-				return true;
+	// public function getPriceExtraFieldsCasts() : array
+	// {
+	// 	$own = array_filter($this->getCasts(), function ($item)
+	// 	{
+	// 		if (strpos($item, 'CastFieldPrice') !== false)
+	// 			return true;
 
-			return false;
-		});
+	// 		return false;
+	// 	});
 
-		if (! $sellable = $this->getSellable())
-			return $own;
+	// 	if (! $sellable = $this->getSellable())
+	// 		return $own;
 
-		$sellablePrices = $sellable->getPriceExtraFieldsCasts();
+	// 	$sellablePrices = $sellable->getPriceExtraFieldsCasts();
 
-		if (! $target = $sellable->getTarget())
-			return $own + $sellablePrices;
+	// 	if (! $target = $sellable->getTarget())
+	// 		return $own + $sellablePrices;
 
-		$targetPrices = $target->getPriceExtraFieldsCasts();
+	// 	$targetPrices = $target->getPriceExtraFieldsCasts();
 
-		return $own + $sellablePrices + $targetPrices;
-	}
+	// 	return $own + $sellablePrices + $targetPrices;
+	// }
 
 	public function getSellable() : ?Sellable
 	{

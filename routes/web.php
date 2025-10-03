@@ -12,6 +12,8 @@ Route::group([
 ], function ()
 {
 	Route::get('{client}/orders', [Products::getController('order', 'clientArea'), 'index'])->name('orders.index');
+
+	//ClientAreaOrderProductIndexController
 	Route::get('{client}/order-products', [Products::getController('orderProduct', 'clientArea'), 'index'])->name('orderProducts.index');
 	Route::put('{client}/order-products/{orderProduct}/update', [Products::getController('orderProduct', 'clientArea'), 'update'])->name('orderProducts.update');
 
@@ -47,6 +49,10 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		Route::get('{quotation}/change-client', [Products::getController('quotation', 'changeClient'), 'edit'])->name('quotations.changeClientForm');
+		Route::put('{quotation}/change-client', [Products::getController('quotation', 'changeClient'), 'update'])->name('quotations.changeClientUpdate');
+
+
 		//QuotationReplicateRowController
 		Route::post('{quotation}/replicate-last-row-by-type/{type}', [Products::getController('quotation', 'replicateLastRow'), 'replicateLastRowByType'])->name('quotations.replicateLastRowByType');
 
@@ -157,7 +163,6 @@ Route::group([
 		Route::delete('{product}/delete', [Products::getController('product', 'destroy'), 'destroy'])->name('products.destroy');
 
 		Route::get('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'reorder'])->name('phases.reorder');
-
 		Route::post('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'storeReorder'])->name('phases.storeReorder');
 	});
 
@@ -190,7 +195,15 @@ Route::group([
 
 	Route::group(['prefix' => 'phases'], function ()
 	{
+		Route::post('reorder', [Products::getController('phase', 'reorder'), 'storeMassReorder'])->name('phases.storeMassReorder');
+
+		Route::get('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'reorder'])->name('phases.reorder');
+		Route::post('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'storeReorder'])->name('phases.storeReorder');
+
+
 		Route::get('create-by-product/{product}', [Products::getController('phase', 'createByProduct'), 'createByProduct'])->name('phases.createByProduct');
+
+		//IlBronza\Products\Http\Controllers\Phase\PhaseCreateStoreByProductController
 		Route::post('', [Products::getController('phase', 'store'), 'store'])->name('phases.store');
 
 		Route::get('{phase}', [Products::getController('phase', 'show'), 'show'])->name('phases.show');
@@ -237,12 +250,15 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		//OrderCreateController
+		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
+		Route::post('', [Products::getController('order', 'store'), 'store'])->name('orders.store');
+
 		//OrderBulkEditUpdateController
 		Route::post('bulk-actions/edit', [Products::getController('order', 'bulkEdit'), 'bulkEdit'])->name('orders.bulkEdit');
 
 		//OrderBulkEditUpdateController
 		Route::put('bulk-actions/update', [Products::getController('order', 'bulkUpdate'), 'bulkUpdate'])->name('orders.bulkUpdate');
-
 
 		//OrderReplicateOrderrowController
 		Route::post('{order}/replicate-last-row-by-type/{type}', [Products::getController('order', 'replicateLastRow'), 'replicateLastRowByType'])->name('orders.replicateLastRowByType');
@@ -252,6 +268,10 @@ Route::group([
 
 		//OrderResetRowsIndexController
 		Route::get('{order}/reset-rows-indexes', [Products::getController('order', 'resetOrderRowsIndexes'), 'resetRowsIndexes'])->name('orders.resetRowsIndexes');
+
+
+		//AttachClientOperatorsToOrderrowsController
+		Route::get('{order}/attach-clientoperators-to-orderrows', [Products::getController('order', 'attachClientOperatorsToOrderrows'), 'attachClientOperatorsToOrderrows'])->name('orders.attachClientOperatorsToOrderrows');
 
 		//OrderChangeClientController
 		Route::get('{order}/change-client', [Products::getController('order', 'changeClient'), 'edit'])->name('orders.changeClientForm');
@@ -279,7 +299,7 @@ Route::group([
 
 		//ActiveOrderIndexController
 		Route::get('active', [Products::getController('order', 'active'), 'index'])->name('orders.active');
-		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
+
 		Route::get('{order}', [Products::getController('order', 'show'), 'show'])->name('orders.show');
 
 		//OrderEditUpdateController

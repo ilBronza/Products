@@ -4,12 +4,13 @@ namespace IlBronza\Products\Models\Traits\Order;
 
 use Carbon\Carbon;
 use IlBronza\Addresses\Models\Address;
+use IlBronza\Buttons\Button;
+use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Destination;
 use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Quotations\Project;
@@ -83,6 +84,20 @@ trait CommonOrderQuotationTrait
 		$possibleValues = $this->possibleDestinations;
 
 		return $possibleValues->pluck('name', 'id')->toArray();
+	}
+
+	public function getChangeClientButton() : Button
+	{
+		return Button::create([
+			'href' => $this->getChangeClientUrl(),
+			'text' => 'products::orders.changeClient',
+			'icon' => 'edit'
+		]);
+	}
+
+	public function getChangeClientUrl() : string
+	{
+		return $this->getKeyedRoute('changeClientForm');
 	}
 
 	public function scopeByClientIds($query, array|Collection $clientsIds)

@@ -74,8 +74,11 @@ abstract class QuotationDuplicatorHelper
 
 		$this->newRowContainer->rows()->save($newRow);
 
-		$newRowExtraFields = $row->extraFields->replicate();
-		$newRow->extraFields()->save($newRowExtraFields);
+		if($row->extraFields)
+		{
+			$newRowExtraFields = $row->extraFields->replicate();
+			$newRow->extraFields()->save($newRowExtraFields);
+		}
 
 		$newRow->frozen_parameters = null;
 		$newRow->save();

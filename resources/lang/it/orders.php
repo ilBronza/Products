@@ -10,4 +10,6 @@ return [
 	'freeze' => 'Consolida valori',
 	'resetRowsIndex' => 'Riduci ordinamenti',
 	'changeClient' => 'Cambia cliente',
+
+	'attachClientOperatorsToOrderrows' => 'Collega rapporti di lavoro mancanti'
 ];

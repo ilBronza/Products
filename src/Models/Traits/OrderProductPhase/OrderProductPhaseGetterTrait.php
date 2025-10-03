@@ -2,6 +2,8 @@
 
 namespace IlBronza\Products\Models\Traits\OrderProductPhase;
 
+use App\Providers\Helpers\Timings\TimingEstimator;
+
 trait OrderProductPhaseGetterTrait
 {
 	public function getOrderIdAttribute() : ? string
@@ -18,6 +20,13 @@ trait OrderProductPhaseGetterTrait
 
 	public function getEstimatedTimeMinutesAttribute($value) : float
 	{
+		if(! $timingEstimation = $this->getTimingEstimation())
+		{
+			TimingEstimator::calculate($this);
+
+			return $this->getTimingEstimation()?->getSeconds() / 60;
+		}
+
 		return $this->getTimingEstimation()?->getSeconds() / 60;
 	}
 

@@ -3,16 +3,20 @@
 namespace IlBronza\Products\Models;
 
 use IlBronza\Buttons\Button;
+use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
+use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Traits\Phase\PhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Phase\PhaseScopesTrait;
 use IlBronza\Products\Models\Traits\Workstation\InteractsWithWorkstation;
+use IlBronza\Products\Models\Workstation;
 
-class Phase extends ProductPackageBaseModel
+class Phase extends ProductPackageBaseModel implements CrudReorderableModelInterface
 {
+	use CRUDReorderableStandardTrait;
 	use CRUDSluggableTrait;
 	use CRUDParentingTrait;
 
@@ -35,6 +39,11 @@ class Phase extends ProductPackageBaseModel
 	public function getIndexUrl(array $data = [])
 	{
 		return false;
+	}
+
+	public function getPossibleWorkstationsValuesArray()
+	{
+		return Workstation::gpc()::getSelfPossibleList();
 	}
 
 	static function getReorderButtonByProduct(Product $product) : Button

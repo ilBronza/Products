@@ -39,6 +39,10 @@ class OrderEditUpdateController extends OrderCRUD
 				$order->getResetRowsIndexesButton()
 			);
 
+			$this->addNavbarButton(
+				$order->getAttachClientOperatorsToOrderrowsButton()
+			);
+
 		if (! $order->isFrozen())
 			$this->addNavbarButton(
 				$order->getFreezeButton()

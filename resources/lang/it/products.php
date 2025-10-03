@@ -11,6 +11,7 @@ return [
 	'project' => 'Progetto',
 	'projects' => 'Progetti',
 	'sellableSuppliers' => 'Articoli fornitore',
+	'order' => 'Commessa',
 	'orders' => 'Commesse attive',
 	'finishing' => 'Finitura',
 	'productRelations' => 'Componenti',

@@ -23,7 +23,7 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 
 			'cost_company_day' => 'numbers.number2',
 			'cost_gross_day' => 'numbers.number2',
-			'operator_neat_day' => 'numbers.number2',
+			// 'operator_neat_day' => 'numbers.number2',
 
 		];
 	}

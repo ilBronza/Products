@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table(config('products.models.phase.table'), function (Blueprint $table) {
+        Schema::table(config('products.models.orderProduct.table'), function (Blueprint $table) {
             $table->unsignedInteger('sorting_index')->nullable();
         });
 	}
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-	    Schema::table(config('products.models.phase.table'), function (Blueprint $table) {
+	    Schema::table(config('products.models.orderProduct.table'), function (Blueprint $table) {
             $table->dropColumn('sorting_index');
 	    });
     }

@@ -110,8 +110,8 @@ class SellableCreatorHelper
 	static function getOrCreateSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
 	{
 		if($sellableSupplier = SellableSupplier::gpc()::where('sellable_id', $sellable->getKey())
-		                                       ->where('supplier_id', $supplier->getKey())
-		                                       ->first())
+			->where('supplier_id', $supplier->getKey())
+			->first())
 			return $sellableSupplier;
 
 		return static::createSellableSupplier($supplier, $sellable);

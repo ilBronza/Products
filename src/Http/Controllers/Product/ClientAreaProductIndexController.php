@@ -2,11 +2,15 @@
 
 namespace IlBronza\Products\Http\Controllers\Product;
 
+use App\Models\ProductsPackage\Order;
+use App\Models\ProductsPackage\OrderProduct;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Http\Controllers\Product\ProductCRUD;
 use Illuminate\Http\Request;
+
+use Carbon\Carbon;
 use function config;
 
 class ClientAreaProductIndexController extends ProductCRUD
@@ -32,7 +36,17 @@ class ClientAreaProductIndexController extends ProductCRUD
 
 	public function getIndexElements()
 	{
-		return $this->getModelClass()::byClient($this->client)->get();
+		// $ordersIds = Order::gpc()::select('id')->sorting()->whereHas('extraFields', function($query)
+		// 	{
+		// 		$query->where('due_date', '>', Carbon::now()->subDays(5));
+		// 		$query->whereNull('loaded_at');
+		// 	})->whereNull('completed_at')->pluck('id');
+
+		// $productIds = OrderProduct::gpc()::whereIn('order_id', $ordersIds)->select('product_id')->pluck('product_id');
+
+		return $this->getModelClass()::byClient($this->client)
+				// ->whereIn('id', $productIds)
+				->get();
 	}
 
 	public function getEditParametersFile() : ? string

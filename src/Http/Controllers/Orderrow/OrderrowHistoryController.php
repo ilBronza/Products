@@ -15,6 +15,8 @@ use function substr;
 
 class OrderrowHistoryController extends OrderrowCRUD
 {
+	public $debug = false;
+
 	public $allowedMethods = ['history'];
 
 	public function setActivities()
@@ -67,6 +69,7 @@ class OrderrowHistoryController extends OrderrowCRUD
 
 		$this->activitiesResult = [];
 
+
 		foreach($this->activities as $activity)
 		{
 			$item = [
@@ -87,8 +90,6 @@ class OrderrowHistoryController extends OrderrowCRUD
 			unset($this->fields['quantity_approver']);
 			unset($this->fields['broadside_row_parameters']);
 			unset($this->fields['parameters']);
-
-
 
 			foreach($this->fields as $field => $true)
 			{
@@ -114,13 +115,16 @@ class OrderrowHistoryController extends OrderrowCRUD
 					}
 					catch(\Exception $e)
 					{
-						$item[$field] = $e->getMessage();
+						if($this->debug)
+							$item[$field] = $e->getMessage();
+
 						unset($this->fieldsToRemove[$field]);
 					}
 				}
 				else
 				{
-					if($value = $activity->properties['attributes'][$field] ?? null)
+
+					if(($value = $activity->properties['attributes'][$field] ?? null) !== null)
 					{
 						unset($this->fieldsToRemove[$field]);
 
@@ -151,6 +155,10 @@ class OrderrowHistoryController extends OrderrowCRUD
 
 
 		$this->filteredFields = array_diff_key($this->fields, $this->fieldsToRemove);
+
+		usort($this->activitiesResult, function ($item1, $item2) {
+		    return $item2['activity_created_at'] <=> $item1['activity_created_at'];
+		});
 
 		//cost_gross_day
 

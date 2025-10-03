@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Providers\RelationshipsManagers;
 
+use App\Http\Controllers\PackageOverriding\Parameters\FieldsGroups\OperatorQuotationrowByQuotationFieldsGroupParametersFile;
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 
 use function config;
@@ -12,10 +13,13 @@ class SellableRelationManager Extends RelationshipsManager
 	{
 		$relations = [];
 
+		$sellable = $this->getModel();
+
 		//SellableSupplierIndexController
 		$relations['sellableSuppliers'] = [
 			'controller' => config('products.models.sellableSupplier.controllers.index'),
 			'elementGetterMethod' => 'getSellableSuppliersRelatedElements',
+			'fieldsGroupsParametersFile' => config('products.models.sellableSupplier.fieldsGroupsFiles.relatedByType.' . $sellable->type),
 			'buttonsMethods' => [
 				'getCreateSellableButton',
 			],
