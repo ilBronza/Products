@@ -72,14 +72,14 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		return collect();
 	}
 
-	public function getPossibleSellablesByType(string $type) : array
-	{
-		$types = $this->getOrderrowsPossibleSellableTypes();
-
-		$type = strtolower($type);
-
-		return $types[$type]();
-	}
+//	public function getPossibleSellablesByType(string $type) : array
+//	{
+//		$types = $this->getOrderrowsPossibleSellableTypes();
+//
+//		$type = strtolower($type);
+//
+//		return $types[$type]();
+//	}
 
 	public function getFilteredByClientUrl()
 	{
@@ -126,11 +126,6 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 			'type' => $type,
 			'table' => $table
 		]);
-	}
-
-	public function orderrows()
-	{
-		return $this->hasMany(Orderrow::gpc());
 	}
 
 	public function getOrderrows() : Collection
@@ -251,5 +246,16 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		$this->bindDataFromLastOrderProduct();
 		$this->save();
 	}
+
+	public function rows()
+	{
+		return $this->orderrows();
+	}
+
+	public function orderrows()
+	{
+		return $this->hasMany(Orderrow::gpc());
+	}
+
 }
 

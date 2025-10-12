@@ -283,6 +283,7 @@ Route::group([
 		//OrderAddOrderrowIndexController
 		Route::post('{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
 
+		//OrderAddOrderrowIndexController
 		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeOrderrow'])->name('orders.storeOrderrow');
 
 		//DestinationCreateStoreController
@@ -311,6 +312,9 @@ Route::group([
 
 	Route::group(['prefix' => 'orderrows'], function ()
 	{
+		Route::post('/bulk-edit', [Products::getController('orderrow', 'bulkEdit'), 'bulkEdit'])->name('orderrows.bulkEdit');
+		Route::put('/bulk-updae', [Products::getController('orderrow', 'bulkEdit'), 'bulkUpdate'])->name('orderrows.bulkUpdate');
+
 		Route::post('reorder', [Products::getController('orderrow', 'reorder'), 'storeMassReorder'])->name('orderrows.storeMassReorder');
 
 		//OrderrowAssignSellableSupplierController

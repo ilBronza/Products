@@ -48,6 +48,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
 use IlBronza\Products\Http\Controllers\Order\ResetOrderRowsIndexesController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowBulkEditUpdateController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowBySupplierIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowCreateStoreController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowDestroyController;
@@ -82,7 +83,9 @@ use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderrowBulkEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ActiveOrdersFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByOrderRelatedOrderProductFieldsGroupParametersFile;
@@ -92,6 +95,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedPr
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\FinishingFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OperatorRowsByContainerFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowFieldsGroupParametersFile;
@@ -246,12 +250,19 @@ return [
 			'datatableFieldOrder' => '7.3em'
 		],
 		'orderrows' => [
-			'datatableFieldAssignSellableSupplier' => '2em'
+			'datatableFieldAssociateSupplier' => '2em',
+			'datatableFieldAssignSellableSupplier' => '2em',
+			'datatableFieldAssignBulkSellableSupplier' => '2em'
 		],
 		'quotations' => [
 			'datatableFieldQuotation' => '7.3em'
 		],
-		
+		'quotationrows' => [
+			'datatableFieldAssociateSupplier' => '2em',
+			'datatableFieldAssignSellableSupplier' => '2em',
+			'datatableFieldAssignBulkSellableSupplier' => '2em'
+		],
+
 		'projects' => [
 			'datatableFieldProject' => '12em'
 		],
@@ -465,6 +476,7 @@ return [
 		'order' => [
 			'class' => Order::class,
 			'table' => 'products__orders',
+			'canHaveChildren' => false,
 			'helpers' => [
 				'freezerHelper' => OrderFreezerHelper::class
 			],
@@ -526,11 +538,14 @@ return [
 				'edit' => OrderrowEditUpdateController::class,
 				'update' => OrderrowEditUpdateController::class,
 				'destroy' => OrderrowDestroyController::class,
+
+				'bulkEdit' => OrderrowBulkEditUpdateController::class
 			],
 			'parametersFiles' => [
 				'create' => OrderrowCreateFieldsetsParameters::class,
 				'show' => OrderrowShowFieldsetsParameters::class,
 				'edit' => OrderrowEditUpdateFieldsetsParameters::class,
+				'bulkEdit' => OrderrowBulkEditUpdateFieldsetsParameters::class,
 			],
 			'relationshipsManagerClasses' => [
 				'show' => OrderrowRelationManager::class
@@ -538,6 +553,7 @@ return [
 			'fieldsGroupsFiles' => [
 				'related' => OrderrowRelatedFieldsGroupParametersFile::class,
 				'index' => OrderrowFieldsGroupParametersFile::class,
+				'operatorOrderrow' => OperatorRowsByContainerFieldsGroupParametersFile::class
 			]
 		],
 		'orderProduct' => [

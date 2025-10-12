@@ -16,7 +16,7 @@ class OrderrowRelatedFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'order.client' => 'clients::client.client',
                 'order.project' => 'products::projects.project',
                 'order' => 'products::orders.order',
-                'order.event' => 'flat',
+                'order.event' => 'app::models.orders.event',
 	            'sellable.name' => 'flat',
                 'clientOperator.employment_label_text' => [
                     'translatedName' => 'Rapporto',

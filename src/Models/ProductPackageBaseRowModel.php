@@ -4,7 +4,10 @@ namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
+use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
 use Illuminate\Support\Collection;
+
+use function class_basename;
 use function get_class;
 use function get_class_methods;
 use function is_string;
@@ -12,6 +15,12 @@ use function is_string;
 class ProductPackageBaseRowModel extends ProductPackageBaseModel
 {
 	use CRUDTimeRangesTrait;
+	use TypedOrderrowTrait;
+
+	protected $casts = [
+		'starts_at' => 'date',
+		'ends_at' => 'date',
+	];
 
 	public function getModelContainerClass()
 	{
@@ -54,6 +63,16 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 		return $query->whereIn('sellable_supplier_id', $sellableSuppliers);
 	}
 
+	public function getHistoryUrlPlaceholder()
+	{
+		$pluralClass = $this->pluralLowerClass();
+		$routeKey = $this->getCamelcaseClassBasename();
+
+		return 'qweqwe';
+
+		return app('products')->route("{$pluralClass}.history", [$routeKey => config('datatables.replace_model_id_string')]);
+	}
+
 	static function boot()
 	{
 		parent::boot();
@@ -75,4 +94,23 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 			}
 		});
 	}
+
+	public function getPossibleDriversArrayValues() : array
+	{
+		return $this->getPossibleOperatorsArrayValues();
+	}
+
+	public function getPossibleOperatorsArrayValues() : array
+	{
+		if (! $container = $this->getModelContainer())
+			return [];
+
+		return $container->getPossibleOperatorsArrayValues();
+	}
+
+	public function getPossiblePassengersArrayValues() : array
+	{
+		return $this->getPossibleOperatorsArrayValues();
+	}
+
 }

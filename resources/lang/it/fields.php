@@ -1,6 +1,9 @@
 <?php
 
 return [
+	'description' => 'Descrizione',
+	'mySelfOrder' => 'Commessa',
+	'client' => 'Cliente',
 	'base' => 'Dati base',
 	'mySelfCode' => 'Codice',
 	'name' => 'Nome',
@@ -61,6 +64,8 @@ return [
 	'orders_count' => 'Ordini',
 	'client_id' => 'Cliente',
 	'mySelfPrimary' => 'Id',
+	'starts_at' => 'Inizio',
+	'ends_at' => 'Fine',
 	'created_at' => 'Creato il',
 	'child_id' => 'Id figlio',
 	'measurement_unit_id' => 'Unità di misura',
@@ -72,5 +77,9 @@ return [
 	'quantity_required' => 'Quantità richiesta',
 	'quantity_done' => 'Quantità eseguite',
 	'short_description' => 'Breve descrizione',
-	
+	'parent' => 'Principale',
+	'children' => 'Componenti',
+	'supplier.target' => 'Fornitore',
+	'supplier.target.operatorContracttypes' => 'Mansioni',
+	'supplier.target.validClientOperator.employment.label_text' => 'Impiego'
 ];

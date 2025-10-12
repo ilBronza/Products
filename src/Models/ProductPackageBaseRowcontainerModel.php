@@ -2,8 +2,19 @@
 
 namespace IlBronza\Products\Models;
 
+use IlBronza\Products\Models\Sellables\Sellable;
+
+use function lcfirst;
+use function strtolower;
+
 class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel
 {
+	protected $casts = [
+		'date' => 'date',
+		'started_at' => 'date',
+		'ended_at' => 'date',
+	];
+
 	public function scopeOpened($query)
 	{
 		return $query->whereHas('extraFields', function($_query)
@@ -26,5 +37,133 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel
 		]);
 	}
 
+	public function getPossibleOperatorsArrayValues() : array
+	{
+		return cache()->remember(
+			$this->cacheKey('getPossibleOperatorsArrayValues'), 10, function ()
+		{
+			$result = [];
+
+			foreach ($this->operatorRows()->with('sellableSupplier.supplier.target')->get() as $operatorRow)
+				if ($operator = $operatorRow->getSupplier()?->getTarget())
+					$result[$operator->getKey()] = $operator->getName();
+
+			asort($result);
+
+			return $result;
+		}
+		);
+	}
+
+	/**
+	 *
+	 * START ADDING ROWS METHODS
+	 *
+	 */
+
+	public function _getPossibleSellableTypes()
+	{
+		return [
+			'controlroom' => function () : array
+			{
+				return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
+			},
+
+			'contracttype' => function () : array
+			{
+				return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
+			},
+
+			'reimbursement' => function () : array
+			{
+				return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
+			},
+
+			'vehicletype' => function () : array
+			{
+				return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
+			},
+
+			'rent' => function () : array
+			{
+				return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
+				//				return Sellable::gpc()::gpc()::getServices();
+			},
+
+			'service' => function () : array
+			{
+				return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
+				//				return Sellable::gpc()::gpc()::getServices();
+			},
+
+			'surveillance' => function () : array
+			{
+				return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
+				//				$category = Category::getProjectClassName()::findCachedField('name', 'Sorveglianza');
+				//
+				//				return Sellable::gpc()::byCategory($category)->orderBy('name')->pluck('name', 'id')->toArray();
+			},
+
+			'hotel' => function () : array
+			{
+				return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
+				//				$category = Category::getProjectClassName()::findCachedField('name', 'Stanze albergo');
+				//
+				//				return Sellable::byCategory($category)->orderBy('name')->pluck('name', 'id')->toArray();
+			}
+		];
+	}
+
+	public function getPossibleSellablesByType(string $type) : array
+	{
+		$type = lcfirst($type);
+
+		if($type == 'contracttype')
+			return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'controlroom')
+			return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'reimbursement')
+			return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'vehicleType')
+			return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'rent')
+			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'service')
+			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'surveillance')
+			return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		if($type == 'hotel')
+			return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		throw new \Exception("Type $type not found");
+	}
+
+	public function getOrderrowsPossibleSellableTypes()
+	{
+		return $this->_getPossibleSellableTypes();
+	}
+
+	public function getAddRowByTypeUrl(string $type, bool $table = false)
+	{
+		return $this->getAddOrderrowByTypeUrl($type, $table);
+	}
+
+	public function getAddOperatorUrl() : string
+	{
+		return $this->getAddRowByTypeUrl('Contracttype');
+	}
+
+	/**
+	 *
+	 * END ADDING ROWS METHODS
+	 *
+	 */
 
 }

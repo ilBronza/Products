@@ -4,7 +4,6 @@ namespace IlBronza\Products\Http\Controllers\Order;
 
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
-use Illuminate\Support\Str;
 
 use function config;
 use function ini_set;
@@ -14,8 +13,11 @@ class OrderIndexController extends OrderCRUD
     use CRUDPlainIndexTrait;
     use CRUDIndexTrait;
 
-    public function getIndexFieldsArray()
+	public $allowedMethods = ['index'];
+
+	public function getIndexFieldsArray()
     {
+        //OrderFieldsGroupParametersFile
         return config('products.models.order.fieldsGroupsFiles.index')::getFieldsGroup();
     }
 
@@ -25,17 +27,19 @@ class OrderIndexController extends OrderCRUD
         return config('products.models.order.fieldsGroupsFiles.related')::getFieldsGroup();
     }
 
-    public $allowedMethods = ['index'];
-    public $avoidCreateButton = true;
-
     public function getIndexElements()
     {
 	    ini_set('max_execution_time', 300);
 	    ini_set('memory_limit', - 1);
 
-	    return $this->getModelClass()::with(
-		    'extraFields', 'project', 'destination', 'parent', 'client', 'quotation',
-	    )->get();
+	    $query = $this->getModelClass()::with(
+		    'project', 'destination', 'parent', 'client', 'quotation',
+	    );
+
+        if($this->getModelClass()::make()->getExtraFieldsClass())
+            $query->with('extraFields');
+
+        return $query->get();
     }
 
 }

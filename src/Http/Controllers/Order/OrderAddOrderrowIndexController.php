@@ -157,6 +157,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 					$orderrow->sellable()->associate($sellable);
 					$orderrow->order()->associate($order);
 
+					$orderrow->type = $sellable->type;
 					$orderrow->sorting_index = $orderrowSortingIndex ++;
 
 					$orderrow->save();

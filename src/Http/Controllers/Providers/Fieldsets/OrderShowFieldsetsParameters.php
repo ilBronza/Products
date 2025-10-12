@@ -2,9 +2,9 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\Fieldsets;
 
-use App\Http\Controllers\PackageOverriding\Parameters\Fieldsets\OrderEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderEditFieldsetsParameters;
 
-class OrderShowFieldsetsParameters extends OrderEditUpdateFieldsetsParameters
+class OrderShowFieldsetsParameters extends OrderEditFieldsetsParameters
 {
 
 }

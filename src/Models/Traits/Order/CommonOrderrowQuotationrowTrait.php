@@ -10,6 +10,7 @@ use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithInvoiceables;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 
+use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Sellables\Supplier;
 
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
@@ -185,4 +186,40 @@ trait CommonOrderrowQuotationrowTrait
 
 		return $this->getSellable()->getName();
 	}
+
+	/**
+	 *
+	 * START ADDING ROWS METHODS
+	 *
+	 */
+
+	public function getAddTypedRowButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		$urlGetter = "getAdd{$type}Url";
+
+		$button = Button::create([
+			'href' => $container->{$urlGetter}(),
+			'text' => "products::order.add{$type}Row",
+			'icon' => 'plus'
+		]);
+
+		$button->setSecondary();
+
+		$button->setAjaxTableButton(null, [
+			'openIframe' => true
+		]);
+
+		return $button;
+	}
+
+	public function getAddOperatorButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return $this->getAddTypedRowButton($container, 'Operator');
+	}
+
+	/**
+	 *
+	 * END ADDING ROWS METHODS
+	 *
+	 */
 }
