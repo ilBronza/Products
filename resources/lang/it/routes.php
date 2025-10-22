@@ -8,6 +8,12 @@ return [
 		'index' => 'Indice preventivi',
 	],
 
+	'ibProductsorderProductPhases' => [
+		'byWorkstation' => [
+			'elaborated' => 'Elaborati per postazione :model'
+		]
+	],
+
 	'ibProductsorders' => [
 		'active' => 'Commesse in corso',
 		'show' => 'Mostra ordine :model',

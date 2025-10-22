@@ -6,7 +6,7 @@ use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
 
 use function config;
 
-class AccessoryCrudFieldsetsParameters extends FieldsetParametersFile
+class AccessoryEditFieldsetsParameters extends FieldsetParametersFile
 {
     public function _getFieldsetsParameters() : array
     {
@@ -19,10 +19,20 @@ class AccessoryCrudFieldsetsParameters extends FieldsetParametersFile
 	                'parent_id' => [
 		                'type' => 'text',
 		                'visible' => false,
-		                'value' => $this->getModel()?->accessory_id,
+		                'value' => $this->getModel()?->parent_id,
 		                'rules' => 'string|nullable|exists:' . config('products.models.accessory.table') . ',id',
 		                'relation' => 'parent'
 	                ],
+                ],
+                'width' => ['1-2@m']
+            ],
+            'file' => [
+	            'translationPrefix' => 'products::fields',
+                'fields' => [
+                    'images' => [
+                        'type' => 'file',
+                        'multiple' => true,
+                        'rules' =>'string|nullable|max:2048'],
                 ],
                 'width' => ['1-2@m']
             ]

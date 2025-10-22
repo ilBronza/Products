@@ -2,15 +2,16 @@
 
 namespace IlBronza\Products\Models;
 
-use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
+use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Products\Models\Product\Product;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 
 class Accessory extends ProductPackageBaseModel implements HasMedia
 {
+    use CRUDParentingTrait;
     use CRUDSluggableTrait;
     use InteractsWithMedia;
 
@@ -28,4 +29,5 @@ class Accessory extends ProductPackageBaseModel implements HasMedia
 
         return $elements->pluck('name', 'id');
     }
+
 }

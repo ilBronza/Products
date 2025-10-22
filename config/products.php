@@ -1,11 +1,18 @@
 <?php
 
 use App\Http\Controllers\PackageOverriding\Products\FieldsParameters\ClientAreaProductFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryCreateByParentController;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryCreateStoreController;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryDeleteMediaController;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryDestroyController;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryEditUpdateController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductIndexController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryIndexController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
+use IlBronza\Products\Http\Controllers\Accessory\AccessoryShowController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
 use IlBronza\Products\Http\Controllers\ClientArea\ClientAreaOrderIndexController;
 use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
@@ -14,6 +21,12 @@ use IlBronza\Products\Http\Controllers\Finishings\FinishingEditUpdateController;
 use IlBronza\Products\Http\Controllers\Finishings\FinishingIndexController;
 use IlBronza\Products\Http\Controllers\Finishings\FinishingShowController;
 use IlBronza\Products\Http\Controllers\Generals\DashboardController;
+use IlBronza\Products\Http\Controllers\Materials\MaterialCreateStoreController;
+use IlBronza\Products\Http\Controllers\Materials\MaterialDestroyController;
+use IlBronza\Products\Http\Controllers\Materials\MaterialEditUpdateController;
+use IlBronza\Products\Http\Controllers\Materials\MaterialIndexController;
+use IlBronza\Products\Http\Controllers\Materials\MaterialShowController;
+use IlBronza\Products\Http\Controllers\Order\OrderTimelineController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ByOrderProductOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\ElaboratedByWorkstationOrderProductPhaseIndexController;
 use IlBronza\Products\Http\Controllers\OrderProductPhase\OrderProductPhaseCompleteController;
@@ -83,7 +96,7 @@ use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
-use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderrowBulkEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ActiveOrdersFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
@@ -95,6 +108,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedPr
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\FinishingFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\MaterialFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OperatorRowsByContainerFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile;
@@ -127,6 +141,8 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldset
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ClientAreaOrderProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\FinishingCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\MaterialCreateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\MaterialEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderBulkEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderChangeClientFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderCreateFieldsetsParameters;
@@ -135,6 +151,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseEdit
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductPhaseShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderProductShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderrowBulkEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\OrderrowEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PackingEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\PhaseCreateFieldsetsParameters;
@@ -206,6 +223,7 @@ use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
 use IlBronza\Products\Models\Client;
 use IlBronza\Products\Models\Finishing;
+use IlBronza\Products\Models\Material;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
@@ -226,6 +244,8 @@ use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
 use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\SellableSuppliers\SellableSupplierFindBySellableHelper;
+use IlBronza\Products\Providers\Helpers\Sellables\TargetCreators\MaterialFromSellableCreatorHelper;
+use IlBronza\Products\Providers\RelationshipsManagers\AccessoryRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
@@ -292,18 +312,27 @@ return [
 			'class' => Accessory::class,
 			'table' => 'products__accessories',
 			'fieldsGroupsFiles' => [
-				'index' => AccessoryFieldsGroupParametersFile::class
+				'index' => AccessoryFieldsGroupParametersFile::class,
+				'related' => AccessoryFieldsGroupParametersFile::class
 			],
-			// 'relationshipsManagerClasses' => [
-			//     'show' => ProductRelationManager::class
-			// ],
+			'relationshipsManagerClasses' => [
+			    'show' => AccessoryRelationManager::class
+			],
 			'parametersFiles' => [
-				'crud' => AccessoryCrudFieldsetsParameters::class,
+				'create' => AccessoryCrudFieldsetsParameters::class,
+				'edit' => AccessoryEditFieldsetsParameters::class,
 			],
 			'controllers' => [
-				'crud' => AccessoryCrudController::class,
+				'index' => AccessoryIndexController::class,
 				'media' => AccessoryMediaController::class,
-				// 'create' => AccessoryCreateStoreController::class,
+				'create' => AccessoryCreateStoreController::class,
+				'createByParent' => AccessoryCreateByParentController::class,
+				'store' => AccessoryCreateStoreController::class,
+				'show' => AccessoryShowController::class,
+				'edit' => AccessoryEditUpdateController::class,
+				'update' => AccessoryEditUpdateController::class,
+				'destroy' => AccessoryDestroyController::class,
+				'deleteMedia' => AccessoryMediaController::class,
 				// 'edit' => AccessoryEditUpdateController::class,
 				// 'destroy' => AccessoryDeletionController::class,
 				// 'index' => AccessoryIndexController::class,
@@ -372,26 +401,25 @@ return [
 		'material' => [
 			'class' => Material::class,
 			'table' => 'products___materials',
-			// 'fieldsGroupsFiles' => [
-			//     'index' => ProductFieldsGroupParametersFile::class
-			// ],
+			'fieldsGroupsFiles' => [
+			    'index' => MaterialFieldsGroupParametersFile::class
+			],
 			// 'relationshipsManagerClasses' => [
 			//     'show' => ProductRelationManager::class
 			// ],
 			'parametersFiles' => [
-				// 'edit' => PackingEditFieldsetsParameters::class,
-				// 'show' => ProductShowFieldsetsParameters::class,
-				// 'teaser' => ProductShowFieldsetsParameters::class,
+				'edit' => MaterialEditFieldsetsParameters::class,
+				'create' => MaterialCreateFieldsetsParameters::class,
+				'show' => MaterialEditFieldsetsParameters::class,
 			],
 			'controllers' => [
-				// 'crud' => AccessoryCrudController::class,
-				// 'create' => AccessoryCreateStoreController::class,
-				// 'edit' => PackingEditUpdateController::class,
-				// 'deleteMedia' => PackingDeleteMediaController::class,
-				// 'destroy' => AccessoryDeletionController::class,
-				// 'index' => AccessoryIndexController::class,
-				// 'byOrderProductIndex' => ByOrderProductIndexController::class,
-				// 'current' => ProductCurrentController::class
+				'create' => MaterialCreateStoreController::class,
+				'store' => MaterialCreateStoreController::class,
+				'show' => MaterialShowController::class,
+				'edit' => MaterialEditUpdateController::class,
+				'update' => MaterialEditUpdateController::class,
+				'destroy' => MaterialDestroyController::class,
+				'index' => MaterialIndexController::class,
 			],
 		],
 		'packing' => [
@@ -501,6 +529,7 @@ return [
 				'edit' => OrderEditUpdateController::class,
 				'teaser' => OrderTeaserController::class,
 				'destroy' => OrderDeletionController::class,
+				'timeline' => OrderTimelineController::class,
 			],
 			'parametersFiles' => [
 				'create' => OrderCreateFieldsetsParameters::class,
@@ -734,6 +763,15 @@ return [
 		'sellable' => [
 			'table' => 'products__sellables__sellables',
 			'class' => Sellable::class,
+			'availableTypes' => [
+				'material',
+				'asset'
+			],
+			'helpers' => [
+				'targetCreator' => [
+					'material' => MaterialFromSellableCreatorHelper::class,
+				]
+			],
 			'fieldsGroupsFiles' => [
 				'index' => SellableFieldsGroupParametersFile::class,
 				'related' => SellableRelatedFieldsGroupParametersFile::class,

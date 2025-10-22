@@ -183,9 +183,12 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 
 	public function getPossibleTypeValuesArray() : array
 	{
-		$types = static::select('type')->distinct()->pluck('type')->toArray();
-
-		$types = array_filter($types);
+		$types = array_filter(
+			array_merge(
+				static::select('type')->distinct()->pluck('type')->toArray(), 
+				config('products.models.sellable.availableTypes', [])
+			)
+		);
 
 		$result = [];
 

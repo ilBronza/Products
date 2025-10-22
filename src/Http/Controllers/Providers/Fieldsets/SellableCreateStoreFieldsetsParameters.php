@@ -14,7 +14,7 @@ class SellableCreateStoreFieldsetsParameters extends FieldsetParametersFile
 		$possibleTypesValues = $this->getModel()->getPossibleTypeValuesArray();
 
 		return [
-			'package' => [
+			'base' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
 					'name' => ['text' => 'string|required'],

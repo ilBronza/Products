@@ -81,5 +81,16 @@ return [
 	'children' => 'Componenti',
 	'supplier.target' => 'Fornitore',
 	'supplier.target.operatorContracttypes' => 'Mansioni',
-	'supplier.target.validClientOperator.employment.label_text' => 'Impiego'
+	'supplier.target.validClientOperator.employment.label_text' => 'Impiego',
+	'timings' => 'Tempistiche',
+	'costs' => 'Costi',
+	'destination' => 'Destinazione',
+	'project_id' => 'Progetto',
+	'parent_id' => 'Padre',
+	'category' => 'Categoria',
+	'type' => 'Tipo',
+	'file' => 'File',
+	'files' => 'Files',
+	'images' => 'Immagini',
+	'quantity_neeeded_in_stock' => 'Quantità minima da magazzino'
 ];

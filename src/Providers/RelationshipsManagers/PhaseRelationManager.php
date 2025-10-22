@@ -12,10 +12,10 @@ class PhaseRelationManager Extends RelationshipsManager
 		return [
 			'show' => [
 				'relations' => [
-					'orderProductPhases' => [
-						'controller' => config('products.models.orderProductPhase.controllers.phaseOrderProductPhaseIndex'),
-						'elementGetterMethod' => 'getOrderProductPhasesForShowRelation'
-					],
+					// 'orderProductPhases' => [
+					// 	'controller' => config('products.models.orderProductPhase.controllers.phaseOrderProductPhaseIndex'),
+					// 	'elementGetterMethod' => 'getOrderProductPhasesForShowRelation'
+					// ],
 					'notes' => CrudNoteController::class,
 					'product' => config('products.models.product.controllers.show'),
 				]

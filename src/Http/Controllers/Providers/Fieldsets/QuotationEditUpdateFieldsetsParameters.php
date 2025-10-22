@@ -58,7 +58,7 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 				],
 				'width' => ["large"]
 			],
-			'tempistiche' => [
+			'timings' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
 					'starts_at' => [
@@ -74,7 +74,7 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 				],
 				'width' => ['medium']
 			],
-			'luogo' => [
+			'destination' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
 					'destination_id' => [
@@ -115,7 +115,7 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 				],
 				'width' => ['large']
 			],
-			'costi' => [
+			'costs' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
 

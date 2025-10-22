@@ -21,7 +21,7 @@ class OrderRelationManager Extends RelationshipsManager
 
 						//OperatorOrderrowFieldsgroupsParametersTrait
 						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
-						'translatedTitle' => trans('rows.operatorRows'),
+						'translatedTitle' => trans('products::models.operatorRows'),
 						'buttonsMethods' => [
 							'getAddOperatorButton',
 						]

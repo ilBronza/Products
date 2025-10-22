@@ -227,16 +227,19 @@ Route::group([
 	{
 		Route::delete('delete-media/{accessory}/{media}', [Products::getController('accessory', 'media'), 'deleteMedia'])->name('accessories.deleteMedia');
 
-		Route::get('', [Products::getController('accessory', 'crud'), 'index'])->name('accessories.index');
-		Route::get('create', [Products::getController('accessory', 'crud'), 'create'])->name('accessories.create');
-		Route::post('', [Products::getController('accessory', 'crud'), 'store'])->name('accessories.store');
+		Route::get('', [Products::getController('accessory', 'index'), 'index'])->name('accessories.index');
+		Route::get('create', [Products::getController('accessory', 'create'), 'create'])->name('accessories.create');
+		Route::get('create-by-parent/{accessory}', [Products::getController('accessory', 'createByParent'), 'createByParent'])->name('accessories.createByParent');
 
-		Route::get('{accessory}', [Products::getController('accessory', 'crud'), 'show'])->name('accessories.show');
+		Route::post('', [Products::getController('accessory', 'store'), 'store'])->name('accessories.store');
 
-		Route::get('{accessory}/edit', [Products::getController('accessory', 'crud'), 'edit'])->name('accessories.edit');
-		Route::put('{accessory}', [Products::getController('accessory', 'crud'), 'update'])->name('accessories.update');
+		Route::get('{accessory}', [Products::getController('accessory', 'show'), 'show'])->name('accessories.show');
 
-		Route::delete('{accessory}', [Products::getController('accessory', 'crud'), 'destroy'])->name('accessories.destroy');
+		Route::get('{accessory}/edit', [Products::getController('accessory', 'edit'), 'edit'])->name('accessories.edit');
+		Route::put('{accessory}', [Products::getController('accessory', 'update'), 'update'])->name('accessories.update');
+
+		Route::delete('delete-media/{accessory}/{media}', [Products::getController('accessory', 'deleteMedia'), 'deleteMedia'])->name('accessories.deleteMedia');
+		Route::delete('{accessory}', [Products::getController('accessory', 'destroy'), 'destroy'])->name('accessories.destroy');
 	});
 
 	Route::group(['prefix' => 'accessory-products'], function ()
@@ -250,6 +253,8 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		Route::get('timeline/{order}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
+
 		//OrderCreateController
 		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
 		Route::post('', [Products::getController('order', 'store'), 'store'])->name('orders.store');
@@ -431,6 +436,17 @@ Route::group([
 
 		Route::get('{orderProductPhase}/edit', [Products::getController('orderProductPhase', 'edit'), 'edit'])->name('orderProductPhases.edit');
 		Route::put('{orderProductPhase}', [Products::getController('orderProductPhase', 'edit'), 'update'])->name('orderProductPhases.update');
+	});
+
+	Route::group(['prefix' => 'materials'], function ()
+	{
+		Route::get('', [Products::getController('material', 'index'), 'index'])->name('materials.index');
+		Route::get('create', [Products::getController('material', 'create'), 'create'])->name('materials.create');
+		Route::post('', [Products::getController('material', 'store'), 'store'])->name('materials.store');
+		Route::get('{material}', [Products::getController('material', 'show'), 'show'])->name('materials.show');
+		Route::get('{material}/edit', [Products::getController('material', 'edit'), 'edit'])->name('materials.edit');
+		Route::put('{material}', [Products::getController('material', 'edit'), 'update'])->name('materials.update');
+		Route::delete('{material}/delete', [Products::getController('material', 'destroy'), 'destroy'])->name('materials.destroy');
 	});
 
 	Route::group(['prefix' => 'workstations'], function ()

@@ -13,8 +13,10 @@ class AccessoryMediaController extends AccessoryCRUD
 		'deleteMedia'
 	];
 
-	public function deleteMedia($accessory, Media $media)
+	public function deleteMedia($accessory, $media)
 	{
+		$media = Media::findOrFail($media);
+
 		return $this->_deleteMedia($accessory, $media);
 	}
 

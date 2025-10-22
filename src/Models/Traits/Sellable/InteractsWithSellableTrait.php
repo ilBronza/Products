@@ -2,13 +2,14 @@
 
 namespace IlBronza\Products\Models\Traits\Sellable;
 
+use IlBronza\Clients\Models\ClientAsSupplier;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
 use Illuminate\Support\Collection;
-
 use function app;
 use function class_basename;
 use function class_uses;
@@ -101,6 +102,16 @@ trait InteractsWithSellableTrait
 	public function getRelatedQuotationrows()
 	{
 		return $this->quotationrows()->with('quotation.project')->with('quotation.client')->with('directPrice')->with('sellableSupplier.directPrice')->with('sellableSupplier.sellable.target')->get();
+	}
+
+	public function getPossibleSuppliersElements() : Collection
+	{
+		return ClientAsSupplier::gpc()::with('supplier')->get()->pluck('supplier')->filter();
+	}
+
+	public function getSellablePricesBySupplier(Supplier $supplier, ...$parameters) : array
+	{
+		throw new Exception('verificare');
 	}
 
 }

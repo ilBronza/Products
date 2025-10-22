@@ -14,19 +14,19 @@ class ProductRelationManager extends RelationshipsManager
 		return [
 			'show' => [
 				'relations' => [
-					// 'productRelations' => [
-					// 	'controller' => config('products.models.productRelation.controllers.byProductIndex'),
-					// 	'hasCreateButton' => true,
-					// ],
-					// 'accessoryProducts' => config('products.models.accessoryProduct.controllers.byProductIndex'),
-					// 'phases' => [
-					// 	'controller' => config('products.models.phase.controllers.productPhaseIndex'),
-					// 	'selectRowCheckboxes' => false,
-					// 	'hasCreateButton' => true,
-					// 	'buttonsMethods' => [
-					// 		'getReorderButtonByProduct'
-					// 	],
-					// ],
+					'productRelations' => [
+						'controller' => config('products.models.productRelation.controllers.byProductIndex'),
+						'hasCreateButton' => true,
+					],
+					'accessoryProducts' => config('products.models.accessoryProduct.controllers.byProductIndex'),
+					'phases' => [
+						'controller' => config('products.models.phase.controllers.productPhaseIndex'),
+						'selectRowCheckboxes' => false,
+						'hasCreateButton' => true,
+						'buttonsMethods' => [
+							'getReorderButtonByProduct'
+						],
+					],
 					'notes' => [
 						'controller' => CrudNoteController::class,
 						'hasCreateButton' => true,						

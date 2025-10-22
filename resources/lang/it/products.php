@@ -21,4 +21,6 @@ return [
 	'orderProducts' => 'Commesse',
 	'workstation' => 'Postazione',
 	'workstations' => 'Postazioni',
+	'sellable' => 'Bene/servizio',
+	'accessory' => 'Accessori'
 ];
