@@ -24,7 +24,8 @@ return [
 	],
 
 	'ibProductsproducts' => [
-		'index' => 'Indice prodotti',
+		'index' => 'Lista Prodotti',
+		'current' => 'Recenti',
 	],
 
 	'ibProductsfinishings' =>[
@@ -48,5 +49,9 @@ return [
 	'ibProducts.clients.products.index' => 'Prodotti per cliente',
 
 
-	'ibProducts.clients.orderProducts.index' => 'Ordini per cliente'
+	'ibProducts.clients.orderProducts.index' => 'Ordini per cliente',
+
+	'ibProductsaccessories' => [
+		'index' => 'Lista Accessori'
+	]
 ];

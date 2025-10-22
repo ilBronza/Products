@@ -92,5 +92,12 @@ return [
 	'file' => 'File',
 	'files' => 'Files',
 	'images' => 'Immagini',
-	'quantity_neeeded_in_stock' => 'Quantità minima da magazzino'
+	'quantity_neeeded_in_stock' => 'Quantità minima da magazzino',
+	'quotations' => 'Quotazioni',
+	'orders' => 'Ordini',
+	'started_at' => 'Inizio',
+	'completed_at' => 'Fine',
+	'product_relations_count' => 'Relazioni',
+	'media_count' => 'Media',
+	'active_orders_count' => 'Attivi'
 ];
