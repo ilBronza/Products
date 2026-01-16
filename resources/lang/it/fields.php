@@ -118,4 +118,11 @@ return [
 	'activities_count' => 'Attività',
 	'suppliersList' => 'Fornitori',
 
+	'quotations' => 'Quotazioni',
+	'orders' => 'Ordini',
+	'started_at' => 'Inizio',
+	'completed_at' => 'Fine',
+	'product_relations_count' => 'Relazioni',
+	'media_count' => 'Media',
+	'active_orders_count' => 'Attivi'
 ];
