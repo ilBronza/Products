@@ -301,7 +301,7 @@ Route::group([
 		//OrderTimelineController
 		Route::get('timeline-container/{order}/{option?}', [Products::getController('order', 'timeline'), 'container'])->name('orders.timelineContainer');
 		Route::get('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
-		Route::patch('timeline/{order}', [Products::getController('order', 'timeline'), 'updateRow'])->name('orders.updateRow');
+		Route::patch('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'updateRow'])->name('orders.updateRow');
 
 		//OrderCreateController
 		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
