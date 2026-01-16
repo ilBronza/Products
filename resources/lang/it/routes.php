@@ -10,12 +10,13 @@ return [
 
 	'ibProductsorderProductPhases' => [
 		'byWorkstation' => [
-			'elaborated' => 'Elaborati per postazione :model'
+			'elaborated' => 'Elaborati per postazione :model',
+			'toElaborate' => 'Elabora | :model',
 		]
 	],
 
 	'ibProductsorders' => [
-		'active' => 'Commesse in corso',
+		'active' => 'Commesse in produzione',
 		'show' => 'Mostra ordine :model',
 		'edit' => ':model',
 		'index' => 'Indice commesse',
@@ -26,6 +27,10 @@ return [
 	'ibProductsproducts' => [
 		'index' => 'Lista Prodotti',
 		'current' => 'Recenti',
+	],
+
+	'ibProductssellableSuppliers' => [
+		'index' => 'Indice beni per fornitori',
 	],
 
 	'ibProductsfinishings' =>[
@@ -47,7 +52,6 @@ return [
 
 
 	'ibProducts.clients.products.index' => 'Prodotti per cliente',
-
 
 	'ibProducts.clients.orderProducts.index' => 'Ordini per cliente',
 

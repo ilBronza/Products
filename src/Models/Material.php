@@ -4,7 +4,6 @@ namespace IlBronza\Products\Models;
 
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Interfaces\SellableSupplierPriceCreatorBaseClass;
-use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Traits\Sellable\InteractsWithSellableTrait;
 
 class Material extends ProductPackageBaseModel implements SellableItemInterface
@@ -13,7 +12,7 @@ class Material extends ProductPackageBaseModel implements SellableItemInterface
 
 	static $modelConfigPrefix = 'material';
 
-	public function getPriceCreator() : SellableSupplierPriceCreatorBaseClass
+	public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass
 	{
 		dd('qua, configurare un creatore da config in modo che ogni progetto abbia il suo');
 
@@ -22,7 +21,6 @@ class Material extends ProductPackageBaseModel implements SellableItemInterface
 
 	public function getPriceFieldsForSellable() : array
 	{
-		return [
-		];
+		return [];
 	}
 }

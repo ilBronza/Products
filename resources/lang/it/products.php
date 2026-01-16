@@ -18,9 +18,9 @@ return [
 	'productRelation' => 'Componente',
 	'accessoryProducts' => 'Accessori prodotto',
 	'phases' => 'Fasi',
-	'orderProducts' => 'Commesse',
+	'orderProducts' => 'Componenti',
 	'workstation' => 'Postazione',
 	'workstations' => 'Postazioni',
 	'sellable' => 'Bene/servizio',
-	'accessory' => 'Accessori'
+	'accessory' => 'Accessori',
 ];

@@ -19,4 +19,22 @@ trait OrderProductCalculatedTrait
 
 		return ceil($pieces / $piecesPerPacking);
 	}
+
+	public function getCoefficientOutput() : ?float
+	{
+		return cache()->remember(
+			$this->cacheKey('getCoefficientOutput'),
+			3600 * 24,
+			function()
+			{
+				$result = 1;
+				
+				foreach($this->getOrderProductPhases() as $orderProductPhase)
+					$result = $result * $orderProductPhase->getCoefficientOutput();
+
+				return $result;				
+			}
+		);
+	}
+
 }

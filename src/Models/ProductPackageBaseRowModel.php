@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models;
 use Carbon\Carbon;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
+use IlBronza\Timings\Interfaces\TimelineInterface;
 use Illuminate\Support\Collection;
 
 use function class_basename;
@@ -22,6 +23,11 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 		'ends_at' => 'date',
 	];
 
+	public function getFieldsToReset()
+	{
+		return [
+		];
+	}
 	public function getModelContainerClass()
 	{
 		return get_class($this->modelContainer()->getRelated());
@@ -67,8 +73,6 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 	{
 		$pluralClass = $this->pluralLowerClass();
 		$routeKey = $this->getCamelcaseClassBasename();
-
-		return 'qweqwe';
 
 		return app('products')->route("{$pluralClass}.history", [$routeKey => config('datatables.replace_model_id_string')]);
 	}

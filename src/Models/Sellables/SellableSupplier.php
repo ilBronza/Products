@@ -14,13 +14,13 @@ use IlBronza\Operators\Models\Interfaces\HasWorkingDays;
 use IlBronza\Operators\Models\WorkingDay;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
+use IlBronza\Prices\Models\Traits\UpdatePricesOnSaveTrait;
 use IlBronza\Prices\Providers\PriceData;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
-
 use function app;
 use function array_filter;
 use function class_basename;
@@ -37,7 +37,9 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	use PackagedModelsTrait;
 
 	use CRUDModelExtraFieldsTrait;
+
 	use InteractsWithPriceTrait;
+	use UpdatePricesOnSaveTrait;
 
 	public $deletingRelationships = ['prices', 'extraFields'];
 
@@ -206,6 +208,8 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		if (! $priceCreator = $this->getSellableTarget()->getPriceCreator())
 			return null;
 
+		dd("occuparsi di sta roba e metterlo nel readme" . $priceCreator);
+
 		$priceCreator->setModel($this);
 
 		return $priceCreator->createPrices();
@@ -300,5 +304,10 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		$sellable = $this->getSellable();
 
 		return $sellable->getStoreSellableSupplierUrl();
+	}
+
+	public function mustAutomaticallyUpdatePrices() : bool
+	{
+		return config('operators.models.sellable.automaticUpdatesPrices');		
 	}
 }

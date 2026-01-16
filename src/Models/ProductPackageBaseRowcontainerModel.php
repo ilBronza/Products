@@ -2,25 +2,31 @@
 
 namespace IlBronza\Products\Models;
 
+use Carbon\Carbon;
+use Exception;
+use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
+use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
 use IlBronza\Products\Models\Sellables\Sellable;
 
 use function lcfirst;
-use function strtolower;
 
-class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel
+class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface
 {
+	use GanttTimelineTrait;
+
 	protected $casts = [
 		'date' => 'date',
 		'started_at' => 'date',
 		'ended_at' => 'date',
+		'starts_at' => 'date',
+		'ends_at' => 'date',
 	];
 
 	public function scopeOpened($query)
 	{
-		return $query->whereHas('extraFields', function($_query)
+		return $query->whereHas('extraFields', function ($_query)
 		{
-			$_query->whereNull('status')
-				->orWhere('status', 'opened');
+			$_query->whereNull('status')->orWhere('status', 'opened');
 		});
 	}
 
@@ -118,31 +124,32 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel
 	{
 		$type = lcfirst($type);
 
-		if($type == 'contracttype')
+		if ($type == 'contracttype')
 			return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'controlroom')
+		if ($type == 'controlroom')
 			return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'reimbursement')
+		if ($type == 'reimbursement')
 			return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'vehicleType')
+		if ($type == 'vehicleType')
 			return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'rent')
+		if ($type == 'rent')
 			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'service')
+		if ($type == 'service')
 			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'surveillance')
+		if ($type == 'surveillance')
 			return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if($type == 'hotel')
+		if ($type == 'hotel')
 			return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		throw new \Exception("Type $type not found");
+		return Sellable::gpc()::byType($type)->orderBy('name')->pluck('name', 'id')->toArray();
+//		throw new Exception("Type $type not found");
 	}
 
 	public function getOrderrowsPossibleSellableTypes()
@@ -155,9 +162,19 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel
 		return $this->getAddOrderrowByTypeUrl($type, $table);
 	}
 
-	public function getAddOperatorUrl() : string
+	public function getStartsAt() : ?Carbon
 	{
-		return $this->getAddRowByTypeUrl('Contracttype');
+		return $this->starts_at;
+	}
+
+	public function getEndsAt() : ?Carbon
+	{
+		return $this->ends_at;
+	}
+
+	public function getResetRowsIndexesUrl() : string
+	{
+		return $this->getKeyedRoute('resetRowsIndexes');
 	}
 
 	/**

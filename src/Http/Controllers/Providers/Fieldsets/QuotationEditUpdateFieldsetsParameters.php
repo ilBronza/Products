@@ -10,7 +10,7 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 {
 	public function _getFieldsetsParameters() : array
 	{
-		return [
+		$result = [
 			'mainData' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
@@ -62,13 +62,22 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 				'translationPrefix' => 'products::fields',
 				'fields' => [
 					'starts_at' => [
-						'type' => 'date',
-						'rules' => 'date|nullable',
+						'type' => (config('products.models.order.usesHours', false))? 'datetime': 'date',
+						'rules' => [
+							'date',
+							'nullable'
+						],
+						'vertical' => true,
 						'data' => ['reloadalltables' => true],
 					],
 					'ends_at' => [
-						'type' => 'date',
-						'rules' => 'date|nullable',
+						'type' => (config('products.models.order.usesHours', false))? 'datetime': 'date',
+						'rules' => [
+							'date',
+							'nullable',
+							'after:starts_at'
+						],
+						'vertical' => true,
 						'data' => ['reloadalltables' => true],
 					],
 				],
@@ -102,15 +111,11 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'type' => 'number',
 						'rules' => 'numeric|nullable',
 						'data' => ['reloadalltables' => true],
-						'widthClass' => 'uk-width-1-3',
-						'vertical' => true
 					],
 					'round_trip' => [
 						'type' => 'boolean',
 						'rules' => 'boolean|required',
 						'data' => ['reloadalltables' => true],
-						'widthClass' => 'uk-width-1-3',
-						'vertical' => true
 					],
 				],
 				'width' => ['large']
@@ -174,8 +179,28 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'readOnly' => true
 					],
 				],
-				'width' => ['medium']
+				'width' => ['large']
 			]
 		];
+
+		if(! config('products.manageDiaries'))
+		{
+			unset($result['destination']['fields']['daily_allowance']);
+			unset($result['destination']['fields']['national']);
+
+			unset($result['costs']['fields']['total_daily_allowances_cost']);
+		}
+
+		if(! config('products.manageHotels'))
+		{
+			unset($result['costs']['fields']['total_hotels_cost']);
+		}
+
+		if(! config('products.manageReimbursements'))
+		{
+			unset($result['costs']['fields']['total_reimbursements_cost']);
+		}
+
+		return $result;
 	}
 }

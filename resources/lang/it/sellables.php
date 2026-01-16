@@ -4,5 +4,6 @@ return array (
   'supplies' => 'Forniture',
   'index' => 'Forniture',
 	'sellable' => 'Bene',
-	'pickSellables' => 'Scegli i beni/servizi'
+	'pickSellables' => 'Scegli i beni/servizi',
+	'timeline' => 'Gantt beni',
 );

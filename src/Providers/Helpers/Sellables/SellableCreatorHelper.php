@@ -9,6 +9,7 @@ use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Products\Providers\Helpers\PriceCreatorHelpers\SellablePricesCreatorHelper;
 use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
 use Throwable;
@@ -28,15 +29,16 @@ class SellableCreatorHelper
 
 	static function getOrcreateSellableByTarget(SellableItemInterface $target, null|Collection|array $categories = [], string $type = null) : Sellable
 	{
-		if (! $sellable = static::getSellableByTarget($target, $type))
-			$sellable = static::createSellableByTarget($target, $type);
+		if ( $sellable = static::getSellableByTarget($target, $type))
+			return $sellable;
 
-		static::setSellableSuppliersBySellable($sellable);
+		$sellable = static::createSellableByTarget($target, $type);
 
 		$sellable->categories()->syncWithoutDetaching($categories);
 
-		$priceHelper = new SellablePriceCreatorHelper($sellable);
-		$priceHelper->setPricesFromTarget();
+		SellablePricesCreatorHelper::calculatePricesBySellable($sellable, $target);
+
+		static::setSellableSuppliersBySellable($sellable);
 
 		return $sellable;
 	}
@@ -80,16 +82,6 @@ class SellableCreatorHelper
 		return $sellableSupplier;
 	}
 
-
-	// static function createSellableSupplierWithStandardPrices(Supplier $supplier, Sellable $sellable) : SellableSupplier
-	// {
-	// 	$sellableSupplier = static::createSellableSupplier($supplier, $sellable);
-
-	// 	$sellableSupplier->setStandardPrices();
-
-	// 	return $sellableSupplier;
-	// }
-
 	static function createSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
 	{
 		$supplier->sellables()->attach(
@@ -104,21 +96,14 @@ class SellableCreatorHelper
 					'sellable' => $sellable->getName()
 				]));
 
-		return static::getSellableSupplier($supplier, $sellable);
+		return SellableFinderHelper::findSellableSupplier($supplier, $sellable);
 	}
 
 	static function getOrCreateSellableSupplier(Supplier $supplier, Sellable $sellable) : SellableSupplier
 	{
-		if($sellableSupplier = SellableSupplier::gpc()::where('sellable_id', $sellable->getKey())
-			->where('supplier_id', $supplier->getKey())
-			->first())
+		if($sellableSupplier = SellableFinderHelper::findSellableSupplier($supplier, $sellable))
 			return $sellableSupplier;
 
 		return static::createSellableSupplier($supplier, $sellable);
-	}
-
-	static function getSellableSupplier(Supplier $supplier, Sellable $sellable) : ?SellableSupplier
-	{
-		return $supplier->sellableSuppliers()->where('sellable_id', $sellable->getKey())->first();
 	}
 }

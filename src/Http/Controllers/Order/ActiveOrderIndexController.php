@@ -24,21 +24,12 @@ class ActiveOrderIndexController extends OrderCRUD
         ini_set('max_execution_time', "120");
         ini_set('memory_limit', "-1");
 
-        return cache()->remember(
-
-            Str::slug(get_class($this) . __METHOD__),
-            3600 * 24,
-
-            function()
+        return $this->getModelClass()::active()->with([
+            'client' => function($query)
             {
-                return $this->getModelClass()::active()->with([
-                    'client' => function($query)
-                    {
-                        $query->select('id', 'name');
-                    }
-                ])->get();
+                $query->select('id', 'name');
             }
-        );
+        ])->get();
     }
 
 }

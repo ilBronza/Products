@@ -28,7 +28,7 @@ class OrderCompletionChecker extends Controller
                     if($checkingOrderProductPhase->isCompleted())
                         continue;
 
-                    $checkingOrderProductPhase->checkCompletion();
+	                OrderProductPhaseCheckCompletionHelper::gpc()::execute($checkingOrderProductPhase);
 
                     if($checkingOrderProductPhase->isCompleted())
                         continue;

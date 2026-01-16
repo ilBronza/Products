@@ -2,6 +2,11 @@
 
 namespace IlBronza\Products\Models\Traits\OrderProduct;
 
+use function debug_backtrace;
+use function strpos;
+
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+
 trait OrderProductGetterSetterTrait
 {
 	public function getProductKey() : ?string
@@ -56,6 +61,15 @@ trait OrderProductGetterSetterTrait
 
 	public function setQuantityDone(float $value = null, bool $save = false)
 	{
+		// leggo lo stack delle chiamate
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+
+		// il chiamante diretto è in $trace[1]
+		$caller = $trace[1]['class'] ?? null;
+
+		if (strpos($caller, 'OrderProductCompletionHelper') === false)
+			throw new \Exception('setQuantityDone() must be called only by OrderProductCompletionHelper. Called by: ' . ($caller ?? 'unknown'));
+
 		$this->_customSetter('quantity_done', $value, $save);
 	}
 

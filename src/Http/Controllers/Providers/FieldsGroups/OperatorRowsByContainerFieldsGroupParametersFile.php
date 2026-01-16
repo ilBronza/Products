@@ -36,10 +36,10 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 				'sellable' => [
 					'type' => 'relations.belongsTo',
 					'translatedName' => 'Mansione',
-					'mainHeader' => [
-						'label' => 'Operatore',
-						'colspan' => 6
-					],
+//					'mainHeader' => [
+//						'label' => 'Operatore',
+//						'colspan' => 5
+//					],
 					'width' => '10em',
 				],
 				'sellableSupplier.supplier.target' => [
@@ -58,11 +58,11 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 					'function' => 'getOperatorAlerts',
 					'width' => '3em',
 				],
-				'is_enpals_vat' => [
-					'type' => 'boolean',
-					'showOnlyTrue' => true,
-					'trueIcon' => 'skull-crossbones'
-				],
+//				'is_enpals_vat' => [
+//					'type' => 'boolean',
+//					'showOnlyTrue' => true,
+//					'trueIcon' => 'skull-crossbones'
+//				],
 				//			'sellableSupplier.supplier.target.valid_employment_type_string' => [
 				//			'clientOperator.employment.label_text' => [
 				//				'type' => 'flat',
@@ -87,24 +87,24 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 					'function' => 'getMobileString',
 					'width' => '6em'
 				],
-				'has_hotel_room' => [
-					'type' => 'boolean',
-					'trueIcon' => 'bed'
-				],
-				'has_vehicle_seat' => [
-					'type' => 'boolean',
-					'trueIcon' => 'car'
-				],
-				'half_start' => [
-					'type' => 'editor.toggle',
-					'nullable' => true,
-					'refreshRow' => true,
-					//				'reloadTable' => true,
-					'mainHeader' => [
-						'label' => 'Giornate',
-						'colspan' => 7
-					],
-				],
+//				'has_hotel_room' => [
+//					'type' => 'boolean',
+//					'trueIcon' => 'bed'
+//				],
+//				'has_vehicle_seat' => [
+//					'type' => 'boolean',
+//					'trueIcon' => 'car'
+//				],
+//				'half_start' => [
+//					'type' => 'editor.toggle',
+//					'nullable' => true,
+//					'refreshRow' => true,
+//					//				'reloadTable' => true,
+//					'mainHeader' => [
+//						'label' => 'Giornate',
+//						'colspan' => 7
+//					],
+//				],
 				'starts_at' => [
 					'type' => 'editor.dates.date',
 					'refreshRow' => true,
@@ -127,12 +127,12 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 					'valueAsRowClass' => true,
 					'visible' => false,
 				],
-				'half_end' => [
-					'type' => 'editor.toggle',
-					'nullable' => true,
-					'refreshRow' => true,
-					//				'reloadTable' => true
-				],
+//				'half_end' => [
+//					'type' => 'editor.toggle',
+//					'nullable' => true,
+//					'refreshRow' => true,
+//					//				'reloadTable' => true
+//				],
 				'quantity_on_total' => [
 					'translatedName' => 'Tot',
 					'type' => 'flat',
@@ -144,10 +144,10 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 					'saveButton' => true,
 					'refreshRow' => true,
 					//				'reloadTable' => true,
-					'mainHeader' => [
-						'label' => 'Costi singoli',
-						'colspan' => 2
-					],
+//					'mainHeader' => [
+//						'label' => 'Costi singoli',
+//						'colspan' => 2
+//					],
 				],
 				// 'control_cost_gross_day' => [
 				// 	'type' => 'flat',
@@ -176,10 +176,10 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 
 				'calculated_cost_gross_operator_total' => [
 					'translatedName' => 'Lordo',
-					'mainHeader' => [
-						'label' => 'Costi totali',
-						'colspan' => 6
-					],
+//					'mainHeader' => [
+//						'label' => 'Costi totali',
+//						'colspan' => 6
+//					],
 					'type' => 'numbers.number2',
 				],
 				'client_price_approver' => 'boolean',
@@ -223,10 +223,10 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 
 				'calculated_row_total' => [
 					'type' => 'numbers.number2',
-					'mainHeader' => [
-						'label' => 'Costi',
-						'colspan' => 4
-					],
+//					'mainHeader' => [
+//						'label' => 'Costi',
+//						'colspan' => 4
+//					],
 				],
 				'calculated_cost_company_total' => [
 					'type' => 'editor.price',
@@ -239,12 +239,12 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 				// 	'visible' => false,
 				// ],
 
-				'mySelfPriceCalculatedCostCompanyTotalHtmlClass' => [
-					'type' => 'function',
-					'function' => 'getCalculatedCostCompanyTotalHtmlClass',
-					'valueAsRowClass' => true,
-					'visible' => false,
-				],
+//				'mySelfPriceCalculatedCostCompanyTotalHtmlClass' => [
+//					'type' => 'function',
+//					'function' => 'getCalculatedCostCompanyTotalHtmlClass',
+//					'valueAsRowClass' => true,
+//					'visible' => false,
+//				],
 				//			'calculated_row_total' => [
 				//				'type' => 'numbers.number2',
 				//			],
@@ -280,10 +280,10 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 				'convocated_when' => [
 					'type' => 'editor.text',
 					'translatedName' => 'Ora',
-					'mainHeader' => [
-						'label' => 'Convocazione',
-						'colspan' => 2
-					],
+//					'mainHeader' => [
+//						'label' => 'Convocazione',
+//						'colspan' => 2
+//					],
 					'width' => '3em'
 				],
 				'convocated_where' => 'editor.text',

@@ -20,20 +20,25 @@ class SellableSupplierFindBySellableHelper
 		return $this->sellable;
 	}
 
+	public function getContracttypeRelations() : array
+	{
+		return [
+			'prices',
+			'supplier.target.operatorContracttypes.contracttype',
+			'supplier.target.operatorContracttypes.prices',
+			'supplier.target.validClientOperator.employment',
+			'supplier.target.user.userdata',
+			'supplier.target.extraFields',
+			'supplier.target.address'
+		];
+	}
+
 	public function getSellableSupplierRelationsByTargetType() : array
 	{
 		$sellable = $this->getSellable();
 
 		if ($sellable->isContracttype())
-			return [
-				'prices',
-				'supplier.target.operatorContracttypes.contracttype',
-				'supplier.target.operatorContracttypes.prices',
-				'supplier.target.validClientOperator.employment',
-				'supplier.target.user.userdata',
-				'supplier.target.extraFields',
-				'supplier.target.address'
-			];
+			return $this->getContracttypeRelations();
 
 		if (($sellable->isControlRoomType())||($sellable->isVehicleType()))
 			return [

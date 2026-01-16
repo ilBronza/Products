@@ -6,5 +6,4 @@ use IlBronza\Datatables\DatatablesFields\Links\DatatableFieldSeeName;
 
 class DatatableFieldProject extends DatatableFieldSeeName
 {
-	public $width = '12em';
 }

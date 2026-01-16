@@ -5,12 +5,12 @@ namespace IlBronza\Products\Models\Traits\Order;
 use Carbon\Carbon;
 use IlBronza\Addresses\Models\Address;
 use IlBronza\Buttons\Button;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Destination;
 use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
+use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Quotations\Project;
@@ -41,6 +41,11 @@ trait CommonOrderQuotationTrait
 			return $this->destination;
 
 		return $this->destination()->with('address')->first();
+	}
+
+	public function provideAddressModelForExtraFields() : ?Address
+	{
+		return $this->address;
 	}
 
 	public function project()
@@ -95,6 +100,15 @@ trait CommonOrderQuotationTrait
 		]);
 	}
 
+	public function getResetRowsIndexesButton() : Button
+	{
+		return Button::create([
+			'href' => $this->getResetRowsIndexesUrl(),
+			'text' => 'products::orders.resetRowsIndex',
+			'icon' => 'sort'
+		]);
+	}
+
 	public function getChangeClientUrl() : string
 	{
 		return $this->getKeyedRoute('changeClientForm');
@@ -118,11 +132,6 @@ trait CommonOrderQuotationTrait
 	public function getCreateDestinationUrl()
 	{
 		return $this->getKeyedRoute('createDestination');
-	}
-
-	public function provideAddressModelForExtraFields() : ?Address
-	{
-		return $this->address;
 	}
 
 	public function address()

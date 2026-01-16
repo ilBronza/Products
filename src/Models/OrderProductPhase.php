@@ -5,7 +5,6 @@ namespace IlBronza\Products\Models;
 use App\Providers\Helpers\Processings\ProcessingCreatorHelper;
 use Auth;
 use Carbon\Carbon;
-use Exception;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
@@ -15,12 +14,15 @@ use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseGetterTra
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseProcessingsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProductPhase\OrderProductPhaseScopesTrait;
+use IlBronza\Products\Providers\Helpers\OrderProductPhases\OrderProductPhaseCompletionHelper;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Timings\Traits\InteractsWithTimingTrait;
 use IlBronza\Warehouse\Helpers\Unitloads\UnitloadCreatorHelper;
 use IlBronza\Warehouse\Models\Interfaces\DeliverableInterface;
 use IlBronza\Warehouse\Models\Interfaces\UnitloadProducibleInterface;
 use Illuminate\Support\Collection;
+
+use function strpos;
 
 class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInterface, UnitloadProducibleInterface
 {
@@ -38,17 +40,6 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
-
-	protected static function boot()
-	{
-		parent::boot();
-
-		static::saved(function ($model)
-		{
-			if ($model->isDirty('quantity_done'))
-				$model->checkForQuantityDoneSyncing();
-		});
-	}
 
 	public function getIndexUrl(array $data = [])
 	{
@@ -68,6 +59,11 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 	public function getQuantityDone() : ?float
 	{
 		return $this->quantity_done;
+	}
+
+	public function getPiecesDoneByProcessings()
+	{
+		return $this->processings->sum('valid_pieces_done');
 	}
 
 	public function getTimingFather() : ?HasTimingInterface
@@ -117,6 +113,15 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 	public function setQuantityDone(float $quantityDone = null, bool $save = false)
 	{
+		// leggo lo stack delle chiamate
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+
+		// il chiamante diretto è in $trace[1]
+		$caller = $trace[1]['class'] ?? null;
+
+		if (strpos($caller, 'OrderProductPhaseQuantityHelper') === false)
+			throw new \Exception('setQuantityDone() must be called only by OrderProductPhaseQuantityHelper. Called by: ' . ($caller ?? 'unknown'));
+
 		$this->quantity_done = $quantityDone;
 
 		if ($save)
@@ -168,25 +173,6 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 		return $this->getOrderProduct()->order_id;
 	}
 
-	public function checkCompletion()
-	{
-		if (! $this->processings()->forCompletion()->definitive()->byLast()->first())
-			return $this->uncomplete();
-
-		return $this->complete();
-	}
-
-	public function bindDataFromProcessings()
-	{
-		$processings = $this->processings()->forCompletion()->byLast()->get();
-
-		$this->setStartedAt($processings->min('created_at') ?? null);
-
-		$this->setQuantityDone(
-			$processings->sum('valid_pieces_done')
-		);
-	}
-
 	public function __complete(Carbon $date)
 	{
 		$this->setCompletedAt($date);
@@ -200,35 +186,6 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 		$date = $lastCompletionProcessing ? $lastCompletionProcessing->getEndedAt() : Carbon::now();
 
 		$this->__complete($date);
-	}
-
-	public function complete()
-	{
-		$this->bindDataFromProcessings();
-
-		if (! $lastCompletionProcessing = $this->processings()->forCompletion()->definitive()->byLast()->first())
-			throw new Exception('non trovato il processo che termina la lavorazione ' . $this->getName() . ' <a href="' . $this->getShowUrl() . '">Controlla qui</a>');
-
-		$this->_complete($lastCompletionProcessing);
-	}
-
-	public function forceUncomplete()
-	{
-		$this->processings()->delete();
-
-		$this->uncomplete();
-	}
-
-	public function uncomplete()
-	{
-		$this->bindDataFromProcessings();
-
-		$this->setCompletedAt(null);
-		$this->setStatus('waiting');
-
-		$this->timing()->forceDelete();
-
-		$this->save();
 	}
 
 	public function forceCompletion(string $processingType = 'production')
@@ -265,7 +222,8 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 		$processing->setAsDefinitive(true);
 
-		$this->complete();
+//		OrderProductPhaseCompletionHelper::gpc()::complete($this);
+		OrderProductPhaseCompletionHelper::gpc()::execute($this);
 	}
 
 	public function getContentForDelivery() : ? DeliverableInterface

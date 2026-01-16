@@ -27,7 +27,9 @@ class OrderrowHistoryController extends OrderrowCRUD
 
 		foreach($extraFieldsModels as $extraFieldsModel)
 		{
-			$this->activities = $this->activities->merge($extraFieldsModel->activities);
+			$this->activities = $this->activities->merge(
+				$extraFieldsModel->activities
+			);
 		}
 	}
 
