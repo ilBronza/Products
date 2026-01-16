@@ -47,6 +47,10 @@ class QuotationEditUpdateController extends QuotationCRUD
 			$quotation->getChangeClientButton()
 		);
 
+		$this->addNavbarButton(
+			$quotation->getResetRowsIndexesButton()
+		);
+
 	    if(! $quotation->hasOrder())
 	    {
 //			return redirect()->to($quotation->getShowUrl());
@@ -73,6 +77,16 @@ class QuotationEditUpdateController extends QuotationCRUD
 			);
 
 			app('uikittemplate')->addBodyHtmlClass('order-quotation');
+		}
+		else
+		{
+			$this->getForm()->setTitle(
+				trans('products::orders.workingOnQuotation', [
+					'quotation' => $this->getModel()->getName(),
+				])
+			);
+
+			app('uikittemplate')->addBodyHtmlClass('just-quotation');			
 		}
 	}
 

@@ -26,6 +26,9 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		if($request->table)
 			return redirect()->to(app('products')->route('orders.addOrderrowsByTable', ['order' => $order, 'type' => $type]));
 
+		if($request->isMethod('get'))
+			session()->put('orderAddOrderrowIndexController_storeOrderrow_return_url', url()->previous());
+
 		$order = $this->findModel($order);
 
 		$parameters = $request->validate([
@@ -82,6 +85,9 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 
 	public function getSortingIndexByType($order, string $type)
 	{
+		if (($type == 'Product')||($type == 'product'))
+			return $order->productOrderrows()->max('sorting_index') + 1;
+
 		if ($type == 'Contracttype')
 			return $order->operatorRows()->max('sorting_index') + 1;
 
@@ -120,6 +126,8 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			'Hotel',
 			'service',
 			'Rent',
+			'Product',
+			'product',
 			'Reimbursement'
 		];
 
@@ -165,11 +173,18 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			}
 		}
 
+		if($url = session()->get('orderAddOrderrowIndexController_storeOrderrow_return_url'))
+		{
+			session()->forget('orderAddOrderrowIndexController_storeOrderrow_return_url');
+
+			return redirect()->to($url);
+		}
+
 		return view('datatables::utilities.closeIframe', ['reloadAllTables' => true]);
 
-		return redirect()->to(
-			$order->getEditUrl()
-		);
+		// return redirect()->to(
+		// 	$order->getEditUrl()
+		// );
 	}
 
 }

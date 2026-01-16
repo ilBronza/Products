@@ -2,9 +2,13 @@
 
 namespace IlBronza\Products\Http\Controllers\Sellable;
 
+use IlBronza\Buttons\Button;
+use IlBronza\Category\Models\Category;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\Products\Http\Controllers\Sellable\SellableCRUD;
+
+use function __;
 
 class SellableIndexController extends SellableCRUD
 {
@@ -22,6 +26,17 @@ class SellableIndexController extends SellableCRUD
     {
         return config('products.models.sellable.fieldsGroupsFiles.related')::getFieldsGroup();
     }
+
+	public function addIndexButtons()
+	{
+		$this->table->addButton(
+			Button::create([
+				'translatedText' => __('products::sellables.generateAllMissing'),
+				'icon' => 'gauge-high',
+				'href' => app('products')->route('sellables.buildBulk')
+			])
+		);
+	}
 
     public function getIndexElements()
     {

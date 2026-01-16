@@ -11,19 +11,19 @@ class QuotationrowFieldsGroupParametersFile extends FieldsGroupParametersFile
     {
         return [
             'translationPrefix' => 'products::fields',
-            'fields' => 
+            'fields' =>
             [
                 'mySelfPrimary' => 'primary',
-                'mySelfEdit' => 'links.edit',
-                'mySelfSee' => 'links.see',
-                'name' => 'flat',
-                'slug' => 'flat',
-                'sellable' => 'relations.belongsTo',
+                'sellable' => [
+                    'type' => 'links.seeName',
+                    'width' => '20rem'
+                ],
+                'quotation' => 'products::orders.order',
+                'quotation.client' => 'clients::client.client',
+                'quotation.project' => 'products::projects.project',
                 'quantity' => 'flat',
-                'price' => 'json',
-                'price.price' => 'flat',
-
-                'mySelfDelete' => 'links.delete'
+                'cost_company' => 'flat',
+                'client_price' => 'flat',
             ]
         ];
     }

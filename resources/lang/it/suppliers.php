@@ -3,5 +3,6 @@
 return [
 	'byCategory' => ':category',
 	'suppliers' => 'Fornitori',
-	'all' => 'Tutti'
+	'all' => 'Tutti',
+	'timeline' => 'Gantt Fornitori'
 ];

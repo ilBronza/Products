@@ -3,6 +3,7 @@
 namespace IlBronza\Products;
 
 use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaServiceProviderPackagesTrait;
+use IlBronza\Products\Console\Commands\BuildProductsCacheCommand;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
@@ -12,6 +13,7 @@ use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -32,6 +34,7 @@ class ProductsServiceProvider extends ServiceProvider
 			'Quotationrow' => Quotationrow::gpc(),
 			'Quotation' => Quotation::gpc(),
 			'Supplier' => Supplier::gpc(),
+			'Sellable' => Sellable::gpc(),
 			'SellableSupplier' => SellableSupplier::gpc(),
 			'Product' => Product::gpc(),
 			'Phase' => Phase::gpc(),
@@ -108,6 +111,8 @@ class ProductsServiceProvider extends ServiceProvider
 		// ], 'products.lang');
 
 		// Registering package commands.
-		// $this->commands([]);
+		$this->commands([
+			BuildProductsCacheCommand::class
+		]);
 	}
 }

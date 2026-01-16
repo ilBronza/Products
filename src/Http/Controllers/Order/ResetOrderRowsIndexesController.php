@@ -18,11 +18,11 @@ class ResetOrderRowsIndexesController extends OrderCRUD
 		{
 			$orderRows = $order->$rowType()->orderBy('sorting_index')->get();
 
-			$i = 0;
+			$i = 1;
 
 			foreach($orderRows as $orderRow)
 			{
-				$orderRow->sorting_index = ++ $i;
+				$orderRow->sorting_index = $i ++;
 				$orderRow->save();
 			}
 		}

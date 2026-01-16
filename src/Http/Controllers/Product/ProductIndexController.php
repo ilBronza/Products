@@ -12,6 +12,8 @@ class ProductIndexController extends ProductCRUD
     use CRUDPlainIndexTrait;
     use CRUDIndexTrait;
 
+//	public $avoidCreateButton = true;
+
     public function __construct()
     {
         parent::__construct();
@@ -46,7 +48,7 @@ class ProductIndexController extends ProductCRUD
 //
 //            function() use($scope)
 //            {
-                $query = $this->getModelClass()::withCount(['media', 'orders', 'activeOrders', 'productRelations']);
+                $query = $this->getModelClass()::withCount(['media', 'prices', 'categories', 'orders', 'activeOrders', 'productRelations']);
 
                 if($scope)
                     $query->$scope();
@@ -61,5 +63,4 @@ class ProductIndexController extends ProductCRUD
         return $this->_getIndexElementsByScope();
     }
 
-    public $avoidCreateButton = true;
 }

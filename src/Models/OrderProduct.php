@@ -2,9 +2,7 @@
 
 namespace IlBronza\Products\Models;
 
-use App\State;
 use Auth;
-use Exception;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
@@ -13,7 +11,7 @@ use IlBronza\Products\Models\Traits\OrderProduct\OrderProductCheckerTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductGetterSetterTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\OrderProduct\OrderProductScopesTrait;
-use IlBronza\Timings\Helpers\TimingRemoverHelper;
+use IlBronza\Products\Providers\Helpers\OrderProducts\OrderProductCompletionHelper;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Timings\Traits\InteractsWithTimingTrait;
 use IlBronza\Warehouse\Helpers\Unitloads\UnitloadCreatorHelper;
@@ -94,19 +92,26 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 		return true;
 	}
 
-	public function checkCompletion()
-	{
-		if ($this->orderProductPhases()->notCompleted()->count() > 0)
-			return $this->uncomplete();
-
-		return $this->complete();
-	}
-
 	public function unitloads()
 	{
 		return $this->hasMany(
 			Unitload::gpc(),
 		);
+	}
+
+	public function scopeWithUnitloadsCounts($query)
+	{
+		$query->withCount([
+			'unitloads',
+			'unitloads as unitloads_with_delivery_count' => function ($_query)
+				{
+					$_query->delivering();
+				},
+			'unitloads as unitloads_without_delivery_count' => function ($_query)
+				{
+					$_query->notDelivering();
+				},
+		]);
 	}
 
 	public function getUnitloads() : Collection
@@ -117,6 +122,25 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 	public function getPallettypeId()
 	{
 		return $this->getPallettypeItem()?->getKey();
+	}
+
+	public function getUnitloadsByArrivedCarboardsQuantity()
+	{
+		if(! $arrived = $this->getOrderedCardboardArrived())
+			return ;
+
+		if(! $coefficientOutput = $this->getCoefficientOutput())
+			return ;
+
+		return UnitloadCreatorHelper::provideByModelsQuantity(
+			$this->getProduct(),
+			$this->getLastOrderProductPhase(),
+			$coefficientOutput * $arrived,
+			[
+				'destination_id' => $this->getDestinationId(),
+				'pallettype_id' => $this->getPallettypeId()
+			]
+		);		
 	}
 
 	public function getUnitloadsByClientQuantity()
@@ -137,40 +161,69 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 		return $this->quantity_required;
 	}
 
-	private function bindDataFromLastOrderProductPhase()
+	// private function bindDataFromLastOrderProductPhase()
+	// {
+	// 	if (! $lastOrderProductPhase = $this->getLastOrderProductPhase())
+	// 		throw new Exception('Ultima fase non trovata per componente ' . $this->getName() . ' <a href="' . $this->getEditUrl() . '">Controlla qui</a>');
+
+	// 	$this->setCompletedAt(
+	// 		$lastOrderProductPhase->getCompletedAt()
+	// 	);
+
+	// 	$this->setQuantityDone(
+	// 		$lastOrderProductPhase->getQuantityDone()
+	// 	);
+	// }
+
+	public function reset()
 	{
-		if (! $lastOrderProductPhase = $this->getLastOrderProductPhase())
-			throw new Exception('Ultima fase non trovata per componente ' . $this->getName() . ' <a href="' . $this->getEditUrl() . '">Controlla qui</a>');
+		OrderProductCompletionHelper::gpc()::reset($this);
 
-		$this->setCompletedAt(
-			$lastOrderProductPhase->getCompletedAt()
-		);
+		// foreach($this->getOrderProductPhases() as $orderProductPhase)
+		// 	$orderProductPhase->reset();
 
-		$this->setQuantityDone(
-			$lastOrderProductPhase->getQuantityDone()
-		);
+		// $this->setStateId(null);
+		// $this->setQuantityDone(null);
+		// $this->setManualPiecesDone(null);
+		// $this->setManualPiecesDoneUpdatedBy(null);
+		// $this->setManualCardboardsToUnload(null);
+		// // $this->setCardboardsCountDifference(null);
+		// $this->setBrokenCount(null);
+		// $this->setPartiallyCompletedAt(null);
+		// $this->setStartedAt(null);
+		// $this->setCompletedAt(null);
+
+		// $this->save();
+
+		// $this->getOrder()->uncomplete();
+
+		// return $this;
 	}
 
-	private function uncomplete()
-	{
-		$this->bindDataFromLastOrderProductPhase();
+//	private function uncomplete()
+//	{
+//		OrderProductCompletionHelper::gpc()::uncomplete($this);
+//
+//		// $this->bindDataFromLastOrderProductPhase();
+//
+//		// $this->setStateId(null);
+//		// $this->save();
+//
+//		// TimingRemoverHelper::remove($this);
+//	}
 
-		$this->setStateId(null);
-		$this->save();
-
-		TimingRemoverHelper::remove($this);
-	}
-
-	private function complete()
-	{
-		$this->bindDataFromLastOrderProductPhase();
-
-		$this->setStateId(
-			State::getTerminatedState()->id
-		);
-
-		$this->save();
-	}
+//	private function complete()
+//	{
+//		OrderProductCompletionHelper::gpc()::complete($this);
+//
+//		// $this->bindDataFromLastOrderProductPhase();
+//
+//		// $this->setStateId(
+//		// 	State::getTerminatedState()->id
+//		// );
+//
+//		// $this->save();
+//	}
 
 	public function getProductionUnitloads() : Collection
 	{

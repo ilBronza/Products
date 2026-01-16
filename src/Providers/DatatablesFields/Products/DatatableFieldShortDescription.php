@@ -2,10 +2,15 @@
 
 namespace IlBronza\Products\Providers\DatatablesFields\Products;
 
-use IlBronza\Datatables\DatatablesFields\DatatableFieldProperty;
+use IlBronza\Datatables\DatatablesFields\DatatableField;
 
-class DatatableFieldShortDescription extends DatatableFieldProperty
+class DatatableFieldShortDescription extends DatatableField
 {
-	public $width = '14em';
-	public $property = 'short_description';
+	public function transformValue($value)
+	{
+		if(! $value)
+			return ;
+
+		return $value->short_description;
+	}
 }

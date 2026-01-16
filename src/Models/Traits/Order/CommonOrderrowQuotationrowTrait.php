@@ -15,6 +15,8 @@ use IlBronza\Products\Models\Sellables\Supplier;
 
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 
+use Illuminate\Support\Facades\Log;
+
 use function round;
 use function route;
 
@@ -179,6 +181,11 @@ trait CommonOrderrowQuotationrowTrait
 		return 'tollstandard';
 	}
 
+	public function getDescription() : ? string
+	{
+		return $this->description;
+	}
+
 	public function getInvoiceableDetail() : string
 	{
 		if ($this->description)
@@ -195,11 +202,15 @@ trait CommonOrderrowQuotationrowTrait
 
 	public function getAddTypedRowButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
 	{
+		dd('qua eliminare questa in favore dell\'helper');
+
+		Log::critical('usa RowsButtonsHelper::getAddTypedRowButton($container, static::$typeName);');
+
 		$urlGetter = "getAdd{$type}Url";
 
 		$button = Button::create([
 			'href' => $container->{$urlGetter}(),
-			'text' => "products::order.add{$type}Row",
+			'text' => "products::orders.add{$type}Row",
 			'icon' => 'plus'
 		]);
 
@@ -210,11 +221,6 @@ trait CommonOrderrowQuotationrowTrait
 		]);
 
 		return $button;
-	}
-
-	public function getAddOperatorButton(ProductPackageBaseRowcontainerModel $container)
-	{
-		return $this->getAddTypedRowButton($container, 'Operator');
 	}
 
 	/**

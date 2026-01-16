@@ -96,20 +96,29 @@ trait OrderProductRelationshipsTrait
 		return $this->orderProductPhases()->orderBy('sequence', 'DESC')->first();
 	}
 
+	public function scopeWithLiveClientId($query)
+    {
+    	$orderTable = $this->order()->make()->getTable();
+
+        return $query->addSelect([
+            'live_client_id' => \DB::table($orderTable)
+                ->select("{$orderTable}.client_id")
+                ->whereColumn("{$orderTable}.id", $this->getTable() . '.order_id')
+                ->limit(1)
+        ]);
+    }
+
 	public function client()
 	{
-		return $this->hasOneThrough(
-			Client::getProjectClassName(),
-			Product::getProjectClassName(),
-			'id', // refers to id column on product table
-			'id', // refers to id column on client table
-			'product_id',
-			'client_id' // refers to client_id column on products table
-		);
+		return $this->belongsTo(
+			Client::gpc(),
+			'live_client_id'
+		);    	
 	}
 
 	public function getClient()
 	{
+		return $this->client;
 		return $this->getOrFindCachedRelation('client');
 	}
 }

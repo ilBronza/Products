@@ -10,36 +10,37 @@ use function ini_set;
 
 class OrderIndexController extends OrderCRUD
 {
-    use CRUDPlainIndexTrait;
-    use CRUDIndexTrait;
+	use CRUDPlainIndexTrait;
+	use CRUDIndexTrait;
 
 	public $allowedMethods = ['index'];
 
 	public function getIndexFieldsArray()
-    {
-        //OrderFieldsGroupParametersFile
-        return config('products.models.order.fieldsGroupsFiles.index')::getFieldsGroup();
-    }
-
-    public function getRelatedFieldsArray()
-    {
+	{
 		//OrderFieldsGroupParametersFile
-        return config('products.models.order.fieldsGroupsFiles.related')::getFieldsGroup();
-    }
+		return config('products.models.order.fieldsGroupsFiles.index')::getFieldsGroup();
+	}
 
-    public function getIndexElements()
-    {
-	    ini_set('max_execution_time', 300);
-	    ini_set('memory_limit', - 1);
+	public function getRelatedFieldsArray()
+	{
+		//OrderFieldsGroupParametersFile
+		return config('products.models.order.fieldsGroupsFiles.related')::getFieldsGroup();
+	}
 
-	    $query = $this->getModelClass()::with(
-		    'project', 'destination', 'parent', 'client', 'quotation',
-	    );
+	public function getIndexElements()
+	{
+		ini_set('max_execution_time', 300);
+		ini_set('memory_limit', - 1);
 
-        if($this->getModelClass()::make()->getExtraFieldsClass())
-            $query->with('extraFields');
+		$query = $this->getModelClass()::with(
+			'project', 'destination', 'parent', 'client', 'quotation',
+		);
 
-        return $query->get();
-    }
+		if(method_exists($placeholder = $this->getModelClass()::make(), 'getExtraFieldsClass'))
+			if($placeholder->getExtraFieldsClass())
+				$query->with('extraFields');
+
+		return $query->get();
+	}
 
 }

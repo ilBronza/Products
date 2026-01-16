@@ -5,16 +5,21 @@ namespace IlBronza\Products\Models\Product;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeTrait;
+use IlBronza\Products\Models\Interfaces\SellableItemInterface;
+use IlBronza\Products\Models\Interfaces\SellableSupplierPriceCreatorBaseClass;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\ProductRelation;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductQueriesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Product\ProductScopesTrait;
+use IlBronza\Products\Models\Traits\Sellable\InteractsWithSellableTrait;
 use IlBronza\Warehouse\Models\Interfaces\UnitloadableInterface;
 use Spatie\MediaLibrary\HasMedia;
 
-class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableInterface
+use function config;
+
+class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableInterface, SellableItemInterface
 {
 	static $modelConfigPrefix = 'product';
 
@@ -24,6 +29,7 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 	use ProductRelationshipsTrait;
 	use ProductScopesTrait;
 	use ProductQueriesTrait;
+	use InteractsWithSellableTrait;
 
 	use CompletionScopesTrait;
 
@@ -34,6 +40,21 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 		'orderProducts',
 		'phases'
 	];
+
+	public function getPriceFieldsForSellable() : array
+	{
+		return [];
+	}
+
+	public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass
+	{
+		if ($class = config('products.models.product.helpers.sellableSupplierPricesCreator'))
+			return null;
+
+		dd($class);
+
+		return new $class;
+	}
 
 	public function getManyToManyRelationClass() : string
 	{
@@ -90,69 +111,107 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 		$this->_customSetter('short_description', $value, $save);
 	}
 
-	public function getLiveMaxPackingLength() : ?float
+//	public function getLiveMaxPackingLength() : ?float
+//	{
+//		if ($this->max_packing_length)
+//			return $this->max_packing_length;
+//
+//		if ($max = $this->getClient()?->getMaxPackingLength())
+//			return $max;
+//
+//		$pallettype = $this->getPallettype();
+//
+//		return $pallettype->getMaxLength();
+//	}
+
+//	public function getLiveMaxPackingHeight() : float
+//	{
+//		if ($this->max_packing_height)
+//			return $this->max_packing_height;
+//
+//		if ($max = $this->getClient()?->getMaxPackingHeight())
+//			return $max;
+//
+//		$pallettype = $this->getPallettype();
+//
+//		return $pallettype->getMaxHeight();
+//	}
+
+//	public function getLiveMaxPackingWidth() : float
+//	{
+//		if ($this->max_packing_width)
+//			return $this->max_packing_width;
+//
+//		if ($max = $this->getClient()?->getMaxPackingWidth())
+//			return $max;
+//
+//		$pallettype = $this->getPallettype();
+//
+//		return $pallettype->getMaxWidth();
+//	}
+
+	public function getPackingWidth() : ? float
 	{
-		if ($this->max_packing_length)
-			return $this->max_packing_length;
-
-		if ($max = $this->getClient()?->getMaxPackingLength())
-			return $max;
-
-		$pallettype = $this->getPallettype();
-
-		return $pallettype->getMaxLength();
+		return $this->packing_width;
 	}
 
-	public function getLiveMaxPackingHeight() : float
+	public function getPackingWidthAttribute() : ? float
 	{
-		if ($this->max_packing_height)
-			return $this->max_packing_height;
-
-		if ($max = $this->getClient()?->getMaxPackingHeight())
-			return $max;
-
-		$pallettype = $this->getPallettype();
-
-		return $pallettype->getMaxHeight();
+		return $this->getPacking()?->getPackingWidth();
 	}
 
-	public function getLiveMaxPackingWidth() : float
+	public function getPackingHeight() : ? float
 	{
-		if ($this->max_packing_width)
-			return $this->max_packing_width;
-
-		if ($max = $this->getClient()?->getMaxPackingWidth())
-			return $max;
-
-		$pallettype = $this->getPallettype();
-
-		return $pallettype->getMaxWidth();
+		return $this->packing_height;
 	}
 
-	public function getQuantityPerUnitload() : ? float
+	public function getPackingHeightAttribute() : ? float
 	{
-		if(! ($packing = $this->getPacking()))
+		return $this->getPacking()?->getPackingHeight();
+	}
+
+	public function getPackingLength() : ? float
+	{
+		return $this->packing_length;
+	}
+
+	public function getPackingLengthAttribute() : ? float
+	{
+		return $this->getPacking()?->getPackingLength();
+	}
+
+	public function getQuantityPerUnitload() : ?float
+	{
+		if (! ($packing = $this->getPacking()))
 			return false;
 
-		if($quantity = $packing->getQuantityPerPacking())
+		if ($quantity = $packing->getQuantityPerPacking())
 			return $quantity;
 
 		return 99999999;
 	}
 
-	public function getVolumeCubicMeters() : ? float
+	public function getVolumeCubicMeters() : ?float
 	{
-		if(! $packing = $this->getPacking())
+		if (! $packing = $this->getPacking())
 			dd('manca packing');
 
-		if($volume = $packing->getVolumeCubicMeters())
+		if ($volume = $packing->getVolumeCubicMeters())
 			return $volume;
 
 		return config('warehouse.models.unitload.baseUnitloadVolumeCubicMeters');
 	}
 
-	public function getVolumeMc() : ? float
+	public function getVolumeMc() : ?float
 	{
 		return $this->getVolumeCubicMeters();
+	}
+
+	public function getCoefficientOutputAttribute($value)
+	{
+		if ($value)
+			return $value;
+
+		return 1;
 	}
 }

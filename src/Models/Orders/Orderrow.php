@@ -8,8 +8,11 @@ use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
 use IlBronza\Products\Models\Traits\Orderrow\OrderrowRelationsScopesTrait;
+use IlBronza\Timings\Interfaces\TimelineInterface;
 
-class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface
+use function rand;
+
+class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface, TimelineInterface
 {
 	static $modelConfigPrefix = 'orderrow';
 
@@ -36,5 +39,30 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 	public function getModelContainerRelationName() : string
 	{
 		return 'order';
+	}
+
+	public function getTimelineHtmlClasses() : array
+	{
+		$pieces = [];
+
+		return $pieces;
+	}
+
+	public function getTimelineHtmlClassesString() : ? string
+	{
+		$pieces = $this->getTimelineHtmlClasses();
+
+		return implode(' ', $pieces);
+	}
+
+	public function getCompletionPercentage() : float
+	{
+		if(rand(0,1))
+			return 100;
+
+		if(rand(0,1))
+			return 0;
+
+		return rand(0, 100);
 	}
 }

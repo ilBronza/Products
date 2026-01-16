@@ -24,8 +24,18 @@ class OrderrowRelatedFieldsGroupParametersFile extends FieldsGroupParametersFile
                     'width' => '5em'
                 ],
 
-                'starts_at' => 'dates.date',
-                'ends_at' => 'dates.date'
+                'starts_at' => [
+                    'type' => 'dates.date',
+                    'order' => [
+                        'priority' => 1236,
+                        'type' => 'DESC'
+                    ]
+                ],
+                'ends_at' => 'dates.date',
+                'cost_gross_day' => 'numbers.number2',
+                'calculated_cost_company' => 'numbers.number2',
+                'calculated_cost_company_total' => 'numbers.number2'
+
             ]
         ];
 	}

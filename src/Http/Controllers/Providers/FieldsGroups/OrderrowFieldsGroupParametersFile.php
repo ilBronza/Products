@@ -9,7 +9,6 @@ class OrderrowFieldsGroupParametersFile extends FieldsGroupParametersFile
 {
 	static function getFieldsGroup() : array
 	{
-
 		return [
 			'translationPrefix' => 'products::fields',
             'fields' =>
@@ -19,18 +18,9 @@ class OrderrowFieldsGroupParametersFile extends FieldsGroupParametersFile
 		            'type' => 'links.seeName',
 		            'width' => '20rem'
 	            ],
-	            'order' => [
-					'type' => 'links.seeName',
-		            'width' => '9rem'
-	            ],
-	            'order.client' => [
-		            'type' => 'links.seeName',
-		            'width' => '15rem'
-	            ],
-	            'order.project' => [
-		            'type' => 'links.seeName',
-		            'width' => '20rem'
-	            ],
+	            'order' => 'products::orders.order',
+                'order.client' => 'clients::client.client',
+	            'order.project' => 'products::projects.project',
 	            'quantity' => 'flat',
 	            'cost_company' => 'flat',
 	            'client_price' => 'flat',

@@ -19,7 +19,7 @@ class SellableFieldsGroupParametersFile extends FieldsGroupParametersFile
 	            'name' => 'flat',
 	            'slug' => 'flat',
 	            'type' => 'flat',
-	            'prices' => 'relations.hasMany',
+	            'prices' => 'prices::pricesList',
 	            'category' => 'relations.belongsTo',
 	            'target' => 'links.see',
 	            'suppliers_count' => 'flat',

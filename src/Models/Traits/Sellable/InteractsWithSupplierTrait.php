@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Traits\Sellable;
 
 use IlBronza\Products\Models\Orders\Orderrow;
+use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
@@ -82,13 +83,21 @@ trait InteractsWithSupplierTrait
 		return $this->getSupplier()->getQuotations();
 	}
 
-	public function getOrderrowsForShowRelation() : Collection
+	public function getSellableSuppliersIds() : Collection
 	{
 		if(! $supplier = $this->getSupplier())
 			return collect();
 
-		$sellableSuppliersIds = SellableSupplier::gpc()::select('id')->where('supplier_id', $supplier->getKey())->get();
+		return SellableSupplier::gpc()::select('id')->where('supplier_id', $supplier->getKey())->get();
+	}
 
-		return Orderrow::gpc()::with('order.client', 'order.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $sellableSuppliersIds)->get();
+	public function getOrderrowsForShowRelation() : Collection
+	{
+		return Orderrow::gpc()::with('order.client', 'order.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->get();
+	}
+
+	public function getQuotationrowsForShowRelation() : Collection
+	{
+		return Quotationrow::gpc()::with('quotation.client', 'quotation.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->get();
 	}
 }

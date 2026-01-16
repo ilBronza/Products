@@ -2,15 +2,16 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
-use App\Models\ProjectSpecific\Traits\HasCustomPricesTrait;
-use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
-use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
+use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
+use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
+use IlBronza\Prices\Models\Traits\HasCustomPricesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
+use IlBronza\Prices\Models\Traits\UpdatePricesOnSaveTrait;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseModel;
@@ -18,7 +19,6 @@ use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use Illuminate\Support\Collection;
-
 use function app;
 use function array_filter;
 use function config;
@@ -39,6 +39,7 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 	use CRUDSluggableTrait;
 
 	use HasCustomPricesTrait;
+	use UpdatePricesOnSaveTrait;
 
 	use InteractsWithPriceTrait;
 
@@ -149,17 +150,13 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 		$query->where('target_id', $targetIds);
 	}
 
+
 	public function getCostCompany() : float
 	{
 		if ($this->cost_company)
 			return $this->cost_company;
 
 		return $this->getTarget()?->getCostCompany() ?? 0;
-	}
-
-	public function getClientPrice()
-	{
-		return $this->getCostCompany() * 1.25;
 	}
 
 	//	public function getFullrelatedSupplierElements()
@@ -197,5 +194,11 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 
 		return $result;
 	}
+
+	public function mustAutomaticallyUpdatePrices(): bool
+	{
+		return config('products.models.sellable.automaticUpdatesPrices');
+	}
+
 
 }

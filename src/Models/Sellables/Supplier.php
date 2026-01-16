@@ -4,6 +4,8 @@ namespace IlBronza\Products\Models\Sellables;
 
 use IlBronza\Category\Models\Category;
 use IlBronza\Contacts\Models\Traits\InteractsWithContact;
+use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
+use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
@@ -17,8 +19,10 @@ use function is_array;
 use function json_encode;
 use function request;
 
-class Supplier extends ProductPackageBaseModel
+class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 {
+	use GanttTimelineTrait;
+
 	//	use InteractsWithCategoryTrait;
 	use InteractsWithPaymenttypes;
 	use InteractsWithContact;
@@ -57,6 +61,11 @@ class Supplier extends ProductPackageBaseModel
 	public function getName() : ?string
 	{
 		return $this->getTarget()?->getName();
+	}
+
+	public function getNameAttribute() : ? string
+	{
+		return $this->getName();
 	}
 
 	public function getTarget() : ?SupplierInterface

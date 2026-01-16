@@ -8,6 +8,7 @@ class SellableSupplierHotelFieldsGroupParametersFile extends SellableSupplierBas
 	{
 		return [
 			'mySelfAssignBulk' => "products::{$containerModel}rows.assignBulkSellableSupplier",
+			'supplier.target.vat' => 'flat',
 			'supplier.target.address.street_string' => 'flat',
 			'supplier.target.address.city' => 'flat',
 			'supplier.target.address.province' => [

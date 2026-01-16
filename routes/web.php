@@ -4,6 +4,8 @@ use App\Http\Controllers\CrudPalletController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
 use IlBronza\Products\Products;
 use IlBronza\Timings\Timings;
+use IlBronza\Ukn\Ukn;
+
 
 Route::group([
 	'middleware' => ['web', 'auth', 'role:client|superadmin'],
@@ -49,6 +51,9 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		//QuotationResetRowsIndexController
+		Route::get('{quotation}/reset-rows-indexes', [Products::getController('quotation', 'resetQuotationRowsIndexes'), 'resetRowsIndexes'])->name('quotations.resetRowsIndexes');
+
 		Route::get('{quotation}/change-client', [Products::getController('quotation', 'changeClient'), 'edit'])->name('quotations.changeClientForm');
 		Route::put('{quotation}/change-client', [Products::getController('quotation', 'changeClient'), 'update'])->name('quotations.changeClientUpdate');
 
@@ -68,7 +73,7 @@ Route::group([
 		Route::get('{quotation}/add-row-by-type/type/{type}/table', [Products::getController('quotation', 'addQuotationrowsByTable'), 'index'])->name('quotations.addQuotationrowsByTable');
 
 		//QuotationAddQuotationrowIndexController
-		Route::post('{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
+		Route::match(['get', 'post'], '{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
 		Route::post('{quotation}/store-new-quotationrows', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
 
 		//DestinationCreateStoreController
@@ -90,6 +95,17 @@ Route::group([
 
 	Route::group(['prefix' => 'suppliers'], function ()
 	{
+		Route::get('timeline-container/{supplier}', [Products::getController('supplier', 'timeline'), 'container'])->name('suppliers.timelineContainer');
+		Route::get('timeline/{supplier}', [Products::getController('supplier', 'timeline'), 'timeline'])->name('suppliers.timeline');
+
+
+		Route::get('build-bulk-suppliers', function()
+		{
+			$helper = config('products.models.supplier.helpers.bulkCreator');
+
+			return $helper::execute();
+		})->name('suppliers.buildBulk');
+
 		Route::get('orderrows-by-supplier/{supplier}', [Products::getController('orderrow', 'bySupplier'), 'index'])->name('suppliers.orderrows.index');
 
 		Route::get('by-category/{category}', [Products::getController('supplier', 'byCategory'), 'byCategory'])->name('suppliers.byCategory');
@@ -112,6 +128,23 @@ Route::group([
 
 	Route::group(['prefix' => 'sellables'], function ()
 	{
+		Route::get('all-timeline-container', [Products::getController('sellable', 'globalTimeline'), 'container'])->name('sellables.globalTimelineContainer');
+		Route::get('all-timeline', [Products::getController('sellable', 'globalTimeline'), 'timeline'])->name('sellables.globalTimeline');
+
+
+
+		Route::get('build-bulk-sellables', function()
+		{
+			$helper = config('products.models.sellable.helpers.bulkCreator');
+
+			$helper::execute();
+
+			Ukn::s('Sellables creati con successo');
+
+			return back();
+		})->name('sellables.buildBulk');
+
+
 		//SellableSupplierCreateStoreBySellableController
 		Route::get('{sellable}/create-sellable-supplier', [Products::getController('sellableSupplier', 'createBySellable'), 'createBySellable'])->name('sellables.createSellableSupplier');
 		//SellableSupplierCreateStoreBySellableController
@@ -132,6 +165,11 @@ Route::group([
 
 	Route::group(['prefix' => 'sellable-suppliers'], function ()
 	{
+		Route::get('all-timeline-container', [Products::getController('supplier', 'globalTimeline'), 'container'])->name('suppliers.globalTimelineContainer');
+		Route::get('all-timeline', [Products::getController('supplier', 'globalTimeline'), 'timeline'])->name('suppliers.globalTimeline');
+
+
+
 		Route::get('', [Products::getController('sellableSupplier', 'index'), 'index'])->name('sellableSuppliers.index');
 		Route::get('{sellableSupplier}', [Products::getController('sellableSupplier', 'show'), 'show'])->name('sellableSuppliers.show');
 
@@ -153,6 +191,9 @@ Route::group([
 
 	Route::group(['prefix' => 'products'], function ()
 	{
+		Route::get('create', [Products::getController('product', 'create'), 'create'])->name('products.create');
+		Route::post('', [Products::getController('product', 'store'), 'store'])->name('products.store');
+
 		Route::get('current', [Products::getController('product', 'current'), 'index'])->name('products.current');
 
 		Route::get('', [Products::getController('product', 'index'), 'index'])->name('products.index');
@@ -253,7 +294,14 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
-		Route::get('timeline/{order}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
+		//GlobalOrderTimelineController
+		Route::get('all-timeline-container', [Products::getController('order', 'globalTimeline'), 'container'])->name('orders.globalTimelineContainer');
+		Route::get('all-timeline', [Products::getController('order', 'globalTimeline'), 'timeline'])->name('orders.globalTimeline');
+
+		//OrderTimelineController
+		Route::get('timeline-container/{order}/{option?}', [Products::getController('order', 'timeline'), 'container'])->name('orders.timelineContainer');
+		Route::get('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
+		Route::patch('timeline/{order}', [Products::getController('order', 'timeline'), 'updateRow'])->name('orders.updateRow');
 
 		//OrderCreateController
 		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
@@ -286,7 +334,7 @@ Route::group([
 		Route::get('{order}/add-row-by-type/type/{type}/table', [Products::getController('order', 'addOrderrowsByTable'), 'index'])->name('orders.addOrderrowsByTable');
 
 		//OrderAddOrderrowIndexController
-		Route::post('{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
+		Route::match(['get', 'post'], '{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
 
 		//OrderAddOrderrowIndexController
 		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeOrderrow'])->name('orders.storeOrderrow');
@@ -317,6 +365,20 @@ Route::group([
 
 	Route::group(['prefix' => 'orderrows'], function ()
 	{
+
+		Route::group(['prefix' => 'custom-orderrows'], function ()
+		{
+			Route::get('{operatorOrderrow}/client-operator-popup', [
+				OrderrowClientOperatorController::class,
+				'clientOperatorPopup'
+			])->name('operatorOrderrows.clientOperatorPopup');
+		});
+
+
+
+
+
+
 		Route::post('/bulk-edit', [Products::getController('orderrow', 'bulkEdit'), 'bulkEdit'])->name('orderrows.bulkEdit');
 		Route::put('/bulk-updae', [Products::getController('orderrow', 'bulkEdit'), 'bulkUpdate'])->name('orderrows.bulkUpdate');
 
@@ -342,6 +404,7 @@ Route::group([
 
 		Route::delete('{orderrow}/delete', [Products::getController('orderrow', 'destroy'), 'destroy'])->name('orderrows.destroy');
 
+		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController
 		Route::get('{orderrow}/history', [Products::getController('orderrow', 'history'), 'history'])->name('orderrows.history');
 	});
 
@@ -460,4 +523,13 @@ Route::group([
 		Route::delete('{workstation}/delete', [Products::getController('workstation', 'destroy'), 'destroy'])->name('workstations.destroy');
 	});
 
+
+	Route::group([
+		'prefix' => 'prices',
+		'as' => 'prices.'
+	], function ()
+	{
+		//ProductCalculatePricesController
+		Route::get('calculate-for-products', [Products::getController('product', 'calculatePrices'), 'calculatePrices'])->name('products.calculatePrices');
+	});
 });

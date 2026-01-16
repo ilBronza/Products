@@ -7,6 +7,12 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 	static function getTypedFields(string $containerModel) : array
 	{
 		return [
+			'supplier.target.active' => [
+				'type' => 'boolean',
+				'width' => '2em',
+				'defaultWidth' => '2em',
+				'valueAsRowClass' => true
+			],
 			'supplier.target.address.city' => 'flat',
 			'supplier.target.address.province' => 'flat',
 			'supplier.target.operatorContracttypes' => [

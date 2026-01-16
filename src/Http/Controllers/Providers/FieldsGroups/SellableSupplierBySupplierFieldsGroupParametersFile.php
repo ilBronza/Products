@@ -17,15 +17,18 @@ class SellableSupplierBySupplierFieldsGroupParametersFile extends FieldsGroupPar
                 'mySelfEdit' => 'links.edit',
 				'sellable.name' => 'flat',
 
-				'prices' => [
-					'type' => 'iterators.each',
-					'childParameters' => [
-						'type' => 'function',
-						'function' => 'getPriceDescriptionString'
-					],
-				],
+                'cost_company_day' => 'numbers.price',
 
-				'quotationrows_count' => 'flat',
+				// 'prices' => [
+				// 	'type' => 'iterators.each',
+				// 	'childParameters' => [
+				// 		'type' => 'function',
+				// 		'function' => 'getPriceDescriptionString'
+				// 	],
+				// ],
+
+                'orderrows_count' => 'flat',
+                'quotationrows_count' => 'flat',
 
                 'mySelfDelete' => 'links.delete'
             ]

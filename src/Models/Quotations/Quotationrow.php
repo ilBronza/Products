@@ -7,8 +7,9 @@ use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
+use IlBronza\Timings\Interfaces\TimelineInterface;
 
-class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface
+class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface, TimelineInterface
 {
 	static $modelConfigPrefix = 'quotationrow';
 
@@ -50,5 +51,15 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 	public function getModelContainerRelationName() : string
 	{
 		return 'quotation';
+	}
+
+	public function getTimelineHtmlClassesString() : ? string
+	{
+		return null;
+	}
+
+	public function getCompletionPercentage() : float
+	{
+		return 0;
 	}
 }

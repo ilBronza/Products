@@ -29,12 +29,16 @@ class OrderEditUpdateController extends OrderCRUD
 	{
 		$order = $this->findModel($order);
 
+		if (config('products.models.order.hasGantt', false))
+			$this->addNavbarButton(
+				$order->getGanttButton()
+			);
+
 		if (! $order->isFrozen())
 			$this->addNavbarButton(
 				$order->getChangeClientButton()
 			);
 
-		if (! $order->isFrozen())
 			$this->addNavbarButton(
 				$order->getResetRowsIndexesButton()
 			);
