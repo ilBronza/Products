@@ -100,4 +100,9 @@ return [
 	'product_relations_count' => 'Relazioni',
 	'media_count' => 'Media',
 	'active_orders_count' => 'Attivi'
+
+	'quotations' => 'Quotazioni',
+   'orders' => 'Ordini',
+   'started_at' => 'Iniziato il',
+   'completed_at' => 'Finito il',
 ];
