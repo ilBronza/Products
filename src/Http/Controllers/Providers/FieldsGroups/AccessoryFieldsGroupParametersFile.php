@@ -10,6 +10,7 @@ class AccessoryFieldsGroupParametersFile extends FieldsGroupParametersFile
 	static function getFieldsGroup() : array
 	{
 		return [
+            'translationPrefix' => 'products::fields',
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
