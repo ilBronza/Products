@@ -57,5 +57,41 @@ return [
 
 	'ibProductsaccessories' => [
 		'index' => 'Lista Accessori'
-	]
+	],
+
+	'ibProductsproducts' => ['current' => 'Prodotti Attuali',],
+
+	'orderProducts' => [
+     'regulateProduction' => [
+		'index' => 'Ordini Prodotti',
+	 ],
+    ],
+
+	    'ibProductsorders' => [
+     'all' => 'Tutte Commesse',
+    ],
+
+	'ibProductsorderProducts' => [
+     'byWorkstation' => [
+		'elaborated' => 'Commesse Elaborate Per Centro',
+	 ],
+    ],
+
+	'products' => [
+     'withoutStencil' => 'Prodotto Senza Stencil',
+    ],
+
+	'ibProductsorders' => [
+     'active' => 'Attivo',
+    ],
+
+	'ibProductsorderProductPhases' => [
+     'byWorkstation' => [
+		'toElaborate' => 'Ordini Da Elaborare',
+	 ],
+    ],
+
+	'orders' => [
+     'setAsActiveOrders' => 'Imposta Ordini Attivi',
+    ],
 ];
