@@ -229,4 +229,19 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 	{
 		return $this->getUnitloadsByClientQuantity();
 	}
+
+	public function getProductionStatusList() : ? string
+	{
+		return $this->getOrderProductPhasesProductionList();
+	}
+
+	public function getDeliveringChildren() : Collection
+	{
+		return collect();
+	}
+
+	public function getClientKey() : ? string
+	{
+		return $this->getOrder()->getClientKey();
+	}
 }

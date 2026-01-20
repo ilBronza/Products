@@ -7,7 +7,7 @@ use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Phase;
 use IlBronza\Products\Models\Product\Product;
-use IlBronza\Ukn\Facades\Ukn;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 

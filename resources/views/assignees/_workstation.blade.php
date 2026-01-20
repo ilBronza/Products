@@ -52,7 +52,9 @@
                         </td>
                         <td>
                             <label class="uk-text-nowrap uk-text-danger uk-text-bold" for="opp{{ $orderProductPhase->getKey() }}">
-                                {{ $orderProductPhase->getOrder()?->getDelivery()?->getHumanShortReadableDate() }}
+                                @foreach($orderProductPhase->getOrderProduct()?->getDeliveries() ?? [] as $delivery)
+                                    {{ $delivery->datetime?->format(trans('dates.humanShortDayTime')) }}
+                                @endforeach
                             </label>
                         </td>
                         <td>

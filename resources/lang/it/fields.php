@@ -124,7 +124,7 @@ return [
 	'completed_at' => 'Fine',
 	'product_relations_count' => 'Relazioni',
 	'media_count' => 'Media',
-	'active_orders_count' => 'Attivi'
+	'active_orders_count' => 'Attivi',
 
 	'quotations' => 'Quotazioni',
    'orders' => 'Ordini',

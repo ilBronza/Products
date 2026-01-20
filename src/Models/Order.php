@@ -38,6 +38,12 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 	static $deletingRelationships = ['orderProducts', 'orderrows'];
 	public $classnameAbbreviation = 'o';
 
+	static array $notesRelationshipsNames = [
+		'orderrows',
+		'client',
+		'orderProducts',
+	];
+
 	public function getStoreOrderrowUrl() : string
 	{
 		return $this->getKeyedRoute('storeOrderrow', [
@@ -192,7 +198,7 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		$result = [];
 
 		foreach ($this->getDeliveringChildren() as $child)
-			$result = array_merge($child->getDeliveriesNamesArray());
+			$result = array_merge($result, $child->getDeliveriesNamesArray());
 
 		return array_unique($result);
 	}
@@ -207,7 +213,13 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 
 	public function getDeliveries() : ?Collection
 	{
-		return $this->deliveries;
+		$result = collect();
+
+		foreach($this->getOrderProducts() as $orderProduct)
+			foreach($orderProduct->getDeliveries() as $delivery)
+				$result->push($delivery);
+
+		return $result;
 	}
 
 	public function rows()
@@ -229,6 +241,11 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 				$result[$supplier->getKey()] = $supplier;
 
 		return collect($result);
+	}
+
+	public function getClientKey() : string
+	{
+		return $this->client_id;
 	}
 }
 
