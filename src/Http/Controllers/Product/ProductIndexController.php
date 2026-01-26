@@ -24,17 +24,17 @@ class ProductIndexController extends ProductCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.product.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.product.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.product.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.product.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getClientRelatedFieldsArray()
     {
-        return config('products.models.product.fieldsGroupsFiles.byClientIndex')::getFieldsGroup();
+        return config('products.models.product.fieldsGroupsFiles.byClientIndex')::getTracedFieldsGroup();
     }
 
     public $allowedMethods = ['index'];

@@ -50,6 +50,7 @@ class FindOrAssociateSupplierController extends CRUDProductPackageController
 		if (! $helper = config("products.models.supplier.fieldsGroupsFiles.associationBy.{$this->getSellable()->getType()}"))
 			throw new \Exception("products.models.supplier.fieldsGroupsFiles.associationBy.{$this->getSellable()->getType()}");
 
+		// return $helper::getTracedFieldsGroupByContainerModel($this->getContainerModelPrefix());
 		return $helper::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
 	}
 

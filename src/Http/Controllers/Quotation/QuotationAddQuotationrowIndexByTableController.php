@@ -22,13 +22,13 @@ class QuotationAddQuotationrowIndexByTableController extends SellableCRUD
 	public function getIndexElements()
 	{
 		return $this->getModelClass()::byType($this->type)->with(
-			'target', 'suppliers'
+			'target', 'suppliers.target'
 		)->get();
 	}
 
 	public function addIndexButtons()
 	{
-		$this->getTable()->createPostButton([
+		$this->getTable()->createPostButtonSamePage([
 			'href' => app('products')->route('quotations.addQuotationrow', ['quotation' => $this->quotation->getKey(), 'type' => $this->type]),
 			'text' => 'products::buttons.addRows',
 			'icon' => 'plus'

@@ -18,13 +18,13 @@ class OrderIndexController extends OrderCRUD
 	public function getIndexFieldsArray()
 	{
 		//OrderFieldsGroupParametersFile
-		return config('products.models.order.fieldsGroupsFiles.index')::getFieldsGroup();
+		return config('products.models.order.fieldsGroupsFiles.index')::getTracedFieldsGroup();
 	}
 
 	public function getRelatedFieldsArray()
 	{
 		//OrderFieldsGroupParametersFile
-		return config('products.models.order.fieldsGroupsFiles.related')::getFieldsGroup();
+		return config('products.models.order.fieldsGroupsFiles.related')::getTracedFieldsGroup();
 	}
 
 	public function getIndexElements()

@@ -109,7 +109,10 @@ trait SellableSupplierAssignmentTrait
 		if(! $helper = config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}"))
 			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}");
 
+		// return config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}")::getTracedFieldsGroupByContainerModel($this->getContainerModelPrefix());
+
 		return config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}")::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
+
 	}
 
 	public function getContainerModelPrefix() : string

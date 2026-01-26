@@ -141,7 +141,7 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 				'cost_gross_day' => [
 					'type' => 'editor.price',
 					'translatedName' => 'Lordo',
-					'saveButton' => true,
+					// 'saveButton' => true,
 					'refreshRow' => true,
 					//				'reloadTable' => true,
 //					'mainHeader' => [

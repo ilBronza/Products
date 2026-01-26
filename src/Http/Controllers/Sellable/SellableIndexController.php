@@ -19,12 +19,12 @@ class SellableIndexController extends SellableCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.sellable.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.sellable.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.sellable.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('products.models.sellable.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
 	public function addIndexButtons()

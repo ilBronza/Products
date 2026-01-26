@@ -17,12 +17,12 @@ class SupplierIndexController extends SupplierCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.supplier.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.supplier.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.supplier.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.supplier.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

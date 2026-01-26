@@ -41,6 +41,8 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
 
+	protected $touches = ['orderProduct'];
+
 	public function getIndexUrl(array $data = [])
 	{
 		return IbRouter::route(app('products'), 'orderProductPhases.byOrderProduct', ['orderProduct' => $this->getOrderProductId()]);

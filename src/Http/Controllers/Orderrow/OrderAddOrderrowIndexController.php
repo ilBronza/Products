@@ -17,12 +17,12 @@ class OrderAddOrderrowIndexController extends OrderrowCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.orderrow.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.orderrow.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.orderrow.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('products.models.orderrow.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

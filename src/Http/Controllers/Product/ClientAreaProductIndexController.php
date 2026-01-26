@@ -24,7 +24,7 @@ class ClientAreaProductIndexController extends ProductCRUD
 	public function getIndexFieldsArray()
 	{
 		//ClientAreaProductFieldsGroupParametersFile
-		return config('products.models.product.fieldsGroupsFiles.clientArea')::getFieldsGroup();
+		return config('products.models.product.fieldsGroupsFiles.clientArea')::getTracedFieldsGroup();
 	}
 
 	public function index(Request $request, string $client)

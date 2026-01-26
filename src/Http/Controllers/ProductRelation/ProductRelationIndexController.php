@@ -13,7 +13,7 @@ class ProductRelationIndexController extends ProductRelationCRUD
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.productRelation.fieldsGroupsFiles.productRelated')::getFieldsGroup();
+        return config('products.models.productRelation.fieldsGroupsFiles.productRelated')::getTracedFieldsGroup();
     }
 
     public $allowedMethods = ['index'];

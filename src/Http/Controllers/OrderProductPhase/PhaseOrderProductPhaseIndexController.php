@@ -16,6 +16,6 @@ class PhaseOrderProductPhaseIndexController extends OrderProductPhaseCRUD
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.orderProductPhase.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('products.models.orderProductPhase.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 }

@@ -18,7 +18,7 @@ class ToElaborateByWorkstationOrderProductPhaseIndexController extends OrderProd
     public function getIndexFieldsArray()
     {
 	    //ToElaborateOrderProductPhaseFieldsGroupParametersFile
-        return config('products.models.orderProductPhase.fieldsGroupsFiles.toElaborate')::getFieldsGroup();
+        return config('products.models.orderProductPhase.fieldsGroupsFiles.toElaborate')::getTracedFieldsGroup();
     }
 
 }

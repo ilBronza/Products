@@ -14,6 +14,6 @@ class ByOrderOrderProductIndexController extends OrderProductCRUD
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.orderProduct.fieldsGroupsFiles.orderRelated')::getFieldsGroup();
+        return config('products.models.orderProduct.fieldsGroupsFiles.orderRelated')::getTracedFieldsGroup();
     }
 }

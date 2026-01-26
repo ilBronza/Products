@@ -13,7 +13,7 @@ class ActiveOrderIndexController extends OrderCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.order.fieldsGroupsFiles.active')::getFieldsGroup();
+        return config('products.models.order.fieldsGroupsFiles.active')::getTracedFieldsGroup();
     }
 
     public $allowedMethods = ['index'];

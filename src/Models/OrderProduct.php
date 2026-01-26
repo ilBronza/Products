@@ -34,6 +34,8 @@ class OrderProduct extends ProductPackageBaseModel implements HasTimingInterface
 
 	use InteractsWithDeliveryTrait;
 
+	protected $touches = ['order'];
+
 	static $deletingRelationships = ['orderProductPhases'];
 	static $restoringRelationships = ['orderProductPhases'];
 	static $modelConfigPrefix = 'orderProduct';

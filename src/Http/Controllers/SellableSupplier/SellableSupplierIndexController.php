@@ -18,13 +18,13 @@ class SellableSupplierIndexController extends SellableSupplierCRUD
 	public function getIndexFieldsArray()
 	{
 		//SellableSupplierFieldsGroupParametersFile
-		return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getFieldsGroup();
+		return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getTracedFieldsGroup();
 	}
 
 	public function getRelatedFieldsArray()
 	{
 		//SellableSupplierFieldsGroupParametersFile
-		return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getFieldsGroup();
+		return config('products.models.sellableSupplier.fieldsGroupsFiles.index')::getTracedFieldsGroup();
 	}
 
 	public function getIndexElements()

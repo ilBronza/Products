@@ -6,6 +6,8 @@ return [
 		'current' => 'Preventivi in corso',
 		'show' => 'Mostra preventivo :model',
 		'index' => 'Indice preventivi',
+
+		'addQuotationrowsByTable' => 'Aggiungi dettagli'
 	],
 
 	'ibProductsorderProductPhases' => [
@@ -82,16 +84,12 @@ return [
     ],
 
 	'ibProductsorders' => [
-     'active' => 'Attivo',
+     'active' => 'Commesse attive',
     ],
 
 	'ibProductsorderProductPhases' => [
      'byWorkstation' => [
 		'toElaborate' => 'Ordini Da Elaborare',
 	 ],
-    ],
-
-	'orders' => [
-     'setAsActiveOrders' => 'Imposta Ordini Attivi',
     ],
 ];

@@ -15,7 +15,7 @@ class ToElaborateByWorkstationOrderProductIndexController extends OrderProductCR
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.orderProduct.fieldsGroupsFiles.workstationRelated')::getFieldsGroup();
+        return config('products.models.orderProduct.fieldsGroupsFiles.workstationRelated')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

@@ -9,7 +9,7 @@ class SellableRelatedFieldsGroupParametersFile extends SellableFieldsGroupParame
 {
     static function getFieldsGroup() : array
     {
-        $result = parent::getFieldsGroup();
+        $result = parent::getTracedFieldsGroup();
 
         return $result;
     }

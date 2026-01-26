@@ -17,7 +17,7 @@ class ElaboratedByWorkstationOrderProductPhaseIndexController extends OrderProdu
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.orderProductPhase.fieldsGroupsFiles.elaborated')::getFieldsGroup();
+        return config('products.models.orderProductPhase.fieldsGroupsFiles.elaborated')::getTracedFieldsGroup();
     }
 
     public function index(Request $request, string $workstation)

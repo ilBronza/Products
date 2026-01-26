@@ -15,13 +15,13 @@ class ProjectIndexController extends ProjectCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.project.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.project.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
         return $this->getIndexFieldsArray();
-        // return config('products.models.project.fieldsGroupsFiles.index')::getFieldsGroup();
+        // return config('products.models.project.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

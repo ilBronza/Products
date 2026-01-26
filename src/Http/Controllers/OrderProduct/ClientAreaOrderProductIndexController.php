@@ -22,7 +22,7 @@ class ClientAreaOrderProductIndexController extends OrderProductCRUD
 
 	public function getIndexFieldsArray()
 	{
-		return config('products.models.orderProduct.fieldsGroupsFiles.clientArea')::getFieldsGroup();
+		return config('products.models.orderProduct.fieldsGroupsFiles.clientArea')::getTracedFieldsGroup();
 	}
 
 	public function index(Request $request, string $client)

@@ -14,6 +14,6 @@ class ByWorkstationOrderProductIndexController extends OrderProductCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.orderProduct.fieldsGroupsFiles.workstationRelated')::getFieldsGroup();
+        return config('products.models.orderProduct.fieldsGroupsFiles.workstationRelated')::getTracedFieldsGroup();
     }
 }

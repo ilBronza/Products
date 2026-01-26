@@ -18,13 +18,13 @@ class QuotationIndexController extends QuotationCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.quotation.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.quotation.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
 		//QuotationRelatedFieldsGroupParametersFile
-        return config('products.models.quotation.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('products.models.quotation.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

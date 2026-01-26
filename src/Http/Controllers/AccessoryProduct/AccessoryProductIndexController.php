@@ -13,7 +13,7 @@ class AccessoryProductIndexController extends AccessoryProductCRUD
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.accessoryProduct.fieldsGroupsFiles.productRelated')::getFieldsGroup();
+        return config('products.models.accessoryProduct.fieldsGroupsFiles.productRelated')::getTracedFieldsGroup();
     }
 
     public $allowedMethods = ['index'];

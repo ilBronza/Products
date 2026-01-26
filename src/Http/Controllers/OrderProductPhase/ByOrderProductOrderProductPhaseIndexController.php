@@ -17,7 +17,7 @@ class ByOrderProductOrderProductPhaseIndexController extends OrderProductPhaseCR
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.orderProductPhase.fieldsGroupsFiles.orderProductRelated')::getFieldsGroup();
+        return config('products.models.orderProductPhase.fieldsGroupsFiles.orderProductRelated')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

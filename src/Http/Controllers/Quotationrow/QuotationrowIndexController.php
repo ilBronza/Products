@@ -17,12 +17,12 @@ class QuotationrowIndexController extends QuotationrowCRUD
 
     public function getIndexFieldsArray()
     {
-        return config('products.models.quotationrow.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('products.models.quotationrow.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('products.models.quotationrow.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('products.models.quotationrow.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

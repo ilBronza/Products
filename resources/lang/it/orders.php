@@ -29,6 +29,9 @@ return [
 		'main-children-skills' => 'Sottocomm. mansioni',
 	],
 
+	'invoicing' => [
+		'buyingArchiveByYear' => 'Anno :year'
+	],
 
 	'allOrders' => 'Tutte le commesse',
 ];
