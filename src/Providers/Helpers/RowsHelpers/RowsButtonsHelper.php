@@ -55,7 +55,7 @@ class RowsButtonsHelper
 
 		$button = Button::create([
 			'href' => $url,
-			'text' => "products::orders.add{$type}Row",
+			'text' => "products::orders.add{$type}TableRow",
 			'icon' => 'plus'
 		]);
 

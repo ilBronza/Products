@@ -16,7 +16,7 @@ class OrderFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' => 
             [
                 'mySelfPrimary' => 'primary',
-                // 'mySelfEdit' => 'links.edit',
+                'mySelfEdit' => 'links.edit',
                 'mySelfOrder' => [
                     'type' => 'products::orders.order',
                     'translatedName' => trans('products::fields.order')
@@ -28,6 +28,8 @@ class OrderFieldsGroupParametersFile extends FieldsGroupParametersFile
                         'type' => 'DESC'
                     ]
                 ],
+                'starts_at' => 'dates.datetime',
+                'ends_at' => 'dates.datetime',
 	            'parent' => 'relations.belongsTo',
 	            'children' => 'relations.hasMany',
                 'client' => 'clients::client.client',

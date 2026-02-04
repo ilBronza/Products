@@ -19,6 +19,7 @@ use IlBronza\Prices\Providers\PriceData;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Models\Sellables\Sellable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use function app;
@@ -309,5 +310,10 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	public function mustAutomaticallyUpdatePrices() : bool
 	{
 		return config('operators.models.sellable.automaticUpdatesPrices');		
+	}
+
+	static function getIdsBySellable(string|Sellable $sellable) : Collection
+	{
+		return static::query()->select('id')->where('sellable_id', is_string($sellable)? $sellable : $sellable->getKey())->pluck('id');
 	}
 }

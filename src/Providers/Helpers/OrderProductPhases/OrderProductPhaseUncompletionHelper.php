@@ -14,6 +14,9 @@ class OrderProductPhaseUncompletionHelper extends OrderProductPhaseBaseCompletio
 
 		OrderProductPhaseQuantityHelper::gpc()::calculate($orderProductPhase);
 
+		if(count($orderProductPhase->getProcessings()) == 0)
+			$orderProductPhase->setStartedAt(null);
+
 		$orderProductPhase->setCompletedAt(null);
 		$orderProductPhase->setStatus('waiting');
 		$orderProductPhase->timing()->forceDelete();

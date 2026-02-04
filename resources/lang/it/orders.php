@@ -27,7 +27,11 @@ return [
 		'main-children' => 'Sottocomm.',
 		'main-children-operators' => 'Sottocomm. operatori',
 		'main-children-skills' => 'Sottocomm. mansioni',
+		'parent' => 'Commessa padre',
 	],
+
+	'addproductTableRow' => 'Aggiungi prodotto da ricerca',
+	'addProductRow' => 'Aggiungi prodotto rapido',
 
 	'invoicing' => [
 		'buyingArchiveByYear' => 'Anno :year'

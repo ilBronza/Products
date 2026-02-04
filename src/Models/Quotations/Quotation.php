@@ -19,7 +19,9 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 	protected $deletingRelationships = ['quotationrows'];
 
 	protected $casts = [
-		'date' => 'date'
+		'date' => 'date',
+		'starts_at' => 'date',
+		'ends_at' => 'date',
 	];
 
 	public function getStoreQuotationrowUrl() : string

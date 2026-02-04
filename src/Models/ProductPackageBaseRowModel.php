@@ -5,15 +5,16 @@ namespace IlBronza\Products\Models;
 use Carbon\Carbon;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
+use IlBronza\Timings\Interfaces\TimeIntervalInterface;
 use IlBronza\Timings\Interfaces\TimelineInterface;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
-
 use function class_basename;
 use function get_class;
 use function get_class_methods;
 use function is_string;
 
-class ProductPackageBaseRowModel extends ProductPackageBaseModel
+class ProductPackageBaseRowModel extends ProductPackageBaseModel implements TimeIntervalInterface
 {
 	use CRUDTimeRangesTrait;
 	use TypedOrderrowTrait;
@@ -22,6 +23,24 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 		'starts_at' => 'date',
 		'ends_at' => 'date',
 	];
+
+	public function getEnd(): ? Carbon
+	{
+		return $this->ends_at;
+	}
+
+	public function getStart(): ? Carbon
+	{
+		return $this->starts_at;
+	}
+
+	public function getNodeItemData()
+	{
+		return [
+			'class' => get_class($this),
+			'id' => $this->getKey()
+		];
+	}
 
 	public function getFieldsToReset()
 	{
@@ -74,7 +93,14 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 		$pluralClass = $this->pluralLowerClass();
 		$routeKey = $this->getCamelcaseClassBasename();
 
-		return app('products')->route("{$pluralClass}.history", [$routeKey => config('datatables.replace_model_id_string')]);
+		try
+		{
+			return app('products')->route("{$pluralClass}.history", [$routeKey => config('datatables.replace_model_id_string')]);
+		}
+		catch(\Exception $e)
+		{
+			Ukn::e('Non esiste la route ' . "{$pluralClass}.history");
+		}
 	}
 
 	static function boot()
@@ -117,4 +143,13 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel
 		return $this->getPossibleOperatorsArrayValues();
 	}
 
+	public function getBackgroundColor()
+	{
+		return $this->getSupplier()?->getBackgroundColor();
+	}
+
+	public function getCssTextColorValue()
+	{
+		return $this->getSupplier()?->getCssTextColorValue();
+	}
 }

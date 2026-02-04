@@ -22,7 +22,7 @@ class OrderAddOrderrowIndexByTableController extends SellableCRUD
 	public function getIndexElements()
 	{
 		return $this->getModelClass()::byType($this->type)->with(
-			'target', 'suppliers.target'
+			'target.categories', 'suppliers.target'
 		)->get();
 	}
 
@@ -49,6 +49,7 @@ class OrderAddOrderrowIndexByTableController extends SellableCRUD
 			'translationPrefix' => 'products::fields',
 			'fields' => [
 				'name' => 'flat',
+				'categories_list' => 'flat',
 				'suppliers' => 'relations.belongsToMany',
 			]
 		];

@@ -50,6 +50,7 @@ use IlBronza\Products\Http\Controllers\Order\AttachClientOperatorsToOrderrowsCon
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderBulkEditUpdateController;
+use IlBronza\Products\Http\Controllers\Order\OrderCalendarController;
 use IlBronza\Products\Http\Controllers\Order\OrderChangeClientController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
@@ -225,6 +226,7 @@ use IlBronza\Products\Http\Controllers\Supplier\SupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalOrderTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSupplierTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationDestroyController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationEditUpdateController;
@@ -247,6 +249,7 @@ use IlBronza\Products\Models\ProductRelation;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Quotations\Project;
 use IlBronza\Products\Models\Quotations\Quotation;
+use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
@@ -560,9 +563,16 @@ return [
 		'order' => [
 			'class' => Order::class,
 			'table' => 'products__orders',
+			'rootCategoryName' => 'Tipologia Commesse',
 			'usesHours' => false,
 			'canHaveChildren' => false,
 			'hasGantt' => false,
+			'hasCalendar' => true,
+			'calendar' => [
+				'colors' => [
+					'ok' => 'green'
+				],
+			],
 			'helpers' => [
 				'freezerHelper' => OrderFreezerHelper::class,
 				'completionHelper' => OrderCompletionHelper::class
@@ -588,6 +598,7 @@ return [
 				'edit' => OrderEditUpdateController::class,
 				'teaser' => OrderTeaserController::class,
 				'destroy' => OrderDeletionController::class,
+				'calendar' => OrderCalendarController::class,
 				'timeline' => OrderTimelineController::class,
 				'globalTimeline' => GlobalOrderTimelineController::class,
 			],
@@ -866,6 +877,7 @@ return [
 				'update' => SellableEditUpdateController::class,
 				'destroy' => SellableDestroyController::class,
 				'globalTimeline' => GlobalSellableTimelineController::class,
+				'timeline' => SellableTimelineController::class,
 			]
 		],
 		'sellableSupplier' => [

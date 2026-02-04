@@ -247,5 +247,11 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 	{
 		return $this->client_id;
 	}
+
+	public function getCalendarColor() : ? string
+	{
+		return config('products.models.order.calendar.colors.ok');
+	}
+
 }
 

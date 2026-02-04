@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models\Sellables;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
+use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
@@ -31,6 +32,7 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 	use InteractsWithNotesTrait;
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
+	use GanttTimelineTrait;
 
 	use CRUDUseUuidTrait;
 
@@ -200,5 +202,28 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 		return config('products.models.sellable.automaticUpdatesPrices');
 	}
 
+	public function getCategories() : Collection
+	{
+		return cache()->remember(
+			$this->cacheKey('categories'),
+			3600,
+			function ()
+			{
+				return $this->getTarget()?->getCategories();				
+			}
+		);
+	}
+
+	public function getCategoriesListAttribute() : string
+	{
+		return cache()->remember(
+			$this->cacheKey('cagetories_list_attribute'),
+			3600 * 24,
+			function()
+			{
+				return $this->getCategories()->pluck('name')->implode('<br />');
+			}
+		);
+	}
 
 }

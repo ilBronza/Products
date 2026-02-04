@@ -127,7 +127,9 @@ return [
 	'active_orders_count' => 'Attivi',
 
 	'quotations' => 'Quotazioni',
-   'orders' => 'Ordini',
-   'started_at' => 'Iniziato il',
-   'completed_at' => 'Finito il',
+	'orders' => 'Ordini',
+	'started_at' => 'Iniziato il',
+	'completed_at' => 'Finito il',
+	'workstationLabel' => 'Postazione',
+	'sellable' => 'Bene/servizio'
 ];

@@ -21,16 +21,11 @@ class CustomOrderrow extends Orderrow
 	public function getAddRowButton(ProductPackageBaseRowcontainerModel $container)
 	{
 		return RowsButtonsHelper::getAddTypedRowButton($container, static::$typeName);
-
-//		return $this->getAddTypedRowButton($container, static::$typeName);
 	}
 
 	public function getAddRowTableButton(ProductPackageBaseRowcontainerModel $container)
 	{
 		return RowsButtonsHelper::getAddTypedRowTableButton($container, static::$typeName);
-//		return $this->getAddRowByTypeUrl('service', true);
-
-//		return $this->getAddTypedRowTableButton($container, static::$typeName);
 	}
 
 }

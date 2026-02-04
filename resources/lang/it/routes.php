@@ -23,7 +23,9 @@ return [
 		'edit' => ':model',
 		'index' => 'Indice commesse',
 		'current' => 'Commesse attive',
-		'addOrderrowsByTable' => 'Aggiungi servizi/beni'
+		'addOrderrowsByTable' => 'Aggiungi servizi/beni',
+		'active' => 'Commesse attive',
+		'all' => 'Tutte Commesse',
 	],
 
 	'ibProductsproducts' => [
@@ -32,7 +34,7 @@ return [
 	],
 
 	'ibProductssellableSuppliers' => [
-		'index' => 'Indice beni per fornitori',
+		'index' => 'Beni/Servizi',
 	],
 
 	'ibProductsfinishings' =>[
@@ -43,19 +45,40 @@ return [
 		'index' => 'Lista postazioni'
 	],
 
-	'ibProductsprojects.index' => 'Indice progetti',
-	'ibProductssellables.index' => 'Beni/Servizi',
-	'ibProductsorderrows.findOrAssociateSupplier' => 'Trova o associa fornitore',
-	'ibProductsorderrows.assignSellableSupplier' => 'Assegna fornitore',
-	'ibProductsquotationrows.findOrAssociateSupplier' => 'Trova o associa fornitore',
-	'ibProductsquotationrows.assignSellableSupplier' => 'Assegna fornitore',
-	'ibProductssuppliers.orderrows.index' => 'Righe per fornitore :model',
-	'ibProducts.clientsorderProducts.index' => 'Ordini per cliente',
+	'ibProductsprojects' => [
+		'index' => 'Indice progetti',
+	],
 
+	'ibProductsorderrows' => [
+		'findOrAssociateSupplier' => 'Trova o associa fornitore',
+		'assignSellableSupplier' => 'Assegna fornitore',
+	],
 
-	'ibProducts.clients.products.index' => 'Prodotti per cliente',
+	'ibProductsquotationrows' => [
+		'findOrAssociateSupplier' => 'Trova o associa fornitore',
+		'assignSellableSupplier' => 'Assegna fornitore',
+	],
 
-	'ibProducts.clients.orderProducts.index' => 'Ordini per cliente',
+	'ibProductssuppliers' => [
+		'orderrows' => [
+			'index' => 'Righe per fornitore :model',
+		]
+	],
+
+	'ibProducts' => [
+		'clientsorderProducts' => [
+			'index' => 'Ordini per cliente',
+		],
+
+		'clients' => [
+			'products' => [
+				'index' => 'Prodotti per cliente',
+			],
+			'orderProducts' => [
+				'index' => 'Ordini per cliente',
+			]
+		],
+	],
 
 	'ibProductsaccessories' => [
 		'index' => 'Lista Accessori'
@@ -69,10 +92,6 @@ return [
 	 ],
     ],
 
-	    'ibProductsorders' => [
-     'all' => 'Tutte Commesse',
-    ],
-
 	'ibProductsorderProducts' => [
      'byWorkstation' => [
 		'elaborated' => 'Commesse Elaborate Per Centro',
@@ -81,10 +100,6 @@ return [
 
 	'products' => [
      'withoutStencil' => 'Prodotto Senza Stencil',
-    ],
-
-	'ibProductsorders' => [
-     'active' => 'Commesse attive',
     ],
 
 	'ibProductsorderProductPhases' => [

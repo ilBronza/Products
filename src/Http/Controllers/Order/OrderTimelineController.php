@@ -6,9 +6,12 @@ use Carbon\Carbon;
 use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
+use IlBronza\Timings\Helpers\TimingIntervalsHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+
+use function array_merge;
 use function compact;
 use function view;
 
@@ -16,7 +19,7 @@ class OrderTimelineController extends OrderCRUD
 {
 	static array $availableOrderTimelineOptions = [
 		'main',
-//		'main-children',
+		'main-children',
 //		'main-children-skills',
 		'main-children-operators',
 	];
@@ -38,7 +41,20 @@ class OrderTimelineController extends OrderCRUD
 			$button
 		];
 
-		if($modelInstance->isRoot())
+		if($parent = $modelInstance->getParent())
+		{
+			$button = Button::create([
+				'href' => $parent->getGanttUrl('main'),
+				'text' => "products::orders.ganttWithOptions.parent",
+				'icon' => 'chart-gantt'
+			]);
+
+			$button->setPrimary();
+
+			$buttons[] = $button;
+		}
+
+		if(count($modelInstance->getChildren()))
 			foreach(static::$availableOrderTimelineOptions as $availableOption)
 			{
 				$button = Button::create([
@@ -102,6 +118,81 @@ class OrderTimelineController extends OrderCRUD
 		$orderrow->save();
 	}
 
+	public function getWholeOrderTimelineData($order)
+	{
+		$order = $this->findModel($order);
+
+		$groups = [];
+		$items = [];
+
+		$rows = $order->rows;
+
+		if($rows->isEmpty())
+			return [
+				'itemTemplate' => 'order',
+				'groups' => [],
+				'items' => [],
+			];
+
+
+				$groupId = 'order-' . $order->getKey();
+				$groupName = $order->getName();
+
+				$groups[] = [
+					'id' => $groupId,
+					'content' => $groupName,
+					'name' => $groupName,
+					'className' => 'group-order-' . $order->getKey(),
+				];
+
+
+				$intervalsResult = TimingIntervalsHelper::getTimeIntervals($rows);
+
+		foreach($intervalsResult->intervals as $index => $interval)
+		{
+			$start = $interval->getStart();
+			$end = $interval->getEnd();
+
+			$items[] = [
+				'id' => 'order-item-' . $order->getKey() . '-' . $index,
+				'group' => $groupId,
+				'start' => $start->format('Y-m-d\TH:i:s'),
+				'end' => $end->format('Y-m-d\TH:i:s'),
+				'title' => $groupName,
+				'content' => $groupName,
+				'style' => [
+					'backgroundColor' => $order->getBackgroundColor()
+				],
+				'className' => 'order-timeline-item',
+			];
+		}
+
+		return [
+			'itemTemplate' => 'order',
+			'groups' => $groups,
+			'items' => $items,
+		];
+	}
+
+	public function getMainChildrenTimelineData($order)
+	{
+		$data = $this->getMainTimelineData($order);
+
+		$order = $this->findModel($order);
+
+		$children = $order->getChildren();
+
+		foreach($children as $child)
+		{
+			$childData = $this->getWholeOrderTimelineData($child->getKey());
+
+			$data['groups'] = array_merge($data['groups'], $childData['groups']);
+			$data['items'] = array_merge($data['items'], $childData['items']);
+		}
+
+		return $data;
+	}
+
 	public function getMainChildrenOperatorsTimelineData($order)
 	{
 		$data = $this->getMainTimelineData($order);
@@ -152,7 +243,7 @@ class OrderTimelineController extends OrderCRUD
 							'action' => 'open',
 							'faIcon' => 'chart-gantt',
 							'title' => 'Gantt ' . $sellable->getName(),
-							'url' => "www.google.com",
+							'url' => $sellable->getGanttUrl()
 						]
 					]
 				];
@@ -162,6 +253,7 @@ class OrderTimelineController extends OrderCRUD
 			$endsAt = $row->getEndsAt() ?? $row->getOrder()->getEndsAt() ?? Carbon::now()->addHours(4);
 
 			$links = [];
+			$rightLinks = [];
 
 			$links[] = [
 				'url' => $row->getAssignSellablesupplierUrl(),
@@ -171,13 +263,13 @@ class OrderTimelineController extends OrderCRUD
 
 			if($supplier = $row->getSupplier())
 			{
-				$links[] = [
+				$rightLinks[] = [
 					'url' => $supplier->getGanttUrl(),
 					'target' => 'iframe',
 					'faIcon' => 'magnifying-glass',
 				];
 
-				$links[] = [
+				$rightLinks[] = [
 					'url' => $supplier->getGanttUrl(),
 					'target' => '_blank',
 					'faIcon' => 'chart-gantt',
@@ -185,21 +277,27 @@ class OrderTimelineController extends OrderCRUD
 			}
 
 			if($addContainerGantt)
-				$links[] = [
+				$rightLinks[] = [
 					'url' => $row->getModelContainer()->getGanttUrl(),
 					'text' => $row->getModelContainer()->getName(),
 					'target' => '_blank',
 					'faIcon' => 'chart-gantt',
+					'htmlClasses' => ['uk-float-left'],
 				];
 
 			$items[] = [
 				'id' => $row->getKey(),
 				//				'link' => $row->getSupplier()?->getGanttUrl(),
 				'links' => $links,
+				'rightLinks' => $rightLinks,
 				'start' => $startsAt->format('Y-m-d\TH:i:s'),
 				'end' => $endsAt->format('Y-m-d\TH:i:s'),
 				'progress' => $row->getCompletionPercentage(),
 				'group' => $sellable->getKey(),
+				'style' => [
+					'backgroundColor' => $row->getBackgroundColor(),
+					'textColor' => $row->getCssTextColorValue()
+				],
 				'title' => $row->getSupplier()?->getTarget()->getShortName(),
 				'popupTitle' => $row->getSupplier()?->getTarget()->getName(),
 				'description' => $row->getDescription() ?? '',

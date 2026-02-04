@@ -58,6 +58,18 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 		return $this->quantity_required;
 	}
 
+	public function getAvailablePieces() : ? float
+	{
+		// dd($this->getPreviousOrderProductPhase());
+		if($this->isFirst())
+			return $this->getStock();
+
+		if(! $previous = $this->getPreviousOrderProductPhase())
+			return -1;
+
+		return $previous->getPiecesDone();
+	}
+
 	public function getQuantityDone() : ?float
 	{
 		return $this->quantity_done;
@@ -115,14 +127,14 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 	public function setQuantityDone(float $quantityDone = null, bool $save = false)
 	{
-		// leggo lo stack delle chiamate
-		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+		// // leggo lo stack delle chiamate
+		// $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 
-		// il chiamante diretto è in $trace[1]
-		$caller = $trace[1]['class'] ?? null;
+		// // il chiamante diretto è in $trace[1]
+		// $caller = $trace[1]['class'] ?? null;
 
-		if (strpos($caller, 'OrderProductPhaseQuantityHelper') === false)
-			throw new \Exception('setQuantityDone() must be called only by OrderProductPhaseQuantityHelper. Called by: ' . ($caller ?? 'unknown'));
+		// if (strpos($caller, 'OrderProductPhaseQuantityHelper') === false)
+		// 	throw new \Exception('setQuantityDone() must be called only by OrderProductPhaseQuantityHelper. Called by: ' . ($caller ?? 'unknown'));
 
 		$this->quantity_done = $quantityDone;
 

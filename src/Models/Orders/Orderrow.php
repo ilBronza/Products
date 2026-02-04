@@ -8,6 +8,7 @@ use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
 use IlBronza\Products\Models\Traits\Orderrow\OrderrowRelationsScopesTrait;
+use IlBronza\Timings\Interfaces\TimeIntervalInterface;
 use IlBronza\Timings\Interfaces\TimelineInterface;
 
 use function rand;

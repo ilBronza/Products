@@ -162,4 +162,25 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		]);
 	}
 
+	public function getBackgroundColor() : ? string
+	{
+		if(! $target = $this->getTarget())
+			return null;
+
+		if(! method_exists($target, 'getBackgroundColor'))
+			return null;
+
+		return $target->getBackgroundColor();
+	}
+
+	public function getCssTextColorValue()
+	{
+		if(! $target = $this->getTarget())
+			return null;
+
+		if(! method_exists($target, 'getCssTextColorValue'))
+			return null;
+
+		return $target->getCssTextColorValue();
+	}
 }

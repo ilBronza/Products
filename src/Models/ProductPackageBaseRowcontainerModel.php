@@ -4,15 +4,18 @@ namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
 use Exception;
+use IlBronza\CRUD\Interfaces\CalendarInterface;
 use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
+use IlBronza\CRUD\Traits\Calendar\HasCalendarTrait;
 use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
+use IlBronza\Category\Models\Category;
 use IlBronza\Products\Models\Sellables\Sellable;
-
 use function lcfirst;
 
-class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface
+class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface, CalendarInterface
 {
 	use GanttTimelineTrait;
+	use HasCalendarTrait;
 
 	protected $casts = [
 		'date' => 'date',
@@ -172,9 +175,31 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->ends_at;
 	}
 
+	public function scopeByDateRange($query, string|Carbon $startsAt, string|Carbon $endsAt)
+	{
+		return $query
+	        ->where('starts_at', '<=', $endsAt)
+	        ->where(function($_query) use($startsAt)
+	        	{
+	        		$_query->where('ends_at', '>=', $startsAt)->orWhereNull('ends_at');
+	        	});
+	}
+
 	public function getResetRowsIndexesUrl() : string
 	{
 		return $this->getKeyedRoute('resetRowsIndexes');
+	}
+
+	public function getTitle() : string
+	{
+		return "{$this->getName()} - {$this->getClient()?->getName()}";
+	}
+
+	public function getCategoriesPossibleValuesArray() : array
+	{
+		$mainCategory = Category::gpc()::provideCategoryByName(config('products.models.order.rootCategoryName'));
+
+		return $mainCategory->getSelectTreeArray();
 	}
 
 	/**

@@ -34,6 +34,11 @@ class OrderEditUpdateController extends OrderCRUD
 				$order->getGanttButton()
 			);
 
+		if (config('products.models.order.hasCalendar', false))
+			$this->addNavbarButton(
+				$order->getCalendarButton()
+			);
+
 		if (! $order->isFrozen())
 			$this->addNavbarButton(
 				$order->getChangeClientButton()

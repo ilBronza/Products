@@ -39,7 +39,8 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'type' => 'select',
 						'multiple' => false,
 						'rules' => 'string|nullable|exists:' . config('category.models.category.table') . ',id',
-						'relation' => 'category'
+						'relation' => 'category',
+						'possibleValuesArray' => $this->getModel()->getCategoriesPossibleValuesArray()
 					],
 					'parent_id' => [
 						'readOnly' => true,
