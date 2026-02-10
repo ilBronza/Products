@@ -2,28 +2,33 @@
 
 namespace IlBronza\Products\Http\Controllers\Timelines;
 
-use Carbon\Carbon;
+use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
+use IlBronza\CRUD\Traits\Timeline\GlobalTimelineTrait;
 use IlBronza\Products\Models\Orders\Orderrow;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use IlBronza\Products\Models\Sellables\Supplier;
 
-use function array_rand;
-use function cache;
-
-class GlobalSupplierTimelineController extends GlobalTimelineController
+class GlobalSupplierTimelineController extends BaseTimelineController
 {
+	use GlobalTimelineTrait;
+
 	public function getEndpoint() : string
 	{
 		return app('products')->route('suppliers.globalTimeline');
 	}
 
-	public function getRows() : Collection
+	public function getMainTimelineData()
 	{
-		return Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->where('ends_at', '>', Carbon::now()->subDays(14))->get();
+		$addContainerGantt = true;
+
+		$orderrows = Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->get();
+
+		$groupItems = Supplier::gpc()::with('target')->get();
+
+		$this->createGroupsByCollection($groupItems);
+
+		$this->createItemsByCollectionAndGetter($orderrows, 'getSupplier');
+
+		return $this->sendResponse();
 	}
 
-	public function getGroupSubject(Orderrow $row) : Model
-	{
-		return $row->getSupplier();
-	}
 }

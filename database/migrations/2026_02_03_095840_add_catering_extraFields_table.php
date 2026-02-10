@@ -28,6 +28,10 @@ return new class extends Migration
             $table->unsignedInteger('children')->nullable();
             $table->text('people_coefficient')->nullable();
         });
+
+        Schema::table(config('products.models.product.table'), function (Blueprint $table) {
+            $table->boolean('served_at_table')->nullable();
+        });
 	}
 
     /**
@@ -42,15 +46,20 @@ return new class extends Migration
             return ;
 
         Schema::table(config('products.models.quotation.table'), function (Blueprint $table) {
-            $table->dropColumn('people')->nullable();
-            $table->dropColumn('children')->nullable();
-            $table->dropColumn('people_coefficient')->nullable();
+            $table->dropColumn('people');
+            $table->dropColumn('children');
+            $table->dropColumn('people_coefficient');
         });
 
-        Schema::table(config('products.models.orders.table'), function (Blueprint $table) {
-            $table->dropColumn('people')->nullable();
-            $table->dropColumn('children')->nullable();
-            $table->dropColumn('people_coefficient')->nullable();
+        Schema::table(config('products.models.order.table'), function (Blueprint $table) {
+            $table->dropColumn('people');
+            $table->dropColumn('children');
+            $table->dropColumn('people_coefficient');
         });
+
+        Schema::table(config('products.models.product.table'), function (Blueprint $table) {
+            $table->dropColumn('served_at_table');
+        });
+
     }
 };

@@ -50,6 +50,11 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'rules' => 'string|nullable|exists:' . config('products.models.quotation.table') . ',id',
 						'relation' => 'parent'
 					],
+					'preset' => [
+						'type' => 'boolean',
+						'default' => false,
+						'rules' => 'boolean|required'
+					],
 					// 'client' => [
 					//     'type' => 'select',
 					//     'multiple' => false,

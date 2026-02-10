@@ -4,19 +4,26 @@ namespace IlBronza\Products\Http\Controllers\Order;
 
 use Carbon\Carbon;
 use IlBronza\Buttons\Button;
+use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineItemCreatorHelper;
+use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
+use IlBronza\CRUD\Traits\Gantt\CRUDHasGanttTrait;
 use IlBronza\Products\Models\Order;
+use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 use IlBronza\Timings\Helpers\TimingIntervalsHelper;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
 use function array_merge;
 use function compact;
 use function view;
 
-class OrderTimelineController extends OrderCRUD
+class OrderTimelineController extends BaseTimelineController
 {
+	public ? string $option;
+
 	static array $availableOrderTimelineOptions = [
 		'main',
 		'main-children',
@@ -30,18 +37,30 @@ class OrderTimelineController extends OrderCRUD
 		'container'
 	];
 
-	public function container($order, string $option = 'main')
+	public function getEndpoint() : string
 	{
-		$modelInstance = $this->findModel($order);
+		return $this->getModel()->getKeyedRoute(
+			'timeline', [
+				'option' => $this->option
+			]
+		);
+	}
 
-		$button = RowsButtonsHelper::getAddTypedRowButtonSimpleGET($modelInstance, 'operator');
+	public function findModel(string $key, array $relations = []) : ?Model
+	{
+		return Order::gpc()::find($key);
+	}
+
+	public function getButtons() : Collection
+	{
+		$button = RowsButtonsHelper::getAddTypedRowButtonSimpleGET($this->getModel(), 'operator');
 		$button->setHtmlClass('uk-margin-right');
 
 		$buttons = [
 			$button
 		];
 
-		if($parent = $modelInstance->getParent())
+		if($parent = $this->getModel()->getParent())
 		{
 			$button = Button::create([
 				'href' => $parent->getGanttUrl('main'),
@@ -54,16 +73,16 @@ class OrderTimelineController extends OrderCRUD
 			$buttons[] = $button;
 		}
 
-		if(count($modelInstance->getChildren()))
+		if(count($this->getModel()->getChildren()))
 			foreach(static::$availableOrderTimelineOptions as $availableOption)
 			{
 				$button = Button::create([
-					'href' => $modelInstance->getGanttUrl($availableOption),
+					'href' => $this->getModel()->getGanttUrl($availableOption),
 					'text' => "products::orders.ganttWithOptions.{$availableOption}",
 					'icon' => 'chart-gantt'
 				]);
 
-				if($availableOption != $option)
+				if($availableOption != $this->option)
 					$button->setPrimary();
 				else
 					$button->setSecondary()->setDisabled();
@@ -71,13 +90,17 @@ class OrderTimelineController extends OrderCRUD
 				$buttons[] = $button;
 			}
 
-		$apiEndpoint = $modelInstance->getKeyedRoute(
-			'timeline', [
-				'option' => $option
-			]
-		);
+		return collect($buttons);
+	}
 
-		return view('crud::timeline.timeline', compact( 'apiEndpoint', 'modelInstance', 'buttons'));
+	public function container($order, string $option = 'main')
+	{
+		$modelInstance = $this->findModel($order);
+
+		$this->option = $option;
+		$this->setModel($modelInstance);
+
+		return $this->returnGanttContainer();
 	}
 
 	public function updateRow(Request $request, $order)
@@ -120,203 +143,117 @@ class OrderTimelineController extends OrderCRUD
 
 	public function getWholeOrderTimelineData($order)
 	{
-		$order = $this->findModel($order);
+		dd('qua ricreare');
+		// $order = $this->findModel($order);
 
-		$groups = [];
-		$items = [];
+		// $groups = [];
+		// $items = [];
 
-		$rows = $order->rows;
+		// $rows = $order->rows;
 
-		if($rows->isEmpty())
-			return [
-				'itemTemplate' => 'order',
-				'groups' => [],
-				'items' => [],
-			];
-
-
-				$groupId = 'order-' . $order->getKey();
-				$groupName = $order->getName();
-
-				$groups[] = [
-					'id' => $groupId,
-					'content' => $groupName,
-					'name' => $groupName,
-					'className' => 'group-order-' . $order->getKey(),
-				];
+		// if($rows->isEmpty())
+		// 	return [
+		// 		'itemTemplate' => 'order',
+		// 		'groups' => [],
+		// 		'items' => [],
+		// 	];
 
 
-				$intervalsResult = TimingIntervalsHelper::getTimeIntervals($rows);
+		// 		$groupId = 'order-' . $order->getKey();
+		// 		$groupName = $order->getName();
 
-		foreach($intervalsResult->intervals as $index => $interval)
-		{
-			$start = $interval->getStart();
-			$end = $interval->getEnd();
+		// 		$groups[] = [
+		// 			'id' => $groupId,
+		// 			'content' => $groupName,
+		// 			'name' => $groupName,
+		// 			'className' => 'group-order-' . $order->getKey(),
+		// 		];
 
-			$items[] = [
-				'id' => 'order-item-' . $order->getKey() . '-' . $index,
-				'group' => $groupId,
-				'start' => $start->format('Y-m-d\TH:i:s'),
-				'end' => $end->format('Y-m-d\TH:i:s'),
-				'title' => $groupName,
-				'content' => $groupName,
-				'style' => [
-					'backgroundColor' => $order->getBackgroundColor()
-				],
-				'className' => 'order-timeline-item',
-			];
-		}
 
-		return [
-			'itemTemplate' => 'order',
-			'groups' => $groups,
-			'items' => $items,
-		];
+		// 		$intervalsResult = TimingIntervalsHelper::getTimeIntervals($rows);
+
+		// foreach($intervalsResult->intervals as $index => $interval)
+		// {
+		// 	dd('eravamo qua');
+		// 	$items[] = TimelineItemCreatorHelper::createItemByModel($intervals);
+		// 	// $start = $interval->getStart();
+		// 	// $end = $interval->getEnd();
+
+
+		// 	// $items[] = [
+		// 	// 	'id' => 'order-item-' . $order->getKey() . '-' . $index,
+		// 	// 	'group' => $groupId,
+		// 	// 	'start' => $start->format('Y-m-d\TH:i:s'),
+		// 	// 	'end' => $end->format('Y-m-d\TH:i:s'),
+		// 	// 	'title' => $groupName,
+		// 	// 	'content' => $groupName,
+		// 	// 	'style' => [
+		// 	// 		'backgroundColor' => $order->getBackgroundColor()
+		// 	// 	],
+		// 	// 	'className' => 'order-timeline-item',
+		// 	// ];
+		// }
+
+		// return [
+		// 	'itemTemplate' => 'order',
+		// 	'groups' => $groups,
+		// 	'items' => $items,
+		// ];
 	}
 
 	public function getMainChildrenTimelineData($order)
 	{
-		$data = $this->getMainTimelineData($order);
-
 		$order = $this->findModel($order);
+
+		$this->_getMainTimelineData($order);
 
 		$children = $order->getChildren();
 
-		foreach($children as $child)
-		{
-			$childData = $this->getWholeOrderTimelineData($child->getKey());
+		$this->createGroupsByCollection($children);
+		$this->createItemsByCollection($children);		
 
-			$data['groups'] = array_merge($data['groups'], $childData['groups']);
-			$data['items'] = array_merge($data['items'], $childData['items']);
-		}
-
-		return $data;
+		return $this->sendResponse();
 	}
 
 	public function getMainChildrenOperatorsTimelineData($order)
 	{
-		$data = $this->getMainTimelineData($order);
-
 		$order = $this->findModel($order);
+
+		$this->_getMainTimelineData($order);
 
 		$children = $order->getChildren();
 
+		$this->createGroupsByCollection($children);
+
 		foreach($children as $child)
 		{
-			$childData = $this->getMainTimelineData($child->getKey(), true);
-
-			$data['groups'] = array_merge($data['groups'], $childData['groups']);
-			$data['items'] = array_merge($data['items'], $childData['items']);
+			$this->createItemsByCollectionAndGetter($child->rows, 'getOrder');		
 		}
 
-		return $data;
+		return $this->sendResponse();
+	}
+
+	public function _getMainTimelineData($order, bool $addContainerGantt = false)
+	{
+		$groupItems = Sellable::gpc()::with('target')->get();
+
+		$this->createGroupsByCollection($groupItems);
+
+		$this->createItemsByCollectionAndGetter($order->rows, 'getSellable');		
 	}
 
 	public function getMainTimelineData($order, bool $addContainerGantt = false)
 	{
 		$order = $this->findModel($order);
 
-		$groups = [];
-		$items = [];
+		$this->_getMainTimelineData($order, $addContainerGantt);
 
-		$inserted = [];
-
-		foreach($order->rows as $row)
-		{
-			$sellable = $row->getSellable();
-
-			if(! ($inserted[$sellable->getKey()] ?? false))
-			{
-				$inserted[$sellable->getKey()] = true;
-
-				$backgroundColor = $sellable->getTarget()?->getCssBackgroundColorValue() ?: '#cccccc';
-				$groupTextColor = $sellable->getTarget()?->getCssTextColorValue() ?: '#000000';
-
-				$groups[] = [
-					'id' => $sellable->getKey(),
-					'content' => $sellable->getName(),
-					'style' => "background-color: {$backgroundColor}; color: {$groupTextColor}",
-					'name' => $sellable->getName(),
-					'className' => 'group-' . Str::slug($sellable->getName()),
-					'actions' => [
-						[
-							'action' => 'open',
-							'faIcon' => 'chart-gantt',
-							'title' => 'Gantt ' . $sellable->getName(),
-							'url' => $sellable->getGanttUrl()
-						]
-					]
-				];
-			}
-
-			$startsAt = $row->getStartsAt() ?? $row->getOrder()->getStartsAt() ?? Carbon::now();
-			$endsAt = $row->getEndsAt() ?? $row->getOrder()->getEndsAt() ?? Carbon::now()->addHours(4);
-
-			$links = [];
-			$rightLinks = [];
-
-			$links[] = [
-				'url' => $row->getAssignSellablesupplierUrl(),
-				'target' => 'iframe',
-				'faIcon' => 'shuffle',
-			];
-
-			if($supplier = $row->getSupplier())
-			{
-				$rightLinks[] = [
-					'url' => $supplier->getGanttUrl(),
-					'target' => 'iframe',
-					'faIcon' => 'magnifying-glass',
-				];
-
-				$rightLinks[] = [
-					'url' => $supplier->getGanttUrl(),
-					'target' => '_blank',
-					'faIcon' => 'chart-gantt',
-				];
-			}
-
-			if($addContainerGantt)
-				$rightLinks[] = [
-					'url' => $row->getModelContainer()->getGanttUrl(),
-					'text' => $row->getModelContainer()->getName(),
-					'target' => '_blank',
-					'faIcon' => 'chart-gantt',
-					'htmlClasses' => ['uk-float-left'],
-				];
-
-			$items[] = [
-				'id' => $row->getKey(),
-				//				'link' => $row->getSupplier()?->getGanttUrl(),
-				'links' => $links,
-				'rightLinks' => $rightLinks,
-				'start' => $startsAt->format('Y-m-d\TH:i:s'),
-				'end' => $endsAt->format('Y-m-d\TH:i:s'),
-				'progress' => $row->getCompletionPercentage(),
-				'group' => $sellable->getKey(),
-				'style' => [
-					'backgroundColor' => $row->getBackgroundColor(),
-					'textColor' => $row->getCssTextColorValue()
-				],
-				'title' => $row->getSupplier()?->getTarget()->getShortName(),
-				'popupTitle' => $row->getSupplier()?->getTarget()->getName(),
-				'description' => $row->getDescription() ?? '',
-				'className' => $row->getTimelineHtmlClassesString(),
-				//				'content' => ($row->getSupplier()?->getName() ?? $row->getSellable()?->getName() ?? 'Row ' . $row->getKey()) . ' (' . $startsAt->format('d-m H:i') . ' - ' . $endsAt->format('d-m H:i') . ')',
-
-			];
-		}
-
-		return [
-			'itemTemplate' => 'operator',
-			'groups' => $groups,
-			'items' => $items,
-		];
+		return $this->sendResponse();
 	}
 
 	public function timeline($order, string $option = 'main')
 	{
-		$method = 'get' . Str::studly($option) . 'TimelineData';
+		$method = $this->getOptionMethod($option);
 
 		return $this->$method($order);
 	}

@@ -3,7 +3,12 @@
 namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
+use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
+use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
 use IlBronza\Timings\Interfaces\TimeIntervalInterface;
 use IlBronza\Timings\Interfaces\TimelineInterface;
@@ -14,8 +19,9 @@ use function get_class;
 use function get_class_methods;
 use function is_string;
 
-class ProductPackageBaseRowModel extends ProductPackageBaseModel implements TimeIntervalInterface
+class ProductPackageBaseRowModel extends ProductPackageBaseModel implements TimeIntervalInterface, TimelineItemInterface
 {
+	use IsTimelineItemTrait;
 	use CRUDTimeRangesTrait;
 	use TypedOrderrowTrait;
 
@@ -151,5 +157,109 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 	public function getCssTextColorValue()
 	{
 		return $this->getSupplier()?->getCssTextColorValue();
+	}
+
+	public function getTimelineItemActions(? TimelineGroupInterface $groupModel) : array
+	{
+		$result = [];
+
+		$result[] = [
+			'url' => $this->getAssignSellablesupplierUrl(),
+			'target' => 'iframe',
+			'faIcon' => 'shuffle',
+		];
+
+		return $result;
+	}
+
+	public function getTimelineItemRightLinks(? TimelineGroupInterface $groupModel) : array
+	{
+		$rightLinks = [];
+
+		if($sellable = $this->getSupplier())
+		{
+			$rightLinks[] = [
+				'url' => $sellable->getGanttUrl(),
+				'target' => 'iframe',
+				'faIcon' => 'magnifying-glass',
+			];
+
+			$rightLinks[] = [
+				'url' => $sellable->getGanttUrl(),
+				'target' => '_blank',
+				'faIcon' => 'chart-gantt',
+			];
+		}
+
+		return $rightLinks;
+	}
+
+	public function getTimelineItemGroupId(? TimelineGroupInterface $groupModel) : string
+	{
+		return $this->getSellable()?->getKey() ?? '';
+	}
+
+	public function getCssBackgroundColorValue(? TimelineGroupInterface $groupModel) : ? string
+	{
+		if($groupModel instanceof Sellable)
+			$subject = $this->getSupplier();
+		else
+			$subject = $this->getSellable();
+
+		return $subject?->getTarget()?->getCssBackgroundColorValue();
+	}
+
+	public function getTimelineItemTitle(? TimelineGroupInterface $groupModel) : string
+	{
+		if($groupModel instanceof Sellable)
+			return $this->getSupplierName() ?? 'Nd';
+
+		if($groupModel instanceof Supplier)
+			return $this->getSellableName() ?? 'Nd';
+
+		$pieces = [];
+
+		if($value = $this->getSellableName())
+			$pieces[] = $value;
+
+		if($value = $this->getSupplierName())
+			$pieces[] = $value;
+
+		return trim(implode(' - ', $pieces)) ?? 'Nd';
+	}
+
+	public function getSupplierName() : ? string
+	{
+		return $this->getSupplier()?->getTarget()?->getName();
+	}
+
+	public function getSellableName() : ? string
+	{
+		return $this->getSellable()?->getTarget()?->getName();
+	}
+
+	public function getTimelineItemPopuptitle(? TimelineGroupInterface $groupModel) : string
+	{
+		if($groupModel instanceof Sellable)
+			return $this->getSupplierName() ?? 'Nd';
+
+		if($groupModel instanceof Supplier)
+			return $this->getSellableName() ?? 'Nd';
+
+		$pieces = [];
+
+		if($value = $this->getSellableName())
+			$pieces[] = $value;
+
+		if($value = $this->getSupplierName())
+			$pieces[] = $value;
+
+		return trim(implode(' - ', $pieces)) ?? 'Nd';
+	}
+
+
+	public function getTimelineItemHtmlClasses(? TimelineGroupInterface $groupModel) : array
+	{
+		return [];
 	}
 }

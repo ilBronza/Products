@@ -27,28 +27,4 @@ class OrderProductPhaseUncompletionHelper extends OrderProductPhaseBaseCompletio
 
 		return true;
 	}
-
-
-//	static function checkCompletion(OrderProductPhase $orderProductPhase)
-//	{
-//		if(! $orderProductPhase->productionUnitloads()->count())
-//			return static::uncomplete($orderProductPhase, [
-//				trans('products::messages.noUnitloadsFound', ['model' => $orderProductPhase->getName()])
-//			]);
-//
-//		if($orderProductPhase->productionUnitloads()->unCompleted()->first())
-//			return static::uncomplete($orderProductPhase, [
-//				trans('products::messages.unitloadNotCompletedFound', ['model' => $orderProductPhase->getName()])
-//			]);
-//
-//		if(! $orderProductPhase->processings()->final()->first())
-//			return static::uncomplete($orderProductPhase, [
-//				trans('products::messages.noFinalProcessingExisting', ['model' => $orderProductPhase->getName()])
-//			]);
-//
-//		if (! $orderProductPhase->processings()->forCompletion()->definitive()->byLast()->first())
-//			return static::uncomplete($orderProductPhase);
-//
-//		return static::complete($orderProductPhase);
-//	}
 }

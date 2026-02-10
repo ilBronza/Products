@@ -17,6 +17,7 @@ class OrderrowIndexController extends OrderrowCRUD
 
     public function getIndexFieldsArray()
     {
+        //IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowFieldsGroupParametersFile
         return config('products.models.orderrow.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
@@ -27,7 +28,7 @@ class OrderrowIndexController extends OrderrowCRUD
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with('client', 'category')->get();
+        return $this->getModelClass()::all();
     }
 
 }

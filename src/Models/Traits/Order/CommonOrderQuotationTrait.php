@@ -161,4 +161,16 @@ trait CommonOrderQuotationTrait
 		});
 	}
 
+	public function getCostCoefficient() : float
+	{
+		return $this->cost_coefficient;
+	}
+
+	public function getCostCoefficientAttribute() : float
+	{
+		if($value = $this->extraFields->cost_coefficient)
+			return $value;
+
+		return $this->getClient()?->getCostCoefficient() ?? 1;
+	}
 }

@@ -2,26 +2,28 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
+use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
+use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
+use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
 use IlBronza\Category\Models\Category;
 use IlBronza\Contacts\Models\Traits\InteractsWithContact;
-use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
-use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use Illuminate\Support\Collection;
-
 use function app;
 use function dd;
 use function is_array;
 use function json_encode;
 use function request;
 
-class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
+class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface, TimelineGroupInterface
 {
 	use GanttTimelineTrait;
+	use IsTimelineGroupTrait;
 
 	//	use InteractsWithCategoryTrait;
 	use InteractsWithPaymenttypes;
@@ -182,5 +184,10 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 			return null;
 
 		return $target->getCssTextColorValue();
+	}
+
+	public function getCssBackgroundColorValue() : string
+	{
+		return $this->getTarget()->getBackgroundColor();
 	}
 }

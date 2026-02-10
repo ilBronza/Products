@@ -29,6 +29,7 @@ class OrderProductPhaseCheckCompletionHelper extends OrderProductPhaseBaseComple
 				return $this->closeWithFailure(
 					trans('products::messages.noUnitloadsFound', ['model' => $orderProductPhase->getName()])
 				);
+
 			if($orderProductPhase->productionUnitloads()->unCompleted()->first())
 				return $this->closeWithFailure(
 					trans('products::messages.unitloadNotCompletedFound', ['model' => $orderProductPhase->getName()])

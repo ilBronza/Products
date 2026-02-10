@@ -16,6 +16,8 @@ class QuotationFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
 	            'created_at' => 'dates.datetime',
+                'mySelfNotes' => 'notes::notesList',
+                'preset' => 'editor.toggle',
                 'name' => 'flat',
 	            'client' => 'relations.belongsTo',
 	            'project' => 'relations.belongsTo',
@@ -27,6 +29,7 @@ class QuotationFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'quotationrows' => 'relations.hasMany',
 //                'price.own_cost' => 'flat',
 //                'price.price' => 'flat',
+
 
                 // 'created_at' => 'dates.date',
                 // 'updated_at' => 'dates.date',

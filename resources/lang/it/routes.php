@@ -19,6 +19,7 @@ return [
 
 	'ibProductsorders' => [
 		'active' => 'Commesse in produzione',
+		'awaiting' => 'In attesa',
 		'show' => 'Mostra ordine :model',
 		'edit' => ':model',
 		'index' => 'Indice commesse',

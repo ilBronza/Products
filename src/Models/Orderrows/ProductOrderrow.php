@@ -22,4 +22,9 @@ class ProductOrderrow extends CustomOrderrow
 
 		return 'costcompanytotalcalculated';
 	}
+
+	public function getTotalClientPriceAttribute()
+	{
+		return $this->getCalculatedClientPrice() * $this->getCostCoefficient() * $this->getQuantity();
+	}
 }

@@ -22,6 +22,8 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		'date' => 'date',
 		'starts_at' => 'date',
 		'ends_at' => 'date',
+
+		'cost_coefficient' => ExtraField::class,
 	];
 
 	public function getStoreQuotationrowUrl() : string
@@ -54,11 +56,6 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		$type = strtolower($type);
 
 		return $types[$type]();
-	}
-
-	public function getDescription()
-	{
-		return 'aggiungere la descrizione alle quotazioni e convertire in commessa';
 	}
 
 	public function getDate() : ? Carbon

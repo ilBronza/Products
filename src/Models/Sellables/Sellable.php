@@ -2,10 +2,12 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
+use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
@@ -26,13 +28,15 @@ use function config;
 use function request;
 use function trans;
 
-class Sellable extends ProductPackageBaseModel implements WithPriceInterface
+class Sellable extends ProductPackageBaseModel implements WithPriceInterface, TimelineGroupInterface
 {
 	use ProductPackageBaseModelTrait;
 	use InteractsWithNotesTrait;
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
+
 	use GanttTimelineTrait;
+	use IsTimelineGroupTrait;
 
 	use CRUDUseUuidTrait;
 
@@ -224,6 +228,22 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface
 				return $this->getCategories()->pluck('name')->implode('<br />');
 			}
 		);
+	}
+
+	public function getCssBackgroundColorValue() : string
+	{
+		return $this->getTarget()->getBackgroundColor();
+	}
+
+	public function getCssTextColorValue()
+	{
+		if(! $target = $this->getTarget())
+			return null;
+
+		if(! method_exists($target, 'getCssTextColorValue'))
+			return null;
+
+		return $target->getCssTextColorValue();
 	}
 
 }

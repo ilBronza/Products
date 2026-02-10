@@ -6,16 +6,23 @@ use Carbon\Carbon;
 use Exception;
 use IlBronza\CRUD\Interfaces\CalendarInterface;
 use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
+use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Traits\Calendar\HasCalendarTrait;
 use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
+use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
+use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
 use IlBronza\Category\Models\Category;
 use IlBronza\Products\Models\Sellables\Sellable;
 use function lcfirst;
 
-class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface, CalendarInterface
+class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface, CalendarInterface, TimelineGroupInterface, TimelineItemInterface
 {
 	use GanttTimelineTrait;
 	use HasCalendarTrait;
+	use IsTimelineGroupTrait;
+	use IsTimelineItemTrait;
 
 	protected $casts = [
 		'date' => 'date',
@@ -23,6 +30,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		'ended_at' => 'date',
 		'starts_at' => 'date',
 		'ends_at' => 'date',
+		'cost_coefficient' => ExtraField::class,
 	];
 
 	public function scopeOpened($query)
@@ -207,5 +215,90 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 	 * END ADDING ROWS METHODS
 	 *
 	 */
+
+
+	public function getTimelineItemRightLinks(? TimelineGroupInterface $groupModel) : array
+	{
+		return [
+			[
+				'url' => $this->getGanttUrl(),
+				'target' => '_blank',
+				'faIcon' => 'chart-gantt',
+			],
+			[
+				'url' => $this->getEditUrl(),
+				'target' => '_blank',
+				'faIcon' => 'pen-to-square',
+			]
+		];
+	}
+
+	public function getTimelineItemActions(? TimelineGroupInterface $groupModel) : array
+	{
+		return [];
+		// $result = [];
+
+		// $result[] = [
+		// 	'url' => $this->getAssignSellablesupplierUrl(),
+		// 	'target' => 'iframe',
+		// 	'faIcon' => 'shuffle',
+		// ];
+
+		// return $result;
+	}
+
+	public function getTimelineItemTitle(? TimelineGroupInterface $groupModel) : string
+	{
+		return $this->getName();
+		// if($groupModel instanceof Sellable)
+		// 	return $this->getSupplierName() ?? 'Nd';
+
+		// if($groupModel instanceof Supplier)
+		// 	return $this->getSellableName() ?? 'Nd';
+
+		// $pieces = [];
+
+		// if($value = $this->getSellableName())
+		// 	$pieces[] = $value;
+
+		// if($value = $this->getSupplierName())
+		// 	$pieces[] = $value;
+
+		// return trim(implode(' - ', $pieces)) ?? 'Nd';
+	}
+
+	public function getTimelineItemGroupId(? TimelineGroupInterface $groupModel) : string
+	{
+		dd($groupModel);
+		return $this->getSellable()?->getKey() ?? '';
+	}
+
+	public function getDescription() : ? string
+	{
+		return $this->description;
+	}
+
+	public function getTimelineItemPopuptitle(? TimelineGroupInterface $groupModel) : string
+	{
+		$pieces = [];
+
+		if($value = $this->getName())
+			$pieces[] = $value;
+
+		if($value = $this->getDescription())
+			$pieces[] = $value;
+
+		return trim(implode(' - ', $pieces));
+	}
+
+	public function getTimelineItemStartsAt(? TimelineGroupInterface $groupModel) : Carbon
+	{
+		return $this->getStartsAt() ?? Carbon::now();
+	}
+
+	public function getTimelineItemEndsAt(? TimelineGroupInterface $groupModel) : Carbon
+	{
+		return $this->getEndsAt() ?? Carbon::now()->addHours(4);
+	}
 
 }

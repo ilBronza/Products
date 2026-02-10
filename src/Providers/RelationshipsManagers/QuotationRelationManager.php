@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Providers\RelationshipsManagers;
 
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
-
+use IlBronza\Notes\Http\Controllers\CrudNoteController;
 use function config;
 
 class QuotationRelationManager Extends RelationshipsManager
@@ -20,6 +20,7 @@ class QuotationRelationManager Extends RelationshipsManager
 					],
 					'project' => config('products.models.project.controllers.show'),
 //					'dossiers' => config('filecabinet.models.dossier.controllers.index'),
+					'notes' => CrudNoteController::class,
 				]
 			]
 		];

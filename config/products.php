@@ -45,6 +45,7 @@ use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductShowController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ToElaborateByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveByClientOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\AwaitingOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AllOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AttachClientOperatorsToOrderrowsController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
@@ -589,6 +590,7 @@ return [
 				'replicateLastRow' => OrderReplicateOrderrowController::class,
 				'create' => OrderCreateController::class,
 				'store' => OrderCreateController::class,
+				'awaiting' => AwaitingOrderIndexController::class,
 				'active' => ActiveOrderIndexController::class,
 				'activeByClient' => ActiveByClientOrderIndexController::class,
 				'index' => OrderIndexController::class,
@@ -616,6 +618,7 @@ return [
 			],
 			'fieldsGroupsFiles' => [
 				'active' => ActiveOrdersFieldsGroupParametersFile::class,
+				'programming' => ProgrammingOrdersFieldsGroupParametersFile::class,
 				'related' => ActiveOrdersFieldsGroupParametersFile::class,
 				'index' => OrderFieldsGroupParametersFile::class,
 				'children' => OrderChildrenFieldsGroupParametersFile::class,

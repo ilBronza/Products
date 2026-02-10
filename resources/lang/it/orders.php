@@ -38,4 +38,5 @@ return [
 	],
 
 	'allOrders' => 'Tutte le commesse',
+	'calendar' => 'Calendario commesse',
 ];

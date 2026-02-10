@@ -29,17 +29,19 @@ class QuotationIndexController extends QuotationCRUD
 
     public function getIndexElements()
     {
-		ini_set('max_execution_time', 300);
-		ini_set('memory_limit', - 1);
-
-		return $this->getModelClass()::with(
-			'extraFields',
+        $query = $this->getModelClass()::with(
             'project',
             'destination',
             'parent',
             'client',
-			'order',
-        )->get();
+            'order',
+        );
+
+        if(method_exists($this->getModelClass(), 'extraFields'))
+            $query->with('extraFields');
+
+
+		return $query->get();
     }
 
 }

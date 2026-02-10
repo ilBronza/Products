@@ -3,27 +3,44 @@
 namespace IlBronza\Products\Http\Controllers\Supplier;
 
 use Carbon\Carbon;
+use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineGroupCreatorHelper;
+use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineItemCreatorHelper;
+use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
 use IlBronza\Products\Models\Orders\Orderrow;
-
+use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Models\Sellables\Supplier;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class SupplierTimelineController extends SupplierCRUD
+class SupplierTimelineController extends BaseTimelineController
 {
 	public $allowedMethods = [
 		'timeline',
 		'container'
 	];
 
+	public function getEndpoint() : string
+	{
+		return $this->getModel()->getKeyedRoute('timeline');
+	}
+
+	public function getButtons() : Collection
+	{
+		return collect();
+	}
+
+	public function getModelClass() : string
+	{
+		return Supplier::gpc();
+	}
+
 	public function container($supplier)
 	{
-		$modelInstance = $this->findModel($supplier);
+		$this->setModel(
+			$this->findModel($supplier)
+		);
 
-		$buttons = [
-		];
-
-		$apiEndpoint = $modelInstance->getKeyedRoute('timeline');
-
-		return view('crud::timeline.timeline', compact( 'apiEndpoint', 'modelInstance', 'buttons'));
+		return $this->returnGanttContainer();
 	}
 
 	public function timeline($supplier)
@@ -32,73 +49,13 @@ class SupplierTimelineController extends SupplierCRUD
 
 		$orderrows = Orderrow::gpc()::with('order', 'sellable.target')->whereIn('sellable_supplier_id', $supplier->sellableSuppliers()->select('id')->pluck('id'))->get();
 
-		$groups = [];
-		$items = [];
+		$sellables = Sellable::gpc()::all();
 
-		$inserted = [];
+		foreach($sellables as $sellable)
+			$this->groups[] = TimelineGroupCreatorHelper::createGroupByModel($sellable);
 
 		foreach($orderrows as $row)
-		{
-			$sellable = $row->getSellable();
+			$this->items[] = TimelineItemCreatorHelper::createItemByModel($row, $row->getSellable());
 
-			if(! ($inserted[$sellable->getKey()] ?? false))
-			{
-				$inserted[$sellable->getKey()] = true;
-
-				$backgroundColor = $sellable->getTarget()?->getCssBackgroundColorValue() ?: '#cccccc';
-				$groupTextColor = $sellable->getTarget()?->getCssTextColorValue() ?: '#000000';
-
-				$groups[] = [
-					'id' => $sellable->getKey(),
-					'content' => $sellable->getName(),
-					'style' => "background-color: {$backgroundColor}; color: {$groupTextColor}",
-					'name' => $sellable->getName(),
-					'className' => 'group-' . Str::slug($sellable->getName())
-				];
-			}
-
-			$startsAt = $row->getStartsAt() ?? $row->getOrder()->getStartsAt() ?? Carbon::now();
-			$endsAt = $row->getEndsAt() ?? $row->getOrder()->getEndsAt() ?? Carbon::now()->addHours(4);
-
-			$links = [];
-
-			$links[] = [
-				'url' => $row->getAssignSellablesupplierUrl(),
-				'target' => 'iframe',
-				'faIcon' => 'shuffle',
-			];
-
-			$links[] = [
-				'url' => $row->getModelContainer()->getGanttUrl(),
-				'target' => 'iframe',
-				'faIcon' => 'magnifying-glass',
-			];
-
-			$links[] = [
-				'url' => $row->getModelContainer()->getGanttUrl(),
-				'target' => '_blank',
-				'faIcon' => 'chart-gantt',
-			];
-
-			$items[] = [
-				'id' => $row->getKey(),
-				//				'link' => $row->getSupplier()?->getGanttUrl(),
-				'links' => $links,
-				'start' => $startsAt->format('Y-m-d\TH:i:s'),
-				'end' => $endsAt->format('Y-m-d\TH:i:s'),
-				'progress' => $row->getCompletionPercentage(),
-				'group' => $sellable->getKey(),
-				'title' => $row->getOrder()?->getName(),
-				'description' => $row->getDescription() ?? '',
-				'className' => $row->getTimelineHtmlClassesString(),
-//				'content' => ($row->getSupplier()?->getName() ?? $row->getSellable()?->getName() ?? 'Row ' . $row->getKey()) . ' (' . $startsAt->format('d-m H:i') . ' - ' . $endsAt->format('d-m H:i') . ')',
-
-			];
-		}
-
-		return [
-			'itemTemplate' => 'operator',
-			'groups' => $groups,
-			'items' => $items,
-		];
+		return $this->sendResponse();
 	}}

@@ -2,36 +2,33 @@
 
 namespace IlBronza\Products\Http\Controllers\Timelines;
 
-use Carbon\Carbon;
+use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
+use IlBronza\CRUD\Traits\Timeline\GlobalTimelineTrait;
 use IlBronza\Products\Models\Orders\Orderrow;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use IlBronza\Products\Models\Sellables\Sellable;
 
-class GlobalSellableTimelineController extends GlobalTimelineController
+class GlobalSellableTimelineController extends BaseTimelineController
 {
+	use GlobalTimelineTrait;
+
 	public function getEndpoint() : string
 	{
 		return app('products')->route('sellables.globalTimeline');
 	}
 
-	public function getRows() : Collection
+	public function getMainTimelineData()
 	{
-		return Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->where('ends_at', '>', Carbon::now()->subDays(14))->get();
-	}
+		$addContainerGantt = true;
 
-	public function getGroupSubject(Orderrow $row) : Model
-	{
-		return $row->getSellable();
-	}
+		$orderrows = Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->get();
 
-	public function getGroupColorByRow(Orderrow $row) : string
-	{
-		return $row->getSellable()?->getTarget()?->getCssBackgroundColorValue() ?? '#cccccc';
-	}
+		$groupItems = Sellable::gpc()::with('target')->get();
 
-	public function getGroupTextColorByRow(Orderrow $row) : string
-	{
-		return $row->getSellable()?->getTarget()?->getCssTextColorValue() ?? $this->calculateTextColorFromBackgroundColor($this->getGroupColorByRow($row));
+		$this->createGroupsByCollection($groupItems);
+
+		$this->createItemsByCollectionAndGetter($orderrows, 'getSellable');
+
+		return $this->sendResponse();
 	}
 
 }

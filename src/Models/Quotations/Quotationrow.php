@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Quotations;
 
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
+use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
@@ -18,7 +19,7 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 	static $deletingRelationships = [];
 	protected $casts = [
 		'starts_at' => 'date',
-		'ends_at' => 'date'
+		'ends_at' => 'date',
 	];
 
 	protected $with = ['sellable'];

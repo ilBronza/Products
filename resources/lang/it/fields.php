@@ -131,5 +131,14 @@ return [
 	'started_at' => 'Iniziato il',
 	'completed_at' => 'Finito il',
 	'workstationLabel' => 'Postazione',
-	'sellable' => 'Bene/servizio'
+	'sellable' => 'Bene/servizio',
+	'calculated_client_price' => 'Prezzo al cliente',
+	'total_cost' => 'Costo totale',
+	'total_price' => 'Prezzo totale cliente',
+	'preset' => 'Preset',
+	'project' => 'Progetto',
+	'quotationrows' => 'Distinte',
+	'date' => 'Data',
+	'served_at_table' => 'Al tavolo'
+
 ];

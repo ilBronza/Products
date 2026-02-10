@@ -297,6 +297,9 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+
+		Route::get('awaiting', [Products::getController('order', 'awaiting'), 'index'])->name('orders.awaiting');
+
 		Route::get('calendar', [Products::getController('order', 'calendar'), 'index'])->name('orders.calendar.index');
 
 		//IlBronza\Products\Http\Controllers\Order\OrderCalendarController

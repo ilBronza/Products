@@ -194,6 +194,17 @@ trait CommonOrderrowQuotationrowTrait
 		return $this->getSellable()->getName();
 	}
 
+	public function getCostCoefficient() : float
+	{
+		return $this->cost_coefficient;
+	}
+
+	public function getCostCoefficientAttribute($value) : float
+	{
+		return $value ?? $this->getModelContainer()?->getCostCoefficient() ?? 1;
+	}
+
+
 	/**
 	 *
 	 * START ADDING ROWS METHODS
