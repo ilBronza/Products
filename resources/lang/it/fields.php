@@ -104,6 +104,7 @@ return [
 	'percentage_gain' => 'Margine %',
 	'round_trip' => 'Andata/Ritorno',
 	'km' => 'Km',
+	'price' => 'Prezzo',
 	'prices' => 'Prezzi',
 	'total_products_cost' => 'Prodotti',
 	'total_products_price' => 'Prodotti',
@@ -139,6 +140,17 @@ return [
 	'project' => 'Progetto',
 	'quotationrows' => 'Distinte',
 	'date' => 'Data',
-	'served_at_table' => 'Al tavolo'
+	'served_at_table' => 'Al tavolo',
+	'cost_coefficient' => 'Coefficiente costi',
+	'total_client_price' => 'Tot',
+	'phases' => 'Fasi',
+	'phases_name' => 'Nome',
+	'phases_sorting_index' => 'Sequenza',
+	'phases_starts_at' => 'Inizio',
+	'phases_ends_at' => 'Fine',
 
+	'people_coefficient' => 'Altri soggetti',
+	'people_coefficient_name' => 'Soggetto',
+	'people_coefficient_quantity' => 'Quantità',
+	'people_coefficient_price_coefficient' => 'Coefficiente costo'
 ];

@@ -48,6 +48,10 @@ class QuotationEditUpdateController extends QuotationCRUD
 		);
 
 		$this->addNavbarButton(
+			$quotation->getPdfButton()
+		);
+
+		$this->addNavbarButton(
 			$quotation->getResetRowsIndexesButton()
 		);
 

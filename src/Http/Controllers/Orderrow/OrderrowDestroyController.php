@@ -13,6 +13,7 @@ class OrderrowDestroyController extends OrderrowCRUD
     public function destroy($orderrow)
     {
         $orderrow = $this->findModel($orderrow);
+        $this->deletedOrderrowOrder = $orderrow->getOrder();
 
         return $this->_destroy($orderrow);
     }

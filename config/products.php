@@ -45,12 +45,13 @@ use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductShowController;
 use IlBronza\Products\Http\Controllers\OrderProduct\ToElaborateByWorkstationOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveByClientOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
-use IlBronza\Products\Http\Controllers\Order\AwaitingOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AllOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AttachClientOperatorsToOrderrowsController;
+use IlBronza\Products\Http\Controllers\Order\AwaitingOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderBulkEditUpdateController;
+use IlBronza\Products\Http\Controllers\Order\OrderPdfController;
 use IlBronza\Products\Http\Controllers\Order\OrderCalendarController;
 use IlBronza\Products\Http\Controllers\Order\OrderChangeClientController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
@@ -74,6 +75,8 @@ use IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowSplitController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowTimelineUpdateController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
 use IlBronza\Products\Http\Controllers\Phase\PhaseCreateStoreByProductController;
@@ -193,6 +196,7 @@ use IlBronza\Products\Http\Controllers\Quotation\QuotationDestinationCreateStore
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestroyController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDuplicateController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationEditUpdateController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationPdfController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationIndexController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationReplicateRowController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationShowController;
@@ -263,6 +267,8 @@ use IlBronza\Products\Providers\Helpers\OrderProductPhases\OrderProductQuantityH
 use IlBronza\Products\Providers\Helpers\OrderProducts\OrderProductCompletionHelper;
 use IlBronza\Products\Providers\Helpers\Orders\OrderCompletionHelper;
 use IlBronza\Products\Providers\Helpers\PriceCreatorHelpers\ProductPricesCreatorHelper;
+use IlBronza\Products\Providers\Helpers\Pdf\OrderPdfHelper;
+use IlBronza\Products\Providers\Helpers\Pdf\QuotationPdfHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
@@ -286,6 +292,13 @@ use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 
 return [
 	'routePrefix' => 'ibProducts',
+
+	'pdf' => [
+		'orderHelper' => OrderPdfHelper::class,
+		'quotationHelper' => QuotationPdfHelper::class,
+		'orderView' => 'products::pdf.order',
+		'quotationView' => 'products::pdf.quotation',
+	],
 
 	'manageDiaries' => false,
 	'manageReimbursements' => false,
@@ -579,6 +592,7 @@ return [
 				'completionHelper' => OrderCompletionHelper::class
 			],
 			'controllers' => [
+				'pdf' => OrderPdfController::class,
 				'bulkEdit' => OrderBulkEditUpdateController::class,
 				'bulkUpdate' => OrderBulkEditUpdateController::class,
 				'changeClient' => OrderChangeClientController::class,
@@ -630,6 +644,7 @@ return [
 			'class' => Orderrow::class,
 			'table' => 'products__orderrows',
 			'controllers' => [
+				'timelineUpdate' => OrderrowTimelineUpdateController::class,
 				'history' => OrderrowHistoryController::class,
 				'reorder' => OrderrowReorderController::class,
 				'assignSellableSupplier' => OrderrowAssignSellableSupplierController::class,
@@ -642,6 +657,8 @@ return [
 				'edit' => OrderrowEditUpdateController::class,
 				'update' => OrderrowEditUpdateController::class,
 				'destroy' => OrderrowDestroyController::class,
+				'confirmDestroy' => OrderrowDestroyController::class,
+				'split' => OrderrowSplitController::class,
 
 				'bulkEdit' => OrderrowBulkEditUpdateController::class
 			],
@@ -794,6 +811,7 @@ return [
 				'changeClient' => OrderChangeClientFieldsetsParameters::class,
 			],
 			'controllers' => [
+				'pdf' => QuotationPdfController::class,
 				'resetQuotationRowsIndexes' => ResetQuotationRowsIndexesController::class,
 				'addQuotationrow' => QuotationAddQuotationrowIndexController::class,
 				'addQuotationrowsByTable' => QuotationAddQuotationrowIndexByTableController::class,
@@ -853,6 +871,17 @@ return [
 			'availableTypes' => [
 				'material',
 				'asset'
+			],
+			'associationRelations' => [
+				'operator' => [
+					'prices',
+					'supplier.target.operatorContracttypes.contracttype',
+					'supplier.target.operatorContracttypes.prices',
+					'supplier.target.validClientOperator.employment',
+					'supplier.target.user.userdata',
+					'supplier.target',
+					'supplier.target.address'
+				]
 			],
 			'helpers' => [
 				'targetCreator' => [

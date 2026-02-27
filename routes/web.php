@@ -51,6 +51,9 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		//QuotationPdfController
+		Route::get('{quotation}/pdf', [Products::getController('quotation', 'pdf'), 'pdf'])->name('quotations.pdf');
+
 		//QuotationResetRowsIndexController
 		Route::get('{quotation}/reset-rows-indexes', [Products::getController('quotation', 'resetQuotationRowsIndexes'), 'resetRowsIndexes'])->name('quotations.resetRowsIndexes');
 
@@ -206,8 +209,8 @@ Route::group([
 
 		Route::delete('{product}/delete', [Products::getController('product', 'destroy'), 'destroy'])->name('products.destroy');
 
-		Route::get('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'reorder'])->name('phases.reorder');
-		Route::post('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'storeReorder'])->name('phases.storeReorder');
+		// Route::get('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'reorder'])->name('phases.reorder');
+		// Route::post('{product}/reorder-phases', [Products::getController('phase', 'reorder'), 'storeReorder'])->name('phases.storeReorder');
 	});
 
 	Route::group(['prefix' => 'packing'], function ()
@@ -312,7 +315,9 @@ Route::group([
 		//OrderTimelineController
 		Route::get('timeline-container/{order}/{option?}', [Products::getController('order', 'timeline'), 'container'])->name('orders.timelineContainer');
 		Route::get('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
-		Route::patch('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'updateRow'])->name('orders.updateRow');
+
+
+		// Route::patch('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'updateRow'])->name('orders.updateRow');
 
 		//OrderCreateController
 		Route::get('create', [Products::getController('order', 'create'), 'create'])->name('orders.create');
@@ -329,6 +334,9 @@ Route::group([
 
 		//OrderFreezeController
 		Route::get('{order}/freeze', [Products::getController('order', 'freeze'), 'freeze'])->name('orders.freeze');
+
+		//OrderPdfController
+		Route::get('{order}/pdf', [Products::getController('order', 'pdf'), 'pdf'])->name('orders.pdf');
 
 		//OrderResetRowsIndexController
 		Route::get('{order}/reset-rows-indexes', [Products::getController('order', 'resetOrderRowsIndexes'), 'resetRowsIndexes'])->name('orders.resetRowsIndexes');
@@ -376,6 +384,13 @@ Route::group([
 
 	Route::group(['prefix' => 'orderrows'], function ()
 	{
+		Route::group(['prefix' => 'timeline'], function ()
+		{
+			Route::put('{orderrow}/update', [
+				Products::getController('orderrow', 'timelineUpdate'),
+				'update'
+			])->name('orderrows.asTimelineItem.update');
+		});
 
 		Route::group(['prefix' => 'custom-orderrows'], function ()
 		{
@@ -414,6 +429,9 @@ Route::group([
 		Route::put('{orderrow}', [Products::getController('orderrow', 'edit'), 'update'])->name('orderrows.update');
 
 		Route::delete('{orderrow}/delete', [Products::getController('orderrow', 'destroy'), 'destroy'])->name('orderrows.destroy');
+		Route::get('{orderrow}/confirm-delete', [Products::getController('orderrow', 'confirmDestroy'), 'confirmDestroy'])->name('orderrows.confirmDestroy');
+
+		Route::get('{orderrow}/split', [Products::getController('orderrow', 'split'), 'store'])->name('orderrows.split');
 
 		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController
 		Route::get('{orderrow}/history', [Products::getController('orderrow', 'history'), 'history'])->name('orderrows.history');

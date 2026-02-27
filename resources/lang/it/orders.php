@@ -12,6 +12,7 @@ return [
 	'freeze' => 'Consolida valori',
 	'resetRowsIndex' => 'Riduci ordinamenti',
 	'changeClient' => 'Cambia cliente',
+	'printPdf' => 'Stampa PDF',
 
 	'attachClientOperatorsToOrderrows' => 'Collega rapporti di lavoro mancanti',
 	'addOperatorRow' => 'Aggiungi operatore',

@@ -11,7 +11,7 @@ class OrderEditUpdateController extends OrderCRUD
 {
 	use CRUDEditUpdateTrait;
 
-	public ?bool $updateEditor = true;
+	public ?bool $updateEditor = false;
 
 	public $allowedMethods = ['edit', 'update'];
 
@@ -43,6 +43,10 @@ class OrderEditUpdateController extends OrderCRUD
 			$this->addNavbarButton(
 				$order->getChangeClientButton()
 			);
+
+		$this->addNavbarButton(
+			$order->getPdfButton()
+		);
 
 			$this->addNavbarButton(
 				$order->getResetRowsIndexesButton()

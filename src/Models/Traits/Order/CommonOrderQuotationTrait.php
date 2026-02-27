@@ -109,6 +109,21 @@ trait CommonOrderQuotationTrait
 		]);
 	}
 
+	public function getPdfUrl() : string
+	{
+		return $this->getKeyedRoute('pdf');
+	}
+
+	public function getPdfButton() : Button
+	{
+		return Button::create([
+			'href' => $this->getPdfUrl(),
+			'text' => 'products::orders.printPdf',
+			'icon' => 'file-pdf',
+			'target' => '_blank',
+		]);
+	}
+
 	public function getChangeClientUrl() : string
 	{
 		return $this->getKeyedRoute('changeClientForm');
@@ -168,7 +183,7 @@ trait CommonOrderQuotationTrait
 
 	public function getCostCoefficientAttribute() : float
 	{
-		if($value = $this->extraFields->cost_coefficient)
+		if($value = $this->extraFields?->cost_coefficient)
 			return $value;
 
 		return $this->getClient()?->getCostCoefficient() ?? 1;
