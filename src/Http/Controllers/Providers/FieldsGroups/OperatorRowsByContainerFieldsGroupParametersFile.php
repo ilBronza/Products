@@ -8,7 +8,6 @@ class OperatorRowsByContainerFieldsGroupParametersFile extends FieldsGroupParame
 {
 	static function getFieldsGroup() : array
 	{
-
 		return [
 			'translationPrefix' => 'products::fields',
             'fields' =>

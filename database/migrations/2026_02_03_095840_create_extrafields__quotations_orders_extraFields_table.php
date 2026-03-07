@@ -20,6 +20,8 @@ return new class extends Migration
             $table->uuid('order_id')->nullable();
             $table->foreign('order_id')->references('id')->on(config('products.models.order.table'));
 
+            $table->decimal('total_proposal', 10, 2)->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

@@ -181,8 +181,11 @@ trait CommonOrderrowQuotationrowTrait
 		return 'tollstandard';
 	}
 
-	public function getDescription() : ? string
+	public function getDescription(int $limit = null) : ? string
 	{
+		if($limit)
+			return mb_strimwidth($this->description, 0, $limit, '...');
+
 		return $this->description;
 	}
 

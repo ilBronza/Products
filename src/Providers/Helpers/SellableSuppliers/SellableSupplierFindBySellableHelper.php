@@ -37,6 +37,9 @@ class SellableSupplierFindBySellableHelper
 	{
 		$sellable = $this->getSellable();
 
+		if($relations = config('products.models.sellable.associationRelations.' . $sellable->getType(), false))
+			return $relations;
+
 		if ($sellable->isContracttype())
 			return $this->getContracttypeRelations();
 
@@ -85,7 +88,7 @@ class SellableSupplierFindBySellableHelper
 	{
 		return $this->getSellable()->sellableSuppliers()->with(
 			$this->getSellableSupplierRelationsByTargetType()
-		)->get();
+		)->get();			
 	}
 
 	static function findBySellable(Sellable $sellable)

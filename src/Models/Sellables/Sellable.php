@@ -246,4 +246,9 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $target->getCssTextColorValue();
 	}
 
+	public function isContracttype() : bool
+	{
+		return $this->getType() == 'operator';
+	}
+
 }

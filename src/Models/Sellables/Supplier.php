@@ -167,10 +167,10 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 	public function getBackgroundColor() : ? string
 	{
 		if(! $target = $this->getTarget())
-			return null;
+			return $this->getBackgroundColorByName();
 
 		if(! method_exists($target, 'getBackgroundColor'))
-			return null;
+			return $this->getBackgroundColorByName();
 
 		return $target->getBackgroundColor();
 	}
@@ -178,7 +178,7 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 	public function getCssTextColorValue()
 	{
 		if(! $target = $this->getTarget())
-			return null;
+			return $this->getBackgroundColorByName();
 
 		if(! method_exists($target, 'getCssTextColorValue'))
 			return null;
@@ -188,6 +188,6 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 
 	public function getCssBackgroundColorValue() : string
 	{
-		return $this->getTarget()->getBackgroundColor();
+		return $this->getTarget()->getBackgroundColor() ?? $this->getTarget()->getBackgroundColorByName();
 	}
 }

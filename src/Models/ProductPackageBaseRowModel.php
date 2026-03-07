@@ -30,6 +30,8 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		'ends_at' => 'date',
 	];
 
+	static $deletingRelationships = [];
+
 	public function getEnd(): ? Carbon
 	{
 		return $this->ends_at;
@@ -165,8 +167,15 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 
 		$result[] = [
 			'url' => $this->getAssignSellablesupplierUrl(),
+			'text' => 'Cambia fornitore',
 			'target' => 'iframe',
 			'faIcon' => 'shuffle',
+		];
+
+		$result[] = [
+			'url' => $this->getModelContainer()->getEditUrl(),
+			'text' => 'Vai alla commessa',
+			'faIcon' => 'link',
 		];
 
 		return $result;
@@ -181,11 +190,13 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 			$rightLinks[] = [
 				'url' => $sellable->getGanttUrl(),
 				'target' => 'iframe',
+				'text' => 'Esamina veloce',
 				'faIcon' => 'magnifying-glass',
 			];
 
 			$rightLinks[] = [
 				'url' => $sellable->getGanttUrl(),
+				'text' => 'Vai alla pagina dedicata',
 				'target' => '_blank',
 				'faIcon' => 'chart-gantt',
 			];

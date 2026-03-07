@@ -12,24 +12,23 @@ use function trans;
 
 class OrderRelationManager Extends RelationshipsManager
 {
-
 	public  function getAllRelationsParameters() : array
 	{
 		$result = [
 			'show' => [
 				'relations' => [
-					// 'operatorRows' => [
-					// 	'controller' => config('products.models.orderrrow.controllers.index'),
-					// 	'selectRowCheckboxes' => true,
+					'operatorRows' => [
+						'controller' => config('products.models.orderrrow.controllers.index'),
+						'selectRowCheckboxes' => true,
 
-					// 	//OperatorRowsByContainerFieldsGroupParametersFile
+						//OperatorRowsByContainerFieldsGroupParametersFile
 
-					// 	'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
-					// 	'translatedTitle' => trans('products::models.operatorRows'),
-					// 	'buttonsMethods' => [
-					// 		'getAddRowButton',
-					// 	]
-					// ],
+						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
+						'translatedTitle' => trans('products::models.operatorRows'),
+						'buttonsMethods' => [
+							'getAddRowButton',
+						]
+					],
 					'productOrderrows' => [
 						'controller' => config('products.models.orderrrow.controllers.index'),
 						'selectRowCheckboxes' => true,

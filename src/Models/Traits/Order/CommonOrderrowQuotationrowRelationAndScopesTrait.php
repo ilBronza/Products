@@ -28,7 +28,14 @@ trait CommonOrderrowQuotationrowRelationAndScopesTrait
 
 	public function supplier()
 	{
-		return $this->hasOneThrough(Supplier::gpc(), SellableSupplier::gpc())->with('target');;
+		return $this->hasOneThrough(
+			Supplier::gpc(),
+			SellableSupplier::gpc(),
+			'id',
+        	'id',
+        	'sellable_supplier_id',
+        	'supplier_id'
+		)->with('target');;
 	}
 
 	public function scopeBySellableTargetIds($query, array|Collection $sellableIds)

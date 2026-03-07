@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>{{ $quotation->getName() ?? 'Preventivo' }}</title>
+	<title>{{ $container->getName() ?? $documentTitleDefault }}</title>
 	<style>
 		body { font-family: DejaVu Sans, sans-serif; font-size: 11px; }
 		table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
@@ -16,17 +16,17 @@
 	</style>
 </head>
 <body>
-	<h1>{{ $quotation->getName() ?? 'Preventivo' }}</h1>
+	<h1>{{ $container->getName() ?? $documentTitleDefault }}</h1>
 
 	<div class="info-block">
-		<strong>Cliente:</strong> {{ $quotation->getClient()?->getName() ?? '-' }}<br>
-		<strong>Destinazione:</strong> {{ $quotation->getDestination()?->getName() ?? '-' }}<br>
-		@if($quotation->getStartsAt())
-			<strong>Periodo:</strong> {{ $quotation->getStartsAt()?->format('d/m/Y') }} - {{ $quotation->getEndsAt()?->format('d/m/Y') ?? '-' }}
+		<strong>Cliente:</strong> {{ $container->getClient()?->getName() ?? '-' }}<br>
+		<strong>Destinazione:</strong> {{ $container->getDestination()?->getName() ?? '-' }}<br>
+		@if($container->getStartsAt())
+			<strong>Periodo:</strong> {{ $container->getStartsAt()?->format('d/m/Y') }} - {{ $container->getEndsAt()?->format('d/m/Y') ?? '-' }}
 		@endif
 	</div>
 
-	@if($operatorQuotationrows->isNotEmpty())
+	@if($operatorRows->isNotEmpty())
 		<h2>@lang('products::models.operatorRows')</h2>
 		<table>
 			<thead>
@@ -39,7 +39,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($operatorQuotationrows as $index => $row)
+				@foreach($operatorRows as $index => $row)
 					<tr>
 						<td>{{ $index + 1 }}</td>
 						<td>{{ $row->getSellableName() ?? '-' }} @if($row->getSupplierName()) - {{ $row->getSupplierName() }} @endif</td>
@@ -52,7 +52,7 @@
 		</table>
 	@endif
 
-	@if($productQuotationrows->isNotEmpty())
+	@if($productRows->isNotEmpty())
 		<h2>@lang('products::models.productOrderrows')</h2>
 		<table>
 			<thead>
@@ -65,7 +65,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($productQuotationrows as $index => $row)
+				@foreach($productRows as $index => $row)
 					<tr>
 						<td>{{ $index + 1 }}</td>
 						<td>{{ $row->getSellableName() ?? '-' }} @if($row->getSupplierName()) - {{ $row->getSupplierName() }} @endif</td>
@@ -78,7 +78,7 @@
 		</table>
 	@endif
 
-	@if($operatorQuotationrows->isEmpty() && $productQuotationrows->isEmpty())
+	@if($operatorRows->isEmpty() && $productRows->isEmpty())
 		<p>Nessuna riga presente.</p>
 	@endif
 </body>

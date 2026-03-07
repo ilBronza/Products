@@ -53,25 +53,25 @@ trait SellableSupplierAssignmentTrait
 		$sellable = $this->getSellable();
 
 		if ($sellable->isContracttype())
-			return ['operatorRows'];
+			return ['operatorrows'];
 
 		else if ($sellable->isVehicleType())
-			return ['vehicleRows'];
+			return ['vehiclerows'];
 
 		else if ($sellable->isSurveillanceType())
-			return ['surveillanceRows'];
+			return ['surveillancerows'];
 
 		else if ($sellable->isHotelType())
-			return ['hotelRows'];
+			return ['hotelrows'];
 
 		else if ($sellable->isRentType())
-			return ['rentRows'];
+			return ['rentrows'];
 
 		else if ($sellable->isControlRoomType())
-			return ['controlRoomRows'];
+			return ['controlroomRows'];
 
 		else if ($sellable->isReimbursementType())
-			return ['reimbursementRows'];
+			return ['reimbursementrows'];
 
 		else
 			throw new Exception('gestire gli altri tipi');

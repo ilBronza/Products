@@ -10,19 +10,27 @@ use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Traits\Calendar\HasCalendarTrait;
+use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
 use IlBronza\Category\Models\Category;
+use IlBronza\Products\Models\Orders\OrderQuotationExtraFields;
 use IlBronza\Products\Models\Sellables\Sellable;
 use function lcfirst;
 
 class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface, CalendarInterface, TimelineGroupInterface, TimelineItemInterface
 {
+	use CRUDModelExtraFieldsTrait;
 	use GanttTimelineTrait;
 	use HasCalendarTrait;
 	use IsTimelineGroupTrait;
 	use IsTimelineItemTrait;
+
+	public function getExtraFieldsClass() : string
+	{
+		return OrderQuotationExtraFields::class;
+	}
 
 	protected $casts = [
 		'date' => 'date',

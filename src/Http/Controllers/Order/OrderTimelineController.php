@@ -103,44 +103,6 @@ class OrderTimelineController extends BaseTimelineController
 		return $this->returnGanttContainer();
 	}
 
-	public function updateRow(Request $request, $order)
-	{
-		$order = $this->findModel($order);
-
-		$placeholder = $order->orderrows()->make();
-
-		$validator = Validator::make($request->all(), [
-			'item.id' => 'required|in:' . $order->rows()->select('id')->pluck('id')->implode(','),
-			'item.start' => [
-				'required',
-				'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/'
-			],
-			'item.end' => [
-				'required',
-				'after:item.start',
-				'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/'
-			],
-		]);
-
-		if($validator->fails())
-			return [
-				'success' => false,
-				'errors' => $validator->errors(),
-			];
-
-		$item = $request->item;
-
-		$orderrow = $order->rows()->where('id', $item['id'])->first();
-
-		$startDate = Carbon::parse($item['start'])->setTimezone(config('app.timezone'));
-		$endDate = Carbon::parse($item['end'])->setTimezone(config('app.timezone'));
-
-		$orderrow->starts_at = $startDate;
-		$orderrow->ends_at = $endDate;
-
-		$orderrow->save();
-	}
-
 	public function getWholeOrderTimelineData($order)
 	{
 		dd('qua ricreare');

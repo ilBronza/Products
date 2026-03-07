@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models\Orders;
 
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Order;
@@ -65,5 +66,40 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 			return 0;
 
 		return rand(0, 100);
+	}
+
+	public function getSplitUrl() : string
+	{
+		return $this->getKeyedRoute('split') . '?closeIframe=1';
+	}
+
+	public function getDeleteUrl(array $data = []) : string
+	{
+		return $this->getKeyedRoute('destroy', $data);
+	}
+
+	public function getTimelineItemRightLinks(? TimelineGroupInterface $groupModel) : array
+	{
+		$rightLinks = parent::getTimelineItemRightLinks($groupModel);
+
+		if ($url = $this->getSplitUrl()) {
+			$rightLinks[] = [
+				'url' => $url,
+				'text' => __('products::orderrows.split'),
+				'faIcon' => 'scissors',
+			];
+		}
+
+		if ($url = $this->getDeleteUrl()) {
+			$rightLinks[] = [
+				'url' => $url,
+				'method' => 'DELETE',
+				'text' => __('products::orderrows.delete'),
+				'faIcon' => 'trash',
+				'htmlClasses' => ['uk-button-danger'],
+			];
+		}
+
+		return $rightLinks;
 	}
 }
