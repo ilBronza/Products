@@ -39,6 +39,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		'starts_at' => 'date',
 		'ends_at' => 'date',
 		'cost_coefficient' => ExtraField::class,
+		'state_id' => ExtraField::class,
 	];
 
 	public function scopeOpened($query)

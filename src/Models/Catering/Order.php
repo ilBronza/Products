@@ -20,8 +20,7 @@ class Order extends IbOrder
 		'ends_at' => 'date',
 		'cost_coefficient' => ExtraField::class,
 		'total_proposal' => ExtraField::class,
-
-
+		'state_id' => ExtraField::class,
 	];
 
 	public function getPossiblePhasesArrayValues() : array

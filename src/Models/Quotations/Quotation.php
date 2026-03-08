@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\Order;
 
+use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Quotation\QuotationRelationshipsTrait;
@@ -24,6 +25,7 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		'ends_at' => 'date',
 
 		'cost_coefficient' => ExtraField::class,
+		'state_id' => ExtraField::class,
 	];
 
 	public function getStoreQuotationrowUrl() : string

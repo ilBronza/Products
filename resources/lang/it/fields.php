@@ -35,6 +35,7 @@ return [
 	'province' => 'Provincia',
 	'region' => 'Regione',
 	'state' => 'Nazione',
+	'state_id' => 'Stato',
 	'quotation_id' => 'Preventivo',
 	'sellableSupplier.supplier.target.name' => 'Fornitore',
 	'order.destination' => 'Destinazione',

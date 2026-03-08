@@ -55,6 +55,10 @@ class QuotationEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'default' => false,
 						'rules' => 'boolean|required'
 					],
+					'state_id' => [
+						'type' => 'text',
+						'rules' => 'string|nullable|uuid',
+					],
 					// 'client' => [
 					//     'type' => 'select',
 					//     'multiple' => false,
