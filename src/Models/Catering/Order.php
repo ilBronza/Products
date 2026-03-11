@@ -24,6 +24,11 @@ class Order extends IbOrder
 		'state_id' => ExtraField::class,
 	];
 
+	public function getEditRelationshipsManagerClass()
+	{
+		return config("products.models." . static::$modelConfigPrefix . ".relationshipsManagerClasses.showCatering");
+	}
+
 	public function getPossiblePhasesArrayValues() : array
 	{
 		return array_column($this->phases, 'name', 'name');

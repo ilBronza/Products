@@ -17,7 +17,7 @@ class OrderEditUpdateController extends OrderCRUD
 
 	public function getRelationshipsManagerClass()
 	{
-		return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.show");
+		return $this->getModel()->getEditRelationshipsManagerClass();
 	}
 
 	public function getGenericParametersFile() : ?string
@@ -43,6 +43,9 @@ class OrderEditUpdateController extends OrderCRUD
 			$this->addNavbarButton(
 				$order->getChangeClientButton()
 			);
+
+		$this->addNavbarButton($order->getPdfButton());
+		$this->addNavbarButton($order->getHtmlPreviewButton());
 
 		$this->addNavbarButton(
 			$order->getPdfButton()

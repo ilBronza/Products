@@ -39,6 +39,25 @@ class ProductOrderrow extends IbProductOrderrow
 			return 0;
 
 		return ceil($quantity * $this->getQuantityCoefficient());
+	}
 
+	public function hasPhase(string $phase) : bool
+	{
+		return $this->phase == $phase;
+	}
+
+	public function hasEmptyPhase() : bool
+	{
+		return ! $this->phase;
+	}
+
+	public function getPdfDescriptionString()
+	{
+		return ucfirst($this->getName());
+	}
+
+	public function getPdfDescriptionCost()
+	{
+		dd($this);
 	}
 }

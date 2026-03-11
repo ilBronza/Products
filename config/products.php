@@ -51,7 +51,6 @@ use IlBronza\Products\Http\Controllers\Order\AwaitingOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderBulkEditUpdateController;
-use IlBronza\Products\Http\Controllers\Order\OrderPdfController;
 use IlBronza\Products\Http\Controllers\Order\OrderCalendarController;
 use IlBronza\Products\Http\Controllers\Order\OrderChangeClientController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
@@ -59,6 +58,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderFreezeController;
 use IlBronza\Products\Http\Controllers\Order\OrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\OrderPdfController;
 use IlBronza\Products\Http\Controllers\Order\OrderReplicateOrderrowController;
 use IlBronza\Products\Http\Controllers\Order\OrderShowController;
 use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
@@ -196,8 +196,8 @@ use IlBronza\Products\Http\Controllers\Quotation\QuotationDestinationCreateStore
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDestroyController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationDuplicateController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationEditUpdateController;
-use IlBronza\Products\Http\Controllers\Quotation\QuotationPdfController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationIndexController;
+use IlBronza\Products\Http\Controllers\Quotation\QuotationPdfController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationReplicateRowController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationShowController;
 use IlBronza\Products\Http\Controllers\Quotation\ResetQuotationRowsIndexesController;
@@ -266,9 +266,9 @@ use IlBronza\Products\Providers\Helpers\OrderProductPhases\OrderProductPhaseUnco
 use IlBronza\Products\Providers\Helpers\OrderProductPhases\OrderProductQuantityHelper;
 use IlBronza\Products\Providers\Helpers\OrderProducts\OrderProductCompletionHelper;
 use IlBronza\Products\Providers\Helpers\Orders\OrderCompletionHelper;
-use IlBronza\Products\Providers\Helpers\PriceCreatorHelpers\ProductPricesCreatorHelper;
 use IlBronza\Products\Providers\Helpers\Pdf\OrderPdfHelper;
 use IlBronza\Products\Providers\Helpers\Pdf\QuotationPdfHelper;
+use IlBronza\Products\Providers\Helpers\PriceCreatorHelpers\ProductPricesCreatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
@@ -278,6 +278,7 @@ use IlBronza\Products\Providers\Helpers\SellableSuppliers\SellableSupplierFindBy
 use IlBronza\Products\Providers\Helpers\Sellables\TargetCreators\MaterialFromSellableCreatorHelper;
 use IlBronza\Products\Providers\Helpers\Suppliers\SupplierBulkCreator;
 use IlBronza\Products\Providers\RelationshipsManagers\AccessoryRelationManager;
+use IlBronza\Products\Providers\RelationshipsManagers\CateringOrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\PhaseRelationManager;
@@ -628,7 +629,8 @@ return [
 				'changeClient' => OrderChangeClientFieldsetsParameters::class,
 			],
 			'relationshipsManagerClasses' => [
-				'show' => OrderRelationManager::class
+				'show' => OrderRelationManager::class,
+				'showCatering' => CateringOrderRelationManager::class
 			],
 			'fieldsGroupsFiles' => [
 				'active' => ActiveOrdersFieldsGroupParametersFile::class,

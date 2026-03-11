@@ -338,6 +338,8 @@ Route::group([
 		//OrderPdfController
 		Route::get('{order}/pdf', [Products::getController('order', 'pdf'), 'pdf'])->name('orders.pdf');
 
+		Route::get('{order}/html', [Products::getController('order', 'html'), 'html'])->name('orders.html');
+
 		//OrderResetRowsIndexController
 		Route::get('{order}/reset-rows-indexes', [Products::getController('order', 'resetOrderRowsIndexes'), 'resetRowsIndexes'])->name('orders.resetRowsIndexes');
 
