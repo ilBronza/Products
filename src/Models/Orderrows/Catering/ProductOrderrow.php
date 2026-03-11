@@ -58,6 +58,6 @@ class ProductOrderrow extends IbProductOrderrow
 
 	public function getPdfDescriptionCost()
 	{
-		dd($this);
+		return number_format($this->getTotalClientPrice(), 2, ',', '&#729;');
 	}
 }

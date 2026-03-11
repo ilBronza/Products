@@ -5,7 +5,7 @@
             @foreach($phases as $phase)
             <li class="el-item ">
                <a class="el-link" href="#{{ Str::slug($phase['name']) }}">
-                  {{ $phase['name'] }}
+                  {{ ucfirst($phase['name']) }}
                </a>
             </li>
             @endforeach
