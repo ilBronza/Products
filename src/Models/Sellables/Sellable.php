@@ -251,4 +251,11 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $this->getType() == 'operator';
 	}
 
+	public function getClientPriceAttribute()
+	{
+		if($priceItem = $this->prices->firstWhere('collection_id', 'client_price'))
+			return $priceItem->price;
+
+		return $this->getTarget()?->getClientPrice();
+	}
 }

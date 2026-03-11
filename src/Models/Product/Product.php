@@ -214,4 +214,17 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 
 		return 1;
 	}
+
+	public function getClientPrice()
+	{
+		return $this->client_price;
+	}
+
+	public function getClientPriceAttribute()
+	{
+		if($priceItem = $this->prices->firstWhere('collection_id', 'client_price'))
+			return $priceItem->price;
+
+		return null;
+	}
 }

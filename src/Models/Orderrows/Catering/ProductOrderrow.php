@@ -10,6 +10,7 @@ class ProductOrderrow extends IbProductOrderrow
 	protected $casts = [
 		'deleted_at' => 'date',
 		'client_price' => ExtraField::class,
+		'inherited_client_price' => ExtraField::class,
 		'company_cost' => ExtraField::class,
 		'confirmed' => ExtraField::class,
 		'forced_client_price' => ExtraField::class,

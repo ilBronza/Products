@@ -318,4 +318,9 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	{
 		return static::query()->select('id')->where('sellable_id', is_string($sellable)? $sellable : $sellable->getKey())->pluck('id');
 	}
+
+	public function getBasePriceAttribute()
+	{
+		return 99887766;
+	}
 }

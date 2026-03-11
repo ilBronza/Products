@@ -593,6 +593,7 @@ return [
 				'completionHelper' => OrderCompletionHelper::class
 			],
 			'controllers' => [
+				'html' => OrderHtmlController::class,
 				'pdf' => OrderPdfController::class,
 				'bulkEdit' => OrderBulkEditUpdateController::class,
 				'bulkUpdate' => OrderBulkEditUpdateController::class,
@@ -813,6 +814,7 @@ return [
 				'changeClient' => OrderChangeClientFieldsetsParameters::class,
 			],
 			'controllers' => [
+				'html' => QuotationHtmlController::class,
 				'pdf' => QuotationPdfController::class,
 				'resetQuotationRowsIndexes' => ResetQuotationRowsIndexesController::class,
 				'addQuotationrow' => QuotationAddQuotationrowIndexController::class,

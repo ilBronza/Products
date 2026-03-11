@@ -242,4 +242,53 @@ trait CommonOrderrowQuotationrowTrait
 	 * END ADDING ROWS METHODS
 	 *
 	 */
+
+	public function getForcedPrice(string $priceField) : ? float
+	{
+		$forced = "forced_{$priceField}";
+
+		return $this->$forced;
+	}
+
+	public function provideInheritedPrice(string $priceField)
+	{
+		$inherited = "inherited_{$priceField}";
+
+		if($this->$inherited)
+			return $this->$inherited;
+
+		$price = null;
+
+		if($sellableSupplier = $this->getSellableSupplier())
+			$price = $sellableSupplier->$priceField;
+
+		elseif($sellable = $this->getSellable())
+			$price = $sellable->$priceField;
+
+		if($price)
+		{
+			$this->$inherited = $price;
+			$this->save();
+		}
+
+		return $price;
+
+		dd($price);
+		dd('qua');
+	}
+
+	public function provideHierarchicalPrice(string $priceField) : ? float
+	{
+		if ($value = $this->getForcedPrice($priceField))
+			return $value;
+
+		return $this->provideInheritedPrice($priceField);
+			return $value;
+
+		if($sellableSupplier = $this->getSellableSupplier())
+			return $sellableSupplier->client_price;
+
+		return $this->getSellable()->client_price;
+
+	}
 }
