@@ -35,7 +35,8 @@ return [
 	'addProductRow' => 'Aggiungi prodotto rapido',
 
 	'invoicing' => [
-		'buyingArchiveByYear' => 'Anno :year'
+		'buyingArchiveByYear' => 'Anno :year',
+		'toAssociate' => 'Da associare'
 	],
 
 	'allOrders' => 'Tutte le commesse',

@@ -12,6 +12,11 @@ trait UsesProductOrderrowTrait
 		return $this->hasMany(ProductOrderrow::gpc());
 	}
 
+	public function getProductRows()
+	{
+		return $this->productOrderrows;
+	}
+
 	public function getAddProductUrl() : string
 	{
 		return $this->getAddRowByTypeUrl('Product');

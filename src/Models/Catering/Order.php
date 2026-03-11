@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models\Catering;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\FormField\Casts\JsonFieldCast;
 use IlBronza\Products\Models\Order as IbOrder;
+use Illuminate\Support\Collection;
 
 class Order extends IbOrder
 {
@@ -45,5 +46,10 @@ class Order extends IbOrder
 		}
 
 		return null;
+	}
+
+	public function getPhasesList() : Collection
+	{
+		return collect($this->phases);
 	}
 }
