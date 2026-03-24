@@ -88,7 +88,11 @@ trait CommonOrderQuotationTrait
 	{
 		$possibleValues = $this->possibleDestinations;
 
-		return $possibleValues->pluck('name', 'id')->toArray();
+		$venues = Destination::gpc()::venue()->get();
+
+		$result = $venues->merge($possibleValues);
+
+		return $result->pluck('name', 'id')->toArray();
 	}
 
 	public function getChangeClientButton() : Button

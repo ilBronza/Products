@@ -294,6 +294,11 @@ use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 return [
 	'routePrefix' => 'ibProducts',
 
+	'filament' => [
+		'enabled' => true,
+		'plugin' => \IlBronza\Products\Filament\ProductsPlugin::class,
+	],
+
 	'pdf' => [
 		'orderHelper' => OrderPdfHelper::class,
 		'quotationHelper' => QuotationPdfHelper::class,
@@ -583,6 +588,18 @@ return [
 			'canHaveChildren' => false,
 			'hasGantt' => false,
 			'hasCalendar' => true,
+			'possibleRowTypes' => [
+				'productRows',
+				'operatorRows'
+			],
+			'buttons' => [
+				'freeze' => false,
+				'attachClientOperatorsToOrderrows' => false,
+				'resetRowsIndexesButton' => false,
+				'htmlPreviewButton' => false,
+				'pdfButton' => false,
+				'changeClient' => false
+			],
 			'calendar' => [
 				'colors' => [
 					'ok' => 'green'

@@ -39,30 +39,27 @@ class OrderEditUpdateController extends OrderCRUD
 				$order->getCalendarButton()
 			);
 
-		if (! $order->isFrozen())
-			$this->addNavbarButton(
-				$order->getChangeClientButton()
-			);
+		if(config('products.models.order.buttons.changeClient'))
+			if (! $order->isFrozen())
+				$this->addNavbarButton(
+					$order->getChangeClientButton()
+				);
 
-		$this->addNavbarButton($order->getPdfButton());
-		$this->addNavbarButton($order->getHtmlPreviewButton());
+		if(config('products.models.order.buttons.pdfButton'))
+			$this->addNavbarButton($order->getPdfButton());
 
-		$this->addNavbarButton(
-			$order->getPdfButton()
-		);
+		if(config('products.models.order.buttons.htmlPreviewButton'))
+			$this->addNavbarButton($order->getHtmlPreviewButton());
 
-			$this->addNavbarButton(
-				$order->getResetRowsIndexesButton()
-			);
+		if(config('products.models.order.buttons.resetRowsIndexesButton'))
+			$this->addNavbarButton($order->getResetRowsIndexesButton());
 
-			$this->addNavbarButton(
-				$order->getAttachClientOperatorsToOrderrowsButton()
-			);
+		if(config('products.models.order.buttons.attachClientOperatorsToOrderrows'))
+			$this->addNavbarButton($order->getAttachClientOperatorsToOrderrowsButton());
 
-		if (! $order->isFrozen())
-			$this->addNavbarButton(
-				$order->getFreezeButton()
-			);
+		if(config('products.models.order.buttons.freeze'))
+			if (! $order->isFrozen())
+				$this->addNavbarButton($order->getFreezeButton());
 
 		return $this->_edit($order);
 	}

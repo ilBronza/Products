@@ -310,4 +310,18 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->getEndsAt() ?? Carbon::now()->addHours(4);
 	}
 
+	public function getPossibleRowsTypes()
+	{
+		return config('products.models.' . $this::$modelConfigPrefix . '.possibleRowTypes');
+	}
+
+	public function getTotalClientPrice()
+	{
+		$total = 0;
+
+		foreach($this->getPossibleRowsTypes() as $rowTypes)
+			$total += $this->$rowTypes->sum('total_client_price');
+
+		return $total;
+	}
 }

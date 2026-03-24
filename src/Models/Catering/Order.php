@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Catering;
 
 use IlBronza\CRUD\Models\Casts\ExtraField;
+use IlBronza\Category\Models\Category;
 use IlBronza\FormField\Casts\JsonFieldCast;
 use IlBronza\Products\Models\Order as IbOrder;
 use Illuminate\Support\Collection;
@@ -23,6 +24,15 @@ class Order extends IbOrder
 		'total_proposal' => ExtraField::class,
 		'state_id' => ExtraField::class,
 	];
+
+	public function getPossibleCategoriesValuesArray() : array
+	{
+		$category = Category::gpc()::where('name', config('products.models.order.baseCategoryName', 'Tipologia Commesse'))->first();
+
+		return $category->getElementsFlatTree()->filter(function($item) use($category) {
+			return $item->getKey() != $category->getKey();
+		})->pluck('name', 'id')->toArray();
+	}
 
 	public function getEditRelationshipsManagerClass()
 	{
@@ -56,5 +66,30 @@ class Order extends IbOrder
 	public function getPhasesList() : Collection
 	{
 		return collect($this->phases);
+	}
+
+	public function getCategoryName() : string
+	{
+		if($category = $this->getCategory())
+			return $category->getName();
+
+		return 'Catering';
+	}
+
+	public function getBaseQuantity() : ? float
+	{
+		return $this->base_quantity;
+	}
+
+	public function getAllergensList() : Collection
+	{
+		$result = collect();
+
+		$productRows = $this->getProductRows();
+
+		foreach($productRows as $productRow)
+			$result = $result->merge($productRow->getSellable()?->getTarget()?->getAllergensList());
+
+		return $result->unique();
 	}
 }

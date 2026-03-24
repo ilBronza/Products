@@ -153,5 +153,7 @@ return [
 	'people_coefficient' => 'Altri soggetti',
 	'people_coefficient_name' => 'Soggetto',
 	'people_coefficient_quantity' => 'Quantità',
-	'people_coefficient_price_coefficient' => 'Coefficiente costo'
+	'people_coefficient_price_coefficient' => 'Coefficiente costo',
+	'phase' => 'Fase',
+	'quotation_description' => 'Descrizione in preventivo'
 ];
