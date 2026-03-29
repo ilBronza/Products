@@ -8,7 +8,7 @@ use IlBronza\Ukn\Ukn;
 
 
 Route::group([
-	'middleware' => ['web', 'auth', 'role:client|superadmin'],
+	'middleware' => ['web', 'auth', 'products.roles'],
 	'prefix' => 'products-client-area',
 	'as' => config('products.routePrefix') . '.clients.'
 ], function ()
@@ -27,7 +27,7 @@ Route::group([
 });
 
 Route::group([
-	'middleware' => ['web', 'auth', 'role:superadmin|administrator|products|worker'],
+	'middleware' => ['web', 'auth', 'products.roles'],
 	'prefix' => 'products-management',
 	'as' => config('products.routePrefix')
 ], function ()

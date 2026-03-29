@@ -297,6 +297,36 @@ use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 return [
 	'routePrefix' => 'ibProducts',
 
+	'defaultRoles' => [
+		'superadmin',
+		'administrator',
+		'products',
+		'worker',
+	],
+
+	'routeRoles' => [
+		'ibProducts.clients.orders.index' => [
+			'client',
+			'superadmin',
+		],
+		'ibProducts.clients.orderProducts.index' => [
+			'client',
+			'superadmin',
+		],
+		'ibProducts.clients.orderProducts.update' => [
+			'client',
+			'superadmin',
+		],
+		'ibProducts.clients.products.index' => [
+			'client',
+			'superadmin',
+		],
+		'ibProducts.clients.products.update' => [
+			'client',
+			'superadmin',
+		],
+	],
+
 	'filament' => [
 		'enabled' => true,
 		'plugin' => \IlBronza\Products\Filament\ProductsPlugin::class,
