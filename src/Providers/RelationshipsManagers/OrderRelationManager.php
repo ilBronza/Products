@@ -42,6 +42,16 @@ class OrderRelationManager Extends RelationshipsManager
 							'getAddRowTableButton',
 						]
 					],
+					'vehicleRows' => [
+						'controller' => config('products.models.orderrrow.controllers.index'),
+						'selectRowCheckboxes' => true,
+						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.vehicleOrderrow'),
+						'translatedTitle' => trans('products::models.vehicleRows'),
+						'buttonsMethods' => [
+							'getAddRowButton',
+							'getAddRowTableButton',
+						]
+					],
 					// 'parent' => [
 					// 	'controller' => config('products.models.order.controllers.show'),
 					// 	'translatedTitle' => trans('products::models.parentOrder'),

@@ -3,4 +3,5 @@
 return [
 	'mySelfChangeSellableSupplier' => 'Cambia',
 	'mySelfAssignBulk' => 'Assegna servizio a fornitore',
+	'pricesList' => 'Costi'
 ];

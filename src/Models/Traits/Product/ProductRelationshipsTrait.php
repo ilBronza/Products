@@ -116,6 +116,11 @@ trait ProductRelationshipsTrait
 		return $this->hasMany(AccessoryProduct::gpc());
 	}
 
+	public function getProducts() : Collection
+	{
+		return $this->products;
+	}
+
 	public function products()
 	{
 		return $this->descendants();

@@ -109,7 +109,7 @@
                      <nav class="uk-navbar" uk-navbar="{&quot;align&quot;:&quot;left&quot;,&quot;container&quot;:&quot;.tm-header &gt; [uk-sticky]&quot;,&quot;boundary&quot;:&quot;.tm-header .uk-navbar-container&quot;}">
                         <div class="uk-navbar-left ">
                            <a href="https://demo.yootheme.com/joomla/themes/kojiro/" aria-label="Back to home" class="uk-logo uk-navbar-item">
-                           <img src="/demo/kojiro/images/logo.svg" width="103" height="110" alt="Kojiro"><img class="uk-logo-inverse" src="/demo/kojiro/images/logo-inverted.svg" width="103" height="110" alt="Kojiro"></a>
+                           <img src="{{ app('uikittemplate')->getLogoUrl() }}" width="103" height="110" alt="{{ app('uikittemplate')->getAppName() }}"><img class="uk-logo-inverse" src="{{ app('uikittemplate')->getLogoUrl() }}" width="103" height="110" alt="{{ app('uikittemplate')->getAppName() }}"></a>
                         </div>
                         <div class="uk-navbar-right">
                            <div class="uk-navbar-item" id="module-110">
@@ -138,7 +138,7 @@
                         <div class="uk-grid-margin uk-grid tm-grid-expand uk-grid-column-large uk-height-1-1" uk-grid>
                            <div class="uk-flex uk-flex-column uk-width-1-2@s uk-visible@l">
                               <div class="uk-flex-1 uk-flex uk-margin uk-visible@l">
-                                 <img class="el-image" style="aspect-ratio: auto;" src="azienda.jpg" alt="Azienda" loading="lazy" width="1210" height="1000">    
+                                 <img class="el-image" style="aspect-ratio: auto;" src="{{ app('uikittemplate')->getLogoUrl() }}" alt="Azienda" loading="lazy" width="1210" height="1000">    
                               </div>
                            </div>
                            <div class="uk-grid-item-match uk-flex-middle uk-width-1-4@s">
@@ -216,7 +216,16 @@
                <div class="uk-grid-margin uk-grid tm-grid-expand uk-child-width-1-1">
                   <div class="uk-width-1-1">
                      <div class="uk-position-z-index uk-tile uk-padding-remove" uk-height-viewport="offset-top: !*;" uk-sticky="end: !.uk-section;">
-                        <video src="/demo/kojiro/images/home-hero-bg.mp4" playsinline loop muted preload="none" width="2560" uk-cover></video>
+                        <picture>
+                           @if($url = $destination?->getFirstMediaUrl('emotional_image'))
+                              <img src="{{ $url }}" uk-cover>
+
+                           <div class="uk-panel uk-width-1-1">            
+                           </div>
+                           @endif
+
+                        </picture>
+                        {{-- <video src="/demo/kojiro/images/home-hero-bg.mp4" playsinline loop muted preload="none" width="2560" uk-cover></video> --}}
                         <div class="uk-panel uk-width-1-1">            
                         </div>
                      </div>
@@ -227,17 +236,11 @@
                      <div class="uk-height-viewport uk-panel uk-flex uk-flex-middle">
                         <div class="uk-panel uk-width-1-1">
                            <div class="uk-position-relative uk-margin-small uk-width-xlarge uk-margin-auto uk-text-left@l uk-text-center" uk-parallax="scale: 0.5; opacity: 1,0,0; blur: 50; easing: 0; start: 55vh + 50%" style="z-index: 1;">
-                              <img class="el-image" src="/demo/kojiro/images/home-hero-02.svg" alt width="180" height="62">    
+                              <img class="el-image" src="{{ app('uikittemplate')->getLogoUrl() }}" alt="{{ app('uikittemplate')->getAppName() }}">
                            </div>
                            <h1 class="uk-heading-2xlarge uk-position-relative uk-margin-remove-top uk-text-center uk-visible@s" uk-parallax="scale: 0.5; opacity: 1,0,0; blur: 50; easing: 0; start: 55vh + 50%" style="z-index: 1;">
-                              KOJIRŌ        
+                              {{ $container->getClient()->getName() }}        
                            </h1>
-                           <h1 class="uk-heading-xlarge uk-position-relative uk-margin-remove-top uk-text-center uk-hidden@s" uk-parallax="scale: 0.5; opacity: 1,0,0; blur: 50; easing: 0; start: 50vh + 50%" style="z-index: 1;">
-                              KOJIRŌ        
-                           </h1>
-                           <div class="uk-position-absolute uk-width-1-1 uk-text-center" id="page#0" uk-parallax="y: -80; scale: 0.5; rotate: -30; opacity: 1,0,0; blur: 50; easing: 0; start: 50vh + 50%" style="top: 50%; z-index: 0;" uk-scrollspy="target: [uk-scrollspy-class];">
-                              <img class="el-image uk-text-primary" src="/demo/kojiro/images/home-hero-01.svg" alt width="530" height="528" uk-svg>    
-                           </div>
                         </div>
                      </div>
                   </div>
@@ -245,20 +248,16 @@
                <div class="uk-container uk-container-expand uk-margin-remove-vertical" id="page#4">
                   <div class="uk-grid tm-grid-expand uk-child-width-1-1">
                      <div class="uk-light uk-width-1-1">
+                        @foreach($pieces = explode('<br />', $container->description) as $piece)
                         <div class="uk-heading-xlarge uk-text-center" uk-parallax="scale: 0.5; opacity: 1,0; blur: 50; easing: 0; start: 55vh + 50%">
-                           Tradi&shy;tional.        
+                           {{ $piece }}
                         </div>
-                        <div class="uk-heading-xlarge uk-text-center" uk-parallax="scale: 0.5; opacity: 1,0; blur: 50; easing: 0; start: 55vh + 50%">
-                           Regio&shy;nal.        
-                        </div>
-                        <div class="uk-heading-xlarge uk-text-center" id="page#2" uk-parallax="scale: 0.5; opacity: 1,0; blur: 50; easing: 0; start: 55vh + 50%">
-                           Authen&shy;tic.        
-                        </div>
+                        @endforeach
                         <div class="uk-h1 uk-margin-xlarge-top uk-margin-remove-bottom uk-text-center" uk-parallax="scale: 0.5; opacity: 1,0; blur: 50; easing: 0; start: 55vh + 50%">
-                           Opening Hours        
+                           Data evento        
                         </div>
                         <div class="uk-margin-small uk-text-center" id="page#3" uk-parallax="scale: 0.5; opacity: 1,0; blur: 50; easing: 0; start: 55vh + 50%">
-                           Tuesday - Sunday: <br class="uk-hidden@s">11 am - 3 pm | 5 pm - 11 pm        
+                           {{ $container->getStartsAt()?->format('d-m-Y H:i') }}
                         </div>
                      </div>
                   </div>
@@ -270,23 +269,60 @@
                      <div class="js-sticky uk-width-1-1">
                         <div class="uk-panel uk-position-z-index" uk-sticky="offset: 50vh - 50%; end: !.js-sticky; media: @s;">
                            <div class="uk-panel uk-margin-remove-first-child uk-margin uk-width-large uk-margin-auto uk-text-center" uk-parallax="opacity: 1,0; blur: 50; easing: 0; media: @m; target: !.tm-grid-expand&gt;*; start: 55vh; end: 100vh">
-                              <h2 class="el-title uk-heading-large uk-margin-top uk-margin-remove-bottom">                        Our <span class="uk-text-primary">Menu</span>                    </h2>
-                              <div class="el-content uk-panel uk-text-large uk-margin-top">Sed lorem ipsum dolor sit amet consetetur sadipscing elitr, sed lorem ipsum dolor sit amet consetetur sadipscing elitr</div>
+                              <h2 class="el-title uk-heading-large uk-margin-top uk-margin-remove-bottom">
+
+                              {{ $container->getName() }} <span class="uk-text-primary">{{ $container->getCategoryName() }}</span>
+                           </h2>
+                              <div class="el-content uk-panel uk-text-large uk-margin-top">
+                                 @lang('products::catering.orders.baseQuantity', ['quantity' => $container->getBaseQuantity()])
+
+                                 @foreach($container->people_coefficient as $peopleCoefficient)
+
+                                 <br />
+
+                                 {{ $peopleCoefficient['quantity'] }} {{ $peopleCoefficient['name'] }}
+
+                                 @endforeach
+                              </div>
                            </div>
                         </div>
                      </div>
                   </div>
                   <div class="uk-grid-margin uk-grid tm-grid-expand uk-grid-column-collapse" uk-grid id="page#6">
+                     @foreach([
+                        [
+                           'title' => 'Ingredienti<br />di prima qualità',
+                           'image' => 'https://geg.test/storage/1/0/0/1/1001_default.jpg',
+                           'href' => 'https://www.geggastronomia.it/ingredienti-e-fornitori',
+                           'subtitle' => 'Scopri di più'
+                        ],
+                        [
+                           'title' => 'Allestimenti e<br />location ricercati',
+                           'image' => 'https://geg.test/storage/1/0/0/1/1001_default.jpg',
+                           'href' => 'https://www.geggastronomia.it/ingredienti-e-fornitori',
+                           'subtitle' => 'Scopri di più'
+                        ],
+                        [
+                           'title' => 'Velocità,<br />versatilità<br />e competenza',
+                           'image' => 'https://geg.test/storage/1/0/0/1/1001_default.jpg',
+                           'href' => 'https://www.geggastronomia.it/ingredienti-e-fornitori',
+                           'subtitle' => 'Scopri di più'
+                        ]] as $parameters)
+
                      <div class="uk-width-1-3@s">
                         <div class="uk-position-z-index uk-panel" uk-sticky="offset: 50vh - 50%; end: !.uk-section;">
-                           <div class="uk-light uk-margin uk-text-center" uk-parallax="x: 100vw,0,0,-100vw; y: 0 68%,-1200; opacity: 1 70%,0; blur: 0 70%,100; easing: 0; media: @s; target: !.uk-section; start: 62vh">
-                              <a class="uk-transition-toggle uk-inline-clip uk-link-toggle" href="/joomla/themes/kojiro/lunch">
-                                 <img class="el-image uk-transition-scale-up uk-transition-opaque" src="buffet.jpg" alt="Buffet" loading="lazy" width="840" height="1149">
+                           <div class="uk-light uk-margin uk-text-center" uk-parallax="x: 100vw,0,0,-100vw; y: 0 68%,-1200; opacity: 1 70%,0; blur: 0 70%,100; easing: {{ (($loop->index + 1) / 10) }}; media: @s; target: !.uk-section; start: 62vh">
+                              <a
+                                 target="_blank"
+                                 class="uk-transition-toggle uk-inline-clip uk-link-toggle" 
+                                 href="{{ $parameters['href'] }}">
+                                 <img class="el-image uk-transition-scale-up uk-transition-opaque" src="{{ $parameters['image'] }}" alt="Buffet" loading="lazy" width="840" height="1149">
                                  <div class="uk-position-top">
                                     <div class="uk-panel uk-padding-large uk-margin-remove-first-child">
-                                       <div class="el-title uk-heading-medium uk-margin-top uk-margin-remove-bottom">        Lunch    </div>
+                                       <div class="el-title uk-heading-medium uk-margin-top uk-margin-remove-bottom">   {!! $parameters['title'] !!}
+                                       </div>
                                        <div class="uk-margin-small-top">
-                                          <div class="el-link uk-button uk-button-text uk-button-large">View Menu</div>
+                                          <div class="el-link uk-button uk-button-text uk-button-large">{{ $parameters['subtitle'] }}</div>
                                        </div>
                                     </div>
                                  </div>
@@ -294,40 +330,8 @@
                            </div>
                         </div>
                      </div>
-                     <div class="uk-width-1-3@s">
-                        <div class="uk-position-z-index uk-panel" uk-sticky="offset: 50vh - 50%; end: !.uk-section;">
-                           <div class="uk-light uk-margin uk-text-center" uk-parallax="x: 100vw,0,0,-100vw; y: 0 68%,-1200; opacity: 1 70%,0; blur: 0 70%,100; easing: 0.1; media: @s; target: !.uk-section; start: 68vh">
-                              <a class="uk-transition-toggle uk-inline-clip uk-link-toggle" href="/joomla/themes/kojiro/dinner">
-                                 <img class="el-image uk-transition-scale-up uk-transition-opaque" src="caffe.jpeg" alt="Caffè" loading="lazy" width="840" height="1149">
-                                 <div class="uk-position-top">
-                                    <div class="uk-panel uk-padding-large uk-margin-remove-first-child">
-                                       <div class="el-title uk-heading-medium uk-margin-top uk-margin-remove-bottom">        Dinner    </div>
-                                       <div class="uk-margin-small-top">
-                                          <div class="el-link uk-button uk-button-text uk-button-large">View Menu</div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="uk-width-1-3@s">
-                        <div class="uk-position-z-index uk-panel" uk-sticky="offset: 50vh - 50%; end: !.uk-section;">
-                           <div class="uk-light uk-margin uk-text-center" uk-parallax="x: 100vw,0,0,-100vw; y: 0 68%,-1200; opacity: 1 70%,0; blur: 0 70%,100; easing: 0.2; media: @s; target: !.uk-section; start: 68vh">
-                              <a class="uk-transition-toggle uk-inline-clip uk-link-toggle" href="/joomla/themes/kojiro/drinks">
-                                 <img class="el-image uk-transition-scale-up uk-transition-opaque" src="home-menu-03.png" alt="Menu" loading="lazy" width="840" height="1149">
-                                 <div class="uk-position-top">
-                                    <div class="uk-panel uk-padding-large uk-margin-remove-first-child">
-                                       <div class="el-title uk-heading-medium uk-margin-top uk-margin-remove-bottom">        Drinks    </div>
-                                       <div class="uk-margin-small-top">
-                                          <div class="el-link uk-button uk-button-text uk-button-large">View Menu</div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </a>
-                           </div>
-                        </div>
-                     </div>
+                     @endforeach
+
                   </div>
                </div>
             </div>
@@ -337,15 +341,17 @@
                      <div class="uk-grid-item-match uk-flex-middle uk-width-1-2@s">
                         <div class="uk-panel uk-width-1-1">
                            <div class="uk-panel uk-margin-remove-first-child uk-position-relative uk-margin uk-width-large" style="z-index: 1;" uk-scrollspy="target: [uk-scrollspy-class];">
-                              <h2 class="el-title uk-heading-large uk-margin-top uk-margin-remove-bottom">                        About Us                    </h2>
-                              <div class="el-content uk-panel uk-text-large uk-margin-medium-top">Lorem ipsum dolor sit amet, consetetur sadip scing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores.</div>
-                              <div class="uk-margin-large-top"><a href="/joomla/themes/kojiro/about" class="el-link uk-button uk-button-text">Read more</a></div>
+                              <h2 class="el-title uk-heading-large uk-margin-top uk-margin-remove-bottom">
+                                 Termini e condizioni
+                              </h2>
+                              <div class="el-content uk-panel uk-text-large uk-margin-medium-top">Le immagini sono a puro scopo illustrativo. Con l\'accettazione dell\'ordine si accettano incondizionatamente le condizioni e i termini di pagamento.</div>
+                              <div class="uk-margin-large-top"><a href="https://www.geggastronomia.it/termini-di-accettazione-preventivo" class="el-link uk-button uk-button-text">Leggi i termini e le condizioni completi</a></div>
                            </div>
                         </div>
                      </div>
                      <div class="uk-width-1-2@s">
                         <div class="uk-margin" uk-parallax="y: 100,-100; opacity: 1 70%,0; blur: 0 70%,100; easing: 0; media: @s; start: 50vh">
-                           <img class="el-image" src="chi_siamo.jpg" alt="Chi siamo" loading="lazy" width="580" height="793">    
+                           <img class="el-image" src="{{ app('uikittemplate')->getLogoUrl() }}" alt="Chi siamo" loading="lazy" height="100">    
                         </div>
                      </div>
                   </div>

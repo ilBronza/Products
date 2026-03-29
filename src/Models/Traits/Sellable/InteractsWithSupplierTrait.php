@@ -14,7 +14,12 @@ use IlBronza\Ukn\Ukn;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Collega un modello fornitore (morph su products_suppliers) a Supplier, SellableSupplier, righe ordine/preventivo.
+ * Scope withSupplierId + live_supplier_id: stessi criteri morph (target_id / target_type) del Supplier.
+ */
 trait InteractsWithSupplierTrait
 {
 	abstract public function getPossibleSellables() : Collection;
@@ -42,7 +47,7 @@ trait InteractsWithSupplierTrait
 		if($this->supplier)
 			return $this->supplier;
 
-		dd('qua lo creiamo se manca? come in Operator di One TV');
+		dd('Supplier assente: definire creazione da target (vedi Operator / One TV).');
 
 		$supplier = SupplierCreatorHelper::createSupplierFromTarget($this);
 
@@ -138,7 +143,17 @@ trait InteractsWithSupplierTrait
 		});
 	}
 
-	public function getSellableSuppliersRelationsManagerController()
+	public function getQuotationrowsBySupplierRelationsManagerController() : string
+	{
+		return config('products.models.quotationrow.controllers.index');		
+	}
+
+	public function getOrderrowsBySupplierRelationsManagerController() : string
+	{
+		return config('products.models.orderrow.controllers.index');		
+	}
+
+	public function getSellableSuppliersBySupplierRelationsManagerController() : string
 	{
 		return config('products.models.sellableSupplier.controllers.index');
 	}
@@ -158,13 +173,68 @@ trait InteractsWithSupplierTrait
 		return $sellableSuppliers;
 	}
 
+	public function eagerLoadOrderrowsRelation(string $type = null) : Collection
+	{
+		if(($this->orderrows ?? false)&&(count($this->orderrows)))
+			return $this->orderrows;
+
+		if($type)
+			$orderrows = $this->getSupplier()?->getOrderrowsByType($type);
+		else
+			$orderrows = $this->getSupplier()?->getOrderrows();
+
+		$this->setRelation('orderrows', $orderrows);
+
+		return $orderrows;
+	}
+
+	public function eagerLoadQuotationrowsRelation(string $type = null) : Collection
+	{
+		if(($this->quotationrows ?? false)&&(count($this->quotationrows)))
+			return $this->quotationrows;
+
+		if($type)
+			$quotationrows = $this->getSupplier()?->getQuotationrowsByType($type);
+		else
+			$quotationrows = $this->getSupplier()?->getQuotationrows();
+
+		$this->setRelation('quotationrows', $quotationrows);
+
+		return $quotationrows;
+	}
+
+	public function getQuotationrowsBySupplierRelationsManagerFieldsGroupsParametersFile(string $type = null) : string
+	{
+		if(! $type)
+			$type = $this->getModelConfigPrefix();
+
+		$key = static::getPackageConfigPrefix() . '.models.quotationrow.fieldsGroupsFiles.index';
+		if(! $result = config($key))
+			dd($key);
+
+		return $result;
+	}
+
+	public function getOrderrowsBySupplierRelationsManagerFieldsGroupsParametersFile(string $type = null) : string
+	{
+		if(! $type)
+			$type = $this->getModelConfigPrefix();
+
+		$key = static::getPackageConfigPrefix() . '.models.orderrow.fieldsGroupsFiles.index';
+
+		if(! $result = config($key))
+			dd($key);
+
+		return $result;
+	}
+
 	public function getSellableSuppliersBySupplierRelationsManagerFieldsGroupsParametersFile(string $type = null) : string
 	{
 		if(! $type)
 			$type = $this->getModelConfigPrefix();
 
-		if(! $result = config("products.models.sellableSupplier.fieldsGroupsFiles.relatedByType.{$type}"))
-			dd("Manca products.models.sellableSupplier.fieldsGroupsFiles.relatedByType.{$type}");
+		if(! $result = config("products.models.sellableSupplier.fieldsGroupsFiles.relatedBySupplier.{$type}"))
+			dd("products.models.sellableSupplier.fieldsGroupsFiles.relatedBySupplier.{$type}");
 
 		return $result;
 	}
@@ -174,8 +244,46 @@ trait InteractsWithSupplierTrait
 		$this->eagerLoadSellableSuppliersRelation($type);
 
 		return [
-			'controller' => $this->getSellableSuppliersRelationsManagerController(),
+			'controller' => $this->getSellableSuppliersBySupplierRelationsManagerController(),
 			'fieldsGroupsParametersFile' => $this->getSellableSuppliersBySupplierRelationsManagerFieldsGroupsParametersFile($type),
 		];
+	}
+
+	public function getQuotationrowsBySupplierRelationsManagerParameters(string $type = null)
+	{
+		$this->eagerLoadQuotationrowsRelation($type);
+
+		$todo = trans('products::models.relationsManagerRelatedModelTodo');
+		Log::info($todo);
+		if(\Auth::id() == 1)
+			Ukn::w($todo);
+
+		return [
+			'controller' => $this->getQuotationrowsBySupplierRelationsManagerController(),
+			'fieldsGroupsParametersFile' => $this->getQuotationrowsBySupplierRelationsManagerFieldsGroupsParametersFile($type),
+			'relationType' => 'HasMany',
+			'relatedModelClass' => Quotationrow::gpc(),
+			'relatedModel' => Quotationrow::gpc()::make(),
+			'translatedTitle' => trans('products::models.productQuotationrowsBySellable'),
+		];		
+	}
+
+	public function getOrderrowsBySupplierRelationsManagerParameters(string $type = null)
+	{
+		$this->eagerLoadOrderrowsRelation($type);
+
+		$todo = trans('products::models.relationsManagerRelatedModelTodo');
+		Log::info($todo);
+		if(\Auth::id() == 1)
+			Ukn::w($todo);
+
+		return [
+			'controller' => $this->getOrderrowsBySupplierRelationsManagerController(),
+			'fieldsGroupsParametersFile' => $this->getOrderrowsBySupplierRelationsManagerFieldsGroupsParametersFile($type),
+			'relationType' => 'HasMany',
+			'relatedModelClass' => Orderrow::gpc(),
+			'relatedModel' => Orderrow::gpc()::make(),
+			'translatedTitle' => trans('products::models.productOrderrowsBySellable'),
+		];		
 	}
 }

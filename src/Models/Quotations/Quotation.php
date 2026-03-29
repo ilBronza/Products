@@ -44,6 +44,11 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		]);
 	}
 
+	public function getAddRowByTypeUrl(string $type, bool $table = false) : string
+	{
+		return $this->getAddQuotationrowByTypeUrl($type, $table);
+	}
+
 	public function getConvertToOrderUrl() : string
 	{
 		return $this->getKeyedRoute('convertToOrder', [

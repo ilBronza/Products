@@ -227,4 +227,10 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 
 		return null;
 	}
+
+	public function getSellableSupplierIndexRelations() : array
+	{
+		return [
+		];
+	}
 }

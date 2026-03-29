@@ -151,6 +151,11 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $this->type;
 	}
 
+	public function getLcType() : string
+	{
+		return lcfirst($this->getType());
+	}
+
 	public function scopeByTargetIds($query, array|Collection $targetIds)
 	{
 		$query->where('target_id', $targetIds);
@@ -251,11 +256,33 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $this->getType() == 'operator';
 	}
 
+	public function isVehicleType() : bool
+	{
+		return $this->target_type === 'VehicleType';
+	}
+
 	public function getClientPriceAttribute()
 	{
 		if($priceItem = $this->prices->firstWhere('collection_id', 'client_price'))
 			return $priceItem->price;
 
 		return $this->getTarget()?->getClientPrice();
+	}
+
+	public function getSellableSupplierIndexRelations()
+	{
+		return $this->getTarget()->getSellableSupplierIndexRelations();
+	}
+
+	public function getCachedPriceFieldsByType() : array
+	{
+		// return cache()->remember(
+		// 	$this::staticCacheKey('getCachedPriceFieldsByType' . $this->target_type),
+		// 	3600,
+		// 	function()
+		// 	{
+				return $this->getTarget()->getPriceFieldsForSellable();
+		// 	}
+		// );
 	}
 }

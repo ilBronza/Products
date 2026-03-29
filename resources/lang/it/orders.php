@@ -16,6 +16,8 @@ return [
 
 	'attachClientOperatorsToOrderrows' => 'Collega rapporti di lavoro mancanti',
 	'addOperatorRow' => 'Aggiungi operatore',
+	'addVehicleRow' => 'Aggiungi mezzo',
+	'addVehicleTableRow' => 'Aggiungi mezzo da ricerca',
 
 	'titles' => [
 		'show' => 'Commessa :order',

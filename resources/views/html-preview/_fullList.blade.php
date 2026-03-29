@@ -11,16 +11,9 @@
             <ul class="uk-list uk-list-large uk-margin-medium">
                @foreach($productRows as $row)
                   @if($row->hasPhase($phase['name']))
-                     <li class="el-item">
-                        <div class="uk-child-width-auto uk-grid-column-medium uk-flex-bottom" uk-grid>
-                           <div class="uk-width-expand">
-                              <div class="el-title uk-margin-remove uk-text-large" uk-leader>{{ $row->getQuantity() }} - {{ $row->getPdfDescriptionString() }}</div>
-                           </div>
-                           <div>
-                              <div class="el-meta uk-text-large uk-text-emphasis">{!! $row->getPdfDescriptionCost() !!}</div>
-                           </div>
-                        </div>
-                     </li>
+
+                     @include('products::html-preview._singleItem')
+
                   @endif
                @endforeach
             </ul>
@@ -43,23 +36,14 @@
             <h2 class="uk-heading-small uk-margin-medium" id="vari">
                Vari ed eventuali
             </h2>
+            <ul class="uk-list uk-list-large uk-margin-medium">
 
                @php
                   $printedIntestation = true;
                @endphp
-
             @endif
 
-            <li class="el-item">
-               <div class="uk-child-width-auto uk-grid-column-medium uk-flex-bottom" uk-grid>
-                  <div class="uk-width-expand">
-                     <div class="el-title uk-margin-remove uk-text-large" uk-leader>{{ $row->getPdfDescriptionString() }}</div>
-                  </div>
-                  <div>
-                     <div class="el-meta uk-text-large uk-text-emphasis">{!! $row->getPdfDescriptionCost() !!}</div>
-                  </div>
-               </div>
-            </li>
+            @include('products::html-preview._singleItem')
 
          @endif
       @endforeach
@@ -71,4 +55,5 @@
       @endif
 
    </div>
+
 </div>

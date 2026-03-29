@@ -13,6 +13,9 @@ use IlBronza\Products\Models\Traits\CompletionScopesTrait;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
+use IlBronza\Products\Models\Traits\Orderrow\UsesOperatorOrderrowTrait;
+use IlBronza\Products\Models\Traits\Orderrow\UsesProductOrderrowTrait;
+use IlBronza\Products\Models\Traits\Orderrow\UsesVehicleOrderrowTrait;
 use IlBronza\Products\Models\Traits\OrderTimesTrait;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Timings\Traits\InteractsWithTimingTrait;
@@ -29,6 +32,10 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 
 	use OrderRelationshipsTrait;
 	use OrderScopesTrait;
+
+	use UsesProductOrderrowTrait;
+	use UsesOperatorOrderrowTrait;
+	use UsesVehicleOrderrowTrait;
 
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;
@@ -193,6 +200,16 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		return $collect->merge($this->getOrderrows());
 	}
 
+	public function getDeliveriesDataArray() : array
+	{
+		$result = [];
+
+		foreach ($this->getDeliveringChildren() as $child)
+			$result = array_merge($result, $child->getDeliveriesDataArray());
+
+		return array_unique($result);		
+	}
+
 	public function getDeliveriesNamesArray() : array
 	{
 		$result = [];
@@ -206,6 +223,14 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 	public function getDeliveriesNamesStringAttribute() : ?string
 	{
 		if (! $result = $this->getDeliveriesNamesArray())
+			return null;
+
+		return implode(", ", $result);
+	}
+
+	public function getDeliveriesDataStringAttribute() : ?string
+	{
+		if (! $result = $this->getDeliveriesDataArray())
 			return null;
 
 		return implode(", ", $result);
@@ -251,6 +276,26 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 	public function getCalendarColor() : ? string
 	{
 		return config('products.models.order.calendar.colors.ok');
+	}
+
+	public function getHtmlPreviewUrl(): string
+	{
+		return $this->getKeyedRoute('html');
+	}
+
+	public function getHtmlPreviewButton(): Button
+	{
+		return Button::create([
+			'href' => $this->getHtmlPreviewUrl(),
+			'text' => 'Anteprima HTML',
+			'icon' => 'file-alt',
+			'target' => '_blank',
+		]);
+	}
+
+	public function getEditRelationshipsManagerClass()
+	{
+		return config("products.models." . static::$modelConfigPrefix . ".relationshipsManagerClasses.show");
 	}
 
 }

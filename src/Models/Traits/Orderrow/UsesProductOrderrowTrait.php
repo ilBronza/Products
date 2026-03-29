@@ -7,6 +7,11 @@ use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 
 trait UsesProductOrderrowTrait
 {
+	public function productRows()
+	{
+		return $this->productOrderrows();
+	}
+
 	public function productOrderrows()
 	{
 		return $this->hasMany(ProductOrderrow::gpc());

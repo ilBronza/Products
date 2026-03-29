@@ -19,7 +19,7 @@ class SupplierCreatorHelper
 
     static function getOrCreateSupplierFromTarget(SupplierInterface $target) : Supplier
     {
-        if($supplier = $target->getSupplier())
+        if($supplier = $target->getSupplier(true))
             return $supplier;
 
         return static::createSupplierFromTarget($target);

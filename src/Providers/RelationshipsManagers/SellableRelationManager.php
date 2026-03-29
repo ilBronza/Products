@@ -15,6 +15,9 @@ class SellableRelationManager Extends RelationshipsManager
 
 		$sellable = $this->getModel();
 
+		if($target = $sellable->getTarget())
+			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
+
 		//SellableSupplierIndexController
 		$relations['sellableSuppliers'] = [
 			'controller' => config('products.models.sellableSupplier.controllers.index'),
@@ -24,9 +27,6 @@ class SellableRelationManager Extends RelationshipsManager
 				'getCreateSellableButton',
 			],
 		];
-
-//		if($target = $this->getModel()->getTarget())
-//			$relations['target'] = config("{$target->getPackageConfigPrefix()}.models.{$target->getModelConfigPrefix()}.controllers.show");
 
 		//QuotationIndexController
 		$relations['quotations'] = [

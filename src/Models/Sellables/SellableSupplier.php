@@ -310,6 +310,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 
 	public function mustAutomaticallyUpdatePrices() : bool
 	{
+		return false;
 		return !! $this->getSellable()?->mustAutomaticallyUpdatePrices();
 		// return config('operators.models.sellable.automaticUpdatesPrices');		
 	}
@@ -322,5 +323,10 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	public function getBasePriceAttribute()
 	{
 		return 99887766;
+	}
+
+	public function getCachedPriceFieldsForSellable() : array
+	{
+		return $this->getSellable()->getCachedPriceFieldsByType();
 	}
 }

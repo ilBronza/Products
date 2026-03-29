@@ -48,5 +48,7 @@ interface SellableItemInterface
 	 **/
 	public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass;
 
+	public function getSellableSupplierIndexRelations() : array;
+
 	public function getNameForSellable(...$parameters) : string;
 }

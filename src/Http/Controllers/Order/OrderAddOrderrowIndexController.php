@@ -91,7 +91,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		if ($type == 'Contracttype')
 			return $order->operatorRows()->max('sorting_index') + 1;
 
-		if ($type == 'VehicleType')
+		if ($type == 'VehicleType' || $type == 'vehicle')
 			return $order->vehicleRows()->max('sorting_index') + 1;
 
 		if ($type == 'Surveillance')
@@ -122,6 +122,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		$types = [
 			'Contracttype',
 			'VehicleType',
+			'vehicle',
 			'Surveillance',
 			'Hotel',
 			'service',

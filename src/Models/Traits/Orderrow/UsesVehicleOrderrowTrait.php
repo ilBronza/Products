@@ -7,14 +7,24 @@ use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 
 trait UsesVehicleOrderrowTrait
 {
+	public function vehicleRows()
+	{
+		return $this->vehicleOrderrows();
+	}
+
 	public function vehicleOrderrows()
 	{
 		return $this->hasMany(VehicleOrderrow::gpc());
 	}
 
-	public function getAddProductUrl() : string
+	public function getVehicleRows()
 	{
-		return $this->getAddRowByTypeUrl('Vehicle');
+		return $this->vehicleOrderrows;
+	}
+
+	public function getAddVehicleTypeUrl() : string
+	{
+		return $this->getAddRowByTypeUrl('VehicleType');
 	}
 
 }

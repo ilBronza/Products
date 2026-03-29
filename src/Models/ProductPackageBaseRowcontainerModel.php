@@ -27,7 +27,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 	use IsTimelineGroupTrait;
 	use IsTimelineItemTrait;
 
-	public function getExtraFieldsClass() : string
+	public function getExtraFieldsClass() : ? string
 	{
 		return OrderQuotationExtraFields::class;
 	}
@@ -153,8 +153,9 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		if ($type == 'reimbursement')
 			return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
 
-		if ($type == 'vehicleType')
-			return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
+		//è diventato un metodo standard
+		// if ($type == 'vehicleType')
+		// 	return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
 
 		if ($type == 'rent')
 			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
@@ -177,7 +178,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->_getPossibleSellableTypes();
 	}
 
-	public function getAddRowByTypeUrl(string $type, bool $table = false)
+	public function getAddRowByTypeUrl(string $type, bool $table = false) : string
 	{
 		return $this->getAddOrderrowByTypeUrl($type, $table);
 	}

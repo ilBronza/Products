@@ -5,9 +5,8 @@ namespace IlBronza\Products\Http\Traits;
 use Exception;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
-
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
-
+use Illuminate\Support\Facades\Log;
 use function compact;
 use function config;
 use function dd;
@@ -52,14 +51,16 @@ trait SellableSupplierAssignmentTrait
 	{
 		$sellable = $this->getSellable();
 
+		Log::info('far sì che sia il pulsante a salvare la tabella da refreshare zio frenulo');
+
 		if ($sellable->isContracttype())
 			return ['operatorrows'];
 
 		else if ($sellable->isVehicleType())
-			return ['vehiclerows'];
+			return ['vehicleRows'];
 
-		else if ($sellable->isSurveillanceType())
-			return ['surveillancerows'];
+		// else if ($sellable->isSurveillanceType())
+		// 	return ['surveillancerows'];
 
 		else if ($sellable->isHotelType())
 			return ['hotelrows'];
@@ -105,14 +106,12 @@ trait SellableSupplierAssignmentTrait
 
 	public function getIndexFieldsArray()
 	{
-		//SellableSupplierRentFieldsGroupParametersFile
-		if(! $helper = config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}"))
-			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}");
+		$lcType = lcfirst($this->getSellable()->getType());
 
-		// return config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}")::getTracedFieldsGroupByContainerModel($this->getContainerModelPrefix());
+		if(! $helper = config("products.models.sellableSupplier.fieldsGroupsFiles.{$lcType}"))
+			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$lcType}");
 
-		return config("products.models.sellableSupplier.fieldsGroupsFiles.{$this->getSellable()->getType()}")::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
-
+		return $helper::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
 	}
 
 	public function getContainerModelPrefix() : string

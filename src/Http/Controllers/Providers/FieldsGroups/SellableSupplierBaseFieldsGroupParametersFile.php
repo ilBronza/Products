@@ -42,7 +42,6 @@ abstract class SellableSupplierBaseFieldsGroupParametersFile extends FieldsGroup
 
 	static function getFieldsGroup() : array
 	{
-		dd('problema, usare quello tipizzato');
 		$starting = static::getStartingFields();
 		$central = static::getTypedFields();
 		$ending = static::getEndingFields();

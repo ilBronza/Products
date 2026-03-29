@@ -52,7 +52,7 @@
                   <div class="uk-grid-column-large uk-flex-middle" uk-grid>
                      <div class="uk-width-auto@l">
                         <a href="https://{{ $website }}">
-                        <img class="el-image" src="/demo/kojiro/images/logo.svg" alt loading="lazy" width="110" height="117">
+                        <img class="el-image" src="{{ app('uikittemplate')->getLogoUrl() }}" alt loading="lazy" width="110">
                         </a>
                      </div>
                      <div class="uk-width-expand uk-margin-remove-first-child">

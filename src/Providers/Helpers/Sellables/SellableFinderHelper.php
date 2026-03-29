@@ -10,24 +10,17 @@ use IlBronza\Products\Models\Sellables\Supplier;
 
 class SellableFinderHelper
 {
-	static function findSellableSupplier(Supplier $supplier, Sellable $sellable) : ? SellableSupplier
-	{
-		return SellableSupplier::gpc()::where('sellable_id', $sellable->getKey())
-		                              ->where('supplier_id', $supplier->getKey())
-		                              ->first();
-	}
+	// static function findSellableSupplierByTargets(SellableItemInterface $sellableTarget, SupplierInterface $supplierTarget) : ? SellableSupplier
+	// {
+	// 	if(! $supplier = $supplierTarget->getSupplier())
+	// 		return null;
 
-	static function findSellableSupplierByTargets(SellableItemInterface $sellableTarget, SupplierInterface $supplierTarget) : ? SellableSupplier
-	{
-		if(! $supplier = $supplierTarget->getSupplier())
-			return null;
+	// 	if(! $sellable = SellableCreatorHelper::getSellableByTarget($sellableTarget))
+	// 		return null;
 
-		if(! $sellable = SellableCreatorHelper::getSellableByTarget($sellableTarget))
-			return null;
-
-		return static::findSellableSupplier(
-			$sellable,
-			$supplier
-		);
-	}
+	// 	return static::findSellableSupplier(
+	// 		$sellable,
+	// 		$supplier
+	// 	);
+	// }
 }

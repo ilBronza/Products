@@ -144,8 +144,9 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRe
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRentFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVehicletypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SupplierFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\VehicleRowsByContainerFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\VehicleSellableRelatedFieldsGroupParametersFile;
-use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\VehicleSellableSupplierRelatedFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\VehicleSellableSupplierBySupplierRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\WorkstationFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryEditFieldsetsParameters;
@@ -181,6 +182,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierContr
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySellableFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreBySupplierFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierCreateStoreFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierHotelEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SellableSupplierRentEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\SupplierShowFieldsetsParameters;
@@ -247,6 +249,7 @@ use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Orderrows\OperatorOrderrow;
 use IlBronza\Products\Models\Orderrows\ProductOrderrow;
+use IlBronza\Products\Models\Orderrows\VehicleOrderrow;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
@@ -347,7 +350,9 @@ return [
 			'datatableFieldProject' => '18em'
 		],
 		'sellableSuppliers' => [
-			'datatableFieldFindOrAssociateSupplier' => '2em'
+			'datatableFieldFindOrAssociateSupplier' => '2em',
+			'datatableFieldChangeSellableSupplier' => '2em',
+			'datatableFieldPricesList' => 'auto'
 		],
 		'workstations' => [
 			'datatableFieldLabel' => '2em'
@@ -431,7 +436,10 @@ return [
 			],
 			'productOrderrow' => [
 				'class' => ProductOrderrow::class,
-			]
+			],
+			'vehicleOrderrow' => [
+				'class' => VehicleOrderrow::class,
+			],
 		],
 		'assigneeTarget' => [
 			// 'class' => AssigneeTarget::class,
@@ -590,7 +598,8 @@ return [
 			'hasCalendar' => true,
 			'possibleRowTypes' => [
 				'productRows',
-				'operatorRows'
+				'operatorRows',
+				'vehicleRows',
 			],
 			'buttons' => [
 				'freeze' => false,
@@ -695,7 +704,11 @@ return [
 				'related' => OrderrowRelatedFieldsGroupParametersFile::class,
 				'index' => OrderrowFieldsGroupParametersFile::class,
 				'operatorOrderrow' => OperatorRowsByContainerFieldsGroupParametersFile::class,
-				'productOrderrow' => ProductRowsByContainerFieldsGroupParametersFile::class
+				'productOrderrow' => ProductRowsByContainerFieldsGroupParametersFile::class,
+				'vehicleOrderrow' => VehicleRowsByContainerFieldsGroupParametersFile::class,
+				'relatedByType' => [
+					'vehicle' => VehicleOrderrowRelatedFieldsGroupParametersFile::class
+				]
 			]
 		],
 		'orderProduct' => [
@@ -893,17 +906,17 @@ return [
 				'material',
 				'asset'
 			],
-			'associationRelations' => [
-				'operator' => [
-					'prices',
-					'supplier.target.operatorContracttypes.contracttype',
-					'supplier.target.operatorContracttypes.prices',
-					'supplier.target.validClientOperator.employment',
-					'supplier.target.user.userdata',
-					'supplier.target',
-					'supplier.target.address'
-				]
-			],
+			// 'associationRelations' => [
+			// 	'operator' => [
+			// 		'prices',
+			// 		'supplier.target.operatorContracttypes.contracttype',
+			// 		'supplier.target.operatorContracttypes.prices',
+			// 		'supplier.target.validClientOperator.employment',
+			// 		'supplier.target.user.userdata',
+			// 		'supplier.target',
+			// 		'supplier.target.address'
+			// 	]
+			// ],
 			'helpers' => [
 				'targetCreator' => [
 					'material' => MaterialFromSellableCreatorHelper::class,
@@ -944,7 +957,7 @@ return [
 			'fieldsGroupsFiles' => [
 				'operator' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
 				'contracttype' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
-				'vehicletype' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
+				'vehicleType' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
 				'vehicle' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
 				'service' => SellableSupplierRentFieldsGroupParametersFile::class,
 				'hotel' => SellableSupplierHotelFieldsGroupParametersFile::class,
@@ -953,8 +966,8 @@ return [
 				'base' => SellableSupplierBaseFieldsGroupParametersFile::class,
 				'index' => SellableSupplierFieldsGroupParametersFile::class,
 				'related' => SellableSupplierRelatedFieldsGroupParametersFile::class,
-				'relatedByType' => [
-					'vehicle' => VehicleSellableSupplierRelatedFieldsGroupParametersFile::class
+				'relatedBySupplier' => [
+					'vehicle' => VehicleSellableSupplierBySupplierRelatedFieldsGroupParametersFile::class
 				]
 			],
 			'relationshipsManagerClasses' => [
@@ -967,7 +980,8 @@ return [
 				'create' => SellableSupplierCreateStoreFieldsetsParameters::class,
 				'createBySupplier' => SellableSupplierCreateStoreBySupplierFieldsetsParameters::class,
 				'createBySellable' => SellableSupplierCreateStoreBySellableFieldsetsParameters::class,
-				'show' => SellableSupplierCreateStoreFieldsetsParameters::class
+				'show' => SellableSupplierCreateStoreFieldsetsParameters::class,
+				'edit' => SellableSupplierEditUpdateFieldsetsParameters::class
 			],
 			'controllers' => [
 				'index' => SellableSupplierIndexController::class,

@@ -6,7 +6,7 @@ use IlBronza\Products\Models\Orders\CustomOrderrow;
 
 class VehicleOrderrow extends CustomOrderrow
 {
-	protected static ?string $typeName = 'vehicle';
+	protected static ?string $typeName = 'vehicleType';
 	public $routeBasename = 'ibProductsorderrows';
 	public $routeClassname = 'orderrow';
 }

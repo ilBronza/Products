@@ -17,6 +17,19 @@ class CateringOrderRelationManager Extends RelationshipsManager
 		$result = [
 			'show' => [
 				'relations' => [
+					'productOrderrows' => [
+						'controller' => config('products.models.orderrrow.controllers.index'),
+						'selectRowCheckboxes' => true,
+
+						//ProductRowsByContainerFieldsGroupParametersFile
+						//ProductOrderrowsByContainerFieldsGroupParametersFile
+						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.productOrderrow'),
+						'translatedTitle' => trans('products::models.productOrderrows'),
+						'buttonsMethods' => [
+							'getAddRowButton',
+							'getAddRowTableButton',
+						]
+					],
 					'operatorRows' => [
 						'controller' => config('products.models.orderrrow.controllers.index'),
 						'selectRowCheckboxes' => true,
@@ -29,14 +42,11 @@ class CateringOrderRelationManager Extends RelationshipsManager
 							'getAddRowButton',
 						]
 					],
-					'productOrderrows' => [
+					'vehicleRows' => [
 						'controller' => config('products.models.orderrrow.controllers.index'),
 						'selectRowCheckboxes' => true,
-
-						//ProductRowsByContainerFieldsGroupParametersFile
-						//ProductOrderrowsByContainerFieldsGroupParametersFile
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.productOrderrow'),
-						'translatedTitle' => trans('products::models.productOrderrows'),
+						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.vehicleOrderrow'),
+						'translatedTitle' => trans('products::models.vehicleRows'),
 						'buttonsMethods' => [
 							'getAddRowButton',
 							'getAddRowTableButton',

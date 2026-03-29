@@ -81,7 +81,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		if ($type == 'Contracttype')
 			return $quotation->operatorRows()->max('sorting_index') + 1;
 
-		if ($type == 'VehicleType')
+		if ($type == 'VehicleType' || $type == 'vehicle')
 			return $quotation->vehicleRows()->max('sorting_index') + 1;
 
 		if ($type == 'Surveillance')
@@ -112,6 +112,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 		$types = [
 			'Contracttype',
 			'VehicleType',
+			'vehicle',
 			'Surveillance',
 			'Hotel',
 			'service',

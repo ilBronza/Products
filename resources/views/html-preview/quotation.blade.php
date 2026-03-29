@@ -20,6 +20,9 @@
 	if ($productRows->isNotEmpty()) {
 		$allRows = $allRows->merge($productRows->map(fn($r) => (object)['row' => $r, 'type' => 'product']));
 	}
+	if (isset($vehicleRows) && $vehicleRows->isNotEmpty()) {
+		$allRows = $allRows->merge($vehicleRows->map(fn($r) => (object)['row' => $r, 'type' => 'vehicle']));
+	}
 	$allRows = $allRows->sortBy(fn($x) => $x->row->sorting_index ?? 999);
 @endphp
 

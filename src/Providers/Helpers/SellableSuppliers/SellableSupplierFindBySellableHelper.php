@@ -3,6 +3,8 @@
 namespace IlBronza\Products\Providers\Helpers\SellableSuppliers;
 
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Ukn\Ukn;
+use Illuminate\Support\Facades\Log;
 
 class SellableSupplierFindBySellableHelper
 {
@@ -20,68 +22,79 @@ class SellableSupplierFindBySellableHelper
 		return $this->sellable;
 	}
 
-	public function getContracttypeRelations() : array
-	{
-		return [
-			'prices',
-			'supplier.target.operatorContracttypes.contracttype',
-			'supplier.target.operatorContracttypes.prices',
-			'supplier.target.validClientOperator.employment',
-			'supplier.target.user.userdata',
-			'supplier.target.extraFields',
-			'supplier.target.address'
-		];
-	}
+	// public function getContracttypeRelations() : array
+	// {
+	// 	//NADA, si usa public function getSellableSupplierIndexRelations() : array
+	// 	//di Contracttype
+	// }
 
 	public function getSellableSupplierRelationsByTargetType() : array
 	{
 		$sellable = $this->getSellable();
 
-		if($relations = config('products.models.sellable.associationRelations.' . $sellable->getType(), false))
-			return $relations;
+		return $sellable->getSellableSupplierIndexRelations();
 
-		if ($sellable->isContracttype())
-			return $this->getContracttypeRelations();
+		// if($relations = config('products.models.sellable.associationRelations.' . $sellable->getType(), false))
+		// 	return $relations;
 
-		if (($sellable->isControlRoomType())||($sellable->isVehicleType()))
-			return [
-				'prices',
-				'supplier.target.extraFields',
-				'supplier.target',
-			];
+		// if ($sellable->isContracttype())
+		// 	return $this->getContracttypeRelations();
 
-		if (($this->getSellable()->isServiceType())||($sellable->isHotelType())||($sellable->isReimbursementType()))
-			return [
-				'supplier.target.address'
-			];
+		// try
+		// {
+		// 	if (($sellable->isControlRoomType())||($sellable->isVehicleType()))
+		// 		return [
+		// 			'prices',
+		// 			'supplier.target.extraFields',
+		// 			'supplier.target',
+		// 		];			
+		// }
+		// catch(\Exception $e)
+		// {
+		// 	Log::critical($e->getMessage());
+		// 	Ukn::e("Rimuovi sta merdata: " .  $e->getMessage());
+
+		// 	if ($sellable->isVehicleType())
+		// 		return [
+		// 			'prices',
+		// 			'supplier.target.extraFields',
+		// 			'supplier.target',
+		// 		];
+		// }
 
 
-		dd($sellable->getType());
+		// if (($this->getSellable()->isServiceType())||($sellable->isHotelType())||($sellable->isReimbursementType()))
+		// 	return [
+		// 		'supplier.target.address'
+		// 	];
 
-		dd('dopo');
+
+		// dd($sellable->getType());
+
+		// dd('dopo');
 
 
 
 
-		if (! $this->getTargetType())
-		{
-			if ($this->getSellable()->isHotelType())
-				return [
-					'supplier.target'
-				];
+		// if (! $this->getTargetType())
+		// {
+		// 	if ($this->getSellable()->isHotelType())
+		// 		return [
+		// 			'supplier.target'
+		// 		];
 
-			if ($this->getSellable()->isSurveillanceType())
-				return [
-					'supplier.target'
-				];
-		}
+		// 	if ($this->getSellable()->isSurveillanceType())
+		// 		return [
+		// 			'supplier.target'
+		// 		];
+		// }
 
-		if ($this->getTargetType() == 'Type')
-			return [
-				'supplier.target'
-			];
+		// if ($this->getTargetType() == 'Type')
+		// 	return [
+		// 		'supplier.target'
+		// 	];
 
-		throw new Exception ('altro tipo di sellable: ' . $this->getTargetType());
+		// throw new Exception ('altro tipo di sellable: ' . $this->getTargetType());
 	}
 
 	public function find()

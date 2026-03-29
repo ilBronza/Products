@@ -43,6 +43,14 @@ abstract class BasePdfHelper
 	}
 
 	/**
+	 * Get the method name for vehicle rows ('vehicleOrderrows' or 'vehicleQuotationrows').
+	 */
+	protected function getVehicleRowsMethod() : string
+	{
+		return $this->getRowsRelation() === 'orderrows' ? 'vehicleOrderrows' : 'vehicleQuotationrows';
+	}
+
+	/**
 	 * Get operator rows for PDF.
 	 */
 	public function getOperatorRows() : Collection
@@ -87,6 +95,28 @@ abstract class BasePdfHelper
 	}
 
 	/**
+	 * Get vehicle rows (sellable type vehicle) for PDF.
+	 */
+	public function getVehicleRows() : Collection
+	{
+		$container = $this->getContainer();
+		$method = $this->getVehicleRowsMethod();
+
+		if (method_exists($container, $method)) {
+			return $container->{$method}()
+				->with(['sellableSupplier.sellable', 'sellableSupplier.supplier'])
+				->orderBy('sorting_index')
+				->get();
+		}
+
+		return $container->{$this->getRowsRelation()}()
+			->where('type', 'vehicle')
+			->with(['sellableSupplier.sellable', 'sellableSupplier.supplier'])
+			->orderBy('sorting_index')
+			->get();
+	}
+
+	/**
 	 * Get default document title for the PDF.
 	 */
 	protected function getDocumentTitleDefault() : string
@@ -103,6 +133,7 @@ abstract class BasePdfHelper
 			'container' => $this->getContainer(),
 			'operatorRows' => $this->getOperatorRows(),
 			'productRows' => $this->getProductRows(),
+			'vehicleRows' => $this->getVehicleRows(),
 			'documentTitleDefault' => $this->getDocumentTitleDefault(),
 		];
 	}

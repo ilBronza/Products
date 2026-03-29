@@ -24,7 +24,7 @@ class MakeIbProductRelationTable extends Migration
 	        $table->string('measurement_unit_id', 16)->nullable();
 	        $table->foreign('measurement_unit_id')
 	              ->references('id')
-	              ->on(config('measurementUnits.models.measurementUnit.table'));
+	              ->on(config('measurementunits.models.measurementUnit.table'));
 
             $table->uuid('child_id')->nullable();
             $table->foreign('child_id')->references('id')->on(

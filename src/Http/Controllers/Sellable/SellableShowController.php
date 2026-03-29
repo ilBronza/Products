@@ -29,6 +29,8 @@ class SellableShowController extends SellableCRUD
     {
         $sellable = $this->findModel($sellable);
 
-        return $this->_show($sellable);
+        return redirect()->to($sellable->getTarget()->getShowUrl());
+
+        // return $this->_show($sellable);
     }
 }

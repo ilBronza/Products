@@ -2,10 +2,9 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
-use IlBronza\Clients\Models\Client;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 
-class VehicleSellableSupplierRelatedFieldsGroupParametersFile extends SellableFieldsGroupParametersFile
+class VehicleSellableSupplierBySupplierRelatedFieldsGroupParametersFile extends FieldsGroupParametersFile
 {
 	static function getFieldsGroup() : array
 	{
@@ -16,13 +15,8 @@ class VehicleSellableSupplierRelatedFieldsGroupParametersFile extends SellableFi
 					'mySelfPrimary' => 'primary',
 					'mySelfEdit' => 'links.edit',
 					'mySelfSee' => 'links.see',
-					'supplier.target' => [
-						'type' => 'links.seeName',
-						'width' => 'auto',
-					],
-					'distance_price' => 'numbers.price',
-					'target' => 'links.see',
-					'suppliers_count' => 'flat',
+					'sellable' => 'products::sellables.sellable',
+					'mySelfPrices' => 'products::sellableSuppliers.pricesList',
 					'quotations_count' => 'flat',
 					'orders_count' => 'flat',
 

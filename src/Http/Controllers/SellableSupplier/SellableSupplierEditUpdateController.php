@@ -14,6 +14,8 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
 	public ?bool $updateEditor = false;
 
+	public $returnBack = true;
+
     public $allowedMethods = ['edit', 'update'];
 
     public function getGenericParametersFile() : ? string
@@ -61,8 +63,4 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
         return $this->_update($request, $sellableSupplier);
     }
-
-	public function getAfterUpdatedRedirectUrl() {
-		return $this->getModel()->getSupplier()->getShowUrl();
-	}
 }

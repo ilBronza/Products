@@ -52,6 +52,32 @@
 		</table>
 	@endif
 
+	@if($vehicleRows->isNotEmpty())
+		<h2>@lang('products::models.vehicleRows')</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>@lang('products::fields.description')</th>
+					<th>@lang('products::fields.quantity')</th>
+					<th class="text-right">@lang('products::fields.price')</th>
+					<th class="text-right">Totale</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($vehicleRows as $index => $row)
+					<tr>
+						<td>{{ $index + 1 }}</td>
+						<td>{{ $row->getSellableName() ?? '-' }} @if($row->getSupplierName()) - {{ $row->getSupplierName() }} @endif</td>
+						<td>{{ $row->getQuantity() ?? '-' }}</td>
+						<td class="text-right">{{ $row->price ?? '-' }}</td>
+						<td class="text-right">{{ $row->total_price ?? $row->total_cost ?? '-' }}</td>
+					</tr>
+				@endforeach
+			</tbody>
+		</table>
+	@endif
+
 	@if($productRows->isNotEmpty())
 		<h2>@lang('products::models.productOrderrows')</h2>
 		<table>
@@ -78,7 +104,7 @@
 		</table>
 	@endif
 
-	@if($operatorRows->isEmpty() && $productRows->isEmpty())
+	@if($operatorRows->isEmpty() && $productRows->isEmpty() && $vehicleRows->isEmpty())
 		<p>Nessuna riga presente.</p>
 	@endif
 </body>

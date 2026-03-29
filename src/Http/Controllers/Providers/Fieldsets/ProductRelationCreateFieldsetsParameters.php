@@ -31,7 +31,7 @@ class ProductRelationCreateFieldsetsParameters extends FieldsetParametersFile
 	                'measurement_unit_id' => [
 						'type' => 'select',
 						'multiple' => false,
-						'rules' => 'string|nullable|exists:' . config('measurementUnits.models.measurementUnit.table') . ',id',
+						'rules' => 'string|nullable|exists:' . config('measurementunits.models.measurementUnit.table') . ',id',
 						'relation' => 'measurementUnit',
 					],
 	                'quantity_coefficient' => ['number' => 'integer|required|max:65535|min:0'],

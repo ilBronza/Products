@@ -11,6 +11,7 @@ use IlBronza\Contacts\Models\Traits\InteractsWithContact;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use Illuminate\Support\Collection;
@@ -102,17 +103,51 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		)->get();
 	}
 
+	/**
+	 * Quotationrow collegate ai SellableSupplier di questo fornitore (JOIN via tabella sellable_suppliers).
+	 * Nessun eager load implicito: usare ->quotationrows()->where(...)->get() o ->count() ecc.
+	 */
 	public function quotationrows()
 	{
 		return $this->hasManyThrough(
-			Quotationrow::getProjectClassName(), SellableSupplier::getProjectClassName(), 'supplier_id', 'sellable_supplier_id'
+			Quotationrow::getProjectClassName(),
+			SellableSupplier::getProjectClassName(),
+			'supplier_id',
+			'sellable_supplier_id',
 		);
+	}
+
+	/**
+	 * Orderrow collegate ai SellableSupplier di questo fornitore (JOIN via pivot table).
+	 * Nessun eager load implicito: usare ->orderrows()->where(...)->get() o ->count() ecc.
+	 */
+	public function orderrows()
+	{
+		return $this->hasManyThrough(
+			Orderrow::getProjectClassName(),
+			SellableSupplier::getProjectClassName(),
+			'supplier_id',
+			'sellable_supplier_id',
+		);
+	}
+
+	public function getOrderrows() : Collection
+	{
+		return $this->orderrows;
+	}
+
+	public function getQuotationrows() : Collection
+	{
+		return $this->quotationrows;
 	}
 
 	public function getSellableSuppliers() : Collection
 	{
-		return $this->sellableSuppliers()->with(
-			'directPrice.measurementUnit', 'sellable.target', 'supplier.target'
+		return $this->sellableSuppliers()
+			->with(
+			'directPrice.measurementUnit',
+			'sellable.target',
+			'supplier.target'
 		)->get();
 	}
 

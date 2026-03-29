@@ -31,7 +31,7 @@ class ProductRelationManager extends RelationshipsManager
 						'controller' => CrudNoteController::class,
 						'hasCreateButton' => true,						
 					],
-					// 'orderProducts' => config('products.models.orderProduct.controllers.byProductIndex'),
+					'orderProducts' => config('products.models.orderProduct.controllers.byProductIndex'),
 				]
 			]
 		];
