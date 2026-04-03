@@ -7,6 +7,7 @@ use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
+use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
@@ -21,6 +22,7 @@ use function is_string;
 
 class ProductPackageBaseRowModel extends ProductPackageBaseModel implements TimeIntervalInterface, TimelineItemInterface
 {
+	use InteractsWithPriceTrait;
 	use IsTimelineItemTrait;
 	use CRUDTimeRangesTrait;
 	use TypedOrderrowTrait;

@@ -183,6 +183,13 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->getAddOrderrowByTypeUrl($type, $table);
 	}
 
+	public function getAddSellableSupplierRowByTypeUrl(string $type)
+	{
+		return $this->getKeyedRoute('addSellableSupplierRows', [
+			'type' => $type,
+		]);
+	}
+
 	public function getStartsAt() : ?Carbon
 	{
 		return $this->starts_at;

@@ -39,7 +39,7 @@ trait InteractsWithSupplierTrait
 		return $this->morphOne(Supplier::gpc(), 'target');
 	}
 
-	public function getSupplier(bool $force = false) : Supplier
+	public function getSupplier(bool $force = false) : ? Supplier
 	{
 		if($force)
 			return $this->supplier()->first();
@@ -47,7 +47,8 @@ trait InteractsWithSupplierTrait
 		if($this->supplier)
 			return $this->supplier;
 
-		dd('Supplier assente: definire creazione da target (vedi Operator / One TV).');
+		if(! $force)
+			return null;
 
 		$supplier = SupplierCreatorHelper::createSupplierFromTarget($this);
 
@@ -126,6 +127,20 @@ trait InteractsWithSupplierTrait
 
 	protected static function bootInteractsWithSupplierTrait()
 	{
+		static::created(function ($model)
+		{
+			$supplier = SupplierCreatorHelper::getOrCreateSupplierFromTarget($model);
+
+			$possibleSellables = $model->getPossibleSellables();
+
+			foreach($possibleSellables as $possibleSellable)
+			{
+				$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($supplier, $possibleSellable);
+
+				$sellableSupplier->updatePricesBySellableAndSupplier();
+			}
+		});
+
 		static::saved(function ($model)
 		{
 			$supplier = SupplierCreatorHelper::getOrCreateSupplierFromTarget($model);
@@ -133,7 +148,12 @@ trait InteractsWithSupplierTrait
 			$possibleSellables = $model->getPossibleSellables();
 
 			foreach($possibleSellables as $possibleSellable)
+			{
 				$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($supplier, $possibleSellable);
+
+				if($sellableSupplier->mustAutomaticallyUpdatePrices())
+					$sellableSupplier->updatePricesBySellableAndSupplier();
+			}
 		});
 
 		static::deleting(function ($model)

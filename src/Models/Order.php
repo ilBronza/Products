@@ -10,17 +10,15 @@ use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Traits\Assignee\ProductAssignmentTrait;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\OrderTimesTrait;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
 use IlBronza\Products\Models\Traits\Orderrow\UsesOperatorOrderrowTrait;
 use IlBronza\Products\Models\Traits\Orderrow\UsesProductOrderrowTrait;
-use IlBronza\Products\Models\Traits\Orderrow\UsesVehicleOrderrowTrait;
-use IlBronza\Products\Models\Traits\OrderTimesTrait;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Timings\Traits\InteractsWithTimingTrait;
 use Illuminate\Support\Collection;
-
 use function app;
 
 class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInterface
@@ -35,7 +33,6 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 
 	use UsesProductOrderrowTrait;
 	use UsesOperatorOrderrowTrait;
-	use UsesVehicleOrderrowTrait;
 
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;

@@ -101,13 +101,12 @@ Route::group([
 		Route::get('timeline-container/{supplier}', [Products::getController('supplier', 'timeline'), 'container'])->name('suppliers.timelineContainer');
 		Route::get('timeline/{supplier}', [Products::getController('supplier', 'timeline'), 'timeline'])->name('suppliers.timeline');
 
+		// Route::get('build-bulk-suppliers', function()
+		// {
+		// 	$helper = config('products.models.supplier.helpers.bulkCreator');
 
-		Route::get('build-bulk-suppliers', function()
-		{
-			$helper = config('products.models.supplier.helpers.bulkCreator');
-
-			return $helper::execute();
-		})->name('suppliers.buildBulk');
+		// 	return $helper::execute();
+		// })->name('suppliers.buildBulk');
 
 		Route::get('orderrows-by-supplier/{supplier}', [Products::getController('orderrow', 'bySupplier'), 'index'])->name('suppliers.orderrows.index');
 
@@ -139,16 +138,16 @@ Route::group([
 
 
 
-		Route::get('build-bulk-sellables', function()
-		{
-			$helper = config('products.models.sellable.helpers.bulkCreator');
+		// Route::get('build-bulk-sellables', function()
+		// {
+		// 	$helper = config('products.models.sellable.helpers.bulkCreator');
 
-			$helper::execute();
+		// 	$helper::execute();
 
-			Ukn::s('Sellables creati con successo');
+		// 	Ukn::s('Sellables creati con successo');
 
-			return back();
-		})->name('sellables.buildBulk');
+		// 	return back();
+		// })->name('sellables.buildBulk');
 
 
 		//SellableSupplierCreateStoreBySellableController
@@ -300,7 +299,6 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
-
 		Route::get('awaiting', [Products::getController('order', 'awaiting'), 'index'])->name('orders.awaiting');
 
 		Route::get('calendar', [Products::getController('order', 'calendar'), 'index'])->name('orders.calendar.index');
@@ -359,6 +357,10 @@ Route::group([
 
 		//OrderAddOrderrowIndexController
 		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeOrderrow'])->name('orders.storeOrderrow');
+
+		Route::get('{order}/add-row-by-sellable-suppliers/type/{type}/table', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
+
+
 
 		//DestinationCreateStoreController
 		Route::get('{order}/create-destination', [config('clients.models.destination.controllers.create'), 'createFromOrder'])->name('orders.createDestination');

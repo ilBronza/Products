@@ -249,7 +249,6 @@ use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Orderrows\OperatorOrderrow;
 use IlBronza\Products\Models\Orderrows\ProductOrderrow;
-use IlBronza\Products\Models\Orderrows\VehicleOrderrow;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
@@ -279,7 +278,6 @@ use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelp
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\SellableSuppliers\SellableSupplierFindBySellableHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\TargetCreators\MaterialFromSellableCreatorHelper;
-use IlBronza\Products\Providers\Helpers\Suppliers\SupplierBulkCreator;
 use IlBronza\Products\Providers\RelationshipsManagers\AccessoryRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\CateringOrderRelationManager;
 use IlBronza\Products\Providers\RelationshipsManagers\OrderProductRelationManager;
@@ -467,9 +465,6 @@ return [
 			'productOrderrow' => [
 				'class' => ProductOrderrow::class,
 			],
-			'vehicleOrderrow' => [
-				'class' => VehicleOrderrow::class,
-			],
 		],
 		'assigneeTarget' => [
 			// 'class' => AssigneeTarget::class,
@@ -559,7 +554,6 @@ return [
 		'product' => [
 			'class' => Product::class,
 			'table' => 'products__products',
-			'automaticUpdatesPrices' => true,
 			'fieldsGroupsFiles' => [
 				'index' => ProductFieldsGroupParametersFile::class,
 				'byClientIndex' => ByClientProductFieldsGroupParametersFile::class,
@@ -931,7 +925,6 @@ return [
 		'sellable' => [
 			'table' => 'products__sellables__sellables',
 			'class' => Sellable::class,
-			'automaticUpdatesPrices' => false,
 			'availableTypes' => [
 				'material',
 				'asset'
@@ -951,7 +944,7 @@ return [
 				'targetCreator' => [
 					'material' => MaterialFromSellableCreatorHelper::class,
 				],
-				'bulkCreator' => SupplierBulkCreator::class
+				// 'bulkCreator' => SupplierBulkCreator::class
 			],
 			'fieldsGroupsFiles' => [
 				'index' => SellableFieldsGroupParametersFile::class,
@@ -979,7 +972,6 @@ return [
 		'sellableSupplier' => [
 			'table' => 'products__sellables__sellable_suppliers',
 			'class' => SellableSupplier::class,
-			'automaticUpdatesPrices' => false,
 			'helpers' => [
 				'findBySellableHelper' => SellableSupplierFindBySellableHelper::class,
 				'rowSellableSupplierAssociatorHelper' => RowsSellableSupplierAssociatorHelper::class,
@@ -1054,9 +1046,9 @@ return [
 			'fieldsGroupsFiles' => [
 				'index' => SupplierFieldsGroupParametersFile::class
 			],
-			'helpers' => [
-				'bulkCreator' => SupplierBulkCreator::class
-			]
+			// 'helpers' => [
+			// 	'bulkCreator' => SupplierBulkCreator::class
+			// ]
 		],
 		'workstation' => [
 			'class' => Workstation::class,

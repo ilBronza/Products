@@ -4,15 +4,14 @@ namespace IlBronza\Products\Providers\RelationshipsManagers;
 
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 use IlBronza\Notes\Http\Controllers\CrudNoteController;
-
 use IlBronza\Products\Models\Order;
-
+use IlBronza\Products\Providers\Helpers\QuotationOrder\RowscontainerRelationsManagerParametersHelper;
 use function config;
 use function trans;
 
 class OrderRelationManager Extends RelationshipsManager
 {
-	public  function getAllRelationsParameters() : array
+	public function getAllRelationsParameters() : array
 	{
 		$result = [
 			'show' => [
@@ -52,6 +51,7 @@ class OrderRelationManager Extends RelationshipsManager
 							'getAddRowTableButton',
 						]
 					],
+					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters('vehicleRows'),
 					// 'parent' => [
 					// 	'controller' => config('products.models.order.controllers.show'),
 					// 	'translatedTitle' => trans('products::models.parentOrder'),

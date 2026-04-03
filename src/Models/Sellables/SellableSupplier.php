@@ -8,6 +8,7 @@ use Exception;
 use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Models\BasePivotModel;
+
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
@@ -15,12 +16,12 @@ use IlBronza\Operators\Models\Interfaces\HasWorkingDays;
 use IlBronza\Operators\Models\WorkingDay;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-use IlBronza\Prices\Models\Traits\UpdatePricesOnSaveTrait;
 use IlBronza\Prices\Providers\PriceData;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Models\Traits\Sellable\SellableSupplierPricesTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use function app;
@@ -34,14 +35,15 @@ use function strpos;
 class SellableSupplier extends BasePivotModel implements WithPriceInterface, HasWorkingDays
 {
 	use CRUDUseUuidTrait;
-
-	static $packageConfigPrefix = 'products';
 	use PackagedModelsTrait;
 
 	use CRUDModelExtraFieldsTrait;
 
 	use InteractsWithPriceTrait;
-	use UpdatePricesOnSaveTrait;
+	use SellableSupplierPricesTrait;
+	// use UpdatePricesOnSaveTrait;
+
+	static $packageConfigPrefix = 'products';
 
 	public $deletingRelationships = ['prices', 'extraFields'];
 
@@ -77,40 +79,6 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	public function getCost()
 	{
 		// return $this->cardboard->getGifcoPrice();
-	}
-
-	public function _calculatePriceData(PriceData $priceData) : PriceData
-	{
-		dd($priceData);
-		$papers = $this->cardboard->getPapers();
-
-		$manufacturerDiscountByWave = $this->getManufacturerDiscountByWave();
-
-		$manufacturerDiscountsByPapers = $this->getManufacturerDiscountsByPapers();
-		$manufacturerTotalDiscountByPapers = array_sum($manufacturerDiscountsByPapers);
-
-		$squareMtDiscount = $manufacturerDiscountByWave + $manufacturerTotalDiscountByPapers;
-		$manufacturerDiscount = $this->getManufacturerDiscount();
-
-		$heavyPapersDiscount = $this->getHeavyPaperDiscountByPapers($papers);
-
-		$squareMtGifcoPrice = $this->getCost();
-
-		$priceData->price = $squareMtGifcoPrice - ($squareMtDiscount + $manufacturerDiscount + $heavyPapersDiscount);
-
-		$priceData->data = [
-			'manufacturerDiscount' => $manufacturerDiscount,
-			'heavyPapersDiscount' => $heavyPapersDiscount,
-			'manufacturerDiscountByWave' => $manufacturerDiscountByWave,
-			'manufacturerDiscountsByPapers' => $manufacturerDiscountsByPapers,
-			'manufacturerTotalDiscountByPapers' => $manufacturerTotalDiscountByPapers,
-			'squareMtDiscount' => $squareMtDiscount,
-			'squareMtGifcoPrice' => $squareMtGifcoPrice,
-			'realPriceRule' => "{__('prices.fields' . $squareMtGifcoPrice)} - ({__('prices.fields' . $squareMtDiscount} + {__('prices.fields' . $manufacturerDiscount} + {__('prices.fields' . $heavyPapersDiscount})",
-			'realPrice' => "{$squareMtGifcoPrice} - ({$squareMtDiscount} + {$manufacturerDiscount} + {$heavyPapersDiscount})"
-		];
-
-		return $priceData;
 	}
 
 	public function _manageCalculationErrors(Exception $e)
@@ -310,9 +278,13 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 
 	public function mustAutomaticallyUpdatePrices() : bool
 	{
-		return false;
-		return !! $this->getSellable()?->mustAutomaticallyUpdatePrices();
-		// return config('operators.models.sellable.automaticUpdatesPrices');		
+		if(($bySellable = $this->getSellable()?->mustAutomaticallyUpdatePrices()) === false)
+			return false;
+
+		if(($bySupplier = $this->getSupplier()?->mustAutomaticallyUpdatePrices()) === false)
+			return false;
+
+		return $bySupplier || $bySellable;
 	}
 
 	static function getIdsBySellable(string|Sellable $sellable) : Collection

@@ -8,7 +8,7 @@ use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDReorderableStandardTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithInvoiceables;
-use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
+// use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Sellables\Supplier;
@@ -23,7 +23,7 @@ use function route;
 trait CommonOrderrowQuotationrowTrait
 {
 	use CRUDParentingTrait;
-	use InteractsWithPriceTrait;
+	// use InteractsWithPriceTrait;
 	use InteractsWithFormTrait;
 	use CRUDReorderableStandardTrait;
 	use InteractsWithInvoiceables;

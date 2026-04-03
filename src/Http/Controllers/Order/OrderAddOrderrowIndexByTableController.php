@@ -22,7 +22,7 @@ class OrderAddOrderrowIndexByTableController extends SellableCRUD
 	public function getIndexElements()
 	{
 		return $this->getModelClass()::byType($this->type)->with(
-			'target.categories', 'suppliers.target'
+			'target', 'suppliers.target'
 		)->get();
 	}
 

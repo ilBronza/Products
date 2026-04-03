@@ -6,45 +6,10 @@ This package now includes a helper feature that allows you to create **Suppliers
 
 ### How it works
 
-Any Eloquent model can be converted into a Supplier by invoking the SupplierBulkCreator.  
+Any Eloquent model can be converted into a Supplier by invoking the SupplierCreatorHelper.  
 The system will automatically generate the corresponding Supplier entry, linking it to the source model through its class name and primary key.
 
 ### Example Usage
-
-#### config/products.php
-declare a bulk Creator helper for the project
-
-```php
-'supplier' => [
-    'helpers' => [
-	    'bulkCreator' => SupplierBulkCreator::class
-	]
-],
-```
-
-#### App/Providers/Helpers/Suppliers/SupplierBulkCreator.php
-pick the models to be used as suppliers
-
-```php
-namespace App\Providers\Helpers\Suppliers;
-
-use IlBronza\Clients\Models\Client;
-use IlBronza\Operators\Models\Operator;
-use IlBronza\Products\Providers\Helpers\Suppliers\SupplierBulkCreator as IbSupplierBulkCreator;
-use Illuminate\Support\Collection;
-
-class SupplierBulkCreator extends IbSupplierBulkCreator
-{
-    public function getPossibleSuppliersTarget() : Collection
-    {
-        $operators = Operator::gpc()::all();
-        $companiesAsSupplier = Client::gpc()::asSupplier()->get();
-        $merged = $operators->merge($companiesAsSupplier);
-        return $merged;
-    }
-}
-```
-
 
 ### Notes
 - If a Supplier for the given model already exists, the factory will return it instead of creating a duplicate.
@@ -57,46 +22,10 @@ This package now includes a helper feature that allows you to create **Sellables
 
 ### How it works
 
-Any Eloquent model can be converted into a Sellable by invoking the SellableBulkCreator.  
+Any Eloquent model can be converted into a Sellable by invoking the SellableCreatorHelper.  
 The system will automatically generate the corresponding Sellable entry, linking it to the source model through its class name and primary key.
 
 ### Example Usage
-
-#### config/products.php
-declare a bulk Creator helper for the project
-
-```php
-'sellable' => [
-    'helpers' => [
-	    'bulkCreator' => SellableBulkCreator::class
-	]
-],
-```
-
-#### App/Providers/Helpers/Sellables/SellableBulkCreator.php
-pick the models to be used as suppliers
-
-```php
-
-namespace App\Providers\Helpers\Sellables;
-
-use IlBronza\Operators\Models\Contracttype;
-use IlBronza\Products\Models\Product\Product;
-use IlBronza\Products\Providers\Helpers\Suppliers\SellableBulkCreator as IbSellableBulkCreator;
-use Illuminate\Support\Collection;
-
-class SellableBulkCreator extends IbSellableBulkCreator
-{   
-    public function getPossibleSellablesTarget() : Collection
-    {
-        $contracttypes = Contracttype::gpc()::all();
-        $products = Product::gpc()::all();
-        $result = $products->merge($contracttypes);
-        return $result;
-    }
-}
-```
-
 
 ### Notes
 - If a Sellable for the given model already exists, the factory will return it instead of creating a duplicate.

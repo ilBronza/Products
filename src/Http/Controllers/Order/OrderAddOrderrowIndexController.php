@@ -122,7 +122,6 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		$types = [
 			'Contracttype',
 			'VehicleType',
-			'vehicle',
 			'Surveillance',
 			'Hotel',
 			'service',
@@ -158,11 +157,11 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 
 			foreach ($sellables as $key => $_parameters)
 			{
-				$sellable = Sellable::getProjectClassName()::find($_parameters['sellable']);
+				$sellable = Sellable::gpc()::find($_parameters['sellable']);
 
 				for ($i = 0; $i < $_parameters['quantity']; $i ++)
 				{
-					$orderrow = Orderrow::getProjectClassName()::make();
+					$orderrow = Orderrow::gpc()::make();
 					$orderrow->sellable()->associate($sellable);
 					$orderrow->order()->associate($order);
 

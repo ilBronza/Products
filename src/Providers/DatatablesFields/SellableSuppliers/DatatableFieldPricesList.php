@@ -13,7 +13,7 @@ class DatatableFieldPricesList extends DatatableFieldFlat
 	{
 		$result = [];
 
-		foreach($value->getCachedPriceFieldsForSellable() as $priceField)
+		foreach($value->getCachedPriceFieldsForSellable() as $priceField => $measurementUnit)
 			$result[] = "{$priceField}: {$value->$priceField}";
 
 		return implode("<br />", $result);

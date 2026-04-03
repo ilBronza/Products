@@ -10,7 +10,7 @@ class SellableSupplierEditUpdateFieldsetsParameters extends FieldsetParametersFi
     {
         $fields = [];
 
-        foreach($this->getModel()->getCachedPriceFieldsForSellable() as $field)
+        foreach($this->getModel()->getCachedPriceFieldsForSellable() as $field => $measurementUnit)
             $fields[$field] = ['number' => 'numeric|nullable|min:0'];
 
         return [

@@ -136,7 +136,7 @@ trait ProductRelationshipsTrait
 		return $this->belongsTo(Client::gpc());
 	}
 
-	public function getClient() : Client
+	public function getClient() : ? Client
 	{
 		return $this->getOrFindCachedRelatedElement('client');
 	}

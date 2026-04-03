@@ -11,11 +11,24 @@ use function lcfirst;
 
 class CustomOrderrow extends Orderrow
 {
+	public $routeBasename = 'ibProductsorderrows';
+	public $routeClassname = 'orderrow';
+
+    public function getForeignKey()
+    {
+        return 'orderrow_id';
+    }
+
 	static function getClassname() : string
 	{
 		$actualClassname = lcfirst(class_basename(static::class));
 
 		return config("products.models.customOrderrows.{$actualClassname}.class");
+	}
+
+	public function getAddSellableSupplierButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return RowsButtonsHelper::getAddSellableSupplierButton($container, static::$typeName);
 	}
 
 	public function getAddRowButton(ProductPackageBaseRowcontainerModel $container)
@@ -28,4 +41,8 @@ class CustomOrderrow extends Orderrow
 		return RowsButtonsHelper::getAddTypedRowTableButton($container, static::$typeName);
 	}
 
+	static public function getDesignedTargetConfigPackagePrefix() : string
+	{
+		return static::$designedTargetConfigPackagePrefix;
+	}
 }

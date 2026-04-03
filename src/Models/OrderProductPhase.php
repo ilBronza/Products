@@ -244,4 +244,14 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 	{
 		return $this->getOrderProduct();
 	}
+
+	public function getRequiredQuantityIn()
+	{
+		// morime(['qweqwe', $this, $this->getWorkstationId(), $this->getQuantityRequired(), $this->getCoefficientOutput(), $this->getQuantityRequired() / $this->getCoefficientOutput()]);
+
+		if(! $coefficientOutput = $this->getCoefficientOutput())
+			return $this->getQuantityRequired();
+
+		return $this->getQuantityRequired() / $coefficientOutput;
+	}
 }

@@ -14,7 +14,7 @@ use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\HasCustomPricesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-use IlBronza\Prices\Models\Traits\UpdatePricesOnSaveTrait;
+// use IlBronza\Prices\Models\Traits\UpdatePricesOnSaveTrait;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseModel;
@@ -31,6 +31,7 @@ use function trans;
 class Sellable extends ProductPackageBaseModel implements WithPriceInterface, TimelineGroupInterface
 {
 	use ProductPackageBaseModelTrait;
+	use InteractsWithPriceTrait;
 	use InteractsWithNotesTrait;
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
@@ -45,9 +46,9 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 	use CRUDSluggableTrait;
 
 	use HasCustomPricesTrait;
-	use UpdatePricesOnSaveTrait;
+	// use UpdatePricesOnSaveTrait;
 
-	use InteractsWithPriceTrait;
+	// use InteractsWithPriceTrait;
 
 	static $restoringRelationships = [];
 	static $modelConfigPrefix = 'sellable';
@@ -206,9 +207,9 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $result;
 	}
 
-	public function mustAutomaticallyUpdatePrices(): bool
+	public function mustAutomaticallyUpdatePrices(): ? bool
 	{
-		return config('products.models.sellable.automaticUpdatesPrices');
+		return $this->getTarget()?->mustAutomaticallyUpdatePrices();
 	}
 
 	public function getCategories() : Collection
@@ -218,7 +219,7 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 			3600,
 			function ()
 			{
-				return $this->getTarget()?->getCategories();				
+				return $this->getTarget()?->getCategories() ?? collect();
 			}
 		);
 	}
@@ -274,6 +275,11 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $this->getTarget()->getSellableSupplierIndexRelations();
 	}
 
+	public function getPriceFieldsForSellable() : array
+	{
+		return $this->getTarget()->getPriceFieldsForSellable();		
+	}
+
 	public function getCachedPriceFieldsByType() : array
 	{
 		// return cache()->remember(
@@ -281,7 +287,7 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		// 	3600,
 		// 	function()
 		// 	{
-				return $this->getTarget()->getPriceFieldsForSellable();
+				return $this->getPriceFieldsForSellable();
 		// 	}
 		// );
 	}

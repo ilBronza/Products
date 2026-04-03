@@ -54,7 +54,7 @@ trait SellableSupplierAssignmentTrait
 		Log::info('far sì che sia il pulsante a salvare la tabella da refreshare zio frenulo');
 
 		if ($sellable->isContracttype())
-			return ['operatorrows'];
+			return ['operatorRows'];
 
 		else if ($sellable->isVehicleType())
 			return ['vehicleRows'];

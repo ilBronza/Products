@@ -13,7 +13,7 @@ trait CommonOrderrowQuotationrowRelationAndScopesTrait
 {
 	public function sellableSupplier()
 	{
-		return $this->belongsTo(SellableSupplier::gpc());
+		return $this->belongsTo(SellableSupplier::gpc())->withTrashed();
 	}
 
 	public function getSupplier() : ?Supplier
@@ -91,7 +91,7 @@ trait CommonOrderrowQuotationrowRelationAndScopesTrait
 
 	public function sellable()
 	{
-		return $this->belongsTo(Sellable::gpc());
+		return $this->belongsTo(Sellable::gpc())->withTrashed();
 	}
 
 	public function getDestination() : ?Destination

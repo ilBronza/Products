@@ -96,6 +96,11 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		return $this->sellables;
 	}
 
+	public function mustAutomaticallyUpdatePrices(): ? bool
+	{
+		return $this->getTarget()?->mustAutomaticallyUpdatePrices();
+	}
+
 	public function getRelatedQuotationrows() : Collection
 	{
 		return $this->quotationrows()->with(
