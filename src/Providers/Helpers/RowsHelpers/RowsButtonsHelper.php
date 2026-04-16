@@ -34,7 +34,7 @@ class RowsButtonsHelper
 
 		$button = Button::create([
 			'href' => $container->{$urlGetter}(),
-			'text' => "products::rows.add{$type}Row",
+			'text' => "products::rows.addRow",
 			'icon' => 'plus'
 		]);
 
@@ -53,7 +53,7 @@ class RowsButtonsHelper
 
 		$button = Button::create([
 			'href' => $url,
-			'text' => "products::rows.add{$type}TableRow",
+			'text' => "products::rows.addTableRow",
 			'icon' => 'plus'
 		]);
 

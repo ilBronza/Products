@@ -63,7 +63,7 @@ trait SellableSupplierAssignmentTrait
 		// 	return ['surveillancerows'];
 
 		else if ($sellable->isHotelType())
-			return ['hotelrows'];
+			return ['hotelRows'];
 
 		else if ($sellable->isRentType())
 			return ['rentrows'];
@@ -72,7 +72,7 @@ trait SellableSupplierAssignmentTrait
 			return ['controlroomRows'];
 
 		else if ($sellable->isReimbursementType())
-			return ['reimbursementrows'];
+			return ['reimbursementRows'];
 
 		else
 			throw new Exception('gestire gli altri tipi');
@@ -117,6 +117,29 @@ trait SellableSupplierAssignmentTrait
 	public function getContainerModelPrefix() : string
 	{
 		return $this->containerModelPrefix;
+	}
+
+	public function getSortingIndexByType($container, string $type)
+	{
+		return $container->rows()->bySellableType($type)->max('sorting_index') + 1;
+	}
+
+	public function addNewRowBySellableSupplier($container, $sellableSupplier)
+	{
+		$sellableSupplier = SellableSupplier::gpc()::with('sellable', 'supplier')->find($sellableSupplier);
+
+		$rowSortingIndex = $this->getSortingIndexByType($container, $sellableSupplier->sellable->type);
+
+		$row = $container->rows()->make();		
+		$row->sellable()->associate($sellableSupplier->getSellable());
+		$row->container()->associate($container);
+
+		$row->type = $sellableSupplier->getSellable()->type;
+		$row->sorting_index = $rowSortingIndex ++;
+
+		$row->save();
+
+		return $this->_associateSellableSupplier($row, $sellableSupplier);
 	}
 
 }

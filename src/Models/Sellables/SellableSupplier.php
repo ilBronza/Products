@@ -163,7 +163,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	{
 		return $this->belongsTo(
 			config('products.models.sellable.class')
-		);
+		)->withTrashed();
 	}
 
 	public function supplier() : BelongsTo
@@ -216,6 +216,22 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		]);
 	}
 
+	public function getAddSellableSupplierRowToQuotationUrl()
+	{
+		return app('products')->route('quotations.addSellableSupplierRow', [
+			'quotation' => request()->quotation,
+			'sellableSupplier' => $this->getKey()
+		]);		
+	}
+
+	public function getAddSellableSupplierRowToOrderUrl()
+	{
+		return app('products')->route('orders.addSellableSupplierRow', [
+			'order' => request()->order,
+			'sellableSupplier' => $this->getKey()
+		]);		
+	}
+
 	public function getAssignSellableSupplierToOrderrowUrl()
 	{
 		return app('products')->route('orderrows.associateSellableSupplier', [
@@ -257,7 +273,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		]);
 	}
 
-	public function getSupplier() : Supplier
+	public function getSupplier() : ? Supplier
 	{
 		return $this->supplier;
 	}
@@ -299,6 +315,6 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 
 	public function getCachedPriceFieldsForSellable() : array
 	{
-		return $this->getSellable()->getCachedPriceFieldsByType();
+		return $this->getSellable()?->getCachedPriceFieldsByType() ?? [];
 	}
 }

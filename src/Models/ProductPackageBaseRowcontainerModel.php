@@ -10,7 +10,6 @@ use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Traits\Calendar\HasCalendarTrait;
-use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
@@ -21,16 +20,10 @@ use function lcfirst;
 
 class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface, CalendarInterface, TimelineGroupInterface, TimelineItemInterface
 {
-	use CRUDModelExtraFieldsTrait;
 	use GanttTimelineTrait;
 	use HasCalendarTrait;
 	use IsTimelineGroupTrait;
 	use IsTimelineItemTrait;
-
-	public function getExtraFieldsClass() : ? string
-	{
-		return OrderQuotationExtraFields::class;
-	}
 
 	protected $casts = [
 		'date' => 'date',
@@ -180,13 +173,21 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 
 	public function getAddRowByTypeUrl(string $type, bool $table = false) : string
 	{
-		return $this->getAddOrderrowByTypeUrl($type, $table);
+		$params = [
+			'type' => $type,
+		];
+
+		if($table)
+			$params['table'] = $table;
+
+		return $this->getKeyedRoute('addRow', $params);
 	}
 
 	public function getAddSellableSupplierRowByTypeUrl(string $type)
 	{
 		return $this->getKeyedRoute('addSellableSupplierRows', [
 			'type' => $type,
+			'table' => true
 		]);
 	}
 

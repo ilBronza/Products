@@ -29,7 +29,7 @@ class OrderAddOrderrowIndexByTableController extends SellableCRUD
 	public function addIndexButtons()
 	{
 		$this->getTable()->createPostButtonSamePage([
-			'href' => app('products')->route('orders.addOrderrow', ['order' => $this->order->getKey(), 'type' => $this->type]),
+			'href' => app('products')->route('orders.addRow', ['order' => $this->order->getKey(), 'type' => $this->type]),
 			'text' => 'products::buttons.addRows',
 			'icon' => 'plus'
 		]);

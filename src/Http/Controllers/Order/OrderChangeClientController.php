@@ -12,7 +12,7 @@ class OrderChangeClientController extends OrderEditUpdateController
 
 	public $allowedMethods = ['edit', 'update'];
 
-	public function getEditParametersFile() : ?string
+	public function getOverriddenEditParametersFile() : ?string
 	{
 		return config('products.models.order.parametersFiles.changeClient');
 	}

@@ -44,10 +44,10 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		]);
 	}
 
-	public function getAddRowByTypeUrl(string $type, bool $table = false) : string
-	{
-		return $this->getAddQuotationrowByTypeUrl($type, $table);
-	}
+	// public function getAddRowByTypeUrl(string $type, bool $table = false) : string
+	// {
+	// 	return $this->getAddQuotationrowByTypeUrl($type, $table);
+	// }
 
 	public function getConvertToOrderUrl() : string
 	{
@@ -56,14 +56,14 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 		]);
 	}
 
-	public function getPossibleSellablesByType(string $type) : array
-	{
-		$types = $this->getQuotationrowsPossibleSellableTypes();
+	// public function getPossibleSellablesByType(string $type) : array
+	// {
+	// 	$types = $this->getQuotationrowsPossibleSellableTypes();
 
-		$type = strtolower($type);
+	// 	$type = strtolower($type);
 
-		return $types[$type]();
-	}
+	// 	return $types[$type]();
+	// }
 
 	public function getDate() : ? Carbon
 	{

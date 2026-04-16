@@ -28,11 +28,6 @@ class QuotationEditUpdateController extends QuotationCRUD
 		return null;
 	}
 
-    public function getGenericParametersFile() : ? string
-    {
-        return config('products.models.quotation.parametersFiles.edit');
-    }
-
 	public function getRelationshipsManagerClass()
 	{
 		return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.edit");

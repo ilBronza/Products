@@ -18,6 +18,11 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
     public $allowedMethods = ['edit', 'update'];
 
+    public function getOverriddenEditParametersFile()
+    {
+    	return $this->getGenericParametersFile();
+    }
+
     public function getGenericParametersFile() : ? string
     {
 		if(($sellable = $this->getModel()->getSellable())->isContracttype())

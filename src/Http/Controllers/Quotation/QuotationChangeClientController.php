@@ -11,7 +11,7 @@ class QuotationChangeClientController extends QuotationEditUpdateController
 
 	public $allowedMethods = ['edit', 'update'];
 
-	public function getEditParametersFile() : ?string
+	public function getOverriddenEditParametersFile() : ?string
 	{
 		return config('products.models.quotation.parametersFiles.changeClient');
 	}

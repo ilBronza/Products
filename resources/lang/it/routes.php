@@ -27,6 +27,7 @@ return [
 		'addOrderrowsByTable' => 'Aggiungi servizi/beni',
 		'active' => 'Commesse attive',
 		'all' => 'Tutte Commesse',
+		'addSellableSupplierRows' => 'Aggiungi riga specifica'
 	],
 
 	'ibProductsproducts' => [

@@ -3,7 +3,6 @@
 namespace IlBronza\Products\Models\Quotations;
 
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
-use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
@@ -32,6 +31,11 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 	public function getQuotation() : ?Quotation
 	{
 		return $this->quotation;
+	}
+
+	public function container()
+	{
+		return $this->quotation();
 	}
 
 	public function modelContainer()

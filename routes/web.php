@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CrudPalletController;
+use IlBronza\Operators\Http\Controllers\Sellables\OrderrowClientOperatorController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
 use IlBronza\Products\Products;
 use IlBronza\Timings\Timings;
@@ -51,6 +52,14 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		//QuotationAddSellableSupplierIndexByTableController
+		Route::post('{quotation}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('quotation', 'addSellableSupplierRows'), 'index'])->name('quotations.addSellableSupplierRows');
+
+		//QuotationAddOrderrowIndexByTableController
+		Route::get('{quotation}/add-row-by-selable-supplier/{sellableSupplier}', [Products::getController('quotation', 'addQuotationrowBySellableSupplier'), 'store'])->name('quotations.addSellableSupplierRow');
+
+
+
 		//QuotationPdfController
 		Route::get('{quotation}/pdf', [Products::getController('quotation', 'pdf'), 'pdf'])->name('quotations.pdf');
 
@@ -76,7 +85,8 @@ Route::group([
 		Route::get('{quotation}/add-row-by-type/type/{type}/table', [Products::getController('quotation', 'addQuotationrowsByTable'), 'index'])->name('quotations.addQuotationrowsByTable');
 
 		//QuotationAddQuotationrowIndexController
-		Route::match(['get', 'post'], '{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addQuotationrow');
+		Route::match(['get', 'post'], '{quotation}/add-row/type/{type}', [Products::getController('quotation', 'addQuotationrow'), 'addQuotationrow'])->name('quotations.addRow');
+
 		Route::post('{quotation}/store-new-quotationrows', [Products::getController('quotation', 'addQuotationrow'), 'storeQuotationrow'])->name('quotations.storeQuotationrow');
 
 		//DestinationCreateStoreController
@@ -349,16 +359,26 @@ Route::group([
 		Route::get('{order}/change-client', [Products::getController('order', 'changeClient'), 'edit'])->name('orders.changeClientForm');
 		Route::put('{order}/change-client', [Products::getController('order', 'changeClient'), 'update'])->name('orders.changeClientUpdate');
 
+
+		//OrderAddOrderrowIndexByTableController
+		Route::get('{order}/add-row-by-selable-supplier/{sellableSupplier}', [Products::getController('order', 'addOrderrowBySellableSupplier'), 'store'])->name('orders.addSellableSupplierRow');
+
+
 		//OrderAddOrderrowIndexByTableController
 		Route::get('{order}/add-row-by-type/type/{type}/table', [Products::getController('order', 'addOrderrowsByTable'), 'index'])->name('orders.addOrderrowsByTable');
 
 		//OrderAddOrderrowIndexController
-		Route::match(['get', 'post'], '{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addOrderrow');
+		Route::match(['get', 'post'], '{order}/add-row/type/{type}', [Products::getController('order', 'addOrderrow'), 'addOrderrow'])->name('orders.addRow');
 
 		//OrderAddOrderrowIndexController
-		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeOrderrow'])->name('orders.storeOrderrow');
+		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeRow'])->name('orders.storeRow');
 
-		Route::get('{order}/add-row-by-sellable-suppliers/type/{type}/table', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
+		//OrderAddSellableSupplierIndexByTableController
+		Route::post('{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
+		// Route::match(['get', 'post'], '{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
+
+		//OrderStoreOrderrowsBySellableSupplierController
+		Route::post('{order}/store-orderrows-by-sellable-suppliers/type/{type}', [Products::getController('order', 'storeRowsBySellableSupplier'), 'storeRowsBySellableSupplier'])->name('orders.storeRowsBySellableSupplier');
 
 
 

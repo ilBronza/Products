@@ -51,7 +51,7 @@ class OrderRelationManager Extends RelationshipsManager
 							'getAddRowTableButton',
 						]
 					],
-					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters('vehicleRows'),
+					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'vehicleRows')
 					// 'parent' => [
 					// 	'controller' => config('products.models.order.controllers.show'),
 					// 	'translatedTitle' => trans('products::models.parentOrder'),

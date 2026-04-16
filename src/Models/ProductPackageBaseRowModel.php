@@ -109,7 +109,8 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		}
 		catch(\Exception $e)
 		{
-			Ukn::e('Non esiste la route ' . "{$pluralClass}.history");
+			if(\Auth::id() == 1)
+				Ukn::e('Non esiste la route ' . "{$pluralClass}.history");
 		}
 	}
 

@@ -7,5 +7,5 @@ use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 
 class WorkstationShowController extends WorkstationCRUD
 {
-
+	public $allowedMethods = ['show'];
 }

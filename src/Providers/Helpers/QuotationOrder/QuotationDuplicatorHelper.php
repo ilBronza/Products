@@ -44,8 +44,16 @@ abstract class QuotationDuplicatorHelper
 
 		$this->newRowContainer->save();
 
-		$this->newRowContainerExtraFields = $container->extraFields->replicate();
-		$this->newRowContainer->extraFields()->save($this->newRowContainerExtraFields);
+		foreach($container->extraFields->getAttributes() as $attribute => $value)
+		{
+			if($container->extraFields->getKeyName() == $attribute)
+				continue;
+
+			if($container->extraFields()->getForeignKeyName() == $attribute)
+				continue;
+
+			$this->newRowContainer->extraFields->$attribute = $value;
+		}
 
 		$this->newRowContainer->frozen_parameters = null;
 		$this->newRowContainer->save();

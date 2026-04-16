@@ -15,4 +15,10 @@ trait OrderrowRelationsScopesTrait
 	{
 		return $this->belongsTo(Order::gpc());
 	}
+
+	public function container()
+	{
+		return $this->order();
+	}
+
 }

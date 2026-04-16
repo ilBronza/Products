@@ -13,23 +13,4 @@ class ProductOrderrow extends CustomOrderrow
 	public $routeBasename = 'ibProductsorderrows';
 	public $routeClassname = 'orderrow';
 
-	public function getCalculatedCostCompanyTotalHtmlClass()
-	{
-		dd('mettere questa su padovanio e basta');
-
-		if ($value = $this->cost_company_total)
-			return 'costcompanytotalforced';
-
-		return 'costcompanytotalcalculated';
-	}
-
-	public function getTotalClientPrice()
-	{
-		return $this->total_client_price;
-	}
-
-	public function getTotalClientPriceAttribute()
-	{
-		return $this->getCalculatedClientPrice() * $this->getCostCoefficient() * $this->getQuantity();
-	}
 }

@@ -188,6 +188,11 @@ trait InteractsWithSupplierTrait
 		else
 			$sellableSuppliers = $this->getSupplier()?->getSellableSuppliers();
 
+		$sellableSuppliers = $sellableSuppliers->filter(function($item)
+		{
+			return ! $item->getSellable()?->deleted_at;
+		});
+
 		$this->setRelation('sellableSuppliers', $sellableSuppliers);
 
 		return $sellableSuppliers;

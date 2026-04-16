@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Models\Orders;
 
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
-use IlBronza\Products\Models\Order;
+use IlBronza\Products\Models\Orders;
 
 class OrderExtraFields extends OrderQuotationExtraFields
 {

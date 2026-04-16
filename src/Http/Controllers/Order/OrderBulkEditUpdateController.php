@@ -13,7 +13,7 @@ class OrderBulkEditUpdateController extends OrderEditUpdateController
 	public ?bool $updateEditor = false;
 	public array $keys;
 
-	public function getEditParametersFile() : ?string
+	public function getOverriddenEditParametersFile() : ?string
 	{
 		return config('products.models.order.parametersFiles.bulkEdit');
 	}

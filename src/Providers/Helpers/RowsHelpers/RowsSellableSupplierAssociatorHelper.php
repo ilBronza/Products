@@ -6,9 +6,8 @@ use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
-
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
-
+use IlBronza\Products\Providers\Helpers\Sellables\SellableSupplierCreatorHelper;
 use function config;
 use function dd;
 use function trans;
@@ -72,7 +71,7 @@ class RowsSellableSupplierAssociatorHelper
 	public function provideSellableSupplier() : SellableSupplier
 	{
 		if(! isset($this->sellableSupplier))
-			$this->sellableSupplier = SellableCreatorHelper::getOrCreateSellableSupplier(
+			$this->sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier(
 				$this->getSupplier(),
 				$this->getSellable()
 			);

@@ -48,11 +48,9 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		'orderProducts',
 	];
 
-	public function getStoreOrderrowUrl() : string
+	public function getStoreRowUrl() : string
 	{
-		return $this->getKeyedRoute('storeOrderrow', [
-			'quotation' => $this->getKey(),
-		]);
+		return $this->getKeyedRoute('storeRow');
 	}
 
 	public function getTimingChildren() : Collection
@@ -122,18 +120,18 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 		return ! ! $this->quotation_id;
 	}
 
-	public function getAddOrderrowByTypeUrl(string $type, bool $table = false) : string
-	{
-		$params = [
-			'order' => $this->getKey(),
-			'type' => $type,
-		];
+	// public function getAddOrderrowByTypeUrl(string $type, bool $table = false) : string
+	// {
+	// 	$params = [
+	// 		'order' => $this->getKey(),
+	// 		'type' => $type,
+	// 	];
 
-		if($table)
-			$params['table'] = $table;
+	// 	if($table)
+	// 		$params['table'] = $table;
 
-		return $this->getKeyedRoute('addOrderrow', $params);
-	}
+	// 	return $this->getKeyedRoute('addOrderrow', $params);
+	// }
 
 	public function getOrderrows() : Collection
 	{

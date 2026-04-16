@@ -12,7 +12,7 @@ class OrderrowBulkEditUpdateController extends OrderrowEditUpdateController
 
     public $allowedMethods = ['bulkEdit', 'bulkUpdate'];
 
-    public function getEditParametersFile() : ?string
+    public function getOverriddenEditParametersFile() : ?string
     {
 	    return config('products.models.orderrow.parametersFiles.bulkEdit');
     }

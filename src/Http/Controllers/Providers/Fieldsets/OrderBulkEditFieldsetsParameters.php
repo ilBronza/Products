@@ -18,7 +18,6 @@ class OrderBulkEditFieldsetsParameters extends QuotationEditUpdateFieldsetsParam
 //						'rules' => 'string|required'
 //					],
 					'client_id' => [
-						'readOnly' => true,
 						'type' => 'select',
 						'select2' => false,
 						'multiple' => false,

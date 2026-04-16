@@ -29,7 +29,7 @@ class QuotationAddQuotationrowIndexByTableController extends SellableCRUD
 	public function addIndexButtons()
 	{
 		$this->getTable()->createPostButtonSamePage([
-			'href' => app('products')->route('quotations.addQuotationrow', ['quotation' => $this->quotation->getKey(), 'type' => $this->type]),
+			'href' => app('products')->route('quotations.addRow', ['quotation' => $this->quotation->getKey(), 'type' => $this->type]),
 			'text' => 'products::buttons.addRows',
 			'icon' => 'plus'
 		]);

@@ -152,8 +152,8 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 					$quotationrow->sellable()->associate($sellable);
 					$quotationrow->quotation()->associate($quotation);
 
+					$quotationrow->type = $sellable->type;
 					$quotationrow->sorting_index = $quotationrowSortingIndex ++;
-
 					$quotationrow->save();
 				}
 			}

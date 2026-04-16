@@ -2,13 +2,12 @@
 
 namespace IlBronza\Products\Http\Controllers\Order;
 
-use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
+use IlBronza\Form\Form;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
-
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 use function array_keys;
 use function compact;
 use function dd;
@@ -19,15 +18,17 @@ use function view;
 
 class OrderAddOrderrowIndexController extends OrderCRUD
 {
-	public $allowedMethods = ['addOrderrow', 'storeOrderrow'];
+	public $allowedMethods = ['addOrderrow', 'storeRow'];
 
 	public function addOrderrow(Request $request, $order, string $type)
 	{
+		$type = ucfirst($type);
+
 		if($request->table)
 			return redirect()->to(app('products')->route('orders.addOrderrowsByTable', ['order' => $order, 'type' => $type]));
 
 		if($request->isMethod('get'))
-			session()->put('orderAddOrderrowIndexController_storeOrderrow_return_url', url()->previous());
+			session()->put('orderAddOrderrowIndexController_storeRow_return_url', url()->previous());
 
 		$order = $this->findModel($order);
 
@@ -40,7 +41,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		];
 
 		$form = Form::createFromArray([
-			'action' => $order->getStoreOrderrowUrl(),
+			'action' => $order->getStoreRowUrl(),
 			'method' => 'POST'
 		]);
 
@@ -106,6 +107,9 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		if ($type == 'service')
 			return $order->rentRows()->max('sorting_index') + 1;
 
+		if ($type == 'Service')
+			return $order->rentRows()->max('sorting_index') + 1;
+
 		if ($type == 'Reimbursement')
 			return $order->reimbursementRows()->max('sorting_index') + 1;
 
@@ -115,7 +119,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 		dd('manca type ' . $type);
 	}
 
-	public function storeOrderrow(Request $request, $order)
+	public function storeRow(Request $request, $order)
 	{
 		$order = $this->findModel($order);
 
@@ -125,6 +129,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			'Surveillance',
 			'Hotel',
 			'service',
+			'Service',
 			'Rent',
 			'Product',
 			'product',
@@ -140,11 +145,31 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			$validationParameters[$type . '.*.quantity'] = 'integer|required|min:1';
 		}
 
+		$validator = Validator::make($request->all(), $validationParameters);
+
+		if ($validator->fails())
+		{
+		    dd([
+		        'request' => $request->all(),
+		        'errors' => $validator->errors()->toArray(),
+		        'firstError' => $validator->errors()->first(),
+		    ]);
+		}
+
+		$parameters = $validator->validated();
+
+		if (count($parameters) == 0)
+		{
+		    dd([
+		        'message' => 'Manca la chiave per questo tipo',
+		        'request' => $request->all(),
+		    ], $parameters, $validationParameters, $request->all());
+		}
 
 		//		dd($request->all());
 		//		dd($validationParameters);
 
-		$parameters = $request->validate($validationParameters);
+		// $parameters = $request->validate($validationParameters);
 
 		if(count($parameters) == 0)
 			dd(['Manca la chiave per questo tipo', $request->all()]);
@@ -173,9 +198,9 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 			}
 		}
 
-		if($url = session()->get('orderAddOrderrowIndexController_storeOrderrow_return_url'))
+		if($url = session()->get('orderAddOrderrowIndexController_storeRow_return_url'))
 		{
-			session()->forget('orderAddOrderrowIndexController_storeOrderrow_return_url');
+			session()->forget('orderAddOrderrowIndexController_storeRow_return_url');
 
 			return redirect()->to($url);
 		}

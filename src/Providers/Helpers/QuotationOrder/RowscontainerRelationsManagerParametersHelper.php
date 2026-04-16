@@ -2,7 +2,7 @@
 
 namespace IlBronza\Products\Providers\Helpers\QuotationOrder;
 
-use IlBronza\Products\Models\Orders\CustomOrderrow;
+use IlBronza\Products\Models\Interfaces\CustomRowInterface;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 
@@ -21,7 +21,7 @@ class RowscontainerRelationsManagerParametersHelper
 	/**
 	 * es VehicleRow
 	 **/
-	public CustomOrderrow $relatedCustomRowType;
+	public CustomRowInterface $relatedCustomRowType;
 
 	/**
 	 * orderrow or quotationrow
@@ -42,6 +42,16 @@ class RowscontainerRelationsManagerParametersHelper
 		$this->packagePrefix = $this->relatedCustomRowType::getDesignedTargetConfigPackagePrefix();
 	}
 
+	public function getRowcontainerModel() : ProductPackageBaseRowcontainerModel
+	{
+		return $this->rowContainer;
+	}
+
+	public function getRelationName() : string
+	{
+		return $this->relationName;
+	}
+
 	public function getFieldsgroupParametersFile() : string
 	{
 		return config("{$this->packagePrefix}.models.{$this->relatedBaseRowType}.fieldsGroupsFiles.index");
@@ -54,25 +64,45 @@ class RowscontainerRelationsManagerParametersHelper
 		return "get{$ucFirstRelation}ForRelationshipManager";
 	}
 
+	public function getRelatedRowPlaceholder() : CustomRowInterface
+	{
+		return $this->getRowcontainerModel()->{$this->getRelationName()}()->make();
+	}
+
+	public function getRelationPackagePrefix() : ? string
+	{
+		return $this->getRelatedRowPlaceholder()->getDesignedTargetConfigPackagePrefix();
+	}
+
+	public function getButtonsMethods() : array
+	{
+		return array_keys(
+			array_filter(
+				config("{$this->getRelationPackagePrefix()}.models.orderrow.relatedButtonsMethods")
+			)
+		);
+	}
+
+	public function _getStandardRowrelationParameters()
+	{
+		$result = [
+			'controller' => config("products.models.{$this->relatedBaseRowType}.controllers.index"),
+			'selectRowCheckboxes' => true,
+			'onlyButtonsDom' => true,
+			'footerFilters' => false,
+			'elementGetterMethod' => $this->getElementsGetterMethod(),
+			'fieldsGroupsParametersFile' => $this->getFieldsgroupParametersFile(),
+			'translatedTitle' => trans('products::rows.' . $this->relationName),
+			'buttonsMethods' => $this->getButtonsMethods()
+		];
+
+		return $result;
+	}
+
 	static function getStandardRowrelationParameters(ProductPackageBaseRowcontainerModel $rowcontainer, string $relationName)
 	{
 		$helper = new static($rowcontainer, $relationName);
 
-		$result = [
-			'controller' => config("products.models.{$helper->relatedBaseRowType}.controllers.index"),
-			'selectRowCheckboxes' => true,
-			'onlyButtonsDom' => true,
-			'footerFilters' => false,
-			'elementGetterMethod' => $helper->getElementsGetterMethod(),
-			'fieldsGroupsParametersFile' => $helper->getFieldsgroupParametersFile(),
-			'translatedTitle' => trans('products::rows.' . $relationName),
-			'buttonsMethods' => [
-				'getAddSellableSupplierButton',
-				'getAddRowButton',
-				'getAddRowTableButton',
-			]
-		];
-
-		return $result;
+		return $helper->_getStandardRowrelationParameters();
 	}
 }

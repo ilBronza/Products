@@ -56,7 +56,7 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 	public function target()
 	{
-		return $this->morphTo();
+		return $this->morphTo()->withTrashed();
 	}
 
 	public function getTarget() : ?SellableItemInterface
@@ -219,7 +219,16 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 			3600,
 			function ()
 			{
-				return $this->getTarget()?->getCategories() ?? collect();
+				try
+				{
+					return $this->getTarget()?->getCategories() ?? collect();
+				}
+				catch(\Exception $e)
+				{
+
+				}
+
+				return collect();
 			}
 		);
 	}
@@ -272,12 +281,16 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 	public function getSellableSupplierIndexRelations()
 	{
-		return $this->getTarget()->getSellableSupplierIndexRelations();
+		return $this->getTarget()?->getSellableSupplierIndexRelations() ?? [
+			'prices',
+			'supplier.target',
+		];
+
 	}
 
 	public function getPriceFieldsForSellable() : array
 	{
-		return $this->getTarget()->getPriceFieldsForSellable();		
+		return $this->getTarget()?->getPriceFieldsForSellable() ?? [];
 	}
 
 	public function getCachedPriceFieldsByType() : array

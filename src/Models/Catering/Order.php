@@ -3,13 +3,22 @@
 namespace IlBronza\Products\Models\Catering;
 
 use IlBronza\CRUD\Models\Casts\ExtraField;
+use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\Category\Models\Category;
 use IlBronza\FormField\Casts\JsonFieldCast;
 use IlBronza\Products\Models\Order as IbOrder;
+use IlBronza\Products\Models\Orders\OrderExtraFields;
 use Illuminate\Support\Collection;
 
 class Order extends IbOrder
 {
+	use CRUDModelExtraFieldsTrait;
+
+	public function getExtraFieldsClass() : ? string
+	{
+		return OrderExtraFields::class;
+	}
+
 	protected $casts = [
 		'phases' => JsonFieldCast::class,
 		'people' => JsonFieldCast::class,
