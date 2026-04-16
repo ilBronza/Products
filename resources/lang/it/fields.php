@@ -19,6 +19,7 @@ return [
 	'total_hotels_cost' => 'Hotel',
 	'total_rents_cost' => 'Servizi',
 	'total_costs' => 'Costi totali',
+	'operatorRows_total_costs' => 'Costi operatori (tot)',
 	'total_vehicles_cost' => 'Automezzi',
 	'sellableSupplier.supplier.target' => 'Fornitore',
 	'sellableSupplier.supplier.target.model_alerts' => 'Avvisi',
@@ -107,6 +108,9 @@ return [
 	'quantity_neeeded_in_stock' => 'Quantità minima da magazzino',
 	'total_proposal' => 'Prezzo proposto',
 	'total_gain' => 'Prezzo effettivo',
+	'operatorRows_total_gains' => 'Ricavi operatori (tot)',
+	'operatorRows_margin' => 'Margine operatori',
+	'operatorRows_margin_percentage' => 'Margine operatori %',
 	'percentage_gain' => 'Margine %',
 	'round_trip' => 'Andata/Ritorno',
 	'km' => 'Km',
@@ -160,5 +164,9 @@ return [
 	'people_coefficient_quantity' => 'Quantità',
 	'people_coefficient_price_coefficient' => 'Coefficiente costo',
 	'phase' => 'Fase',
-	'quotation_description' => 'Descrizione in preventivo'
+	'quotation_description' => 'Descrizione in preventivo',
+	'economicals' => 'Costi',
+	'operatorsCosts' => 'Operatori',
+	'productsCosts' => 'Prodotti',
+	'vehiclesCosts' => 'Automezzi',
 ];
