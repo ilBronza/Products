@@ -160,14 +160,6 @@ trait CommonOrderrowQuotationrowTrait
 		return $parameters[$key] ?? $default;
 	}
 
-	public function getCalculatedKmAttribute()
-	{
-		if ($value = $this->km)
-			return round($value, 2);
-
-		return $this->getModelContainer()->getKm();
-	}
-
 	public function getQuantity() : ?float
 	{
 		return $this->quantity;
@@ -195,16 +187,6 @@ trait CommonOrderrowQuotationrowTrait
 			return $this->description;
 
 		return $this->getSellable()->getName();
-	}
-
-	public function getCostCoefficient() : float
-	{
-		return $this->cost_coefficient;
-	}
-
-	public function getCostCoefficientAttribute($value) : float
-	{
-		return $value ?? $this->getModelContainer()?->getCostCoefficient() ?? 1;
 	}
 
 

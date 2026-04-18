@@ -2,11 +2,32 @@
 
 namespace IlBronza\Products\Models\Traits\Customrow;
 
+use IlBronza\CRUD\Models\Casts\ExtraField;
+use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
+use IlBronza\Products\Casts\StoredOrCalculatedExtraField;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 
 trait CustomrowTrait
 {
+	use CRUDModelExtraFieldsTrait;
+
+	abstract public function getTotalRowCostAttribute() : float;
+	abstract public function getTotalRowRevenueAttribute() : float;
+
+	public function setCustomrowCasts(array $prices)
+	{
+		$casts = [];
+
+		foreach ($prices as $field => $measurementUnit)
+		{
+			$casts['stored_' . $field] = ExtraField::class;
+			$casts['calculated_' . $field] = StoredOrCalculatedExtraField::class;
+		}
+
+		$this->casts = array_merge($this->casts, $casts);
+	}
+
 	public function getAddRowTableButton(ProductPackageBaseRowcontainerModel $container)
 	{
 		return RowsButtonsHelper::getAddTypedRowTableButton($container, static::$typeName);

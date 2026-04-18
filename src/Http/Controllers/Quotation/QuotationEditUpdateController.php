@@ -89,6 +89,10 @@ class QuotationEditUpdateController extends QuotationCRUD
 		}
 	}
 
+	public function getOverriddenEditParametersFile() : ?string
+	{
+		return config('products.models.quotation.parametersFiles.edit');
+	}
 
 	public function update(Request $request, $quotation)
     {

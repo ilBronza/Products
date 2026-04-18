@@ -18,6 +18,16 @@ class OperatorOrderrow extends CustomOrderrow
 	public $routeBasename = 'ibProductsorderrows';
 	public $routeClassname = 'orderrow';
 
+	public function getTotalRowCostAttribute() : float
+	{
+		return 333;
+	}
+
+	public function getTotalRowRevenueAttribute() : float
+	{
+		return 999;
+	}
+
 	//quantity_on_total
 	public function getQuantityOnTotalAttribute()
 	{

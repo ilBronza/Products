@@ -12,5 +12,4 @@ class ProductOrderrow extends CustomOrderrow
 
 	public $routeBasename = 'ibProductsorderrows';
 	public $routeClassname = 'orderrow';
-
 }

@@ -61,4 +61,9 @@ class ProductOrderrow extends IbProductOrderrow
 	{
 		return number_format($this->getTotalClientPrice(), 2, ',', '&#729;');
 	}
+
+	public function getCalculatedSingleCost()
+	{
+		return 2222;
+	}
 }

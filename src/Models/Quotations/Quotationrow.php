@@ -4,16 +4,23 @@ namespace IlBronza\Products\Models\Quotations;
 
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
+use IlBronza\Products\Models\Interfaces\RowInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
+use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowCheckersTrait;
+use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowGettersTrait;
+use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowPricesTrait;
 use IlBronza\Timings\Interfaces\TimelineInterface;
 
-class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface, TimelineInterface
+class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface, TimelineInterface, RowInterface
 {
 	static $modelConfigPrefix = 'quotationrow';
 
 	use CommonOrderrowQuotationrowTrait;
+	use CommonOrderrowQuotationrowCheckersTrait;
+	use CommonOrderrowQuotationrowPricesTrait;
+	use CommonOrderrowQuotationrowGettersTrait;
 
 	static $deletingRelationships = [];
 	protected $casts = [
@@ -38,9 +45,9 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 		return $this->quotation();
 	}
 
-	public function modelContainer()
+	public function getModelContainerRelationName() : string
 	{
-		return $this->quotation();
+		return 'quotation';
 	}
 
 	public function quotation()
@@ -51,11 +58,6 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 	public function orderrow()
 	{
 		return $this->hasOne(Orderrow::gpc());
-	}
-
-	public function getModelContainerRelationName() : string
-	{
-		return 'quotation';
 	}
 
 	public function getTimelineHtmlClassesString() : ? string

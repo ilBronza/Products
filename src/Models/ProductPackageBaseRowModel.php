@@ -276,4 +276,10 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 	{
 		return [];
 	}
+
+	public function modelContainer()
+	{
+		return $this->container();
+	}
+
 }

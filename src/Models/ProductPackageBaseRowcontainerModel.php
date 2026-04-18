@@ -35,6 +35,8 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		'state_id' => ExtraField::class,
 	];
 
+	public array $fieldsToUpdateOnTableEdit = [];
+
 	public function scopeOpened($query)
 	{
 		return $query->whereHas('extraFields', function ($_query)

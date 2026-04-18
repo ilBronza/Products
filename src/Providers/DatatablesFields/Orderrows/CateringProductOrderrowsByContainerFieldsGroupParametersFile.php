@@ -14,8 +14,8 @@ class CateringProductOrderrowsByContainerFieldsGroupParametersFile extends Field
 			'summary' => [
 				'calculated_client_price' => 'avg',
 				'quantity' => 'sum',
-				'total_cost' => 'sum',
-				'total_client_price' => 'sum',
+				'total_row_cost' => 'sum',
+				'total_row_revenue' => 'sum',
 			],
 			'fields' => [
 				'mySelfPrimary' => 'primary',
@@ -85,8 +85,8 @@ class CateringProductOrderrowsByContainerFieldsGroupParametersFile extends Field
 					'type' => 'editor.toggle',
 				],
 
-				'total_cost' => 'numbers.price',
-				'total_client_price' => 'numbers.price'
+				'total_row_cost' => 'numbers.price',
+				'total_row_revenue' => 'numbers.price'
 			]
 		];
 	}

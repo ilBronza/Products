@@ -5,15 +5,15 @@ namespace IlBronza\Products\Models\Traits\Order;
 use Carbon\Carbon;
 use IlBronza\Addresses\Models\Address;
 use IlBronza\Buttons\Button;
+use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Clients\Models\Destination;
 use IlBronza\Clients\Models\Traits\InteractsWithClientsTrait;
 use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
-use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
-// use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Models\Quotations\Project;
+use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationPricesTrait;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -26,6 +26,8 @@ trait CommonOrderQuotationTrait
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
 	use InteractsWithFormTrait;
+
+	use CommonOrderQuotationPricesTrait;
 	// use InteractsWithPriceTrait;
 
 	public function getDestination() : ?Destination

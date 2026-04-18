@@ -2,26 +2,39 @@
 
 namespace IlBronza\Products\Models\Orders;
 
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
+use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
+use IlBronza\Products\Models\Interfaces\RowInterface;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderrowQuotationrowTrait;
+use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowCheckersTrait;
+use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowGettersTrait;
+use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowPricesTrait;
 use IlBronza\Products\Models\Traits\Orderrow\OrderrowRelationsScopesTrait;
 use IlBronza\Timings\Interfaces\TimeIntervalInterface;
 use IlBronza\Timings\Interfaces\TimelineInterface;
-
 use function rand;
 
-class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface, TimelineInterface
+class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableModelInterface, InvoiceDetailInterface, TimelineInterface, RowInterface
 {
 	static $modelConfigPrefix = 'orderrow';
 
 	use CommonOrderrowQuotationrowTrait;
+	use CommonOrderrowQuotationrowCheckersTrait;
+	use CommonOrderrowQuotationrowPricesTrait;
+	use CommonOrderrowQuotationrowGettersTrait;
+
 	use OrderrowRelationsScopesTrait;
 
 	public $classnameAbbreviation = 'or';
+
+	// public function getTotalRowCostAttribute() : float
+	// {
+	// 	//Fare l'override di questa o capire come renderla astratta, forse orderrows va eliminata come relazione, può essere? Forse order e order per i sellable va creata in modo diverso, una ha la relazione orderrows e una no?
+	// 	return 9999999;
+	// }
 
 	public function getModelContainer() : ?Order
 	{

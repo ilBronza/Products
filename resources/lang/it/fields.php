@@ -169,4 +169,14 @@ return [
 	'operatorsCosts' => 'Operatori',
 	'productsCosts' => 'Prodotti',
 	'vehiclesCosts' => 'Automezzi',
+
+
+	'calculated_cost_per_km' => '€/km',
+	'calculated_cost_per_movimentation' => '€/movimentazione',
+	'calculated_cost_per_day' => '€/giorno',
+	'calculated_total_row_cost' => 'Costi',
+	'calculated_total_row_revenue' => 'Ricavi',
+	'approved_total_row_cost' => 'Costi approvati',
+	'approved_total_row_revenue' => 'Ricavi approvati',
+
 ];

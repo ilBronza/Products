@@ -10,16 +10,21 @@ use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 use function class_basename;
 use function lcfirst;
 
-class CustomOrderrow extends Orderrow implements CustomRowInterface
+abstract class CustomOrderrow extends Orderrow implements CustomRowInterface
 {
+	use CustomrowTrait;
+
 	public $routeBasename = 'ibProductsorderrows';
 	public $routeClassname = 'orderrow';
 	static public $configModelClassname = 'customOrderrow';
-
-	use CustomrowTrait;
 
     public function getForeignKey()
     {
         return 'orderrow_id';
     }
+
+	public function getExtraFieldsClass(): ?string
+	{
+		return Orderrow::gpc()::make()->getExtraFieldsClass();
+	}
 }

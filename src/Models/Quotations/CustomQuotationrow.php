@@ -8,7 +8,7 @@ use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\Customrow\CustomrowTrait;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 
-class CustomQuotationrow extends Quotationrow implements CustomRowInterface
+abstract class CustomQuotationrow extends Quotationrow implements CustomRowInterface
 {
 	use CustomrowTrait;
 
@@ -20,4 +20,9 @@ class CustomQuotationrow extends Quotationrow implements CustomRowInterface
     {
         return 'quotationrow_id';
     }
+
+	public function getExtraFieldsClass(): ?string
+	{
+		return Orderrow::gpc()::make()->getExtraFieldsClass();
+	}
 }

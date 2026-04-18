@@ -13,7 +13,7 @@ class RowsCostsFieldsHelper
 	public string $rowsRelationName;
 
 	public float $totalCosts = 0;
-	public float $totalGains = 0;
+	public float $totalRevenues = 0;
 	public float $margin = 0;
 	public float $marginPercentage = 0;
 	public string $fieldPrefix;
@@ -56,34 +56,67 @@ class RowsCostsFieldsHelper
 		return $result;
 	}
 
+	static function getCostFieldName(string $relationName)
+	{
+		return 'total_' . Str::snake($relationName) . '_cost';
+	}
+
+	static function getRevenueFieldName(string $relationName)
+	{
+		return 'total_' . Str::snake($relationName) . '_revenue';
+	}
+
+	static function getMarginFieldName(string $relationName)
+	{
+		return 'margin_' . Str::snake($relationName);
+	}
+
+	static function getPercentageMarginFieldName(string $relationName)
+	{
+		return 'percentage_margin_' . Str::snake($relationName);
+	}
+
 	public function calculateTotals()
 	{
-		foreach ($this->getRows() as $row)
-		{
-			$this->totalCosts += $row->total_costs ?? 0;
-			$this->totalGains += $row->total_gains ?? 0;
-		}
+		// $this->totalCosts = $this->containerModel->{$this->getCostFieldName($this->rowsRelationName)};
+		// $this->totalRevenues = $this->containerModel->{$this->getRevenueFieldName($this->rowsRelationName)};
+		// $this->margin = $this->containerModel->{$this->getMarginFieldName($this->rowsRelationName)};
+		// $this->marginPercentage = $this->containerModel->{$this->getPercentageMarginFieldName($this->rowsRelationName)};
+	}
 
-		$this->margin = $this->totalGains - $this->totalCosts;
-
-		if ($this->totalGains != 0)
-			$this->marginPercentage = ($this->margin / $this->totalGains) * 100;
+	static function getRowCostsFieldsByRelation(string $rowsRelationName) : array
+	{
+		return [
+			static::getRevenueFieldName($rowsRelationName),
+			static::getCostFieldName($rowsRelationName),
+			static::getMarginFieldName($rowsRelationName),
+			static::getPercentageMarginFieldName($rowsRelationName)
+		];
 	}
 
 	public function getFormFieldsetParameters() : array
 	{
-		$this->calculateTotals();
+		$fields = [];
+
+		foreach(static::getRowCostsFieldsByRelation($this->rowsRelationName) as $field)
+		{
+			try
+			{
+				$fields[$field] = $this->getParameters(
+					$this->containerModel->$field
+				);				
+			}
+			catch(\Throwable $e)
+			{
+				dd($e->getMessage(), $field);
+			}
+		}
+
+		$fields[static::getPercentageMarginFieldName($this->rowsRelationName)]['widthClass'] = 'uk-width-2-5';
 
 		return [
 			'translationPrefix' => 'products::fields',
-			'fields' => [
-				$this->fieldPrefix . '_total_costs' => $this->getParameters($this->totalCosts),
-				$this->fieldPrefix . '_total_gains' => $this->getParameters($this->totalGains),
-				$this->fieldPrefix . '_margin' => $this->getParameters($this->margin),
-				$this->fieldPrefix . '_margin_percentage' => $this->getParameters($this->marginPercentage, [
-					'widthClass' => 'uk-width-2-5'
-				])
-			],
+			'fields' => $fields,
 			'width' => ['small']
 		];
 	}

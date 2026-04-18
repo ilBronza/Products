@@ -16,66 +16,34 @@ class OrderRelationManager Extends RelationshipsManager
 		$result = [
 			'show' => [
 				'relations' => [
-					'operatorRows' => [
-						'controller' => config('products.models.orderrrow.controllers.index'),
-						'selectRowCheckboxes' => true,
+					// 'productOrderrows' => [
+					// 	'controller' => config('products.models.orderrrow.controllers.index'),
+					// 	'selectRowCheckboxes' => true,
 
-						//OperatorRowsByContainerFieldsGroupParametersFile
+					// 	//ProductRowsByContainerFieldsGroupParametersFile
+					// 	//ProductOrderrowsByContainerFieldsGroupParametersFile
+					// 	'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.productOrderrow'),
+					// 	'translatedTitle' => trans('products::models.productOrderrows'),
+					// 	'buttonsMethods' => [
+					// 		'getAddRowButton',
+					// 		'getAddRowTableButton',
+					// 	]
+					// ],
+					// 'operatorRows' => [
+					// 	'controller' => config('products.models.orderrrow.controllers.index'),
+					// 	'selectRowCheckboxes' => true,
 
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
-						'translatedTitle' => trans('products::models.operatorRows'),
-						'buttonsMethods' => [
-							'getAddRowButton',
-						]
-					],
-					'productOrderrows' => [
-						'controller' => config('products.models.orderrrow.controllers.index'),
-						'selectRowCheckboxes' => true,
+					// 	//OperatorRowsByContainerFieldsGroupParametersFile
 
-						//ProductRowsByContainerFieldsGroupParametersFile
-						//ProductOrderrowsByContainerFieldsGroupParametersFile
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.productOrderrow'),
-						'translatedTitle' => trans('products::models.productOrderrows'),
-						'buttonsMethods' => [
-							'getAddRowButton',
-							'getAddRowTableButton',
-						]
-					],
-					'vehicleRows' => [
-						'controller' => config('products.models.orderrrow.controllers.index'),
-						'selectRowCheckboxes' => true,
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.vehicleOrderrow'),
-						'translatedTitle' => trans('products::models.vehicleRows'),
-						'buttonsMethods' => [
-							'getAddRowButton',
-							'getAddRowTableButton',
-						]
-					],
+					// 	'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
+					// 	'translatedTitle' => trans('products::models.operatorRows'),
+					// 	'buttonsMethods' => [
+					// 		'getAddRowButton',
+					// 	]
+					// ],
+
 					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'vehicleRows')
-					// 'parent' => [
-					// 	'controller' => config('products.models.order.controllers.show'),
-					// 	'translatedTitle' => trans('products::models.parentOrder'),
-					// ],
-					// 'children' => [
-					// 	'controller' => config('products.models.order.controllers.index'),
-					// 	'translatedTitle' => trans('products::models.childrenOrders'),
 
-					// 	//OrderChildrenFieldsGroupParametersFile
-					// 	'fieldsGroupsParametersFile' => config('products.models.order.fieldsGroupsFiles.children'),
-
-					// 	// 'buttonsMethods' => [
-					// 	// 	'getAddChildrenButton',
-					// 	// ],
-					// ],
-					// 'orderProducts' => config('products.models.orderProduct.controllers.byOrderIndex'),
-					// 'notes' => CrudNoteController::class,
-					// // 'phases' => [
-					// // 	'controller' => config('products.models.phase.controllers.productPhaseIndex'),
-					// // 	'selectRowCheckboxes' => false,
-					// // 	'buttonsMethods' => [
-					// // 		'getReorderButtonByProduct'
-					// // 	],
-					// // ],
 				]
 			]
 		];
