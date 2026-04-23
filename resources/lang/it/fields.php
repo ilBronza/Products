@@ -11,7 +11,6 @@ return [
 	'event' => 'Evento',
 	'sorting_index' => 'Ord',
 	'mainData' => 'Informazioni principali',
-	'coefficient_output' => 'Coefficiente in uscita',
 	'workstation_id' => 'Postazione',
 	'total_reimbursements_cost' => 'Rimborsi',
 	'total_operators_cost' => 'Operatori',
@@ -63,6 +62,7 @@ return [
 	'findOrAssociateSupplier' => 'Associa',
 	'approve_daily_allowances_costs' => 'Approva diarie',
 	'sellable.type' => 'Tipologia',
+	'sellable.name' => 'Tipologia',
 	'orders_count' => 'Ordini',
 	'suppliers_count' => 'Fornitori',
 	'quotations_count' => 'Preventivi',
@@ -143,7 +143,6 @@ return [
 	'completed_at' => 'Finito il',
 	'workstationLabel' => 'Postazione',
 	'sellable' => 'Bene/servizio',
-	'calculated_client_price' => 'Prezzo al cliente',
 	'total_cost' => 'Costo totale',
 	'total_price' => 'Prezzo totale cliente',
 	'preset' => 'Preset',
@@ -164,7 +163,7 @@ return [
 	'people_coefficient_quantity' => 'Quantità',
 	'people_coefficient_price_coefficient' => 'Coefficiente costo',
 	'phase' => 'Fase',
-	'quotation_description' => 'Descrizione in preventivo',
+	'description' => 'Descrizione in preventivo',
 	'economicals' => 'Costi',
 	'operatorsCosts' => 'Operatori',
 	'productsCosts' => 'Prodotti',
@@ -178,5 +177,16 @@ return [
 	'calculated_total_row_revenue' => 'Ricavi',
 	'approved_total_row_cost' => 'Costi approvati',
 	'approved_total_row_revenue' => 'Ricavi approvati',
+
+	'coefficient_output' => 'Coefficiente in uscita',
+	'calculated_cost_coefficient' => 'Coeff costi',
+	'calculated_revenue_coefficient' => 'Coeff ricavi',
+	'calculated_quantity_coefficient' => 'Servizio per',
+
+
+	'calculated_single_revenue' => 'Ricavo singolo',
+	'calculated_single_cost' => 'Costo singolo',
+
+	'client_description' => 'Descrizione per cliente',
 
 ];

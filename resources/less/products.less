@@ -1,0 +1,57 @@
+@costFieldColor: #f3bfbf;
+@revenueFieldColor: #afd1a0;
+
+.moneyField(@bgColor: false)
+{
+	input
+	{
+		color: white;
+		font-weight: bold;
+		text-align: right;
+
+		background-color: @bgColor;
+
+		& when not (@bgColor = false)
+		{
+			background-color: @bgColor;
+		}		
+	}
+}
+
+.datatable
+{
+	td[class*="Cost"]
+	{
+		.moneyField(@costFieldColor);
+	}
+
+	td[class*="Revenue"]
+	{
+		.moneyField(@revenueFieldColor);
+	}
+}
+
+.fieldset-container-economicals
+{
+	div.money[class*="margin-"]
+	{
+		.moneyField(blue);
+	}
+
+	div.money
+	{
+		.moneyField;
+	}
+	
+	div.money[class*="-revenue"]
+	{
+		.moneyField(@revenueFieldColor);
+	}
+
+	div.money[class*="-cost"]
+	{
+		.moneyField(@costFieldColor);
+	}
+
+
+}

@@ -263,7 +263,7 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 	public function isContracttype() : bool
 	{
-		return $this->getType() == 'operator';
+		return $this->getType() == 'Contracttype';
 	}
 
 	public function isVehicleType() : bool

@@ -68,7 +68,7 @@ class CateringProductOrderrowsByContainerFieldsGroupParametersFile extends Field
 					'width' => '30em'
 				],
 
-				'quotation_description' => [
+				'description' => [
 					'type' => 'editor.text',
 					'width' => '30em'
 				],

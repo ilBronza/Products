@@ -108,7 +108,7 @@ class RowsCostsFieldsHelper
 			}
 			catch(\Throwable $e)
 			{
-				dd($e->getMessage(), $field);
+				dd($e->getMessage(), $field, $this, static::getRowCostsFieldsByRelation($this->rowsRelationName));
 			}
 		}
 

@@ -17,7 +17,7 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 	use QuotationRelationshipsTrait;
 
 	static $modelConfigPrefix = 'quotation';
-	protected $deletingRelationships = ['quotationrows'];
+	static $deletingRelationships = ['quotationrows'];
 
 	protected $casts = [
 		'date' => 'date',

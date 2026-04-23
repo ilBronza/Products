@@ -56,7 +56,7 @@ Route::group([
 		Route::post('{quotation}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('quotation', 'addSellableSupplierRows'), 'index'])->name('quotations.addSellableSupplierRows');
 
 		//QuotationAddOrderrowIndexByTableController
-		Route::get('{quotation}/add-row-by-selable-supplier/{sellableSupplier}', [Products::getController('quotation', 'addQuotationrowBySellableSupplier'), 'store'])->name('quotations.addSellableSupplierRow');
+		Route::get('{quotation}/add-row-by-sellable-supplier/{sellableSupplier}', [Products::getController('quotation', 'addQuotationrowBySellableSupplier'), 'store'])->name('quotations.addSellableSupplierRow');
 
 
 
@@ -360,8 +360,8 @@ Route::group([
 		Route::put('{order}/change-client', [Products::getController('order', 'changeClient'), 'update'])->name('orders.changeClientUpdate');
 
 
-		//OrderAddOrderrowIndexByTableController
-		Route::get('{order}/add-row-by-selable-supplier/{sellableSupplier}', [Products::getController('order', 'addOrderrowBySellableSupplier'), 'store'])->name('orders.addSellableSupplierRow');
+		//AddOrderrowBySellableSupplierController
+		Route::get('{order}/add-row-by-sellable-supplier/{sellableSupplier}', [Products::getController('order', 'addOrderrowBySellableSupplier'), 'store'])->name('orders.addSellableSupplierRow');
 
 
 		//OrderAddOrderrowIndexByTableController

@@ -26,7 +26,10 @@ return new class extends Migration
         });
 
         Schema::table('products__extrafields__quotations_orders', function (Blueprint $table) {
+
             $table->decimal('cost_coefficient', 6, 2)->nullable();
+            $table->decimal('revenue_coefficient', 6, 2)->nullable();
+
             $table->boolean('served_at_table')->nullable();
             $table->unsignedInteger('people')->nullable();
             $table->text('people_coefficient')->nullable();

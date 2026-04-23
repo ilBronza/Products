@@ -30,11 +30,11 @@ class OrderrowEditUpdateController extends OrderrowCRUD
 
     public function setSpecificRow(RowInterface $row) : RowInterface
     {
-        $classMethod = "rowRelationBy{$row->getType()}";
+        // $classMethod = "rowRelationBy{$row->getType()}";
 
-        $modelContainer = $row->getModelContainer();
+        // $modelContainer = $row->getModelContainer();
 
-        $typedRow = $modelContainer->{$classMethod}()->find($row->getKey());
+        $typedRow = $row->getSpecificRow();
 
         $this->setModel($typedRow);
 

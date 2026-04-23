@@ -51,4 +51,9 @@ interface SellableItemInterface
 	public function getSellableSupplierIndexRelations() : array;
 
 	public function getNameForSellable(...$parameters) : string;
+
+	public function getContainerModelRelatedTablesToRefresh() : array;
+
+	public function getRowFieldsToStore() : array;
+
 }

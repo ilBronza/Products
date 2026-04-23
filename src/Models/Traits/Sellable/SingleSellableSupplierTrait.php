@@ -1,26 +1,28 @@
 <?php
 
-namespace IlBronza\Products\Models\Traits\Sellable;
+//cancellare, facciamo come vehicle
 
-trait SingleSellableSupplierTrait
-{
-	protected static function bootSingleSellableSupplierTrait()
-	{
-		// static::saving(function ($model)
-		// {
-		// 	dd($model);
-		// 	// $supplier = SupplierCreatorHelper::getOrCreateSupplierFromTarget($model);
+// namespace IlBronza\Products\Models\Traits\Sellable;
 
-		// 	// $possibleSellables = $model->getPossibleSellables();
+// trait SingleSellableSupplierTrait
+// {
+// 	protected static function bootSingleSellableSupplierTrait()
+// 	{
+// 		// static::saving(function ($model)
+// 		// {
+// 		// 	dd($model);
+// 		// 	// $supplier = SupplierCreatorHelper::getOrCreateSupplierFromTarget($model);
 
-		// 	// foreach($possibleSellables as $possibleSellable)
-		// 	// 	$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($supplier, $possibleSellable);
-		// });
+// 		// 	// $possibleSellables = $model->getPossibleSellables();
 
-		// static::deleting(function ($model)
-		// {
-		// 	if($supplier = $model->getSupplier())
-		// 		$supplier->delete();
-		// });
-	}
-}
+// 		// 	// foreach($possibleSellables as $possibleSellable)
+// 		// 	// 	$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($supplier, $possibleSellable);
+// 		// });
+
+// 		// static::deleting(function ($model)
+// 		// {
+// 		// 	if($supplier = $model->getSupplier())
+// 		// 		$supplier->delete();
+// 		// });
+// 	}
+// }

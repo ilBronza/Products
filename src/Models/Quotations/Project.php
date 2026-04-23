@@ -16,7 +16,7 @@ class Project extends ProductPackageBaseModel
 	use InteractsWithCategoryStandardMethodsTrait;
 
 	static $modelConfigPrefix = 'project';
-	protected $deletingRelationships = [];
+	static $deletingRelationships = [];
 
 	protected $casts = [
 		'started_at' => 'date',

@@ -117,6 +117,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedAc
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedProductRelationFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByWorkstationRelatedOrderProductFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\CateringProductOrderrowsFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ClientAreaOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\FinishingFieldsGroupParametersFile;
@@ -255,7 +256,6 @@ use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
 use IlBronza\Products\Models\Orderrows\OperatorOrderrow;
-use IlBronza\Products\Models\Orderrows\ProductOrderrow;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
@@ -264,6 +264,7 @@ use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Quotations\Project;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Models\Sellables\Helpers\ProductClientSellableSupplierPricesHelper;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
@@ -282,6 +283,8 @@ use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
 use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelper;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowFieldsetParametersFile;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFieldsGroupParametersFile;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\SellableSuppliers\SellableSupplierFindBySellableHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\TargetCreators\MaterialFromSellableCreatorHelper;
@@ -410,6 +413,15 @@ return [
 
 	'dashboard' => [
 		'controller' => DashboardController::class
+	],
+
+	'sellableSupplierPricesHelper' => [
+		'product_client' => ProductClientSellableSupplierPricesHelper::class
+	],
+
+	'helpers' => [
+		'rowsFieldsGroupParametersFile' => RowsFieldsGroupParametersFile::class,
+		'rowsFieldsetParametersFile' => RowFieldsetParametersFile::class
 	],
 
 	'models' => [
@@ -705,6 +717,11 @@ return [
 		'orderrow' => [
 			'class' => Orderrow::class,
 			'table' => 'products__orderrows',
+            'relatedButtonsMethods' => [
+                'getAddSellableSupplierButton' => true,
+                'getAddRowButton' => true,
+                'getAddRowTableButton' => true
+            ],
 			'controllers' => [
 				'timelineUpdate' => OrderrowTimelineUpdateController::class,
 				'history' => OrderrowHistoryController::class,
@@ -741,7 +758,8 @@ return [
 				'vehicleOrderrow' => VehicleRowsByContainerFieldsGroupParametersFile::class,
 				'relatedByType' => [
 					'vehicle' => VehicleOrderrowRelatedFieldsGroupParametersFile::class
-				]
+				],
+				'cateringProductOrderrow' => CateringProductOrderrowsFieldsGroupParametersFile::class
 			]
 		],
 		'orderProduct' => [
@@ -902,6 +920,11 @@ return [
 		'quotationrow' => [
 			'table' => 'products__quotations__quotationrows',
 			'class' => Quotationrow::class,
+            'relatedButtonsMethods' => [
+                'getAddSellableSupplierButton' => true,
+                'getAddRowButton' => true,
+                'getAddRowTableButton' => true
+            ],
 			'fieldsGroupsFiles' => [
 				'byQuotation' => QuotationrowByQuotationFieldsGroupParametersFile::class,
 				'index' => QuotationrowFieldsGroupParametersFile::class,

@@ -198,25 +198,25 @@ trait CommonOrderrowQuotationrowTrait
 
 	public function getAddTypedRowButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
 	{
-		dd('qua eliminare questa in favore dell\'helper');
+		throw new \Exception('qua eliminare questa in favore dell\'helper 22 aprile 2026');
 
-		Log::critical('usa RowsButtonsHelper::getAddTypedRowButton($container, static::$typeName);');
+		// Log::critical('usa RowsButtonsHelper::getAddTypedRowButton($container, static::$typeName);');
 
-		$urlGetter = "getAdd{$type}Url";
+		// $urlGetter = "getAdd{$type}Url";
 
-		$button = Button::create([
-			'href' => $container->{$urlGetter}(),
-			'text' => "products::orders.add{$type}Row",
-			'icon' => 'plus'
-		]);
+		// $button = Button::create([
+		// 	'href' => $container->{$urlGetter}(),
+		// 	'text' => "products::orders.add{$type}Row",
+		// 	'icon' => 'plus'
+		// ]);
 
-		$button->setSecondary();
+		// $button->setSecondary();
 
-		$button->setAjaxTableButton(null, [
-			'openIframe' => true
-		]);
+		// $button->setAjaxTableButton(null, [
+		// 	'openIframe' => true
+		// ]);
 
-		return $button;
+		// return $button;
 	}
 
 	/**
@@ -227,50 +227,53 @@ trait CommonOrderrowQuotationrowTrait
 
 	public function getForcedPrice(string $priceField) : ? float
 	{
-		$forced = "forced_{$priceField}";
+		throw new \Exception('eliminare questa 22 aprile 2026');
+		// $forced = "forced_{$priceField}";
 
-		return $this->$forced;
+		// return $this->$forced;
 	}
 
 	public function provideInheritedPrice(string $priceField)
 	{
-		$inherited = "inherited_{$priceField}";
+		throw new \Exception('eliminare questa 22 aprile 2026');
+		// $inherited = "inherited_{$priceField}";
 
-		if($this->$inherited)
-			return $this->$inherited;
+		// if($this->$inherited)
+		// 	return $this->$inherited;
 
-		$price = null;
+		// $price = null;
 
-		if($sellableSupplier = $this->getSellableSupplier())
-			$price = $sellableSupplier->$priceField;
+		// if($sellableSupplier = $this->getSellableSupplier())
+		// 	$price = $sellableSupplier->$priceField;
 
-		elseif($sellable = $this->getSellable())
-			$price = $sellable->$priceField;
+		// elseif($sellable = $this->getSellable())
+		// 	$price = $sellable->$priceField;
 
-		if($price)
-		{
-			$this->$inherited = $price;
-			$this->save();
-		}
+		// if($price)
+		// {
+		// 	$this->$inherited = $price;
+		// 	$this->save();
+		// }
 
-		return $price;
+		// return $price;
 
-		dd($price);
-		dd('qua');
+		// dd($price);
+		// throw new \Exception('qua');
 	}
 
 	public function provideHierarchicalPrice(string $priceField) : ? float
 	{
-		if ($value = $this->getForcedPrice($priceField))
-			return $value;
+		throw new \Exception('eliminare questa 22 aprile 2026');
+		// if ($value = $this->getForcedPrice($priceField))
+		// 	return $value;
 
-		return $this->provideInheritedPrice($priceField);
-			return $value;
+		// return $this->provideInheritedPrice($priceField);
+		// 	return $value;
 
-		if($sellableSupplier = $this->getSellableSupplier())
-			return $sellableSupplier->client_price;
+		// if($sellableSupplier = $this->getSellableSupplier())
+		// 	return $sellableSupplier->client_price;
 
-		return $this->getSellable()->client_price;
+		// return $this->getSellable()->client_price;
 
 	}
 }

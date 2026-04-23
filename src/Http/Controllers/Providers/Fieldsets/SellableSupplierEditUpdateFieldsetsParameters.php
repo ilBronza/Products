@@ -10,12 +10,16 @@ class SellableSupplierEditUpdateFieldsetsParameters extends FieldsetParametersFi
     {
         $fields = [];
 
+        $target = $this->getModel()->getSellable()->getTarget();
+
+        $configPrefix = $target->getPackageConfigPrefix();
+
         foreach($this->getModel()->getCachedPriceFieldsForSellable() as $field => $measurementUnit)
             $fields[$field] = ['number' => 'numeric|nullable|min:0'];
 
         return [
             'prices' => [
-                'translationPrefix' => 'products::fields',
+                'translationPrefix' => $configPrefix . '::fields',
                 'fields' => $fields,
                 'width' => ["large"]
             ]

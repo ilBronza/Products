@@ -10,6 +10,9 @@ trait CommonOrderrowQuotationrowPricesTrait
 	public function initializeCommonOrderrowQuotationrowPricesTrait()
 	{
 		$casts = [
+			'stored_single_cost' => ExtraField::class,
+			'stored_single_revenue' => ExtraField::class,
+
 			'stored_total_row_cost' => ExtraField::class,
 			'stored_total_row_revenue' => ExtraField::class,
 
@@ -22,7 +25,12 @@ trait CommonOrderrowQuotationrowPricesTrait
 
 	public function getCostCoefficient() : float
 	{
-		return $this->cost_coefficient;
+		return $this->calculated_cost_coefficient ?? 1;
+	}
+
+	public function getRevenueCoefficient() : float
+	{
+		return $this->calculated_revenue_coefficient ?? 1;
 	}
 
 	public function getCostCoefficientAttribute($value) : float
@@ -30,6 +38,43 @@ trait CommonOrderrowQuotationrowPricesTrait
 		return $value ?? $this->getModelContainer()?->getCostCoefficient() ?? 1;
 	}
 
+	public function getRevenueCoefficientAttribute($value) : float
+	{
+		return $value ?? $this->getModelContainer()?->getRevenueCoefficient() ?? 1;
+	}
+
+	//calculated_single_cost
+	public function setCalculatedSingleCostAttribute($value)
+	{
+		return $this->setCalculateOverrideablePriceValue('single_cost', $value);
+	}
+
+	//calculated_single_cost
+	public function getCalculatedSingleCostAttribute() : float
+	{
+		return $this->getCalculateOverrideablePriceValue('single_cost');
+	}
+
+	//calculated_single_revenue
+	public function setCalculatedSingleRevenueAttribute($value)
+	{
+		return $this->setCalculateOverrideablePriceValue('single_revenue', $value);
+	}
+
+	//calculated_single_revenue
+	public function getCalculatedSingleRevenueAttribute() : float
+	{
+		return $this->getCalculateOverrideablePriceValue('single_revenue');
+	}
+
+
+
+
+
+
+
+
+	//calculated_total_row_cost
 	public function setCalculatedTotalRowCostAttribute($value)
 	{
 		return $this->setCalculateOverrideablePriceValue('total_row_cost', $value);

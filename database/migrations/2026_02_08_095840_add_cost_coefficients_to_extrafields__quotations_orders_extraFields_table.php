@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::table('products__extrafields__quotations_orders', function (Blueprint $table) {
             $table->decimal('cost_coefficient', 6, 2)->nullable();
+            $table->decimal('revenue_coefficient', 6, 2)->nullable();
         });
 
         Schema::table(config('products.models.quotationrow.table'), function (Blueprint $table) {
-            $table->decimal('cost_coefficient', 6, 2)->nullable();
         });
 
         Schema::table(config('products.models.orderrow.table'), function (Blueprint $table) {
-            $table->decimal('cost_coefficient', 6, 2)->nullable();
         });
 	}
 
@@ -31,14 +30,7 @@ return new class extends Migration
     {
         Schema::table('products__extrafields__quotations_orders', function (Blueprint $table) {
             $table->dropColumn('cost_coefficient');
-        });
-
-        Schema::table(config('products.models.orderrow.table'), function (Blueprint $table) {
-            $table->dropColumn('cost_coefficient');
-        });
-
-        Schema::table(config('products.models.quotationrow.table'), function (Blueprint $table) {
-            $table->dropColumn('cost_coefficient');
+            $table->dropColumn('revenue_coefficient');
         });
     }
 };

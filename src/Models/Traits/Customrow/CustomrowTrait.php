@@ -10,8 +10,11 @@ use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 
 trait CustomrowTrait
 {
+	public string $fieldsGroupParametersKey;
 	use CRUDModelExtraFieldsTrait;
 
+	abstract public function getSingleCostAttribute() : float;
+	abstract public function getSingleRevenueAttribute() : float;
 	abstract public function getTotalRowCostAttribute() : float;
 	abstract public function getTotalRowRevenueAttribute() : float;
 
@@ -25,7 +28,18 @@ trait CustomrowTrait
 			$casts['calculated_' . $field] = StoredOrCalculatedExtraField::class;
 		}
 
+		$casts['client_description'] = ExtraField::class;
+		$casts['quantity_coefficient'] = ExtraField::class;
+
 		$this->casts = array_merge($this->casts, $casts);
+	}
+
+	public function getFieldsGroupParametersKey() : string
+	{
+		if(! isset($this->fieldsGroupParametersKey))
+			throw new \Exception('declare fieldsGroupParametersKey for ' . get_class($this));
+
+		return $this->fieldsGroupParametersKey;
 	}
 
 	public function getAddRowTableButton(ProductPackageBaseRowcontainerModel $container)

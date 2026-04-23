@@ -54,7 +54,7 @@ class RowscontainerRelationsManagerParametersHelper
 
 	public function getFieldsgroupParametersFile() : string
 	{
-		return config("{$this->packagePrefix}.models.{$this->relatedBaseRowType}.fieldsGroupsFiles.index");
+		return cconfig("{$this->packagePrefix}.models.{$this->relatedBaseRowType}.fieldsGroupsFiles.{$this->relatedCustomRowType->getFieldsGroupParametersKey()}");
 	}
 
 	public function getElementsGetterMethod() : string
@@ -78,7 +78,7 @@ class RowscontainerRelationsManagerParametersHelper
 	{
 		return array_keys(
 			array_filter(
-				config("{$this->getRelationPackagePrefix()}.models.orderrow.relatedButtonsMethods")
+				cconfig("{$this->getRelationPackagePrefix()}.models.orderrow.relatedButtonsMethods")
 			)
 		);
 	}

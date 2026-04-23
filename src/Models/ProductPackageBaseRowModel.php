@@ -52,11 +52,6 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		];
 	}
 
-	public function getFieldsToReset()
-	{
-		return [
-		];
-	}
 	public function getModelContainerClass()
 	{
 		return get_class($this->modelContainer()->getRelated());

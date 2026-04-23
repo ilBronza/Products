@@ -16,33 +16,12 @@ class OrderRelationManager Extends RelationshipsManager
 		$result = [
 			'show' => [
 				'relations' => [
-					// 'productOrderrows' => [
-					// 	'controller' => config('products.models.orderrrow.controllers.index'),
-					// 	'selectRowCheckboxes' => true,
 
-					// 	//ProductRowsByContainerFieldsGroupParametersFile
-					// 	//ProductOrderrowsByContainerFieldsGroupParametersFile
-					// 	'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.productOrderrow'),
-					// 	'translatedTitle' => trans('products::models.productOrderrows'),
-					// 	'buttonsMethods' => [
-					// 		'getAddRowButton',
-					// 		'getAddRowTableButton',
-					// 	]
-					// ],
-					// 'operatorRows' => [
-					// 	'controller' => config('products.models.orderrrow.controllers.index'),
-					// 	'selectRowCheckboxes' => true,
+					'productRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'productRows'),
 
-					// 	//OperatorRowsByContainerFieldsGroupParametersFile
+					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'vehicleRows'),
 
-					// 	'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
-					// 	'translatedTitle' => trans('products::models.operatorRows'),
-					// 	'buttonsMethods' => [
-					// 		'getAddRowButton',
-					// 	]
-					// ],
-
-					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'vehicleRows')
+					'operatorRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'operatorRows')
 
 				]
 			]

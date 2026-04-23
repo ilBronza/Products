@@ -45,7 +45,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 
 	static $packageConfigPrefix = 'products';
 
-	public $deletingRelationships = ['prices', 'extraFields'];
+	static $deletingRelationships = ['prices', 'extraFields'];
 
 	static $modelConfigPrefix = 'sellableSupplier';
 	protected $keyType = 'string';
@@ -175,6 +175,10 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 
 	public function setStandardPrices() : ?Collection
 	{
+		dd('questo deve sparire e facciamo come vehicles');
+		dd($this->getSellableTarget());
+
+
 		if (! $priceCreator = $this->getSellableTarget()->getPriceCreator())
 			return null;
 

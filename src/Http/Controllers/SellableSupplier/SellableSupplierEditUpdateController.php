@@ -18,41 +18,18 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
     public $allowedMethods = ['edit', 'update'];
 
-    public function getOverriddenEditParametersFile()
+    public function getOverriddenEditParametersFile() : string
     {
-    	return $this->getGenericParametersFile();
-    }
+        if(! $sellableTarget = $this->getModel()->getSellable()->getTarget())
+            return $this->getStandardParametersFile();
 
-    public function getGenericParametersFile() : ? string
-    {
-		if(($sellable = $this->getModel()->getSellable())->isContracttype())
-			return config('products.models.sellableSupplier.parametersFiles.contracttype');
+        if(! $packagePrefix = $sellableTarget->getPackageConfigPrefix())
+            return $this->getStandardParametersFile();
 
-	    if($sellable->isHotelType())
-		    return config('products.models.sellableSupplier.parametersFiles.hotel');
+        if($file = config("{$packagePrefix}.models.sellableSupplier.parametersFiles.edit"))
+        	return $file;
 
-	    if($sellable->isVehicleType())
-	    {
-		    dd('gestire campti veicolo');
-	    }
-
-	    if($sellable->isReimbursementType())
-	    {
-		    dd('gestire campti rimborso');
-	    }
-
-	    if($sellable->isRentType())
-		    return config('products.models.sellableSupplier.parametersFiles.rent');
-
-		if($sellable->isControlRoomType())
-			dd('gestire campti control room');
-
-		if($sellable->isSurveillanceType())
-			dd('gestire campti sorveglianza');
-
-	    dd('altro tipo di sellable: ' . $targetType);
-
-        return config('products.models.sellableSupplier.parametersFiles.create');
+		return config('products.models.sellableSupplier.parametersFiles.edit');
     }
 
     public function edit(string $sellableSupplier)

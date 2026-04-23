@@ -16,7 +16,7 @@ class Accessory extends ProductPackageBaseModel implements HasMedia
     use InteractsWithMedia;
 
 	static $modelConfigPrefix = 'accessory';
-    protected $deletingRelationships = ['media'];
+    static $deletingRelationships = ['media'];
 
     static function getPossibleAccessoriesByProduct(Product $product) : Collection
     {

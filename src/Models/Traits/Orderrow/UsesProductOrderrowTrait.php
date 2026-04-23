@@ -2,8 +2,8 @@
 
 namespace IlBronza\Products\Models\Traits\Orderrow;
 
-use IlBronza\Products\Models\Orderrows\ProductOrderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Models\Sellables\ProductOrderrow;
 
 trait UsesProductOrderrowTrait
 {

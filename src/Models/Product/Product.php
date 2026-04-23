@@ -5,7 +5,6 @@ namespace IlBronza\Products\Models\Product;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDManyToManyTreeTrait;
-use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Interfaces\SellableSupplierPriceCreatorBaseClass;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\ProductRelation;
@@ -19,7 +18,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 use function config;
 
-class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableInterface, SellableItemInterface
+class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableInterface
 {
 	static $modelConfigPrefix = 'product';
 
@@ -29,7 +28,6 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 	use ProductRelationshipsTrait;
 	use ProductScopesTrait;
 	use ProductQueriesTrait;
-	use InteractsWithSellableTrait;
 
 	use CompletionScopesTrait;
 
@@ -43,11 +41,16 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 
 	public function getPriceFieldsForSellable() : array
 	{
-		return [];
+		return [
+			'single_cost' => 'piece',
+			'single_revenue' => 'piece',
+		];
 	}
 
 	public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass
 	{
+		dd('eliminare qua 22 aprile 2026');
+
 		if ($class = config('products.models.product.helpers.sellableSupplierPricesCreator'))
 			return null;
 
@@ -231,6 +234,13 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 	public function getSellableSupplierIndexRelations() : array
 	{
 		return [
+		];
+	}
+
+	public function getContainerModelRelatedTablesToRefresh() : array
+	{
+		return [
+			'productRows'
 		];
 	}
 }

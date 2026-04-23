@@ -10,10 +10,12 @@ use IlBronza\Category\Models\Category;
 use IlBronza\Contacts\Models\Traits\InteractsWithContact;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
+use IlBronza\Products\Models\Client;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Providers\Helpers\Sellables\SupplierCreatorHelper;
 use Illuminate\Support\Collection;
 use function app;
 use function dd;
@@ -30,6 +32,14 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 	use InteractsWithPaymenttypes;
 	use InteractsWithContact;
 	use InteractsWithFormTrait;
+
+	public static function getOwnerSupplier() : static
+	{
+		return cache()->remember('getOwnerSupplier', 3600, function ()
+		{
+			return SupplierCreatorHelper::getOrCreateSupplierFromTarget(Client::gpc()::where('name', config('app.ownCompanyName'))->first());
+		});
+	}
 
 	static $deletingRelationships = [''];
 	static $restoringRelationships = [''];

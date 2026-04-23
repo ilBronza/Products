@@ -14,9 +14,9 @@ return new class extends Migration
 			return;
 
 		Schema::table($table, function (Blueprint $blueprint) {
-			$blueprint->decimal('cost_per_km')->nullable();
-			$blueprint->decimal('cost_per_movimentation')->nullable();
-			$blueprint->decimal('cost_per_day')->nullable();
+			// $blueprint->decimal('cost_per_km')->nullable();
+			// $blueprint->decimal('cost_per_movimentation')->nullable();
+			// $blueprint->decimal('cost_per_day')->nullable();
 		});
 	}
 
@@ -29,9 +29,9 @@ return new class extends Migration
 
 		Schema::table($tableName, function (Blueprint $blueprint) {
 			$blueprint->dropColumn([
-				'cost_per_km',
-				'cost_per_movimentation',
-				'cost_per_day',
+				// 'cost_per_km',
+				// 'cost_per_movimentation',
+				// 'cost_per_day',
 			]);
 		});
 	}

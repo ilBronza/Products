@@ -187,11 +187,24 @@ trait CommonOrderQuotationTrait
 		return $this->cost_coefficient;
 	}
 
+	public function getRevenueCoefficient() : float
+	{
+		return $this->revenue_coefficient;
+	}
+
 	public function getCostCoefficientAttribute() : float
 	{
 		if($value = $this->extraFields?->cost_coefficient)
 			return $value;
 
 		return $this->getClient()?->getCostCoefficient() ?? 1;
+	}
+
+	public function getRevenueCoefficientAttribute() : float
+	{
+		if($value = $this->extraFields?->revenue_coefficient)
+			return $value;
+
+		return $this->getClient()?->getRevenueCoefficient() ?? 1;
 	}
 }

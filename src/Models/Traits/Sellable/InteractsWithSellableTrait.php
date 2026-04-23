@@ -9,16 +9,14 @@ use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
+use IlBronza\Products\Providers\Helpers\Sellables\SellableSupplierCreatorHelper;
 use Illuminate\Support\Collection;
-use function app;
-use function class_basename;
-use function class_uses;
-use function dd;
-use function get_class_methods;
 
 trait InteractsWithSellableTrait
 {
 	abstract public function getPriceFieldsForSellable() : array;
+	abstract public function getPossibleSuppliers() : Collection;
+	abstract public function mustAutomaticallyUpdatePricesBySellable() : bool;
 
 	protected static function bootInteractsWithSellableTrait()
 	{
@@ -35,7 +33,20 @@ trait InteractsWithSellableTrait
 //		if (! in_array('IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait', class_uses(static::class)))
 			static::saved(function($model)
 			{
-				SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
+				$sellable = SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
+
+				$possibleSuppliers = $model->getPossibleSuppliers();
+
+				foreach($possibleSuppliers as $possibleSupplier)
+				{
+					$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($possibleSupplier, $sellable);
+
+					if($sellable->getTarget()?->mustAutomaticallyUpdatePricesBySellable())
+						$sellableSupplier->updatePricesBySellableAndSupplier();
+				}
+
+				// dd($possibleSuppliers);
+
 			});
 	}
 

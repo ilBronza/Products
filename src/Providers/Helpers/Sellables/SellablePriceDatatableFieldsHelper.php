@@ -17,16 +17,9 @@ class SellablePriceDatatableFieldsHelper
 	 */
 	static public function getFieldsByModel(mixed $model, array $baseParameters = ['type' => 'editor.price', 'refreshRow' => true]) : array
 	{
-		if ($model instanceof Sellable)
-			$prices = $model->getPriceFieldsForSellable();
-		elseif (is_object($model) && method_exists($model, 'getPriceFieldsForSellable'))
-			$prices = $model->getPriceFieldsForSellable();
-		else
-			$prices = [];
-
 		$result = [];
 
-		foreach ($prices as $key => $value)
+		foreach (static::getPricesByModel($model) as $key => $value)
 		{
 			$fieldName = is_string($key) ? $key : $value;
 
@@ -37,6 +30,34 @@ class SellablePriceDatatableFieldsHelper
 		}
 
 		return $result;
+	}
+
+	static function getCalculatedFieldsByModel(mixed $model, array $baseParameters = ['type' => 'editor.price', 'refreshRow' => true])
+	{
+		$result = [];
+
+		foreach (static::getPricesByModel($model) as $key => $value)
+		{
+			$fieldName = is_string($key) ? $key : $value;
+
+			if (! is_string($fieldName))
+				continue;
+
+			$result['calculated_' . $fieldName] = $baseParameters;
+		}
+
+		return $result;
+	}
+
+	static function getPricesByModel(mixed $model)
+	{
+		if ($model instanceof Sellable)
+			return $model->getPriceFieldsForSellable();
+		
+		if (is_object($model) && method_exists($model, 'getPriceFieldsForSellable'))
+			return $model->getPriceFieldsForSellable();
+
+		return [];
 	}
 }
 

@@ -2,7 +2,12 @@
 
 namespace IlBronza\Products\Models\Traits\Order;
 
+use IlBronza\Products\Casts\CalculatedTotalCostExtraField;
+use IlBronza\Products\Casts\CalculatedTotalMarginExtraField;
+use IlBronza\Products\Casts\CalculatedTotalPercentageMarginExtraField;
+use IlBronza\Products\Casts\CalculatedTotalRevenueExtraField;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsCostsFieldsHelper;
+use Illuminate\Support\Str;
 
 trait CommonOrderQuotationPricesTrait
 {
@@ -14,6 +19,21 @@ trait CommonOrderQuotationPricesTrait
 			$fieldsToUpdateOnTableEdit[] = $field;
 
 		$this->fieldsToUpdateOnTableEdit = array_merge($this->fieldsToUpdateOnTableEdit, $fieldsToUpdateOnTableEdit);
+	}
+
+	public function addSummaryFieldsCastsByRowTypes(string $trowTypes)
+	{
+		$rowTypesFieldName = Str::snake($trowTypes);
+
+		$casts = [
+			"total_{$rowTypesFieldName}_revenue" => CalculatedTotalRevenueExtraField::class . ':' . $trowTypes,
+			"total_{$rowTypesFieldName}_cost" => CalculatedTotalCostExtraField::class . ':' . $trowTypes,
+			"margin_{$rowTypesFieldName}" => CalculatedTotalMarginExtraField::class . ':' . $trowTypes,
+			"percentage_margin_{$rowTypesFieldName}" => CalculatedTotalPercentageMarginExtraField::class . ':' . $trowTypes,
+		];
+
+		$this->casts = array_merge($this->casts, $casts);
+
 	}
 
 	public function getTotalByCustomRowsCost(string $customRowsType)

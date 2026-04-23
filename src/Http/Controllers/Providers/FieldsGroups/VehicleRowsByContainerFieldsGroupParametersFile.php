@@ -41,6 +41,7 @@ class VehicleRowsByContainerFieldsGroupParametersFile extends FieldsGroupParamet
 						'width' => '180px',
 					],
 					'mySelfChangeSellableSupplier' => 'products::sellableSuppliers.changeSellableSupplier',
+
 					'cost_gross_day' => [
 						'type' => 'editor.price',
 						'saveButton' => true,

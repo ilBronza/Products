@@ -30,6 +30,7 @@ class Order extends IbOrder
 		'starts_at' => 'date',
 		'ends_at' => 'date',
 		'cost_coefficient' => ExtraField::class,
+		'revenue_coefficient' => ExtraField::class,
 		'total_proposal' => ExtraField::class,
 		'state_id' => ExtraField::class,
 	];

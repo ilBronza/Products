@@ -29,8 +29,8 @@ class RowsSellableSupplierAssociatorHelper
 	{
 		$this->row = $row;
 
-		foreach($row->getFieldsToReset() as $field)
-			$row->$field = null;
+		foreach($row->getRowFieldsToStore() as $rowField => $sellableSupplierField)
+			$row->$rowField = null;
 	}
 
 	public function getRow() : ProductPackageBaseRowModel
@@ -87,8 +87,8 @@ class RowsSellableSupplierAssociatorHelper
 			$sellableSupplier = $this->provideSellableSupplier()
 		);
 
-		foreach($row->getFieldsToReset() as $field)
-			$row->$field = $sellableSupplier->$field;
+		foreach($row->getRowFieldsToStore() as $rowField => $sellableSupplierField)
+			$row->$rowField = $sellableSupplier->$sellableSupplierField;
 
 		$row->save();
 	}
@@ -121,9 +121,16 @@ class RowsSellableSupplierAssociatorHelper
 
 	static function associateSellableSupplierToRow(ProductPackageBaseRowModel $row, SellableSupplier|string $sellableSupplier)
 	{
+        $classMethod = "rowRelationBy{$row->getType()}";
+
+        $modelContainer = $row->getModelContainer();
+
+        $typedRow = $modelContainer->{$classMethod}()->find($row->getKey());
+
 		$helper = static::provideHelper();
 
-		$helper->setRow($row);
+		$helper->setRow($typedRow);
+
 		$helper->setSellableSupplier($sellableSupplier);
 
 		return $helper->_associateSellableSupplierToRow();

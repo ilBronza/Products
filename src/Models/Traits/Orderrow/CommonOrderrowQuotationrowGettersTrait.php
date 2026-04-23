@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models\Traits\Orderrow;
 
+use IlBronza\Products\Models\Interfaces\CustomRowInterface;
 use IlBronza\Products\Models\Order;
 
 trait CommonOrderrowQuotationrowGettersTrait
@@ -23,5 +24,21 @@ trait CommonOrderrowQuotationrowGettersTrait
 			dd($this->getSellable());
 
 		return $this->type;
+	}
+
+	public function getRowFieldsToStore() : array
+	{
+		$target = $this->getSellable()->getTarget();
+
+		return $target->getRowFieldsToStore();
+	}
+
+	public function getSpecificRow() : CustomRowInterface
+	{
+        $classMethod = "rowRelationBy{$this->getType()}";
+
+        $modelContainer = $this->getModelContainer();
+
+        return $modelContainer->{$classMethod}()->find($this->getKey());
 	}
 }

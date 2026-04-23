@@ -51,31 +51,9 @@ trait SellableSupplierAssignmentTrait
 	{
 		$sellable = $this->getSellable();
 
-		Log::info('far sì che sia il pulsante a salvare la tabella da refreshare zio frenulo');
+		$target = $sellable->getTarget();
 
-		if ($sellable->isContracttype())
-			return ['operatorRows'];
-
-		else if ($sellable->isVehicleType())
-			return ['vehicleRows'];
-
-		// else if ($sellable->isSurveillanceType())
-		// 	return ['surveillancerows'];
-
-		else if ($sellable->isHotelType())
-			return ['hotelRows'];
-
-		else if ($sellable->isRentType())
-			return ['rentrows'];
-
-		else if ($sellable->isControlRoomType())
-			return ['controlroomRows'];
-
-		else if ($sellable->isReimbursementType())
-			return ['reimbursementRows'];
-
-		else
-			throw new Exception('gestire gli altri tipi');
+		return $target->getContainerModelRelatedTablesToRefresh();
 	}
 
 	public function __associateSellableSupplier($target, $sellableSupplier) : void
