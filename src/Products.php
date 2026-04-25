@@ -203,6 +203,15 @@ class Products implements RoutedObjectInterface
 
 		$productsContainerButton->addChild(
 			$menu->createButton([
+				'name' => 'accessoryTypes.index',
+				'icon' => 'users',
+				'text' => 'products::accessoryTypes.list',
+				'href' => IbRouter::route($this, 'accessoryTypes.index')
+			])
+		);
+
+		$productsContainerButton->addChild(
+			$menu->createButton([
 				'name' => 'finishings.index',
 				'icon' => 'users',
 				'text' => 'products::finishings.list',

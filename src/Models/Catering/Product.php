@@ -23,6 +23,14 @@ class Product extends IbProduct implements SellableItemInterface, WithPriceInter
 		'minimum_quantity' => ExtraField::class,
 	];
 
+	public function getPriceFieldsForSellable() : array
+	{
+		return [
+			'single_cost' => 'piece',
+			'single_revenue' => 'piece',
+		];
+	}
+
 	public function getPossibleSuppliers() : Collection
 	{
 		return collect([
@@ -75,5 +83,13 @@ class Product extends IbProduct implements SellableItemInterface, WithPriceInter
 	public function getAllergens() : Collection
 	{
 		return $this->allergens;
+	}
+
+	public function getDependentSellables() : array
+	{
+		return [
+			'accessories',
+			'accessoryTypes'
+		];
 	}
 }

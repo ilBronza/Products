@@ -5,6 +5,7 @@ namespace IlBronza\Products\Http\Traits;
 use Exception;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 use Illuminate\Support\Facades\Log;
 use function compact;
@@ -97,27 +98,15 @@ trait SellableSupplierAssignmentTrait
 		return $this->containerModelPrefix;
 	}
 
-	public function getSortingIndexByType($container, string $type)
-	{
-		return $container->rows()->bySellableType($type)->max('sorting_index') + 1;
-	}
-
 	public function addNewRowBySellableSupplier($container, $sellableSupplier)
 	{
-		$sellableSupplier = SellableSupplier::gpc()::with('sellable', 'supplier')->find($sellableSupplier);
+		$result = RowAssociatorHelper::associateRowBySellableSupplier($container, $sellableSupplier);
 
-		$rowSortingIndex = $this->getSortingIndexByType($container, $sellableSupplier->sellable->type);
+		$this->setSellable($result->getSellable());
 
-		$row = $container->rows()->make();		
-		$row->sellable()->associate($sellableSupplier->getSellable());
-		$row->container()->associate($container);
-
-		$row->type = $sellableSupplier->getSellable()->type;
-		$row->sorting_index = $rowSortingIndex ++;
-
-		$row->save();
-
-		return $this->_associateSellableSupplier($row, $sellableSupplier);
+		return $this->closeIframe(
+			$this->getTablesToRefresh()
+		);
 	}
 
 }

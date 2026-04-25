@@ -6,6 +6,8 @@ use App\Models\ProductsPackage\Size;
 use IlBronza\Clients\Models\Client;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
+use IlBronza\Products\Models\AccessoryType;
+use IlBronza\Products\Models\AccessoryTypeProduct;
 use IlBronza\Products\Models\Finishing;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
@@ -108,6 +110,18 @@ trait ProductRelationshipsTrait
 			Accessory::gpc(), config('products.models.accessoryProduct.table')
 		)->using(
 			AccessoryProduct::gpc()
+		);
+	}
+
+	public function accessoryTypes()
+	{
+		return $this->belongsToMany(
+			AccessoryType::gpc(),
+			config('products.models.accessoryTypeProduct.table'),
+			'product_id',
+			'accessory_type_id'
+		)->using(
+			AccessoryTypeProduct::gpc()
 		);
 	}
 

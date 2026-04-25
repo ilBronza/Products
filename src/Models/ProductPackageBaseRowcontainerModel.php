@@ -137,34 +137,34 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 
 	public function getPossibleSellablesByType(string $type) : array
 	{
-		$type = lcfirst($type);
-
-		if ($type == 'contracttype')
-			return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		if ($type == 'controlroom')
-			return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		if ($type == 'reimbursement')
-			return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		//è diventato un metodo standard
-		// if ($type == 'vehicleType')
-		// 	return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		if ($type == 'rent')
-			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		if ($type == 'service')
-			return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		if ($type == 'surveillance')
-			return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		if ($type == 'hotel')
-			return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
-
 		return Sellable::gpc()::byType($type)->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'contracttype')
+		// 	return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'controlroom')
+		// 	return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'reimbursement')
+		// 	return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// //è diventato un metodo standard
+		// // if ($type == 'vehicleType')
+		// // 	return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'rent')
+		// 	return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'service')
+		// 	return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'surveillance')
+		// 	return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// if ($type == 'hotel')
+		// 	return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
+
+		// return Sellable::gpc()::byType($type)->orderBy('name')->pluck('name', 'id')->toArray();
 //		throw new Exception("Type $type not found");
 	}
 

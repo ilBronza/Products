@@ -76,14 +76,6 @@ class RowsCostsFieldsHelper
 		return 'percentage_margin_' . Str::snake($relationName);
 	}
 
-	public function calculateTotals()
-	{
-		// $this->totalCosts = $this->containerModel->{$this->getCostFieldName($this->rowsRelationName)};
-		// $this->totalRevenues = $this->containerModel->{$this->getRevenueFieldName($this->rowsRelationName)};
-		// $this->margin = $this->containerModel->{$this->getMarginFieldName($this->rowsRelationName)};
-		// $this->marginPercentage = $this->containerModel->{$this->getPercentageMarginFieldName($this->rowsRelationName)};
-	}
-
 	static function getRowCostsFieldsByRelation(string $rowsRelationName) : array
 	{
 		return [
@@ -116,6 +108,7 @@ class RowsCostsFieldsHelper
 
 		return [
 			'translationPrefix' => 'products::fields',
+			'canBeHidden' => false,
 			'fields' => $fields,
 			'width' => ['small']
 		];

@@ -13,7 +13,7 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 	{
 		$helper = static::createByContainer($parentModel);
 
-        $fields = $helper->getRowStartingFields();
+		$fields = $helper->getRowStartingFields();
 
 		unset($fields['starts_at']);
 		unset($fields['ends_at']);
@@ -43,16 +43,16 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 					'type' => 'editor.toggle',
 				];
 
-        $fields = static::addCostsFields(
-            $fields,
-            Product::gpc()::make()
-        );
+		$fields = static::addCostsFields(
+			$fields,
+			Product::gpc()::make()
+		);
 
 		$result = [
 			'translationPrefix' => 'products::fields',
-            'fields' => $fields
-        ];
+			'fields' => $fields
+		];
 
-        return $result;
+		return $result;
 	}
 }

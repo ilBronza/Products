@@ -25,18 +25,18 @@ trait SellableSupplierPricesTrait
 
 		if (! $sellableClass)
 		{
-			if(! $sellableTarget = $this->getSellable()->getTarget());
+			if(! $sellableTarget = $this->getSellable()?->getTarget())
 				return ;
 
-			$sellableTargetClass = class_basename($sellableTarget);
+			$sellableClass = class_basename($sellableTarget);
 
 			static::query()
 				->whereKey($this->getKey())
 				->update([
-					'sellable_class' => $sellableTargetClass
+					'sellable_class' => $sellableClass
 				]);
 
-			$this->sellable_class = $sellableTargetClass;
+			$this->sellable_class = $sellableClass;
 		}
 
 		$fullClass = Relation::getMorphedModel($sellableClass);

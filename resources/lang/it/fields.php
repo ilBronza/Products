@@ -106,6 +106,8 @@ return [
 	'files' => 'Files',
 	'images' => 'Immagini',
 	'quantity_neeeded_in_stock' => 'Quantità minima da magazzino',
+	'accessory_type_id' => 'Tipologia accessorio',
+	'accessoryType' => 'Tipologia accessorio',
 	'total_proposal' => 'Prezzo proposto',
 	'total_gain' => 'Prezzo effettivo',
 	'operatorRows_total_gains' => 'Ricavi operatori (tot)',
@@ -145,6 +147,8 @@ return [
 	'sellable' => 'Bene/servizio',
 	'total_cost' => 'Costo totale',
 	'total_price' => 'Prezzo totale cliente',
+	'accessories' => 'Accessori',
+	'accessoryTypes' => 'Tipologie accessori',
 	'preset' => 'Preset',
 	'project' => 'Progetto',
 	'quotationrows' => 'Distinte',
@@ -168,6 +172,7 @@ return [
 	'operatorsCosts' => 'Operatori',
 	'productsCosts' => 'Prodotti',
 	'vehiclesCosts' => 'Automezzi',
+	'accessoriesCosts' => 'Accessori',
 
 
 	'calculated_cost_per_km' => '€/km',
@@ -188,5 +193,12 @@ return [
 	'calculated_single_cost' => 'Costo singolo',
 
 	'client_description' => 'Descrizione per cliente',
+
+	'cost_per_hour' => '€/ora',
+
+	'single_cost' => 'Costo singolo',
+	'single_revenue' => 'Ricavo singolo',
+
+	'totals' => 'Totali'
 
 ];

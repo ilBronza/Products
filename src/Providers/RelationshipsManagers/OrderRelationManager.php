@@ -21,7 +21,9 @@ class OrderRelationManager Extends RelationshipsManager
 
 					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'vehicleRows'),
 
-					'operatorRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'operatorRows')
+					'operatorRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'operatorRows'),
+
+					'accessoryRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'accessoryRows')
 
 				]
 			]

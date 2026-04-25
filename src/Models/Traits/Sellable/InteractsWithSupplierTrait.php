@@ -60,7 +60,7 @@ trait InteractsWithSupplierTrait
 	public function scopeWithSupplierId($query)
 	{
 		$query->addSelect([
-			'live_supplier_id' => Supplier::getProjectClassName()::select(
+			'live_supplier_id' => Supplier::gpc()::select(
 				'id'
 			)->whereColumn('target_id', $this->getTable() . '.id')->where('target_type', $this->getMorphClass())->take(1)
 		]);
@@ -69,7 +69,7 @@ trait InteractsWithSupplierTrait
 	public function sellableSuppliers()
 	{
 		return $this->hasMany(
-			SellableSupplier::getProjectClassName(), 'supplier_id', 'live_supplier_id'
+			SellableSupplier::gpc(), 'supplier_id', 'live_supplier_id'
 		);
 	}
 
@@ -87,8 +87,8 @@ trait InteractsWithSupplierTrait
 	public function sellables()
 	{
 		return $this->belongsToMany(
-			Sellable::getProjectClassName(), config('products.models.sellableSupplier.table'), 'supplier_id', null, 'live_supplier_id'
-		)->using(SellableSupplier::getProjectClassName());
+			Sellable::gpc(), config('products.models.sellableSupplier.table'), 'supplier_id', null, 'live_supplier_id'
+		)->using(SellableSupplier::gpc());
 	}
 
 	public function scopeWithSellables($query)
@@ -184,9 +184,9 @@ trait InteractsWithSupplierTrait
 			return $this->sellableSuppliers;
 
 		if($type)
-			$sellableSuppliers = $this->getSupplier()?->getSellableSuppliersByType($type);
+			$sellableSuppliers = $this->getSupplier()?->getSellableSuppliersByType($type) ?? collect();
 		else
-			$sellableSuppliers = $this->getSupplier()?->getSellableSuppliers();
+			$sellableSuppliers = $this->getSupplier()?->getSellableSuppliers() ?? collect();
 
 		$sellableSuppliers = $sellableSuppliers->filter(function($item)
 		{
@@ -204,9 +204,9 @@ trait InteractsWithSupplierTrait
 			return $this->orderrows;
 
 		if($type)
-			$orderrows = $this->getSupplier()?->getOrderrowsByType($type);
+			$orderrows = $this->getSupplier()?->getOrderrowsByType($type) ?? collect();
 		else
-			$orderrows = $this->getSupplier()?->getOrderrows();
+			$orderrows = $this->getSupplier()?->getOrderrows() ?? collect();
 
 		$this->setRelation('orderrows', $orderrows);
 
@@ -219,9 +219,9 @@ trait InteractsWithSupplierTrait
 			return $this->quotationrows;
 
 		if($type)
-			$quotationrows = $this->getSupplier()?->getQuotationrowsByType($type);
+			$quotationrows = $this->getSupplier()?->getQuotationrowsByType($type) ?? collect();
 		else
-			$quotationrows = $this->getSupplier()?->getQuotationrows();
+			$quotationrows = $this->getSupplier()?->getQuotationrows() ?? collect();
 
 		$this->setRelation('quotationrows', $quotationrows);
 
@@ -233,7 +233,7 @@ trait InteractsWithSupplierTrait
 		if(! $type)
 			$type = $this->getModelConfigPrefix();
 
-		$key = static::getPackageConfigPrefix() . '.models.quotationrow.fieldsGroupsFiles.index';
+		$key = static::getPackageConfigPrefix() . '.models.quotationrow.fieldsGroupsFiles.indexBySupplier';
 		if(! $result = config($key))
 			dd($key);
 
@@ -245,12 +245,9 @@ trait InteractsWithSupplierTrait
 		if(! $type)
 			$type = $this->getModelConfigPrefix();
 
-		$key = static::getPackageConfigPrefix() . '.models.orderrow.fieldsGroupsFiles.index';
+		$key = static::getPackageConfigPrefix() . '.models.orderrow.fieldsGroupsFiles.indexBySupplier';
 
-		if(! $result = config($key))
-			dd($key);
-
-		return $result;
+		return cconfig($key);
 	}
 
 	public function getSellableSuppliersBySupplierRelationsManagerFieldsGroupsParametersFile(string $type = null) : string
@@ -299,6 +296,7 @@ trait InteractsWithSupplierTrait
 
 		$todo = trans('products::models.relationsManagerRelatedModelTodo');
 		Log::info($todo);
+
 		if(\Auth::id() == 1)
 			Ukn::w($todo);
 

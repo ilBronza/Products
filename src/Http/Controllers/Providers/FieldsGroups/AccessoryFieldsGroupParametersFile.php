@@ -3,29 +3,31 @@
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
 use IlBronza\Clients\Models\Client;
-use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
+use IlBronza\Products\Models\AccessoryType;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\CostsFieldsGroupParametersFile;
 
-class AccessoryFieldsGroupParametersFile extends FieldsGroupParametersFile
+class AccessoryFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 {
 	static function getFieldsGroup() : array
 	{
-		return [
+        return [
             'translationPrefix' => 'products::fields',
-            'fields' => 
-            [
+            'fields' => static::addStandardCostsFieldsByModelPlusDelete(
+                [
                 'mySelfPrimary' => 'primary',
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
-                'created_at' => 'dates.datetime',
                 'name' => 'flat',
-	            'mySelfMedia' => 'media.media',
-	            'media' => 'json',
-	            'parent' => 'relations.belongsTo',
-	            'children' => 'relations.hasMany',
+                'accessoryType' => 'relations.belongsTo',
+                'mySelfMedia' => 'media.media',
+                'media' => 'json',
+                'parent' => 'relations.belongsTo',
+                'children' => 'relations.hasMany',
                 'temp_position' => 'flat',
                 'quantity_neeeded_in_stock' => 'flat',
-                'mySelfDelete' => 'links.delete'
-            ]
+                ],
+                AccessoryType::gpc()::make()
+            )
         ];
 	}
 }

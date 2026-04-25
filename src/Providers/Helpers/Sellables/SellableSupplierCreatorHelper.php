@@ -38,7 +38,7 @@ class SellableSupplierCreatorHelper
 	{
 		$sellableSupplier = static::getOrCreateSellableSupplier($supplier, $sellable);
 
-		$sellableSupplier->setStandardPrices();
+		// $sellableSupplier->setStandardPrices();
 
 		return $sellableSupplier;
 	}

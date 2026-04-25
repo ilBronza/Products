@@ -39,25 +39,17 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 		'phases'
 	];
 
-	public function getPriceFieldsForSellable() : array
-	{
-		return [
-			'single_cost' => 'piece',
-			'single_revenue' => 'piece',
-		];
-	}
+	// public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass
+	// {
+	// 	dd('eliminare qua 22 aprile 2026');
 
-	public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass
-	{
-		dd('eliminare qua 22 aprile 2026');
+	// 	if ($class = config('products.models.product.helpers.sellableSupplierPricesCreator'))
+	// 		return null;
 
-		if ($class = config('products.models.product.helpers.sellableSupplierPricesCreator'))
-			return null;
+	// 	dd($class);
 
-		dd($class);
-
-		return new $class;
-	}
+	// 	return new $class;
+	// }
 
 	public function getManyToManyRelationClass() : string
 	{

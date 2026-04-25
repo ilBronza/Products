@@ -55,7 +55,7 @@ Route::group([
 		//QuotationAddSellableSupplierIndexByTableController
 		Route::post('{quotation}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('quotation', 'addSellableSupplierRows'), 'index'])->name('quotations.addSellableSupplierRows');
 
-		//QuotationAddOrderrowIndexByTableController
+		//AddQuotationrowBySellableSupplierController
 		Route::get('{quotation}/add-row-by-sellable-supplier/{sellableSupplier}', [Products::getController('quotation', 'addQuotationrowBySellableSupplier'), 'store'])->name('quotations.addSellableSupplierRow');
 
 
@@ -296,6 +296,17 @@ Route::group([
 
 		Route::delete('delete-media/{accessory}/{media}', [Products::getController('accessory', 'deleteMedia'), 'deleteMedia'])->name('accessories.deleteMedia');
 		Route::delete('{accessory}', [Products::getController('accessory', 'destroy'), 'destroy'])->name('accessories.destroy');
+	});
+
+	Route::group(['prefix' => 'accessory-types'], function ()
+	{
+		Route::get('', [Products::getController('accessoryType', 'index'), 'index'])->name('accessoryTypes.index');
+		Route::get('create', [Products::getController('accessoryType', 'create'), 'create'])->name('accessoryTypes.create');
+		Route::post('', [Products::getController('accessoryType', 'store'), 'store'])->name('accessoryTypes.store');
+		Route::get('{accessoryType}', [Products::getController('accessoryType', 'show'), 'show'])->name('accessoryTypes.show');
+		Route::get('{accessoryType}/edit', [Products::getController('accessoryType', 'edit'), 'edit'])->name('accessoryTypes.edit');
+		Route::put('{accessoryType}', [Products::getController('accessoryType', 'update'), 'update'])->name('accessoryTypes.update');
+		Route::delete('{accessoryType}/delete', [Products::getController('accessoryType', 'destroy'), 'destroy'])->name('accessoryTypes.destroy');
 	});
 
 	Route::group(['prefix' => 'accessory-products'], function ()

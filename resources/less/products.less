@@ -20,18 +20,20 @@
 
 .datatable
 {
-	td[class*="Cost"]
+	td[class*="Cost"],
+	td[class*="cost"]
 	{
 		.moneyField(@costFieldColor);
 	}
 
-	td[class*="Revenue"]
+	td[class*="Revenue"],
+	td[class*="revenue"]
 	{
 		.moneyField(@revenueFieldColor);
 	}
 }
 
-.fieldset-container-economicals
+.fieldset-container-economicalsSummary
 {
 	div.money[class*="margin-"]
 	{

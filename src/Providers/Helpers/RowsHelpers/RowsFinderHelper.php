@@ -4,8 +4,8 @@ namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
 use Carbon\Carbon;
 use IlBronza\Products\Models\Orders\Orderrow;
+use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
-
 use function dd;
 
 class RowsFinderHelper
@@ -89,5 +89,10 @@ class RowsFinderHelper
 				$query->where('ends_at', '>=', $this->getDateEnd());
 			});
 		})->with('order.project')->orderBy('starts_at')->get();
+	}
+
+	static function getSortingIndexByType(ProductPackageBaseRowcontainerModel $containerModel, string $type) : int
+	{
+		return ($containerModel->rows()->bySellableType($type)->max('sorting_index') ?? 0) + 1;
 	}
 }

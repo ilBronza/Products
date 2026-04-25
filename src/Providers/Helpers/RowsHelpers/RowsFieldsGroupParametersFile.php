@@ -2,13 +2,13 @@
 
 namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
-use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\CostsFieldsGroupParametersFile;
 use IlBronza\Products\Providers\Helpers\Sellables\SellablePriceDatatableFieldsHelper;
 use Illuminate\Database\Eloquent\Model;
 
-class RowsFieldsGroupParametersFile extends FieldsGroupParametersFile
+class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 {
 	public ProductPackageBaseRowcontainerModel $containerModel;
 
@@ -94,21 +94,6 @@ class RowsFieldsGroupParametersFile extends FieldsGroupParametersFile
 		$fields = static::addSummaryCostsFields($fields);
 
 		$fields['mySelfDelete'] = 'links.delete';
-
-		return $fields;
-	}
-
-	static function addCostsFieldsByModel(array $fields, Model $model) : array
-	{
-		if (! $model instanceof SellableItemInterface)
-			return $parameters;
-
-		$fields = array_merge(
-			$fields, 
-			SellablePriceDatatableFieldsHelper::getCalculatedFieldsByModel(
-				$model
-			)
-		);
 
 		return $fields;
 	}

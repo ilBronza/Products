@@ -173,21 +173,19 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		);
 	}
 
-	public function setStandardPrices() : ?Collection
-	{
-		dd('questo deve sparire e facciamo come vehicles');
-		dd($this->getSellableTarget());
+	// public function setStandardPrices() : ?Collection
+	// {
+	// 	if (! $priceCreator = $this->getSellableTarget()->getPriceCreator())
+	// 		return null;
 
+	// 	dd('eliminare qua 22 aprile 2026. OCCHIO che sto coso viene chiamato in ogni caso quindi va eliminato tutto');
 
-		if (! $priceCreator = $this->getSellableTarget()->getPriceCreator())
-			return null;
+	// 	dd('secondo me sta roba va eliminata in favore del nuovo metodo');
 
-		dd("occuparsi di sta roba e metterlo nel readme" . $priceCreator);
+	// 	$priceCreator->setModel($this);
 
-		$priceCreator->setModel($this);
-
-		return $priceCreator->createPrices();
-	}
+	// 	return $priceCreator->createPrices();
+	// }
 
 	public function getSellableTarget() : SellableItemInterface
 	{

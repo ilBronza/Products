@@ -32,6 +32,39 @@ class SellablePriceDatatableFieldsHelper
 		return $result;
 	}
 
+	static function getStandardFieldsByModel(mixed $model, array $baseParameters = ['type' => 'editor.price', 'refreshRow' => true]) : array
+	{
+		$result = [];
+
+		foreach (static::getPricesByModel($model) as $key => $value)
+		{
+			$fieldName = is_string($key) ? $key : $value;
+
+			if (! is_string($fieldName))
+				continue;
+
+			$result[$fieldName] = $baseParameters;
+		}
+
+		// $marginFields = [];
+
+		// foreach(static::getPricesByModel($model) as $field => $parameters)
+		// {
+		// 	if(strpos($field, "cost_") !== false)
+		// 		$marginFields[] = str_replace("cost_", "", $field);
+
+		// 	if(strpos($field, "revenue_") !== false)
+		// 		$marginFields[] = str_replace("revenue_", "", $field);
+		// }
+
+		// $marginFields = array_unique($marginFields);
+
+		// foreach($marginFields as $marginField)
+		// 	$result['margin_' . $marginField] = 'numbers.price';
+
+		return $result;
+	}
+
 	static function getCalculatedFieldsByModel(mixed $model, array $baseParameters = ['type' => 'editor.price', 'refreshRow' => true])
 	{
 		$result = [];

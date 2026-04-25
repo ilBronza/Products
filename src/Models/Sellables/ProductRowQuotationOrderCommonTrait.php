@@ -39,7 +39,7 @@ trait ProductRowQuotationOrderCommonTrait
 
 	public function getSingleRevenueAttribute() : float
 	{
-		return $this->getSellableSupplier()->single_revenue;
+		return $this->getSellableSupplier()->single_revenue ?? 0;
 	}
 
 	//total_row_cost

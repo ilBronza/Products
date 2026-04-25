@@ -2,6 +2,8 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\Fieldsets;
 
+use IlBronza\Products\Models\Accessory;
+use IlBronza\Products\Models\AccessoryType;
 use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\CostsFieldsetParametersFile;
 
@@ -27,6 +29,18 @@ class CateringProductEditFieldsetsParameters extends CostsFieldsetParametersFile
                     ],
                     'short_description' => ['text' => 'string|nullable|max:255'],
                     'coefficient_output' => ['number' => 'numeric|nullable|min:1'],
+					'accessories' => [
+						'type' => 'select',
+						'multiple' => true,
+						'relation' => 'accessories',
+						'rules' => 'array|nullable',
+					],
+					'accessoryTypes' => [
+						'type' => 'select',
+						'multiple' => true,
+						'relation' => 'accessoryTypes',
+						'rules' => 'array|nullable',
+					],
                 ],
                 'width' => ['1-2@m']
             ],

@@ -46,7 +46,7 @@ interface SellableItemInterface
 	 * @return SellableSupplierPriceCreatorBaseClass
 	 *
 	 **/
-	public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass;
+	// public function getPriceCreator() : ?SellableSupplierPriceCreatorBaseClass;
 
 	public function getSellableSupplierIndexRelations() : array;
 
@@ -55,5 +55,7 @@ interface SellableItemInterface
 	public function getContainerModelRelatedTablesToRefresh() : array;
 
 	public function getRowFieldsToStore() : array;
+
+	public function getDependentSellables() : array;
 
 }

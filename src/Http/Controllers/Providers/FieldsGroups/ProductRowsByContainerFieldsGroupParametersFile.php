@@ -43,11 +43,6 @@ class ProductRowsByContainerFieldsGroupParametersFile extends FieldsGroupParamet
 					'width' => '6em',
 					'defaultWidth' => '3em',
 				],
-				'mySelfMobile.sellableSupplier.supplier.target' => [
-					'type' => 'function',
-					'function' => 'getMobileString',
-					'width' => '6em'
-				],
 
 				'cost_gross_day' => [
 					'type' => 'editor.price',

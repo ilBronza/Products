@@ -5,6 +5,11 @@ use IlBronza\Operators\Helpers\OperatorPricesCreatorHelper;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductIndexController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowController;
+use IlBronza\Products\Http\Controllers\AccessoryTypes\AccessoryTypeCreateStoreController;
+use IlBronza\Products\Http\Controllers\AccessoryTypes\AccessoryTypeDestroyController;
+use IlBronza\Products\Http\Controllers\AccessoryTypes\AccessoryTypeEditUpdateController;
+use IlBronza\Products\Http\Controllers\AccessoryTypes\AccessoryTypeIndexController;
+use IlBronza\Products\Http\Controllers\AccessoryTypes\AccessoryTypeShowController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCreateByParentController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCreateStoreController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryCrudController;
@@ -109,6 +114,9 @@ use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryRowsByContainerFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessorySellableSupplierBySupplierRelatedFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryTypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ActiveOrdersFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
@@ -126,6 +134,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OperatorRowsByCont
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderChildrenFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderProductRelatedOrderProductPhaseFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowBySupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\OrderrowRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProductFieldsGroupParametersFile;
@@ -134,6 +143,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ProjectFieldsGroup
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationrowByQuotationFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationrowBySupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationrowFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\QuotationrowRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\RelatedOrderProductPhaseFieldsGroupParametersFile;
@@ -157,6 +167,8 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\WorkstationFieldsG
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryShowFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryTypeCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ClientAreaOrderProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\FinishingCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\MaterialCreateFieldsetsParameters;
@@ -249,6 +261,8 @@ use IlBronza\Products\Http\Controllers\Workstations\WorkstationIndexController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationShowController;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
+use IlBronza\Products\Models\AccessoryType;
+use IlBronza\Products\Models\AccessoryTypeProduct;
 use IlBronza\Products\Models\Client;
 use IlBronza\Products\Models\Finishing;
 use IlBronza\Products\Models\Material;
@@ -264,6 +278,8 @@ use IlBronza\Products\Models\Product\Product;
 use IlBronza\Products\Models\Quotations\Project;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
+use IlBronza\Products\Models\Sellables\Helpers\AccessoryTypeAccessorySellableSupplierPricesHelper;
+use IlBronza\Products\Models\Sellables\Helpers\AccessoryTypeClientSellableSupplierPricesHelper;
 use IlBronza\Products\Models\Sellables\Helpers\ProductClientSellableSupplierPricesHelper;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
@@ -416,7 +432,9 @@ return [
 	],
 
 	'sellableSupplierPricesHelper' => [
-		'product_client' => ProductClientSellableSupplierPricesHelper::class
+		'product_client' => ProductClientSellableSupplierPricesHelper::class,
+		'accessoryType_client' => AccessoryTypeClientSellableSupplierPricesHelper::class,
+		'accessoryType_accessory' => AccessoryTypeAccessorySellableSupplierPricesHelper::class
 	],
 
 	'helpers' => [
@@ -425,6 +443,31 @@ return [
 	],
 
 	'models' => [
+		'accessoryType' => [
+			'class' => AccessoryType::class,
+			'table' => 'products__accessory_types',
+			'fieldsGroupsFiles' => [
+				'index' => AccessoryTypeFieldsGroupParametersFile::class,
+			],
+			'parametersFiles' => [
+				'create' => AccessoryTypeCrudFieldsetsParameters::class,
+				'edit' => AccessoryTypeCrudFieldsetsParameters::class,
+				'show' => AccessoryTypeCrudFieldsetsParameters::class,
+			],
+			'controllers' => [
+				'index' => AccessoryTypeIndexController::class,
+				'create' => AccessoryTypeCreateStoreController::class,
+				'store' => AccessoryTypeCreateStoreController::class,
+				'show' => AccessoryTypeShowController::class,
+				'edit' => AccessoryTypeEditUpdateController::class,
+				'update' => AccessoryTypeEditUpdateController::class,
+				'destroy' => AccessoryTypeDestroyController::class,
+			],
+		],
+		'accessoryTypeProduct' => [
+			'class' => AccessoryTypeProduct::class,
+			'table' => 'products__accessory_type_products',
+		],
 		'accessory' => [
 			'class' => Accessory::class,
 			'table' => 'products__accessories',
@@ -433,11 +476,13 @@ return [
 				'related' => AccessoryFieldsGroupParametersFile::class
 			],
 			'relationshipsManagerClasses' => [
-			    'show' => AccessoryRelationManager::class
+			    'show' => AccessoryRelationManager::class,
+			    'edit' => AccessoryRelationManager::class,
 			],
 			'parametersFiles' => [
 				'create' => AccessoryCrudFieldsetsParameters::class,
 				'edit' => AccessoryEditFieldsetsParameters::class,
+				'show' => AccessoryShowFieldsetsParameters::class,
 			],
 			'controllers' => [
 				'index' => AccessoryIndexController::class,
@@ -753,6 +798,8 @@ return [
 			'fieldsGroupsFiles' => [
 				'related' => OrderrowRelatedFieldsGroupParametersFile::class,
 				'index' => OrderrowFieldsGroupParametersFile::class,
+				'indexBySupplier' => OrderrowBySupplierFieldsGroupParametersFile::class,
+				'accessoryOrderrow' => AccessoryRowsByContainerFieldsGroupParametersFile::class,
 				'operatorOrderrow' => OperatorRowsByContainerFieldsGroupParametersFile::class,
 				'productOrderrow' => ProductRowsByContainerFieldsGroupParametersFile::class,
 				'vehicleOrderrow' => VehicleRowsByContainerFieldsGroupParametersFile::class,
@@ -928,6 +975,7 @@ return [
 			'fieldsGroupsFiles' => [
 				'byQuotation' => QuotationrowByQuotationFieldsGroupParametersFile::class,
 				'index' => QuotationrowFieldsGroupParametersFile::class,
+				'indexBySupplier' => QuotationrowBySupplierFieldsGroupParametersFile::class,
 				'related' => QuotationrowRelatedFieldsGroupParametersFile::class
 			],
 			'relationshipsManagerClasses' => [
@@ -1023,7 +1071,8 @@ return [
 				'index' => SellableSupplierFieldsGroupParametersFile::class,
 				'related' => SellableSupplierRelatedFieldsGroupParametersFile::class,
 				'relatedBySupplier' => [
-					'vehicle' => VehicleSellableSupplierBySupplierRelatedFieldsGroupParametersFile::class
+					'vehicle' => VehicleSellableSupplierBySupplierRelatedFieldsGroupParametersFile::class,
+					'accessory' => AccessorySellableSupplierBySupplierRelatedFieldsGroupParametersFile::class
 				],
 				'pick' => [
 					'index' => SellableSupplierPickFieldsGroupParametersFile::class,
