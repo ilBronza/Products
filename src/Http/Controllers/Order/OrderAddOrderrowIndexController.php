@@ -6,6 +6,7 @@ use IlBronza\FormField\FormField;
 use IlBronza\Form\Form;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -152,14 +153,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 
 				for ($i = 0; $i < $_parameters['quantity']; $i ++)
 				{
-					$orderrow = Orderrow::gpc()::make();
-					$orderrow->sellable()->associate($sellable);
-					$orderrow->order()->associate($order);
-
-					$orderrow->type = $sellable->type;
-					$orderrow->sorting_index = $orderrowSortingIndex ++;
-
-					$orderrow->save();
+					$result = RowAssociatorHelper::associateRowBySellable($order, $sellable);
 				}
 			}
 		}

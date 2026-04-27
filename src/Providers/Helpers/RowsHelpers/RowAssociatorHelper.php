@@ -23,9 +23,12 @@ class RowAssociatorHelper
 
 	public array $addedSellableSuppliers = [];
 
-	public function __construct(ProductPackageBaseRowcontainerModel $containerModel, SellableSupplier|string $sellableSupplier)
+	public function __construct(ProductPackageBaseRowcontainerModel $containerModel, SellableSupplier|string $sellableSupplier = null)
 	{
 		$this->containerModel = $containerModel;
+
+		if(! $sellableSupplier)
+			return ;
 
 		if(is_string($sellableSupplier))
 			$sellableSupplier = SellableSupplier::gpc()::with('sellable', 'supplier')->find($sellableSupplier);
@@ -38,14 +41,40 @@ class RowAssociatorHelper
 		$this->sellable = $sellableSupplier->getSellable();
 	}
 
-	static function create(ProductPackageBaseRowcontainerModel $containerModel, SellableSupplier|string $sellableSupplier)
+	static function createBySellableSupplier(ProductPackageBaseRowcontainerModel $containerModel, SellableSupplier|string $sellableSupplier)
 	{
 		return new static($containerModel, $sellableSupplier);
 	}
 
+	static function createBySellable(ProductPackageBaseRowcontainerModel $containerModel, Sellable|string $sellable) : static
+	{
+		$helper = new static($containerModel);
+
+		$helper->setSellable(
+			$sellable
+		);
+
+		return $helper;
+	}
+
+	public function setSellable(Sellable $sellable)
+	{
+		$this->sellable = $sellable;
+	}
+
+	static function associateRowBySellable(ProductPackageBaseRowcontainerModel $containerModel, Sellable|string $sellable)
+	{
+		$helper = static::createBySellable($containerModel, $sellable);
+
+		$helper->makeRow();
+		$helper->associateSellableToRow();
+
+		$helper->row->save();
+	}
+
 	static function associateRowBySellableSupplier(ProductPackageBaseRowcontainerModel $containerModel, SellableSupplier|string $sellableSupplier)
 	{
-		$helper = static::create($containerModel, $sellableSupplier);
+		$helper = static::createBySellableSupplier($containerModel, $sellableSupplier);
 
 		return $helper->_associateRowBySellableSupplier();
 	}
@@ -110,7 +139,9 @@ class RowAssociatorHelper
 					}
 
 					else
-						$this->sellablesToInsert->push($item);
+						$this->sellablesToInsert->push(
+							$sellable
+						);
 				}
 
 				elseif($item instanceof SupplierInterface)
@@ -146,6 +177,17 @@ class RowAssociatorHelper
 		}
 	}
 
+	public function makeRow() : static
+	{
+		$this->row = $this->containerModel->rows()->make();
+
+		$this->row->container()->associate(
+			$this->containerModel
+		);
+
+		return $this;
+	}
+
 	public function getDependentSellables() : Collection
 	{
 		if(! $target = $this->getSellableTarget())
@@ -167,16 +209,10 @@ class RowAssociatorHelper
 		return $this;
 	}
 
-	public function _associateRowBySellableSupplier() : static
+	public function associateSellableToRow()
 	{
-		$this->row = $this->containerModel->rows()->make();
-
 		$this->row->sellable()->associate(
 			$this->getSellable()
-		);
-
-		$this->row->container()->associate(
-			$this->containerModel
 		);
 
 		$this->row->type = $this->getType();
@@ -184,6 +220,20 @@ class RowAssociatorHelper
 			$this->containerModel,
 			$this->getType()
 		);
+
+	}
+
+	public function associateContainerToRow()
+	{
+		$this->row->sellable()->associate(
+			$this->getSellable()
+		);
+	}
+
+	public function _associateRowBySellableSupplier() : static
+	{
+		$this->makeRow();
+		$this->associateSellableToRow();
 
 		$this->row->save();
 
@@ -199,7 +249,7 @@ class RowAssociatorHelper
 		$this->setDependentSellableSuppliers();
 
 		foreach($this->sellableSuppliersToInsert as $sellableSupplier)
-			static::create(
+			static::createBySellableSupplier(
 						$this->containerModel,
 						$sellableSupplier
 					)
@@ -210,14 +260,7 @@ class RowAssociatorHelper
 
 		foreach($this->sellablesToInsert as $sellable)
 		{
-			dd($sellable);
-			$helper = static::create($this->containerModel, $sellableSupplier);
-
-			$helper->_associateRowBySellableSupplier();
-
-			dd($helper->setParentRow($this->row));
-
-			dd($sellableSuppliersArray = $helper->getAddedSellableSuppliers());
+			static::associateRowBySellable($this->containerModel, $sellable);
 		}
 
 		return $this;

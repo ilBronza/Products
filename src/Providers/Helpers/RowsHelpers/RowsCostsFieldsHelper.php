@@ -5,7 +5,6 @@ namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use function iterator_to_array;
 
 class RowsCostsFieldsHelper
 {
