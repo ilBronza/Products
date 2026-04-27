@@ -8,9 +8,7 @@ trait UsesAccessoryRowTrait
 {
 	public function initializeUsesAccessoryRowTrait()
 	{
-		$this->addFieldsToUpdateByRowTypes('accessoryRows');
-
-		$this->addSummaryFieldsCastsByRowTypes('accessoryRows');
+		$this->setRowRelationsParameters('accessoryRows');
 	}
 
 	// AccessoryOrderrow or AccessoryQuotationrow

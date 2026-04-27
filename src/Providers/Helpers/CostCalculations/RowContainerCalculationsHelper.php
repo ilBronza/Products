@@ -20,42 +20,21 @@ class RowContainerCalculationsHelper
 
 	public function getTotalRevenueByRowTypes()
 	{
-		$totalRevenue = 0;
-
-		foreach($this->rowRelations as $rowRelation)
-		{
-			$fieldName = RowsCostsFieldsHelper::getRevenueFieldName($rowRelation);
-
-			$totalRevenue += $this->rowContainer->$fieldName;
-		}
-
-		return $totalRevenue;
+		return $this->rowContainer->getTotalRevenue();
 	}
 
 	public function getTotalCostByRowTypes()
 	{
-		$totalRevenue = 0;
-
-		foreach($this->rowRelations as $rowRelation)
-		{
-			$fieldName = RowsCostsFieldsHelper::getCostFieldName($rowRelation);
-
-			$totalRevenue += $this->rowContainer->$fieldName;
-		}
-
-		return $totalRevenue;
+		return $this->rowContainer->getTotalCost();
 	}
 
 	public function getTotalMarginByRowTypes()
 	{
-		return $this->getTotalRevenueByRowTypes() - $this->getTotalCostByRowTypes();
+		return $this->rowContainer->getTotalMargin();
 	}
 
 	public function getTotalPercentageMarginByRowTypes()
 	{
-		if(! $revenue = $this->getTotalRevenueByRowTypes())
-			return 0;
-
-		return round($this->getTotalMarginByRowTypes() / $revenue * 100, 2);		
+		return $this->rowContainer->getTotalPercentageMargin();
 	}
 }

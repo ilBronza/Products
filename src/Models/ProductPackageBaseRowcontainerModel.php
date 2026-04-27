@@ -16,6 +16,7 @@ use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
 use IlBronza\Category\Models\Category;
 use IlBronza\Products\Models\Orders\OrderQuotationExtraFields;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsCostsFieldsHelper;
 use function lcfirst;
 
 class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implements GanttTimelineInterface, CalendarInterface, TimelineGroupInterface, TimelineItemInterface
@@ -34,6 +35,20 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		'cost_coefficient' => ExtraField::class,
 		'state_id' => ExtraField::class,
 	];
+
+	public $rowTypeRelations = [];
+
+	public function addRowTypeRelations(string $rowTypeRelations)
+	{
+		$this->rowTypeRelations[] = $rowTypeRelations;
+	}
+
+	public function getRowTypeRelations() : array
+	{
+		return array_unique(
+			$this->rowTypeRelations
+		);
+	}
 
 	public array $fieldsToUpdateOnTableEdit = [];
 
@@ -275,5 +290,66 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 			$total += $this->$rowTypes->sum('total_client_price');
 
 		return $total;
+	}
+
+	public function getTotalRevenueAttribute()
+	{
+		$totalRevenue = 0;
+
+		foreach($this->rowTypeRelations as $rowRelation)
+		{
+			$fieldName = RowsCostsFieldsHelper::getRevenueFieldName($rowRelation);
+
+			$totalRevenue += $this->$fieldName;
+		}
+
+		return $totalRevenue;
+	}
+
+	public function getTotalRevenue()
+	{
+		return $this->total_revenue;
+	}
+
+	public function getTotalCostAttribute()
+	{
+		$totalCost = 0;
+
+		foreach($this->rowTypeRelations as $rowRelation)
+		{
+			$fieldName = RowsCostsFieldsHelper::getCostFieldName($rowRelation);
+
+			$totalCost += $this->$fieldName;
+		}
+
+		return $totalCost;
+	}
+
+	public function getTotalCost()
+	{
+		return $this->total_cost;
+	}
+
+	public function getTotalMarginAttribute()
+	{
+		return $this->getTotalRevenue() - $this->getTotalCost();
+	}
+
+	public function getTotalMargin()
+	{
+		return $this->total_margin;
+	}
+
+	public function getTotalPercentageMarginAttribute()
+	{
+		if(! $revenue = $this->getTotalRevenue())
+			return 0;
+
+		return round($this->getTotalMargin() / $revenue * 100, 2);		
+	}
+
+	public function getTotalPercentageMargin()
+	{
+		return $this->total_percentage_margin;
 	}
 }

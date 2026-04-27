@@ -8,9 +8,7 @@ trait UsesProductRowTrait
 {
 	public function initializeUsesProductRowTrait()
 	{
-		$this->addFieldsToUpdateByRowTypes('productRows');
-
-		$this->addSummaryFieldsCastsByRowTypes('productRows');
+		$this->setRowRelationsParameters('productRows');
 	}
 
 	// ProductOrderrow or ProductQuotationrow

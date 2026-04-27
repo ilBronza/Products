@@ -11,25 +11,32 @@ use Illuminate\Support\Str;
 
 trait CommonOrderQuotationPricesTrait
 {
-	public function addFieldsToUpdateByRowTypes(string $trowTypes)
+	public function setRowRelationsParameters(string $rowTypes)
+	{
+		$this->addRowTypeRelations($rowTypes);
+		$this->addFieldsToUpdateByRowTypes($rowTypes);
+		$this->addSummaryFieldsCastsByRowTypes($rowTypes);
+	}
+
+	public function addFieldsToUpdateByRowTypes(string $rowTypes)
 	{
 		$fieldsToUpdateOnTableEdit = [];
 
-		foreach (RowsCostsFieldsHelper::getRowCostsFieldsByRelation($trowTypes) as $field)
+		foreach (RowsCostsFieldsHelper::getRowCostsFieldsByRelation($rowTypes) as $field)
 			$fieldsToUpdateOnTableEdit[] = $field;
 
 		$this->fieldsToUpdateOnTableEdit = array_merge($this->fieldsToUpdateOnTableEdit, $fieldsToUpdateOnTableEdit);
 	}
 
-	public function addSummaryFieldsCastsByRowTypes(string $trowTypes)
+	public function addSummaryFieldsCastsByRowTypes(string $rowTypes)
 	{
-		$rowTypesFieldName = Str::snake($trowTypes);
+		$rowTypesFieldName = Str::snake($rowTypes);
 
 		$casts = [
-			"total_{$rowTypesFieldName}_revenue" => CalculatedTotalRevenueExtraField::class . ':' . $trowTypes,
-			"total_{$rowTypesFieldName}_cost" => CalculatedTotalCostExtraField::class . ':' . $trowTypes,
-			"margin_{$rowTypesFieldName}" => CalculatedTotalMarginExtraField::class . ':' . $trowTypes,
-			"percentage_margin_{$rowTypesFieldName}" => CalculatedTotalPercentageMarginExtraField::class . ':' . $trowTypes,
+			"total_{$rowTypesFieldName}_revenue" => CalculatedTotalRevenueExtraField::class . ':' . $rowTypes,
+			"total_{$rowTypesFieldName}_cost" => CalculatedTotalCostExtraField::class . ':' . $rowTypes,
+			"margin_{$rowTypesFieldName}" => CalculatedTotalMarginExtraField::class . ':' . $rowTypes,
+			"percentage_margin_{$rowTypesFieldName}" => CalculatedTotalPercentageMarginExtraField::class . ':' . $rowTypes,
 		];
 
 		$this->casts = array_merge($this->casts, $casts);

@@ -70,6 +70,11 @@ class RowContainerCostsFieldsHelper
 			)
 		];
 
+		$this->containerModel->fieldsToUpdateOnTableEdit = array_merge(
+			$this->containerModel->fieldsToUpdateOnTableEdit,
+			array_keys($fields)
+		);
+
 		$fields['total_margin_percentage']['widthClass'] = 'uk-width-2-5';
 
 		return [
