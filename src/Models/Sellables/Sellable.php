@@ -147,8 +147,17 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		$query->whereIn('type', $types);
 	}
 
+	public function updateTypeByMorphedTarget()
+	{
+		$this->type = $this->target_type;
+		$this->saveQuietly();
+	}
+
 	public function getType() : string
 	{
+		if(! $this->type)
+			$this->updateTypeByMorphedTarget();
+
 		return $this->type;
 	}
 
@@ -263,11 +272,13 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 	public function isContracttype() : bool
 	{
+		//DOGODO TODO agnosticare sta roba
 		return $this->getType() == 'Contracttype';
 	}
 
 	public function isVehicleType() : bool
 	{
+		//DOGODO TODO agnosticare sta roba
 		return $this->target_type === 'VehicleType';
 	}
 

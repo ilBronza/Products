@@ -18,6 +18,7 @@ class AccessoryTypeFieldsGroupParametersFile extends CostsFieldsGroupParametersF
 					'mySelfSee' => 'links.see',
 					'created_at' => 'dates.datetime',
 					'name' => 'flat',
+					'accessories_count' => 'flat',
 					'sorting_index' => 'flat',
 				],
 				AccessoryType::gpc()::make()

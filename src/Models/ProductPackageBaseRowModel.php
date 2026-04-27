@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models;
 use Carbon\Carbon;
 use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
+use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
@@ -26,6 +27,7 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 	use IsTimelineItemTrait;
 	use CRUDTimeRangesTrait;
 	use TypedOrderrowTrait;
+	use CRUDParentingTrait;
 
 	protected $casts = [
 		'starts_at' => 'date',

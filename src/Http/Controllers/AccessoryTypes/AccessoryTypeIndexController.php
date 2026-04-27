@@ -12,6 +12,8 @@ class AccessoryTypeIndexController extends AccessoryTypeCRUD
 {
 	use PackageStandardIndexTrait;
 
+	public $scopes = ['withAccessoriesCount'];
+
 	public function addIndexButtons()
 	{
 		$this->getTable()->addButton(

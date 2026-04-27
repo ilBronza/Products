@@ -4,6 +4,7 @@ namespace IlBronza\Products\Models;
 
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
+use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\Product\Product;
 
 class AccessoryType extends ProductPackageBaseModel
@@ -12,6 +13,16 @@ class AccessoryType extends ProductPackageBaseModel
 	use CRUDSluggableTrait;
 
 	static $modelConfigPrefix = 'accessoryType';
+
+	public function scopeWithAccessoriesCount($query)
+	{
+		$query->withCount('accessories');
+	}
+
+	public function accessories()
+	{
+		return $this->hasMany(Accessory::gpc());
+	}
 
 	public function products()
 	{

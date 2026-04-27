@@ -16,6 +16,7 @@ trait RowContainerRowCopyTrait
 
 	public function getTableToRefresh($type)
 	{
+		//DOGODO TODO agnosticare sta roba
 		if ($type == 'Hotel')
 			return ['hotelRows'];
 

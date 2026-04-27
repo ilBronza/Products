@@ -66,6 +66,7 @@ abstract class BasePdfHelper
 		}
 
 		return $container->{$this->getRowsRelation()}()
+			//DOGODO TODO agnosticare sta roba
 			->where('type', 'operator')
 			->with(['sellableSupplier.sellable', 'sellableSupplier.supplier'])
 			->orderBy('sorting_index')
@@ -88,6 +89,7 @@ abstract class BasePdfHelper
 		}
 
 		return $container->{$this->getRowsRelation()}()
+			//DOGODO TODO agnosticare sta roba
 			->where('type', 'product')
 			->with(['sellableSupplier.sellable', 'sellableSupplier.supplier'])
 			->orderBy('sorting_index')
@@ -110,6 +112,7 @@ abstract class BasePdfHelper
 		}
 
 		return $container->{$this->getRowsRelation()}()
+			//DOGODO TODO agnosticare sta roba
 			->where('type', 'vehicle')
 			->with(['sellableSupplier.sellable', 'sellableSupplier.supplier'])
 			->orderBy('sorting_index')

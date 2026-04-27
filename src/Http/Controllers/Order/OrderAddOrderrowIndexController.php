@@ -86,55 +86,21 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 
 	public function getSortingIndexByType($order, string $type)
 	{
-		if (($type == 'Product')||($type == 'product'))
-			return $order->productOrderrows()->max('sorting_index') + 1;
-
-		if ($type == 'Contracttype')
-			return $order->operatorRows()->max('sorting_index') + 1;
-
-		if ($type == 'VehicleType' || $type == 'vehicle')
-			return $order->vehicleRows()->max('sorting_index') + 1;
-
-		if ($type == 'Surveillance')
-			return $order->surveillanceRows()->max('sorting_index') + 1;
-
-		if ($type == 'Hotel')
-			return $order->hotelRows()->max('sorting_index') + 1;
-
-		if ($type == 'Rent')
-			return $order->rentRows()->max('sorting_index') + 1;
-
-		if ($type == 'service')
-			return $order->rentRows()->max('sorting_index') + 1;
-
-		if ($type == 'Service')
-			return $order->rentRows()->max('sorting_index') + 1;
-
-		if ($type == 'Reimbursement')
-			return $order->reimbursementRows()->max('sorting_index') + 1;
-
-		if ($type == 'ControlRoom')
-			return $order->controlRoomRows()->max('sorting_index') + 1;
-
-		dd('manca type ' . $type);
+		//DOGODO TODO agnosticare sta roba
+		return ($order->rows()->bySellableType($type)->max('sorting_index') ?? 0) + 1;
 	}
 
 	public function storeRow(Request $request, $order)
 	{
 		$order = $this->findModel($order);
 
-		$types = [
-			'Contracttype',
-			'VehicleType',
-			'Surveillance',
-			'Hotel',
-			'service',
-			'Service',
-			'Rent',
-			'Product',
-			'product',
-			'Reimbursement'
-		];
+		//DOGODO TODO agnosticare sta roba
+		$types = Sellable::gpc()::query()
+			->select('type')
+			->distinct()
+			->orderBy('type')
+			->pluck('type')
+			->all();
 
 		$validationParameters = [];
 

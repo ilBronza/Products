@@ -78,6 +78,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 	public function getSortingIndexByType($quotation, string $type)
 	{
+		//DOGODO TODO agnosticare sta roba
 		if ($type == 'Contracttype')
 			return $quotation->operatorRows()->max('sorting_index') + 1;
 
@@ -109,6 +110,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 	{
 		$quotation = $this->findModel($quotation);
 
+		//DOGODO TODO agnosticare sta roba
 		$types = [
 			'Contracttype',
 			'VehicleType',

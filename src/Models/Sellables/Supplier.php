@@ -156,6 +156,16 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		return $this->quotationrows;
 	}
 
+	public function getValidSellableSuppliers() : Collection
+	{
+		return $this->sellableSuppliers()
+			->with(
+			'directPrice.measurementUnit',
+			'sellable.target',
+			'supplier.target'
+		)->whereHas('sellable')->get();		
+	}
+
 	public function getSellableSuppliers() : Collection
 	{
 		return $this->sellableSuppliers()

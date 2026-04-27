@@ -10,6 +10,7 @@ use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableSupplierCreatorHelper;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
 
 trait InteractsWithSellableTrait
@@ -77,6 +78,11 @@ trait InteractsWithSellableTrait
 		return $this->sellables;
 	}
 
+	public function sellable() : MorphOne
+	{
+		return $this->morphOne(Sellable::gpc(), 'target');
+	}
+
 	public function sellableSuppliers()
 	{
 		return $this->hasManyThrough(
@@ -87,6 +93,24 @@ trait InteractsWithSellableTrait
 	public function quotations()
 	{
 		return $this->belongsToMany(Quotation::getProjectClassName());
+	}
+
+	public function getSellable(bool $force = false) : ? Sellable
+	{
+		if($force)
+			return $this->sellable()->first();
+
+		if($this->sellable)
+			return $this->sellable;
+
+		if(! $force)
+			return null;
+
+		$sellable = SellableCreatorHelper::getOrcreateSellableByTarget($this);
+
+		$this->setRelation('sellable', $sellable);
+
+		return $this->sellable;
 	}
 
 	public function getRelatedQuotations() : Collection

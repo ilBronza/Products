@@ -84,88 +84,29 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 
 	public function _getPossibleSellableTypes()
 	{
-		return [
-			'controlroom' => function () : array
-			{
-				return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
-			},
-
-			'contracttype' => function () : array
-			{
-				return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
-			},
-
-			'reimbursement' => function () : array
-			{
-				return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
-			},
-
-			'vehicletype' => function () : array
-			{
-				return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
-			},
-
-			'rent' => function () : array
-			{
-				return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
-				//				return Sellable::gpc()::gpc()::getServices();
-			},
-
-			'service' => function () : array
-			{
-				return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
-				//				return Sellable::gpc()::gpc()::getServices();
-			},
-
-			'surveillance' => function () : array
-			{
-				return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
-				//				$category = Category::getProjectClassName()::findCachedField('name', 'Sorveglianza');
-				//
-				//				return Sellable::gpc()::byCategory($category)->orderBy('name')->pluck('name', 'id')->toArray();
-			},
-
-			'hotel' => function () : array
-			{
-				return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
-				//				$category = Category::getProjectClassName()::findCachedField('name', 'Stanze albergo');
-				//
-				//				return Sellable::byCategory($category)->orderBy('name')->pluck('name', 'id')->toArray();
-			}
+		//DOGODO TODO agnosticare sta roba
+		$map = [
+			'controlroom' => 'controlroom',
+			'contracttype' => 'operator',
+			'reimbursement' => 'reimbursement',
+			'vehicletype' => 'vehicle',
+			'rent' => 'service',
+			'service' => 'service',
+			'surveillance' => 'surveillance',
+			'hotel' => 'hotel',
 		];
+
+		$result = [];
+
+		foreach($map as $rowType => $sellableType)
+			$result[$rowType] = fn() : array => $this->getPossibleSellablesByType($sellableType);
+
+		return $result;
 	}
 
 	public function getPossibleSellablesByType(string $type) : array
 	{
 		return Sellable::gpc()::byType($type)->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'contracttype')
-		// 	return Sellable::gpc()::byType('operator')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'controlroom')
-		// 	return Sellable::gpc()::byType('controlroom')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'reimbursement')
-		// 	return Sellable::gpc()::byType('reimbursement')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// //è diventato un metodo standard
-		// // if ($type == 'vehicleType')
-		// // 	return Sellable::gpc()::byType('vehicle')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'rent')
-		// 	return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'service')
-		// 	return Sellable::gpc()::byType('service')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'surveillance')
-		// 	return Sellable::gpc()::byType('surveillance')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// if ($type == 'hotel')
-		// 	return Sellable::gpc()::byType('hotel')->orderBy('name')->pluck('name', 'id')->toArray();
-
-		// return Sellable::gpc()::byType($type)->orderBy('name')->pluck('name', 'id')->toArray();
-//		throw new Exception("Type $type not found");
 	}
 
 	public function getOrderrowsPossibleSellableTypes()
