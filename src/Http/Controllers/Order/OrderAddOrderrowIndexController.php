@@ -6,6 +6,7 @@ use IlBronza\FormField\FormField;
 use IlBronza\Form\Form;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use function array_keys;
@@ -86,20 +87,19 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 
 	public function getSortingIndexByType($order, string $type)
 	{
-		//DOGODO TODO agnosticare sta roba
-		return ($order->rows()->bySellableType($type)->max('sorting_index') ?? 0) + 1;
+		return RowsFinderHelper::getSortingIndexByType($order, $type);
 	}
 
 	public function storeRow(Request $request, $order)
 	{
 		$order = $this->findModel($order);
 
-		//DOGODO TODO agnosticare sta roba
 		$types = Sellable::gpc()::query()
 			->select('type')
 			->distinct()
 			->orderBy('type')
 			->pluck('type')
+			->filter()
 			->all();
 
 		$validationParameters = [];

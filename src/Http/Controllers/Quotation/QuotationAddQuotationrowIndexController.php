@@ -6,6 +6,7 @@ use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
 
 use Illuminate\Http\Request;
 
@@ -78,32 +79,7 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 	public function getSortingIndexByType($quotation, string $type)
 	{
-		//DOGODO TODO agnosticare sta roba
-		if ($type == 'Contracttype')
-			return $quotation->operatorRows()->max('sorting_index') + 1;
-
-		if ($type == 'VehicleType' || $type == 'vehicle')
-			return $quotation->vehicleRows()->max('sorting_index') + 1;
-
-		if ($type == 'Surveillance')
-			return $quotation->surveillanceRows()->max('sorting_index') + 1;
-
-		if ($type == 'Hotel')
-			return $quotation->hotelRows()->max('sorting_index') + 1;
-
-		if ($type == 'Rent')
-			return $quotation->rentRows()->max('sorting_index') + 1;
-
-		if ($type == 'service')
-			return $quotation->rentRows()->max('sorting_index') + 1;
-
-		if ($type == 'Reimbursement')
-			return $quotation->reimbursementRows()->max('sorting_index') + 1;
-
-		if ($type == 'ControlRoom')
-			return $quotation->controlRoomRows()->max('sorting_index') + 1;
-
-		dd('manca type ' . $type);
+		return RowsFinderHelper::getSortingIndexByType($quotation, $type);
 	}
 
 	public function storeQuotationrow(Request $request, $quotation)
