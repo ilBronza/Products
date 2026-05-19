@@ -24,6 +24,21 @@ class CostsFieldsGroupParametersFile extends FieldsGroupParametersFile
 		return $fields;
 	}
 
+	static function addStandardCostsFlatFieldsByModel(array $fields, Model $model)
+	{
+		if (! $model instanceof SellableItemInterface)
+			return $fields;
+
+		$fields = array_merge(
+			$fields, 
+			SellablePriceDatatableFieldsHelper::getStandardFlatFieldsByModel(
+				$model
+			)
+		);
+
+		return $fields;		
+	}
+
 	static function addStandardCostsFieldsByModel(array $fields, Model $model)
 	{
 		if (! $model instanceof SellableItemInterface)
@@ -42,6 +57,18 @@ class CostsFieldsGroupParametersFile extends FieldsGroupParametersFile
 	static function addStandardCostsFieldsByModelPlusDelete(array $fields, Model $model) : array
 	{
         $fields = static::addStandardCostsFieldsByModel(
+            $fields,
+            $model
+        );
+
+		$fields['mySelfDelete'] = 'links.delete';
+
+		return $fields;
+	}
+
+	static function addStandardCostsFlatFieldsByModelPlusDelete(array $fields, Model $model) : array
+	{
+        $fields = static::addStandardCostsFlatFieldsByModel(
             $fields,
             $model
         );

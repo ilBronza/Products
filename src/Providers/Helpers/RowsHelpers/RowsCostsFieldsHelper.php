@@ -78,8 +78,8 @@ class RowsCostsFieldsHelper
 	static function getRowCostsFieldsByRelation(string $rowsRelationName) : array
 	{
 		return [
-			static::getRevenueFieldName($rowsRelationName),
 			static::getCostFieldName($rowsRelationName),
+			static::getRevenueFieldName($rowsRelationName),
 			static::getMarginFieldName($rowsRelationName),
 			static::getPercentageMarginFieldName($rowsRelationName)
 		];
@@ -93,6 +93,9 @@ class RowsCostsFieldsHelper
 		{
 			try
 			{
+				//CalculatedTotalCostExtraField::class
+				//chiama getTotalByCustomRowsCost()
+
 				$fields[$field] = $this->getParameters(
 					$this->containerModel->$field
 				);				
@@ -116,6 +119,94 @@ class RowsCostsFieldsHelper
 	public function getRows() : Collection
 	{
 		return $this->containerModel->{$this->rowsRelationName};
+	}
+
+	static function getMupFormFieldsets(ProductPackageBaseRowcontainerModel $containerModel)
+	{
+		return [
+			'canBeHidden' => false,
+			'fields' => [
+				'mup_selection' => [
+					'type' => 'select',
+					'select2' => false,
+					'showLabel' => false,
+					'multiple' => false,
+					'vertical' => true,
+					'rules' => 'string|nullable',
+					'list' => [
+						'mup_plus_extra' => 'Mup + servizi extra',
+						'mup_forfait' => 'Ricavo concordato'
+					],
+					'default' => 'mup_forfait',
+					'fetchFieldValue' => static::getTotalsFetchFieldValue(),
+				],
+				'mup_revenue' => [
+					'type' => 'money',
+					'rules' => 'numeric|nullable',
+					'data' => ['reloadalltables' => true],
+					'vertical' => true,
+					'showLabel' => false,
+					'fetchFieldValue' => static::getTotalsFetchFieldValue(),
+				],
+			],
+			'width' => ['small']
+		];
+	}
+
+	static function getDiscountFormFieldsets(ProductPackageBaseRowcontainerModel $containerModel) : array
+	{
+		return [
+			'translationPrefix' => 'products::fields',
+			'canBeHidden' => false,
+			'fields' => [
+				'discount_selection' => [
+					'type' => 'select',
+					'select2' => false,
+					'showLabel' => false,
+					'multiple' => false,
+					'vertical' => true,
+					'rules' => 'string|nullable|in:discount_neat,discount_percentage',
+					'list' => [
+						'discount_neat' => 'Sconto netto',
+						'discount_percentage' => 'Sconto %',
+					],
+					'default' => 'discount_neat',
+					'fetchFieldValue' => static::getTotalsFetchFieldValue(),
+				],
+				'discount_neat' => [
+					'type' => 'money',
+					'rules' => 'numeric|nullable|min:0',
+					'data' => ['reloadalltables' => true],
+					'vertical' => true,
+					'showLabel' => false,
+					'fetchFieldValue' => static::getTotalsFetchFieldValue(),
+				],
+				'discount_percentage' => [
+					'type' => 'number',
+					'step' => '0.01',
+					'rules' => 'numeric|nullable|min:0|max:100',
+					'data' => ['reloadalltables' => true],
+					'vertical' => true,
+					'showLabel' => false,
+					'fetchFieldValue' => static::getTotalsFetchFieldValue(),
+				],
+			],
+			'width' => ['small']
+		];
+	}
+
+	static function getTotalsFetchFieldValue() : array
+	{
+		return [
+			'total_revenue',
+			'total_cost',
+			'total_margin',
+			'total_percentage_margin',
+			'horizontal_total_revenue',
+			'horizontal_total_cost',
+			'horizontal_total_margin',
+			'horizontal_total_percentage_margin',
+		];
 	}
 }
 

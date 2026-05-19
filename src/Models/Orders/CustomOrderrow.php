@@ -7,12 +7,14 @@ use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Traits\Customrow\CustomrowTrait;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
+use IlBronza\Products\Traits\CURSORImageTrait;
 use function class_basename;
 use function lcfirst;
 
 abstract class CustomOrderrow extends Orderrow implements CustomRowInterface
 {
 	use CustomrowTrait;
+	use CURSORImageTrait;
 
 	public $routeBasename = 'ibProductsorderrows';
 	public $routeClassname = 'orderrow';

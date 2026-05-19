@@ -13,7 +13,6 @@ class ProductFieldsGroupParametersFile extends FieldsGroupParametersFile
 			'translationPrefix' => 'products::fields',
             'fields' =>
             [
-                'mySelfPrimary' => 'primary',
 	            'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',
                 'created_at' => 'dates.datetime',

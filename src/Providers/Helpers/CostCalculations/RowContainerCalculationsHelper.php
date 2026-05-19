@@ -7,15 +7,14 @@ use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsCostsFieldsHelper;
 
 class RowContainerCalculationsHelper
 {
-	public function __construct(ProductPackageBaseRowcontainerModel $rowContainer, array $rowRelations)
+	public function __construct(ProductPackageBaseRowcontainerModel $rowContainer)
 	{
 		$this->rowContainer = $rowContainer;
-		$this->rowRelations = $rowRelations;
 	}
 
-	static function create(ProductPackageBaseRowcontainerModel $rowContainer, array $rowRelations)
+	static function create(ProductPackageBaseRowcontainerModel $rowContainer)
 	{
-		return new static($rowContainer, $rowRelations);
+		return new static($rowContainer);
 	}
 
 	public function getTotalRevenueByRowTypes()

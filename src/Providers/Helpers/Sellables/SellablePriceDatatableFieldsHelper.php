@@ -32,6 +32,22 @@ class SellablePriceDatatableFieldsHelper
 		return $result;
 	}
 
+	static function getStandardFlatFieldsByModel(mixed $model, array $baseParameters = ['type' => 'numbers.price']) : array
+	{
+		$result = [];
+
+		foreach (static::getPricesByModel($model) as $key => $value)
+		{
+			$fieldName = is_string($key) ? $key : $value;
+
+			if (! is_string($fieldName))
+				continue;
+
+			$result[$fieldName] = $baseParameters;
+		}
+
+		return $result;
+	}
 	static function getStandardFieldsByModel(mixed $model, array $baseParameters = ['type' => 'editor.price', 'refreshRow' => true]) : array
 	{
 		$result = [];

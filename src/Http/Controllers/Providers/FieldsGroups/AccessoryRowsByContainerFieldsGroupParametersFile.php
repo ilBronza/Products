@@ -22,6 +22,10 @@ class AccessoryRowsByContainerFieldsGroupParametersFile extends RowsFieldsGroupP
 			AccessoryType::gpc()::make()
 		);
 
+		$fields = static::addPdfFields(
+			$fields,
+		);
+
 		$result = [
 			'translationPrefix' => 'products::fields',
 			'fields' => $fields

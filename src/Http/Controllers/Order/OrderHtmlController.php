@@ -7,9 +7,9 @@ use Illuminate\Http\Response;
 
 class OrderHtmlController extends OrderCRUD
 {
-	public $allowedMethods = ['pdf'];
+	public $allowedMethods = ['html'];
 
-	public function pdf($order)
+	public function html($order)
 	{
 		$order = $this->findModel($order);
 

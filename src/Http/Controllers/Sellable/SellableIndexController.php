@@ -27,26 +27,32 @@ class SellableIndexController extends SellableCRUD
         return config('products.models.sellable.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
-	public function addIndexButtons()
-	{
-		$this->table->addButton(
-			Button::create([
-				'translatedText' => __('products::sellables.generateAllMissing'),
-				'icon' => 'gauge-high',
-				'href' => app('products')->route('sellables.buildBulk')
-			])
-		);
-	}
+	// public function addIndexButtons()
+	// {
+	// 	$this->table->addButton(
+	// 		Button::create([
+	// 			'translatedText' => __('products::sellables.generateAllMissing'),
+	// 			'icon' => 'gauge-high',
+	// 			'href' => app('products')->route('sellables.buildBulk')
+	// 		])
+	// 	);
+	// }
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with(
+        $result = $this->getModelClass()::with(
             'target',
             'category',
         )->withCount('quotations')
 	        ->withCount('orders')
-	        ->withCount('suppliers')
-            ->get();
+	        ->withCount('suppliers');
+
+        $placeholder = $this->getModelClass()::make();
+
+        if(method_exists($placeholder, 'scopeNotArchived'))
+            $result->notArchived();
+
+        return $result->get();
     }
 
 }

@@ -13,6 +13,12 @@ class SellableCreateStoreFieldsetsParameters extends FieldsetParametersFile
 	{
 		$possibleTypesValues = $this->getModel()->getPossibleTypeValuesArray();
 
+		unset($possibleTypesValues['Contracttype']);
+		unset($possibleTypesValues['material']);
+		unset($possibleTypesValues['asset']);
+		unset($possibleTypesValues['VehicleType']);
+		unset($possibleTypesValues['HotelType']);
+
 		return [
 			'base' => [
 				'translationPrefix' => 'products::fields',

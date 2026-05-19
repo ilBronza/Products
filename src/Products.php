@@ -102,6 +102,11 @@ class Products implements RoutedObjectInterface
 					'href' => $this->route('orders.current'),
 					'text' => 'products::generals.current'
 				],
+				[
+					'icon' => 'plus',
+					'href' => $this->route('orders.create'),
+					'text' => 'products::generals.create'
+				],
 			]
 		]);
 

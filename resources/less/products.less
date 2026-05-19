@@ -1,11 +1,12 @@
 @costFieldColor: #f3bfbf;
 @revenueFieldColor: #afd1a0;
+@costsTextColor: #fff;
 
 .moneyField(@bgColor: false)
 {
 	input
 	{
-		color: white;
+		color: @costsTextColor;
 		font-weight: bold;
 		text-align: right;
 
@@ -15,6 +16,20 @@
 		{
 			background-color: @bgColor;
 		}		
+	}
+}
+
+.moneyCell(@bgColor: false)
+{
+	color: @costsTextColor;
+	font-weight: bold;
+	text-align: right;
+
+	background-color: @bgColor;
+
+	& when not (@bgColor = false)
+	{
+		background-color: @bgColor;
 	}
 }
 
@@ -31,6 +46,23 @@
 	{
 		.moneyField(@revenueFieldColor);
 	}
+
+	tr.approved-total-row-cost0 td.calculatedTotalRowCost,
+	tr.approved-total-row-revenue0 td.calculatedTotalRowRevenue
+	{
+		.moneyField(grey);		
+	}
+
+	tr.approved-total-row-revenue1 td.calculatedTotalRowRevenue
+	{
+		.moneyField(green);
+	}
+
+	tr.approved-total-row-cost1 td.calculatedTotalRowCost
+	{
+		.moneyField(red);
+	}
+
 }
 
 .fieldset-container-economicalsSummary
@@ -47,12 +79,12 @@
 	
 	div.money[class*="-revenue"]
 	{
-		.moneyField(@revenueFieldColor);
+		.moneyField(green);
 	}
 
 	div.money[class*="-cost"]
 	{
-		.moneyField(@costFieldColor);
+		.moneyField(red);
 	}
 
 

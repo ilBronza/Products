@@ -83,14 +83,23 @@ class RowsSellableSupplierAssociatorHelper
 	{
 		$row = $this->getRow();
 
+		$sellableSupplier = $this->provideSellableSupplier();
+
 		$row->sellableSupplier()->associate(
-			$sellableSupplier = $this->provideSellableSupplier()
+			$sellableSupplier
 		);
 
 		foreach($row->getRowFieldsToStore() as $rowField => $sellableSupplierField)
 			$row->$rowField = $sellableSupplier->$sellableSupplierField;
 
-		$row->save();
+		try
+		{
+			$row->save();			
+		}
+		catch(\Exception $e)
+		{
+			dd($row, $e->getMessage());
+		}
 	}
 
 	static function emptySellableSupplier(ProductPackageBaseRowModel $row)

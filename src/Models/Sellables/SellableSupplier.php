@@ -319,4 +319,9 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	{
 		return $this->getSellable()?->getCachedPriceFieldsByType() ?? [];
 	}
+
+	public function getSellableClass() : string
+	{
+		return $this->sellable_class;
+	}
 }

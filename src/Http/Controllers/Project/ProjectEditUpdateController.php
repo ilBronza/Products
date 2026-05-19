@@ -16,6 +16,11 @@ class ProjectEditUpdateController extends ProjectCRUD
         return config('products.models.project.parametersFiles.create');
     }
 
+    public function getRelationshipsManagerClass()
+    {
+        return config("products.models.{$this->configModelClassName}.relationshipsManagerClasses.show");
+    }
+
     public function edit(string $project)
     {
         $project = $this->findModel($project);

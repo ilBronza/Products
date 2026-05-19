@@ -24,6 +24,11 @@ class RowFieldsetParametersFile extends FieldsetParametersFile
 		$fields['calculated_total_row_revenue'] = ['number' => 'numeric|nullable'];
 		$fields['approved_total_row_revenue'] = ['boolean' => 'bool|nullable'];
 
+		$fields['discount_neat'] = ['number' => 'numeric|nullable|min:0'];
+		$fields['discount_percentage'] = ['number' => 'numeric|nullable|min:0|max:100'];
+
+		$fields['calculated_vat'] = ['number' => 'numeric|nullable'];
+
 		$fieldsets['costs'] = [
 			'translationPrefix' => 'products::fields',
 			'fields' => $fields,

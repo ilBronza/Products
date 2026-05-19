@@ -112,7 +112,7 @@ trait InteractsWithSupplierTrait
 		if(! $supplier = $this->getSupplier())
 			return collect();
 
-		return SellableSupplier::gpc()::select('id')->where('supplier_id', $supplier->getKey())->get();
+		return SellableSupplier::gpc()::select('id')->where('supplier_id', $supplier->getKey())->pluck('id');
 	}
 
 	public function getOrderrowsForShowRelation() : Collection

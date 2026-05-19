@@ -52,7 +52,8 @@ trait SellableSupplierAssignmentTrait
 	{
 		$sellable = $this->getSellable();
 
-		$target = $sellable->getTarget();
+		if(! $target = $sellable->getTarget())
+			return $sellable->getContainerModelRelatedTablesToRefresh();
 
 		return $target->getContainerModelRelatedTablesToRefresh();
 	}

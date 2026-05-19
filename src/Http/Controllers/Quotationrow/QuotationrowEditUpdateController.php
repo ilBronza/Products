@@ -45,7 +45,7 @@ class QuotationrowEditUpdateController extends QuotationrowCRUD
     {
         $quotationrow = $this->findModel($quotationrow);
 
-        $specificRow = $this->setSpecificRow($orderrow);
+        $specificRow = $this->setSpecificRow($quotationrow);
 
         return $this->_edit($specificRow);
     }
@@ -54,7 +54,7 @@ class QuotationrowEditUpdateController extends QuotationrowCRUD
     {
         $quotationrow = $this->findModel($quotationrow);
 
-        $specificRow = $this->setSpecificRow($orderrow);
+        $specificRow = $this->setSpecificRow($quotationrow);
 
         return $this->_update($request, $specificRow);
     }

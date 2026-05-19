@@ -14,7 +14,7 @@ use IlBronza\Products\Models\Traits\OrderTimesTrait;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
 use IlBronza\Products\Models\Traits\Order\OrderRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Order\OrderScopesTrait;
-use IlBronza\Products\Models\Traits\Orderrow\UsesProductOrderrowTrait;
+// use IlBronza\Products\Models\Traits\Orderrow\UsesProductOrderrowTrait;
 use IlBronza\Timings\Interfaces\HasTimingInterface;
 use IlBronza\Timings\Traits\InteractsWithTimingTrait;
 use Illuminate\Support\Collection;
@@ -30,7 +30,7 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 	use OrderRelationshipsTrait;
 	use OrderScopesTrait;
 
-	use UsesProductOrderrowTrait;
+	// use UsesProductOrderrowTrait;
 
 	use ProductAssignmentTrait;
 	use CompletionScopesTrait;

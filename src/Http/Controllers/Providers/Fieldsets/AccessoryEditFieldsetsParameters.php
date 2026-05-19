@@ -38,6 +38,7 @@ class AccessoryEditFieldsetsParameters extends FieldsetParametersFile
                     'images' => [
                         'type' => 'file',
                         'multiple' => true,
+                        'collection' => 'default',
                         'rules' =>'string|nullable|max:2048'],
                 ],
                 'width' => ['1-2@m']

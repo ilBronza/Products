@@ -31,9 +31,9 @@ trait UsesProductRowTrait
 		return $this->productRows;
 	}
 
-	public function getAddProductTypeUrl() : string
+	public function getAddProductUrl() : string
 	{
-		return $this->getAddRowByTypeUrl('ProductType');
+		return $this->getAddRowByTypeUrl('Product');
 	}
 
 	public function getProductRowsForRelationshipManager() : Collection

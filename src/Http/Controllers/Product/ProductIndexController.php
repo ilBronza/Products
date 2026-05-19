@@ -41,7 +41,11 @@ class ProductIndexController extends ProductCRUD
 
     public function _getIndexElementsByScope(string $scope = null)
     {
-        $query = $this->getModelClass()::withCount(['media', 'prices', 'categories', 'orders', 'activeOrders', 'productRelations']);
+        $query = $this->getModelClass()::query();
+
+        foreach(['media', 'prices', 'categories', 'orders', 'activeOrders', 'productRelations'] as $relation)
+            if(method_exists($this->getModelClass(), $relation))
+                $query->withCount('media');
 
         if($scope)
             $query->$scope();

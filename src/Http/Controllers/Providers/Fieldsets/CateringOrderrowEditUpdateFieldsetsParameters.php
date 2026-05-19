@@ -7,6 +7,11 @@ use IlBronza\Products\Providers\Helpers\RowsHelpers\RowFieldsetParametersFile;
 
 class CateringOrderrowEditUpdateFieldsetsParameters extends RowFieldsetParametersFile
 {
+	public function getModelForPriceFields()
+	{
+		return Product::gpc()::make();
+	}
+
 	public function _getFieldsetsParameters() : array
 	{
 		$containerModel = $this->getModel()->getModelContainer();
@@ -44,11 +49,22 @@ class CateringOrderrowEditUpdateFieldsetsParameters extends RowFieldsetParameter
 				],
 				'width' => ["1-3@l", '1-2@m']
 			],
+
+			'pdf' => [
+				'translationPrefix' => 'products::fields',
+				'fields' => [
+					'pdf_quotation_show' => ['boolean' => 'bool|nullable'],
+					'pdf_quotation_show_price' => ['boolean' => 'bool|nullable'],
+					'pdf_quotation_show_quantity' => ['boolean' => 'bool|nullable'],
+
+				],
+				'width' => ["1-3@l", '1-2@m']
+			],
 		];
 
 		$result = static::addRowCostsFieldset(
 			$result,
-			Product::gpc()::make()
+			$this->getModelForPriceFields()
 		);
 
 		return $result;

@@ -25,6 +25,9 @@ class OrderrowEditUpdateController extends OrderrowCRUD
         if(! $packagePrefix = $sellableTarget->getPackageConfigPrefix())
             return $this->getStandardParametersFile();
 
+        if($result = config("{$packagePrefix}.models.orderrow.parametersFiles.as.{$sellableTarget->getModelConfigPrefix()}.edit"))
+            return $result;
+
         return config("{$packagePrefix}.models.orderrow.parametersFiles.edit");
     }
 

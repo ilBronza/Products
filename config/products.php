@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PackageOverriding\Products\FieldsParameters\ClientAreaProductFieldsGroupParametersFile;
 use IlBronza\Operators\Helpers\OperatorPricesCreatorHelper;
+use IlBronza\Operators\Models\Sellables\OperatorOrderrow;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductIndexController;
 use IlBronza\Products\Http\Controllers\AccessoryProduct\AccessoryProductShowController;
@@ -105,6 +106,7 @@ use IlBronza\Products\Http\Controllers\Product\ProductCurrentController;
 use IlBronza\Products\Http\Controllers\Product\ProductDeletionController;
 use IlBronza\Products\Http\Controllers\Product\ProductEditUpdateController;
 use IlBronza\Products\Http\Controllers\Product\ProductIndexController;
+use IlBronza\Products\Http\Controllers\Product\ProductMediaController;
 use IlBronza\Products\Http\Controllers\Product\ProductReorderController;
 use IlBronza\Products\Http\Controllers\Product\ProductShowController;
 use IlBronza\Products\Http\Controllers\Product\ProductTeaserController;
@@ -112,6 +114,7 @@ use IlBronza\Products\Http\Controllers\Project\ProjectCreateStoreController;
 use IlBronza\Products\Http\Controllers\Project\ProjectDestroyController;
 use IlBronza\Products\Http\Controllers\Project\ProjectEditUpdateController;
 use IlBronza\Products\Http\Controllers\Project\ProjectIndexController;
+use IlBronza\Products\Http\Controllers\Project\ProjectReorderController;
 use IlBronza\Products\Http\Controllers\Project\ProjectShowController;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryRowsByContainerFieldsGroupParametersFile;
@@ -156,6 +159,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierCo
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierHotelFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierPickFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRelatedFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierRentFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\SellableSupplierVehicletypeFieldsGroupParametersFile;
@@ -169,6 +173,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryEditFieldset
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryTypeCrudFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryTypeOrderrowEditUpdateFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ClientAreaOrderProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\FinishingCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\MaterialCreateFieldsetsParameters;
@@ -269,7 +274,6 @@ use IlBronza\Products\Models\Material;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
-use IlBronza\Products\Models\Orderrows\OperatorOrderrow;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Packing;
 use IlBronza\Products\Models\Phase;
@@ -640,6 +644,7 @@ return [
 				'show' => ProductShowController::class,
 				'teaser' => ProductTeaserController::class,
 				'edit' => ProductEditUpdateController::class,
+				'media' => ProductMediaController::class,
 				'destroy' => ProductDeletionController::class,
 				'index' => ProductIndexController::class,
 				'byOrderProductIndex' => ByOrderProductIndexController::class,
@@ -716,6 +721,7 @@ return [
 				'addOrderrowsByTable' => OrderAddOrderrowIndexByTableController::class,
 				'addOrderrowBySellableSupplier' => AddOrderrowBySellableSupplierController::class,
 				'addSellableSupplierRows' => OrderAddSellableSupplierIndexByTableController::class,
+				'addSupplierRows' => OrderAddSupplierIndexByTableController::class,
 				'storeRowsBySellableSupplier' => OrderStoreOrderrowsBySellableSupplierController::class,
 				'resetOrderRowsIndexes' => ResetOrderRowsIndexesController::class,
 				'attachClientOperatorsToOrderrows' => AttachClientOperatorsToOrderrowsController::class,
@@ -765,7 +771,8 @@ return [
             'relatedButtonsMethods' => [
                 'getAddSellableSupplierButton' => true,
                 'getAddRowButton' => true,
-                'getAddRowTableButton' => true
+                'getAddRowTableButton' => true,
+                'getAddBySupplierButton' => true,
             ],
 			'controllers' => [
 				'timelineUpdate' => OrderrowTimelineUpdateController::class,
@@ -787,6 +794,11 @@ return [
 				'bulkEdit' => OrderrowBulkEditUpdateController::class
 			],
 			'parametersFiles' => [
+	            'as' => [
+	            	'accessoryType' => [
+	            		'edit' => AccessoryTypeOrderrowEditUpdateFieldsetsParameters::class
+	            	]
+	            ],
 				'create' => OrderrowCreateFieldsetsParameters::class,
 				'show' => OrderrowShowFieldsetsParameters::class,
 				'edit' => OrderrowEditUpdateFieldsetsParameters::class,
@@ -917,6 +929,7 @@ return [
 				'edit' => ProjectEditUpdateController::class,
 				'update' => ProjectEditUpdateController::class,
 				'destroy' => ProjectDestroyController::class,
+				'reorder' => ProjectReorderController::class,
 			]
 		],
 		'quotation' => [
@@ -1061,8 +1074,10 @@ return [
 			'fieldsGroupsFiles' => [
 				'operator' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
 				'contracttype' => SellableSupplierContracttypeFieldsGroupParametersFile::class,
+				'accessoryType' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
 				'vehicleType' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
 				'vehicle' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
+				'product' => SellableSupplierProductFieldsGroupParametersFile::class,
 				'service' => SellableSupplierRentFieldsGroupParametersFile::class,
 				'hotel' => SellableSupplierHotelFieldsGroupParametersFile::class,
 				'controlRoom' => SellableSupplierVehicletypeFieldsGroupParametersFile::class,
@@ -1130,7 +1145,7 @@ return [
 				'show' => SupplierShowFieldsetsParameters::class,
 			],
 			'fieldsGroupsFiles' => [
-				'index' => SupplierFieldsGroupParametersFile::class
+				'index' => SupplierFieldsGroupParametersFile::class,
 			],
 			// 'helpers' => [
 			// 	'bulkCreator' => SupplierBulkCreator::class

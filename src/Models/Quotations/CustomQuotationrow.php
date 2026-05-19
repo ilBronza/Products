@@ -23,6 +23,6 @@ abstract class CustomQuotationrow extends Quotationrow implements CustomRowInter
 
 	public function getExtraFieldsClass(): ?string
 	{
-		return Orderrow::gpc()::make()->getExtraFieldsClass();
+		return Quotationrow::gpc()::make()->getExtraFieldsClass();
 	}
 }

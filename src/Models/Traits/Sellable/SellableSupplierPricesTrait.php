@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait SellableSupplierPricesTrait
 {
+	public const SELLABLE_CLASS_NONE = '0';
+
 	protected static function bootSellableSupplierPricesTrait() : void
 	{
 	    static::retrieved(function ($model)
@@ -23,10 +25,21 @@ trait SellableSupplierPricesTrait
 
 		$sellableClass = $this->sellable_class;
 
-		if (! $sellableClass)
+		if ($sellableClass === static::SELLABLE_CLASS_NONE)
+			return ;
+
+		if ($sellableClass === null)
 		{
 			if(! $sellableTarget = $this->getSellable()?->getTarget())
+			{
+				static::query()
+					->whereKey($this->getKey())
+					->update([
+						'sellable_class' => static::SELLABLE_CLASS_NONE
+					]);
+
 				return ;
+			}
 
 			$sellableClass = class_basename($sellableTarget);
 
@@ -40,6 +53,9 @@ trait SellableSupplierPricesTrait
 		}
 
 		$fullClass = Relation::getMorphedModel($sellableClass);
+
+		// if (! $fullClass)
+		// 	return ;
 
 		$prices = $fullClass::gpc()::make()->getPriceFieldsForSellable();
 

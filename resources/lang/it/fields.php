@@ -163,11 +163,11 @@ return [
 	'phases_ends_at' => 'Fine',
 
 	'people_coefficient' => 'Altri soggetti',
-	'people_coefficient_name' => 'Soggetto',
-	'people_coefficient_quantity' => 'Quantità',
-	'people_coefficient_price_coefficient' => 'Coefficiente costo',
+	'people_coefficient_name' => 'Tipo',
+	'people_coefficient_quantity' => 'Quant.',
+	'people_coefficient_price_coefficient' => 'Coeff.',
 	'phase' => 'Fase',
-	'description' => 'Descrizione in preventivo',
+	'description' => 'Note interne',
 	'economicals' => 'Costi',
 	'operatorsCosts' => 'Operatori',
 	'productsCosts' => 'Prodotti',
@@ -186,6 +186,9 @@ return [
 	'coefficient_output' => 'Coefficiente in uscita',
 	'calculated_cost_coefficient' => 'Coeff costi',
 	'calculated_revenue_coefficient' => 'Coeff ricavi',
+	'discount_selection' => 'Tipo sconto',
+	'discount_neat' => 'Sconto netto',
+	'discount_percentage' => 'Sconto %',
 	'calculated_quantity_coefficient' => 'Servizio per',
 
 
@@ -199,6 +202,39 @@ return [
 	'single_cost' => 'Costo singolo',
 	'single_revenue' => 'Ricavo singolo',
 
-	'totals' => 'Totali'
+	'totals' => 'Totali',
 
+	'calculated_cost_per_day' => 'Costo giornaliero',
+	'cost_per_day' => 'Costo giornaliero',
+
+	'calculated_cost_per_hour' => 'Costo orario',
+	'cost_per_hour' => 'Costo orario',
+
+	'calculated_revenue_per_day' => 'Ricavo giornaliero',
+	'revenue_per_day' => 'Ricavo giornaliero',
+	
+	'calculated_revenue_per_hour' => 'Ricavo orario',
+	'revenue_per_hour' => 'Ricavo orario',
+
+	'calculated_revenue_per_movimentation' => 'Ricavo movimentazione',
+	'revenue_per_movimentation' => 'Ricavo movimentazione',
+
+	'revenue_coefficient' => 'Coefficiente ricarico',
+
+	'accessories_count' => 'Accessori',
+
+	'people_coefficient_price' => 'Costo',
+	'people_coefficient_calculated_price' => 'Calc',
+
+	'calculated_vat' => 'Iva',
+	'calculated_vat_cost' => 'Tot. Iva',
+	'economicalsSummary' => 'Totali',
+
+
+
+	'pdf_quotation_show' => 'Mostra in PDF',
+	'pdf_quotation_show_price' => 'Mostra prezzo in PDF',
+	'pdf_quotation_show_quantity' => 'Mostra quantità in PDF',
+
+	'discounts' => 'Sconti',
 ];

@@ -1,42 +1,42 @@
 <?php
 
-namespace IlBronza\Products\Models\Traits\Orderrow;
+// namespace IlBronza\Products\Models\Traits\Orderrow;
 
-use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
-use IlBronza\Products\Models\Sellables\ProductOrderrow;
+// use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+// use IlBronza\Products\Models\Sellables\ProductOrderrow;
 
-trait UsesProductOrderrowTrait
-{
-	public function productRows()
-	{
-		return $this->productOrderrows();
-	}
+// trait UsesProductOrderrowTrait
+// {
+// 	public function productRows()
+// 	{
+// 		return $this->productOrderrows();
+// 	}
 
-	public function productOrderrows()
-	{
-		return $this->hasMany(ProductOrderrow::gpc());
-	}
+// 	public function productOrderrows()
+// 	{
+// 		return $this->hasMany(ProductOrderrow::gpc());
+// 	}
 
-	public function getProductRows()
-	{
-		return $this->productOrderrows;
-	}
+// 	public function getProductRows()
+// 	{
+// 		return $this->productOrderrows;
+// 	}
 
-	public function getAddProductUrl() : string
-	{
-		return $this->getAddRowByTypeUrl('Product');
-	}
+// 	public function getAddProductUrl() : string
+// 	{
+// 		return $this->getAddRowByTypeUrl('Product');
+// 	}
 
-	public function getTotalProductsCostAttribute() : float
-	{
-		return round($this->productOrderrows->sum('total_cost'), 2);
-	}
+// 	public function getTotalProductsCostAttribute() : float
+// 	{
+// 		return round($this->productOrderrows->sum('total_cost'), 2);
+// 	}
 
-	public function getTotalProductsPriceAttribute() : float
-	{
-		return round($this->productOrderrows->sum('total_price'), 2);
-	}
+// 	public function getTotalProductsPriceAttribute() : float
+// 	{
+// 		return round($this->productOrderrows->sum('total_price'), 2);
+// 	}
 
 
 
-}
+// }

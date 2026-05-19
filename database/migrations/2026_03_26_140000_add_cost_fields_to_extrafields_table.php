@@ -21,8 +21,8 @@ return new class extends Migration
 			$table->decimal('stored_total_row_cost')->nullable();
 			$table->decimal('stored_single_cost')->nullable();
 
-			$table->boolean('approved_total_row_cost')->nullable();
-			$table->boolean('approved_total_row_revenue')->nullable();
+			$table->boolean('approved_total_row_cost')->default(true)->nullable();
+			$table->boolean('approved_total_row_revenue')->default(true)->nullable();
 		});
 	}
 

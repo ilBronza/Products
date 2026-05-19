@@ -5,85 +5,77 @@ namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 
+use function preg_replace;
 use function ucfirst;
 
 class RowsButtonsHelper
 {
-	static function getAddTypedRowButtonSimpleGET(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	private static function iconKeyForText(string $text) : string
 	{
-		$type = ucfirst($type);
+		return preg_replace('/::(rows|orders)\./', '::icons.', $text);
+	}
 
-		$urlGetter = "getAdd{$type}Url";
-
+	private static function makeButton(string $href, string $text, bool $openIframe = false) : Button
+	{
 		$button = Button::create([
-			'href' => $container->{$urlGetter}(),
-			'text' => "products::orders.add{$type}Row",
-			'icon' => 'plus'
+			'href' => $href,
+			'text' => $text,
+			'icon' => static::iconKeyForText($text),
 		]);
 
 		$button->setSecondary();
 
+		if($openIframe)
+			$button->setAjaxTableButton(null, ['openIframe' => true]);
+
 		return $button;
+	}
+
+	static function getAddTypedRowButtonSimpleGET(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		$type = ucfirst($type);
+
+		return static::makeButton(
+			$container->{"getAdd{$type}Url"}(),
+			"products::orders.add{$type}Row"
+		);
 	}
 
 	static function getAddTypedRowButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
 	{
 		$type = ucfirst($type);
 
-		$urlGetter = "getAdd{$type}Url";
-
-		$button = Button::create([
-			'href' => $container->{$urlGetter}(),
-			'text' => "products::rows.addRow",
-			'icon' => 'plus'
-		]);
-
-		$button->setSecondary();
-
-		$button->setAjaxTableButton(null, [
-			'openIframe' => true
-		]);
-
-		return $button;
+		return static::makeButton(
+			$container->{"getAdd{$type}Url"}(),
+			'products::rows.addRow',
+			true
+		);
 	}
 
 	static function getAddTypedRowTableButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
 	{
-		$url = $container->getAddRowByTypeUrl($type, true);
-
-		$button = Button::create([
-			'href' => $url,
-			'text' => "products::rows.addTableRow",
-			'icon' => 'plus'
-		]);
-
-		$button->setSecondary();
-
-		$button->setAjaxTableButton(null, [
-			'openIframe' => true
-		]);
-
-		return $button;
+		return static::makeButton(
+			$container->getAddRowByTypeUrl($type, true),
+			'products::rows.addTableRow',
+			true
+		);
 	}
 
 	static function getAddSellableSupplierButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
 	{
-		$url = $container->getAddSellableSupplierRowByTypeUrl($type);
-
-		$button = Button::create([
-			'href' => $url,
-			'text' => "products::rows.addSellableSupplierRow",
-			'icon' => 'plus'
-		]);
-
-		$button->setSecondary();
-
-		$button->setAjaxTableButton(null, [
-			'openIframe' => true
-		]);
-
-		return $button;
+		return static::makeButton(
+			$container->getAddSellableSupplierRowByTypeUrl($type),
+			'products::rows.addSellableSupplierRow',
+			true
+		);
 	}
 
-
+	static function getAddSupplierButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		return static::makeButton(
+			$container->getAddSupplierRowByTypeUrl($type),
+			'products::rows.addSupplierRow',
+			true
+		);
+	}
 }

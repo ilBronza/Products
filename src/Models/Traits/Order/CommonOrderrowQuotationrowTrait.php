@@ -32,7 +32,7 @@ trait CommonOrderrowQuotationrowTrait
 
 	public function getOperatorAlerts()
 	{
-		return $this->getSellableSupplier()?->getSupplier()?->getTarget()?->getModelAlertsAttribute($this->getModelContainer(), $this);
+		return $this->getSellableSupplier()?->getSupplier()?->getTarget()?->getOperator()?->getModelAlertsAttribute($this->getModelContainer(), $this);
 	}
 
 	public function getBulkAssignManufacturerButton()

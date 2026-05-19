@@ -21,12 +21,15 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 		$fields['calculated_quantity_coefficient'] = [
 					'type' => 'editor.numeric',
 					'refreshRow' => true,
+					'fieldsGroupsDefinitions' => [
+						'managementParameters'
+					],
 				];
 
 		$fields['people_coefficient'] = [
 					'type' => 'editor.select',
 					'possibleValuesArray' => $parentModel->getPossiblePeopleCoefficientArrayValues(),
-					'refreshRow' => true
+					'refreshRow' => true,
 				];
 
 		$fields['phase'] = [
@@ -46,6 +49,10 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 		$fields = static::addCostsFields(
 			$fields,
 			Product::gpc()::make()
+		);
+
+		$fields = static::addPdfFields(
+			$fields,
 		);
 
 		$result = [

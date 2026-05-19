@@ -11,10 +11,13 @@ use Illuminate\Support\Str;
 
 trait CommonOrderQuotationPricesTrait
 {
-	public function setRowRelationsParameters(string $rowTypes)
+	public function setRowRelationsParameters(string $rowTypes, bool $silent = false)
 	{
 		$this->addRowTypeRelations($rowTypes);
-		$this->addFieldsToUpdateByRowTypes($rowTypes);
+
+		if(! $silent)
+			$this->addFieldsToUpdateByRowTypes($rowTypes);
+
 		$this->addSummaryFieldsCastsByRowTypes($rowTypes);
 	}
 
@@ -28,6 +31,12 @@ trait CommonOrderQuotationPricesTrait
 		$this->fieldsToUpdateOnTableEdit = array_merge($this->fieldsToUpdateOnTableEdit, $fieldsToUpdateOnTableEdit);
 	}
 
+	/***
+	 * total_vehicle_rows_revenue - total_operator_rows_revenue - total_product_rows_revenue - total_accessory_rows_revenue
+	 * total_vehicle_rows_cost - total_operator_rows_cost - total_product_rows_cost - total_accessory_rows_cost
+	 * margin_vehicle_rows - margin_operator_rows - margin_product_rows - margin_accessory_rows
+	 * percentage_margin_vehicle_rows - percentage_margin_operator_rows - percentage_margin_product_rows - percentage_margin_accessory_rows
+	 ***/
 	public function addSummaryFieldsCastsByRowTypes(string $rowTypes)
 	{
 		$rowTypesFieldName = Str::snake($rowTypes);
@@ -45,6 +54,29 @@ trait CommonOrderQuotationPricesTrait
 
 	public function getTotalByCustomRowsCost(string $customRowsType)
 	{
+		// if($customRowsType == 'operatorRows')
+		// {
+		// 	$test = [];
+		// 	$notApproved = [];
+
+		// 	foreach($this->$customRowsType as $row)
+		// 	{
+		// 		if (! $row->isCostApproved())
+		// 			$notApproved[$row->getSupplier()->getName()] = $row->calculated_total_row_cost;
+
+		// 		else
+		// 			$test[$row->getSupplier()->getName()] = $row->calculated_total_row_cost;
+		// 	}
+
+		// 	dd($test, $notApproved, $this->$customRowsType->sum(function($item)
+		// 		{
+		// 			if (! $item->isCostApproved())
+		// 				return 0;
+
+		// 			return $item->calculated_total_row_cost;
+		// 		}));
+		// }
+
 		return $this->$customRowsType->sum(function($item)
 		{
 			if (! $item->isCostApproved())

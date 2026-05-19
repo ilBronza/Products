@@ -84,9 +84,9 @@ class RowAssociatorHelper
 		return $this->sellable;
 	}
 
-	public function getSellableTarget() : SellableItemInterface
+	public function getSellableTarget() : ? SellableItemInterface
 	{
-		return $this->getSellable()->getTarget();
+		return $this->getSellable()?->getTarget();
 	}
 
 	public function getSellableSupplier() : SellableSupplier
@@ -106,11 +106,11 @@ class RowAssociatorHelper
 
 	public function setDependentSellableSuppliers()
 	{
-		if(! $target = $this->getSellableTarget())
-			return collect();
-
 		$this->sellableSuppliersToInsert = collect();
 		$this->sellablesToInsert = collect();
+
+		if(! $target = $this->getSellableTarget())
+			return collect();
 
 		foreach($target->getDependentSellables() as $relation)
 		{
@@ -157,7 +157,9 @@ class RowAssociatorHelper
 						);
 
 					elseif(count($sellableSuppliers) == 0)
-						dd($supplier->getTarget()->getName());
+					{
+						// dd($supplier, $supplier->getTarget(), $supplier->getTarget()->getName());
+					}
 
 					else
 					{
@@ -179,7 +181,11 @@ class RowAssociatorHelper
 
 	public function makeRow() : static
 	{
-		$this->row = $this->containerModel->rows()->make();
+
+        $classMethod = "rowRelationBy{$this->getSellable()->getType()}";
+
+        $this->row = $this->containerModel->{$classMethod}()->make();
+		// $this->row = $this->containerModel->rows()->make();
 
 		$this->row->container()->associate(
 			$this->containerModel

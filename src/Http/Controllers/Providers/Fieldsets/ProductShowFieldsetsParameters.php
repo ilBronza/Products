@@ -35,14 +35,14 @@ class ProductShowFieldsetsParameters extends FieldsetParametersFile
 						'multiple' => true,
 						'list' => $accessoriesList,
 						'relation' => 'accessories',
-						'rules' => 'string|nullable',
+						'rules' => 'array|nullable',
 					],
 					'accessoryTypes' => [
 						'type' => 'select',
 						'multiple' => true,
 						'list' => $accessoryTypesList,
 						'relation' => 'accessoryTypes',
-						'rules' => 'string|nullable',
+						'rules' => 'array|nullable',
 					],
                 ],
                 'width' => ['1-2@m']

@@ -18,6 +18,9 @@ trait CommonOrderrowQuotationrowPricesTrait
 
 			'approved_total_row_cost' => ExtraField::class,
 			'approved_total_row_revenue' => ExtraField::class,
+
+			'discount_neat' => ExtraField::class,
+			'discount_percentage' => ExtraField::class,
 		];
 
 		$this->casts = array_merge($this->casts, $casts);
@@ -94,7 +97,17 @@ trait CommonOrderrowQuotationrowPricesTrait
 	//calculated_total_row_revenue
 	public function getCalculatedTotalRowRevenueAttribute() : float
 	{
-		return $this->getCalculateOverrideablePriceValue('total_row_revenue');
+		$totalRowRevenue = $this->getCalculateOverrideablePriceValue('total_row_revenue');
+
+		if(! $discount = $this->getNeatDiscount($totalRowRevenue))
+			return $totalRowRevenue;
+
+		return $totalRowRevenue - $discount;
+	}
+
+	public function getCalculatedTotalRowRevenue()
+	{
+		return $this->calculated_total_row_revenue;
 	}
 
 	//total_row_cost

@@ -14,6 +14,7 @@ use IlBronza\Clients\Models\Traits\InteractsWithDestinationTrait;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Products\Models\Quotations\Project;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationPricesTrait;
+use IlBronza\Products\Traits\CURSORRowsHelper;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -28,7 +29,13 @@ trait CommonOrderQuotationTrait
 	use InteractsWithFormTrait;
 
 	use CommonOrderQuotationPricesTrait;
+	use CURSORRowsHelper;
 	// use InteractsWithPriceTrait;
+
+	public function getFieldsToUpdateOnTableEdit() : array
+	{
+		return $this->fieldsToUpdateOnTableEdit;
+	}
 
 	public function getDestination() : ?Destination
 	{

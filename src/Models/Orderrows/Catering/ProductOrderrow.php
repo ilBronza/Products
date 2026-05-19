@@ -13,8 +13,9 @@ class ProductOrderrow extends IbProductOrderrow
 	public string $fieldsGroupParametersKey = 'cateringProductOrderrow';
 
 	protected $casts = [
-		'phase' => ExtraField::class,
+		// 'phase' => ExtraField::class,
 		'people_coefficient' => ExtraField::class,
+		'served_at_table' => ExtraField::class,
 	];
 
 	public function hasPhase(string $phase) : bool

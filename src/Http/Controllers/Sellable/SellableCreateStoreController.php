@@ -29,7 +29,7 @@ class SellableCreateStoreController extends SellableCRUD
 
 	public function performAdditionalOperations()
 	{
-		dd('qua non si creano più sellable senza passare per un target. Eliminare tutto');
+		// dd('qua non si creano più sellable senza passare per un target. Eliminare tutto');
 
 		if(! $helperClass = config('products.models.sellable.helpers.targetCreator.' . $this->getModel()->getType()))
 			throw new \Exception('configurare config(\'products.models.sellable.helpers.targetCreator.' . $this->getModel()->getType() . '\')');

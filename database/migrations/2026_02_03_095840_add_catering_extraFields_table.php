@@ -1,5 +1,6 @@
 <?php
 
+use IlBronza\Products\Models\Orders\Orderrow;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->string('phase', 64)->nullable();
         });
 
-        Schema::table('products__extrafields__quotations_orders', function (Blueprint $table) {
+        Schema::table(Orderrow::gpc()::make()->extraFields()->make()->getTable(), function (Blueprint $table) {
 
             $table->decimal('cost_coefficient', 6, 2)->nullable();
             $table->decimal('revenue_coefficient', 6, 2)->nullable();

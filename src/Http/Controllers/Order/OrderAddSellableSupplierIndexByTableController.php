@@ -22,6 +22,15 @@ class OrderAddSellableSupplierIndexByTableController extends SellableSupplierCRU
 
 	public function getIndexElements()
 	{
+		$getterMethod = "get{$this->type}SellableSuppliers";
+
+		if(method_exists(Order::gpc(), $getterMethod))
+		{
+			app('uikittemplate')->addCustomGetter($getterMethod);
+
+			return Order::gpc()::$getterMethod();
+		}
+
 		$result = $this->getModelClass()::query()
 			->whereHas('sellable', function($query)
 			{

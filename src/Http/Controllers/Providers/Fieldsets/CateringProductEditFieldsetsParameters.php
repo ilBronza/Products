@@ -41,6 +41,13 @@ class CateringProductEditFieldsetsParameters extends CostsFieldsetParametersFile
 						'relation' => 'accessoryTypes',
 						'rules' => 'array|nullable',
 					],
+                    'image' => [
+                        'type' => 'file',
+                        'persist' => false,
+                        'collection' => 'default',
+                        'multiple' => false,
+                        'rules' => 'file|nullable|max:255'
+                    ],
                 ],
                 'width' => ['1-2@m']
             ],

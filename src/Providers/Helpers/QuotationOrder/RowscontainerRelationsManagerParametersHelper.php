@@ -76,9 +76,11 @@ class RowscontainerRelationsManagerParametersHelper
 
 	public function getButtonsMethods() : array
 	{
+		$rowConfigPrefix = $this->rowContainer->rows()->make()->getModelConfigPrefix();
+
 		return array_keys(
 			array_filter(
-				cconfig("{$this->getRelationPackagePrefix()}.models.orderrow.relatedButtonsMethods")
+				cconfig("{$this->getRelationPackagePrefix()}.models.{$rowConfigPrefix}.relatedButtonsMethods")
 			)
 		);
 	}

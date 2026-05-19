@@ -36,7 +36,11 @@ return [
 	],
 
 	'ibProductssellableSuppliers' => [
-		'index' => 'Beni/Servizi',
+		'index' => 'Beni/Servizi per fornitore',
+	],
+
+	'ibProductssellables' => [
+		'index' => 'Indice beni/servizi disponibili'
 	],
 
 	'ibProductsfinishings' =>[
@@ -83,7 +87,33 @@ return [
 	],
 
 	'ibProductsaccessories' => [
-		'index' => 'Lista Accessori'
+		'index' => 'Lista accessori',
+		'create' => 'Crea accessorio',
+		'createByParent' => 'Crea accessorio figlio',
+		'show' => 'Mostra accessorio :model',
+		'edit' => 'Modifica accessorio :model',
+	],
+
+	'ibProductsaccessoryTypes' => [
+		'index' => 'Lista tipi accessorio',
+		'create' => 'Crea tipo accessorio',
+		'show' => 'Mostra tipo accessorio :model',
+		'edit' => 'Modifica tipo accessorio :model',
+	],
+
+	'accessories' => [
+		'index' => 'Lista accessori',
+		'create' => 'Crea accessorio',
+		'createByParent' => 'Crea accessorio figlio',
+		'show' => 'Mostra accessorio :model',
+		'edit' => 'Modifica accessorio :model',
+	],
+
+	'accessoryTypes' => [
+		'index' => 'Lista tipi accessorio',
+		'create' => 'Crea tipo accessorio',
+		'show' => 'Mostra tipo accessorio :model',
+		'edit' => 'Modifica tipo accessorio :model',
 	],
 
 	'ibProductsproducts' => ['current' => 'Prodotti Attuali',],

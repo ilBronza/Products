@@ -315,4 +315,9 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		// 	}
 		// );
 	}
+
+	public function getContainerModelRelatedTablesToRefresh() : array
+	{
+		return cconfig('products.tablesToRefreshByType.' . $this->getType());
+	}
 }

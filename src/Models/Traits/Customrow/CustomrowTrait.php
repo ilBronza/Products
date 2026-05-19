@@ -6,12 +6,15 @@ use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\Products\Casts\StoredOrCalculatedExtraField;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Models\Traits\Orderrow\ExclusiveDiscountFieldsTrait;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 
 trait CustomrowTrait
 {
-	public string $fieldsGroupParametersKey;
 	use CRUDModelExtraFieldsTrait;
+	use ExclusiveDiscountFieldsTrait;
+
+	public string $fieldsGroupParametersKey;
 
 	abstract public function getSingleCostAttribute() : float;
 	abstract public function getSingleRevenueAttribute() : float;
@@ -30,6 +33,11 @@ trait CustomrowTrait
 
 		$casts['client_description'] = ExtraField::class;
 		$casts['quantity_coefficient'] = ExtraField::class;
+
+
+		$casts['pdf_quotation_show'] = ExtraField::class;
+		$casts['pdf_quotation_show_price'] = ExtraField::class;
+		$casts['pdf_quotation_show_quantity'] = ExtraField::class;
 
 		$this->casts = array_merge($this->casts, $casts);
 	}
@@ -62,11 +70,39 @@ trait CustomrowTrait
 		return RowsButtonsHelper::getAddSellableSupplierButton($container, static::$typeName);
 	}
 
+	public function getAddBySupplierButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return RowsButtonsHelper::getAddSupplierButton($container, static::$typeName);
+	}
+
 	static function getClassname() : string
 	{
 		$actualClassname = lcfirst(class_basename(static::class));
 		$configModelClass = static::$configModelClassname;
 
-		return config("products.models.{$configModelClass}s.{$actualClassname}.class");
+		return cconfig("products.models.{$configModelClass}s.{$actualClassname}.class");
+	}
+
+	public function getCalculatedVatAttribute()
+	{
+		if($value = $this->extraFields->forced_vat)
+			return $value;
+
+		return 10;
+	}
+
+	public function getCalculatedVatCostAttribute()
+	{
+		return $this->calculated_total_row_revenue * $this->calculated_vat / 100;
+	}
+
+	public function setCalculatedVatAttribute($value)
+	{
+		$this->extraFields->forced_vat = $value;
+	}
+
+	public function getPdfDescription() : ? string
+	{
+		return $this->client_description;
 	}
 }

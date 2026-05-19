@@ -23,4 +23,5 @@ return [
 	'workstations' => 'Postazioni',
 	'sellable' => 'Bene/servizio',
 	'accessory' => 'Accessori',
+	'accessoryType' => 'Tipologie Accessori',
 ];

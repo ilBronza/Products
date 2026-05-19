@@ -40,6 +40,11 @@ Route::group([
 
 	Route::group(['prefix' => 'projects'], function ()
 	{
+        Route::get('projects-reorder', [Products::getController('project', 'reorder'), 'clients'])->name('projects.reorder.clients');
+        Route::get('projects-reorder/client/{client}', [Products::getController('project', 'reorder'), 'reorderByClient'])->name('projects.reorder.byClient');
+        Route::get('projects-reorder/{project?}', [Products::getController('project', 'reorder'), 'reorder'])->name('projects.reorder');
+        Route::post('projects-reorder', [Products::getController('project', 'reorder'), 'storeReorder'])->name('projects.storeReorder');
+
 		Route::get('', [Products::getController('project', 'index'), 'index'])->name('projects.index');
 		Route::get('create', [Products::getController('project', 'create'), 'create'])->name('projects.create');
 		Route::post('', [Products::getController('project', 'store'), 'store'])->name('projects.store');
@@ -206,6 +211,8 @@ Route::group([
 
 	Route::group(['prefix' => 'products'], function ()
 	{
+		Route::delete('delete-media/{product}/{media}', [Products::getController('product', 'media'), 'deleteMedia'])->name('products.deleteMedia');
+
 		Route::get('create', [Products::getController('product', 'create'), 'create'])->name('products.create');
 		Route::post('', [Products::getController('product', 'store'), 'store'])->name('products.store');
 
@@ -385,7 +392,11 @@ Route::group([
 		Route::post('{order}/store-new-orderrows', [Products::getController('order', 'addOrderrow'), 'storeRow'])->name('orders.storeRow');
 
 		//OrderAddSellableSupplierIndexByTableController
-		Route::post('{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
+		Route::match(['get', 'post'], '{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
+
+		//OrderAddSellableSupplierIndexByTableController
+		Route::match(['get', 'post'], '{order}/add-row-by-suppliers', [Products::getController('order', 'addSupplierRows'), 'index'])->name('orders.addSupplierRows');
+
 		// Route::match(['get', 'post'], '{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
 
 		//OrderStoreOrderrowsBySellableSupplierController
@@ -461,6 +472,8 @@ Route::group([
 		Route::post('', [Products::getController('orderrow', 'store'), 'store'])->name('orderrows.store');
 		Route::get('{orderrow}', [Products::getController('orderrow', 'show'), 'show'])->name('orderrows.show');
 		Route::get('{orderrow}/edit', [Products::getController('orderrow', 'edit'), 'edit'])->name('orderrows.edit');
+
+		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController
 		Route::put('{orderrow}', [Products::getController('orderrow', 'edit'), 'update'])->name('orderrows.update');
 
 		Route::delete('{orderrow}/delete', [Products::getController('orderrow', 'destroy'), 'destroy'])->name('orderrows.destroy');
@@ -490,6 +503,8 @@ Route::group([
 		Route::post('', [Products::getController('quotationrow', 'store'), 'store'])->name('quotationrows.store');
 		Route::get('{quotationrow}', [Products::getController('quotationrow', 'show'), 'show'])->name('quotationrows.show');
 		Route::get('{quotationrow}/edit', [Products::getController('quotationrow', 'edit'), 'edit'])->name('quotationrows.edit');
+
+		//QuotationrowEditUpdateController
 		Route::put('{quotationrow}', [Products::getController('quotationrow', 'edit'), 'update'])->name('quotationrows.update');
 
 		//QuotationrowDestroyController

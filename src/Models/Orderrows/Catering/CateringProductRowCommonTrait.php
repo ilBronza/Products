@@ -31,4 +31,14 @@ trait CateringProductRowCommonTrait
 
 		return ceil($quantity * $this->getQuantityCoefficient());
 	}
+
+	public function getPdfDescription() : ? string
+	{
+		$description = $this->client_description;
+
+		if($allergens = $this->getSellable()?->getTarget()?->getAllergensList())
+			$description .= "<span class='in-row-allergene'>" . $allergens->implode('name', ' - ') . "</span>";
+
+		return $description;
+	}
 }

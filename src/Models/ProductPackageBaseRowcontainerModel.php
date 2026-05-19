@@ -50,6 +50,11 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		);
 	}
 
+	public function getRowTypeRelationsForTotals() : array
+	{
+		return $this->getRowTypeRelations();
+	}
+
 	public array $fieldsToUpdateOnTableEdit = [];
 
 	public function scopeOpened($query)
@@ -81,7 +86,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 			$result = [];
 
 			foreach ($this->operatorRows()->with('sellableSupplier.supplier.target')->get() as $operatorRow)
-				if ($operator = $operatorRow->getSupplier()?->getTarget())
+				if ($operator = $operatorRow->getSupplier()?->getTarget()?->getOperator())
 					$result[$operator->getKey()] = $operator->getName();
 
 			asort($result);
@@ -147,6 +152,14 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 			'type' => $type,
 			'table' => true
 		]);
+	}
+
+	public function getAddSupplierRowByTypeUrl(string $type)
+	{
+		return $this->getKeyedRoute('addSupplierRows', [
+			'type' => $type,
+			'table' => true
+		]);		
 	}
 
 	public function getStartsAt() : ?Carbon
@@ -294,16 +307,67 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 
 	public function getTotalRevenueAttribute()
 	{
+		if($this->mup_selection == 'mup_forfait')
+		{
+			if(($this->extraFields)&&($this->extraFields->saved_total_revenue !== $this->mup_revenue))
+			{
+				$this->extraFields->saved_total_revenue = $this->mup_revenue ?? 0;
+				$this->extraFields->save();
+			}
+
+			return $this->mup_revenue;
+		}
+
 		$totalRevenue = 0;
 
-		foreach($this->rowTypeRelations as $rowRelation)
+		foreach($this->getRowTypeRelationsForTotals() as $rowRelation)
 		{
 			$fieldName = RowsCostsFieldsHelper::getRevenueFieldName($rowRelation);
 
 			$totalRevenue += $this->$fieldName;
 		}
 
+		if($this->mup_selection == 'mup_plus_extra')
+			$totalRevenue += $this->mup_revenue;
+
+		$totalRevenue -= $this->getNeatDiscount($totalRevenue);
+
+		if($this->extraFields)
+		{
+			if($this->extraFields->saved_total_revenue !== $totalRevenue)
+			{
+				$this->extraFields->saved_total_revenue = $totalRevenue ?? 0;
+				$this->extraFields->save();
+			}			
+		}
+
 		return $totalRevenue;
+	}
+
+	public function getTotalVat()
+	{
+		return $this->total_vat;
+	}
+
+	//total_vat
+	public function getTotalVatAttribute()
+	{
+		$totalVat = 0;
+
+		$results = [];
+		$noResults = [];
+
+		foreach($this->getRowTypeRelationsForTotals() as $rowRelation)
+		{
+			foreach($this->$rowRelation as $row)
+			{
+				$vat = $row->calculated_total_row_revenue * ($row->calculated_vat ?? 10) / 100;
+
+				$totalVat += $vat;
+			}
+		}
+
+		return $totalVat;
 	}
 
 	public function getTotalRevenue()
@@ -311,16 +375,26 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->total_revenue;
 	}
 
+	//total_cost
 	public function getTotalCostAttribute()
 	{
 		$totalCost = 0;
 
-		foreach($this->rowTypeRelations as $rowRelation)
+		foreach($this->getRowTypeRelationsForTotals() as $rowRelation)
 		{
 			$fieldName = RowsCostsFieldsHelper::getCostFieldName($rowRelation);
 
 			$totalCost += $this->$fieldName;
 		}
+
+		$totalCost += $this->mup_cost;
+
+		if($this->extraFields)
+			if($this->extraFields->saved_total_costs != $totalCost)
+			{
+				$this->extraFields->saved_total_costs = $totalCost;
+				$this->extraFields->save();
+			}
 
 		return $totalCost;
 	}
@@ -345,11 +419,16 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		if(! $revenue = $this->getTotalRevenue())
 			return 0;
 
-		return round($this->getTotalMargin() / $revenue * 100, 2);		
+		return round($this->getTotalMargin() / $revenue * 100, 2);
 	}
 
 	public function getTotalPercentageMargin()
 	{
 		return $this->total_percentage_margin;
+	}
+
+	public function getClientId() : ? string
+	{
+		return $this->client_id;
 	}
 }

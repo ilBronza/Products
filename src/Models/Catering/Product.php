@@ -75,7 +75,7 @@ class Product extends IbProduct implements SellableItemInterface, WithPriceInter
 	{
 		return $this->morphToMany(
 			Allergen::class,
-			'categorizable',
+			'allergenable',
 			'project_allergenables',
 		)->using(Allergenizable::class);
 	}

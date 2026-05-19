@@ -9,6 +9,7 @@ use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
+use IlBronza\Products\Events\ProductPackageBaseRowSavedEvent;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
@@ -16,6 +17,7 @@ use IlBronza\Timings\Interfaces\TimeIntervalInterface;
 use IlBronza\Timings\Interfaces\TimelineInterface;
 use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use function class_basename;
 use function get_class;
 use function get_class_methods;
@@ -107,7 +109,10 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		catch(\Exception $e)
 		{
 			if(\Auth::id() == 1)
-				Ukn::e('Non esiste la route ' . "{$pluralClass}.history");
+			{
+				Log::critical('Non esiste la route ' . "{$pluralClass}.history");
+				// Ukn::e('Non esiste la route ' . "{$pluralClass}.history");
+			}
 		}
 	}
 
@@ -115,8 +120,17 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 	{
 		parent::boot();
 
+		static::saved(function ($model)
+		{
+			$model->getModelContainer()->touch();
+
+			ProductPackageBaseRowSavedEvent::dispatch($model);
+		});
+
 		static::deleting(function ($model)
 		{
+			$model->getModelContainer()->touch();
+
 			if ($type = $model->getSellable()?->getType())
 			{
 				$container = $model->getModelContainer();

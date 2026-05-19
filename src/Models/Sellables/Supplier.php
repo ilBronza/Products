@@ -16,6 +16,7 @@ use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Providers\Helpers\Sellables\SupplierCreatorHelper;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
 use function app;
 use function dd;

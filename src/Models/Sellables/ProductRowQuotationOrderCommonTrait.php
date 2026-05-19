@@ -55,4 +55,21 @@ trait ProductRowQuotationOrderCommonTrait
 		return $this->getCalculatedSingleRevenue() * $this->getQuantity() * $this->getRevenueCoefficient();
 	}
 
+	public function getTotalClientPrice() : ? float
+	{
+		return $this->getCalculatedTotalRowRevenue();
+	}
+
+	public function getPdfImage(): ?string
+	{
+		$target = $this->getSellable()?->getTarget();
+
+		if (! $target || ! method_exists($target, 'getFirstMedia')) {
+			return null;
+		}
+
+		$media = $target->getFirstMedia('default');
+
+		return $media?->getUrl();
+	}
 }

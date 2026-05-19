@@ -7,7 +7,7 @@ use IlBronza\Products\Models\Order;
 
 trait CommonOrderrowQuotationrowGettersTrait
 {
-	public function getDaysQuantity() : ? float
+	public function getDaysQuantityAttribute()
 	{
 		if (! $starts = $this->getStartsAt())
 			return null;
@@ -16,6 +16,11 @@ trait CommonOrderrowQuotationrowGettersTrait
 			return null;
 
 		return $starts->diffInDays($ends) + 1;
+	}
+
+	public function getDaysQuantity() : ? float
+	{
+		return $this->days_quantity;
 	}
 
 	public function getType() : string
@@ -28,7 +33,8 @@ trait CommonOrderrowQuotationrowGettersTrait
 
 	public function getRowFieldsToStore() : array
 	{
-		$target = $this->getSellable()->getTarget();
+		if(! $target = $this->getSellable()->getTarget())
+			return cconfig("app.fieldsToStoreByType.{$this->type}");
 
 		return $target->getRowFieldsToStore();
 	}
