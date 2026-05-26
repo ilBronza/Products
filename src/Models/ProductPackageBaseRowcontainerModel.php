@@ -159,7 +159,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->getKeyedRoute('addSupplierRows', [
 			'type' => $type,
 			'table' => true
-		]);		
+		]);
 	}
 
 	public function getStartsAt() : ?Carbon
@@ -417,6 +417,9 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 	public function getTotalPercentageMarginAttribute()
 	{
 		if(! $revenue = $this->getTotalRevenue())
+			return 0;
+
+		if($revenue == 0)
 			return 0;
 
 		return round($this->getTotalMargin() / $revenue * 100, 2);

@@ -2,14 +2,14 @@
 
 namespace IlBronza\Products\Http\Controllers\Quotation;
 
-use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
+use IlBronza\Form\Form;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-
 use function app;
 use function array_keys;
 use function compact;
@@ -26,8 +26,13 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 	public function addQuotationrow(Request $request, $quotation, string $type)
 	{
+		$type = ucfirst($type);
+
 		if($request->table)
 			return redirect()->to(app('products')->route('quotations.addQuotationrowsByTable', ['quotation' => $quotation, 'type' => $type]));
+
+		if($request->isMethod('get'))
+			session()->put('quotationAddQuotationrowIndexController_storeRow_return_url', url()->previous());
 
 		$quotation = $this->findModel($quotation);
 
@@ -69,7 +74,11 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 							'rules' => 'string|required|in:' . implode(',', array_keys($quotation->getPossibleSellablesByType($type))),
 							'list' => $quotation->getPossibleSellablesByType($type)
 						],
-						'quantity' => ['number' => 'integer|required|min:1']
+						'quantity' => [
+							'type' => 'number',
+							'rules' => 'integer|required|min:1',
+							'default' => 1
+						]
 					]
 				])
 			);
@@ -86,18 +95,13 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 	{
 		$quotation = $this->findModel($quotation);
 
-		//DOGODO TODO agnosticare sta roba
-		$types = [
-			'Contracttype',
-			'VehicleType',
-			'vehicle',
-			'Surveillance',
-			'Hotel',
-			'service',
-			'Rent',
-			'Reimbursement',
-			'ControlRoom'
-		];
+		$types = Sellable::gpc()::query()
+			->select('type')
+			->distinct()
+			->orderBy('type')
+			->pluck('type')
+			->filter()
+			->all();
 
 		$validationParameters = [];
 
@@ -108,10 +112,31 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 			$validationParameters[$type . '.*.quantity'] = 'integer|required|min:1';
 		}
 
+		$validator = Validator::make($request->all(), $validationParameters);
+
+		if ($validator->fails())
+		{
+		    dd([
+		        'request' => $request->all(),
+		        'errors' => $validator->errors()->toArray(),
+		        'firstError' => $validator->errors()->first(),
+		    ]);
+		}
+
+		$parameters = $validator->validated();
+
+		if (count($parameters) == 0)
+		{
+		    dd([
+		        'message' => 'Manca la chiave per questo tipo',
+		        'request' => $request->all(),
+		    ], $parameters, $validationParameters, $request->all());
+		}
+
 		//		dd($request->all());
 		//		dd($validationParameters);
 
-		$parameters = $request->validate($validationParameters);
+		// $parameters = $request->validate($validationParameters);
 
 		if(count($parameters) == 0)
 			dd(['Manca la chiave per questo tipo', $request->all()]);
@@ -126,22 +151,19 @@ class QuotationAddQuotationrowIndexController extends QuotationCRUD
 
 				for ($i = 0; $i < $_parameters['quantity']; $i ++)
 				{
-					$quotationrow = Quotationrow::getProjectClassName()::make();
-					$quotationrow->sellable()->associate($sellable);
-					$quotationrow->quotation()->associate($quotation);
-
-					$quotationrow->type = $sellable->type;
-					$quotationrow->sorting_index = $quotationrowSortingIndex ++;
-					$quotationrow->save();
+					$result = RowAssociatorHelper::associateRowBySellable($quotation, $sellable);
 				}
 			}
 		}
 
-		return view('datatables::utilities.closeIframe', ['reloadAllTables' => true]);
+		if($url = session()->get('quotationAddQuotationrowIndexController_storeRow_return_url'))
+		{
+			session()->forget('quotationAddQuotationrowIndexController_storeRow_return_url');
 
-		return redirect()->to(
-			$quotation->getEditUrl()
-		);
+			return redirect()->to($url);
+		}
+
+		return view('datatables::utilities.closeIframe', ['reloadAllTables' => true]);
 	}
 
 }

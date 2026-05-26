@@ -57,6 +57,16 @@ Route::group([
 
 	Route::group(['prefix' => 'quotations'], function ()
 	{
+		//QuotationrowAddBySupplierController
+		Route::post('{quotation}/add-row-type/{type}/by-supplier/{supplier}', [Products::getController('quotation', 'addQuotationrowBySupplier'), 'addQuotationrowBySupplier'])->name('quotationrows.addQuotationrowBySupplier');
+
+
+		//OrderAddSellableSupplierIndexByTableController
+		Route::match(['get', 'post'], '{quotation}/add-row-by-suppliers/{type}', [Products::getController('quotation', 'addSupplierRows'), 'index'])->name('quotations.addSupplierRows');
+
+		//AttachClientOperatorsToQuotationrowsController
+		Route::get('{quotation}/attach-clientoperators-to-quotationrows', [Products::getController('quotation', 'attachClientOperatorsToQuotationrows'), 'attachClientOperatorsToQuotationrows'])->name('quotations.attachClientOperatorsToQuotationrows');
+
 		//QuotationAddSellableSupplierIndexByTableController
 		Route::post('{quotation}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('quotation', 'addSellableSupplierRows'), 'index'])->name('quotations.addSellableSupplierRows');
 
@@ -145,6 +155,9 @@ Route::group([
 
 	Route::group(['prefix' => 'sellables'], function ()
 	{
+		Route::get('by-type/{type}', [Products::getController('sellable', 'byType'), 'index'])->name('sellables.byType');
+
+
 		Route::get('all-timeline-container', [Products::getController('sellable', 'globalTimeline'), 'container'])->name('sellables.globalTimelineContainer');
 		Route::get('all-timeline', [Products::getController('sellable', 'globalTimeline'), 'timeline'])->name('sellables.globalTimeline');
 
@@ -327,6 +340,9 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		//OrderrowAddBySupplierController
+		Route::post('{order}/add-row-type/{type}/by-supplier/{supplier}', [Products::getController('order', 'addOrderrowBySupplier'), 'addOrderrowBySupplier'])->name('orderrows.addOrderrowBySupplier');
+
 		Route::get('awaiting', [Products::getController('order', 'awaiting'), 'index'])->name('orders.awaiting');
 
 		Route::get('calendar', [Products::getController('order', 'calendar'), 'index'])->name('orders.calendar.index');
@@ -395,7 +411,7 @@ Route::group([
 		Route::match(['get', 'post'], '{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
 
 		//OrderAddSellableSupplierIndexByTableController
-		Route::match(['get', 'post'], '{order}/add-row-by-suppliers', [Products::getController('order', 'addSupplierRows'), 'index'])->name('orders.addSupplierRows');
+		Route::match(['get', 'post'], '{order}/add-row-by-suppliers/{type}', [Products::getController('order', 'addSupplierRows'), 'index'])->name('orders.addSupplierRows');
 
 		// Route::match(['get', 'post'], '{order}/add-row-by-sellable-suppliers/type/{type}', [Products::getController('order', 'addSellableSupplierRows'), 'index'])->name('orders.addSellableSupplierRows');
 
@@ -450,7 +466,7 @@ Route::group([
 
 
 
-
+		//OrderrowBulkEditUpdateController
 		Route::post('/bulk-edit', [Products::getController('orderrow', 'bulkEdit'), 'bulkEdit'])->name('orderrows.bulkEdit');
 		Route::put('/bulk-updae', [Products::getController('orderrow', 'bulkEdit'), 'bulkUpdate'])->name('orderrows.bulkUpdate');
 
@@ -465,6 +481,8 @@ Route::group([
 
 		//OrderrowFindOrAssociateSupplierController
 		Route::get('{orderrow}/find-or-associate-supplier', [Products::getController('orderrow', 'findOrAssociateSupplier'), 'index'])->name('orderrows.findOrAssociateSupplier');
+
+		//OrderrowFindOrAssociateSupplierController
 		Route::get('{orderrow}/associate-supplier-to-sellable-by-orderrow/{supplier}', [Products::getController('orderrow', 'findOrAssociateSupplier'), 'store'])->name('orderrows.associateSupplierToSellable');
 
 		Route::get('', [Products::getController('orderrow', 'index'), 'index'])->name('orderrows.index');

@@ -16,29 +16,7 @@ trait RowContainerRowCopyTrait
 
 	public function getTableToRefresh($type)
 	{
-		//DOGODO TODO agnosticare sta roba
-		if ($type == 'Hotel')
-			return ['hotelRows'];
-
-		//				else if ($type == '')
-		//					$tablesToRefresh = ['operatorRows'];
-		//
-		//				else if ($type == '')
-		//					$tablesToRefresh = ['vehicleRows'];
-		//
-		//				else if ($type == '')
-		//					$tablesToRefresh = ['surveillanceRows'];
-		//
-		//		else if ($type == '')
-		//			$tablesToRefresh = ['rentRows'];
-		//
-		//		else if ($type == '')
-		//			$tablesToRefresh = ['controlRoomRows'];
-		//
-		//		else if ($type == '')
-		//			$tablesToRefresh = ['reimbursementRows'];
-
-		dd('gestire gli altri tipi: ' . $type);
+		return cconfig('products.tablesToRefreshByType.' . $type);
 	}
 
 	public function getLastRowByType(ProductPackageBaseRowcontainerModel $rowContainer, string $type) : ? ProductPackageBaseRowModel

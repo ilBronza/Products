@@ -14,4 +14,5 @@ class Order extends SellableOrder
 	{
 		return OrderExtraFields::class;
 	}
+
 }

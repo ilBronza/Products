@@ -42,9 +42,15 @@ class QuotationEditUpdateController extends QuotationCRUD
 			$quotation->getChangeClientButton()
 		);
 
-		$this->addNavbarButton(
-			$quotation->getPdfButton()
-		);
+		if(config('products.models.order.buttons.attachClientOperatorsToOrderrows'))
+			$this->addNavbarButton($quotation->getAttachClientOperatorsToQuotationrowsButton());
+
+		$this->addNavbarButton($quotation->getSetGrossWhereMissingToOrderrowsButton());
+
+		if(config('products.printPdfQuotation', false))
+			$this->addNavbarButton(
+				$quotation->getPdfButton()
+			);
 
 		$this->addNavbarButton(
 			$quotation->getResetRowsIndexesButton()
@@ -52,8 +58,6 @@ class QuotationEditUpdateController extends QuotationCRUD
 
 	    if(! $quotation->hasOrder())
 	    {
-//			return redirect()->to($quotation->getShowUrl());
-
 		    if($button = $quotation->getConvertToOrderButton())
 			    $this->addNavbarButton(
 				    $button

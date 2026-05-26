@@ -13,19 +13,20 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 				'defaultWidth' => '2em',
 				'valueAsRowClass' => true
 			],
-			'supplier.target.address.city' => 'flat',
-			'supplier.target.address.province' => 'flat',
-			'supplier.target.operatorContracttypes' => [
+			'supplier.target.operator.address.city' => 'flat',
+			'supplier.target.operator.address.province' => 'flat',
+			'supplier.target.operator.operatorContracttypes' => [
+				'translatedName' => 'Mansioni',
 				'type' => 'iterators.each',
 				'childParameters' => [
 					'type' => 'function',
 					'function' => 'getContracttypeName'
 				],
-				'width' => '450px'
+				'width' => '20em'
 			],
 
-			'supplier.target.validClientOperator.employment.label_text' => 'flat',
-			'supplier.target.validClientOperator.ended_at' => 'dates.date',
+			'supplier.target.operator.validClientOperator.employment.label_text' => 'flat',
+			'supplier.target.operator.validClientOperator.ended_at' => 'dates.date',
 
 			'cost_company_day' => 'numbers.number2',
 			'cost_gross_day' => 'numbers.number2',

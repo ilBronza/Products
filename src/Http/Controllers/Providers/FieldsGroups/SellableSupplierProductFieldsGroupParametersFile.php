@@ -23,7 +23,7 @@ class SellableSupplierProductFieldsGroupParametersFile extends SellableSupplierB
 				'contacttype' => 'backoffice'
 			],
 
-			'cost_company' => 'numbers.price',
+			// 'cost_company' => 'numbers.price',
 		];
 	}
 }

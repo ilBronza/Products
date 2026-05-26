@@ -14,13 +14,13 @@ use IlBronza\Notes\Traits\InteractsWithNotesTrait;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\HasCustomPricesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
-// use IlBronza\Prices\Models\Traits\UpdatePricesOnSaveTrait;
 use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
+use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
 use Illuminate\Support\Collection;
 use function app;
 use function array_filter;
@@ -301,7 +301,10 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 	public function getPriceFieldsForSellable() : array
 	{
-		return $this->getTarget()?->getPriceFieldsForSellable() ?? [];
+		if($target = $this->getTarget())
+			return $target->getPriceFieldsForSellable() ?? [];
+
+		return cconfig('products.models.sellable.customPrices.' . $this->getType());
 	}
 
 	public function getCachedPriceFieldsByType() : array
@@ -319,5 +322,12 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 	public function getContainerModelRelatedTablesToRefresh() : array
 	{
 		return cconfig('products.tablesToRefreshByType.' . $this->getType());
+	}
+
+	static function provideGenericByType(string $type)
+	{
+		$name = cconfig('products.genericSellableName' . $type);
+
+		return SellableCreatorHelper::getOrProvideEmptySellable($name, $type);
 	}
 }

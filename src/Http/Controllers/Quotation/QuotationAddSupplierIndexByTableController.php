@@ -1,15 +1,15 @@
 <?php
 
-namespace IlBronza\Products\Http\Controllers\Order;
+namespace IlBronza\Products\Http\Controllers\Quotation;
 
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\FormField\FormField;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierCRUD;
-use IlBronza\Products\Models\Order;
+use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Sellables\Sellable;
 use Illuminate\Http\Request;
 
-class OrderAddSupplierIndexByTableController extends SupplierCRUD
+class QuotationAddSupplierIndexByTableController extends SupplierCRUD
 {
 	use CRUDIndexTrait;
 
@@ -17,7 +17,7 @@ class OrderAddSupplierIndexByTableController extends SupplierCRUD
 	public $rowSelectCheckboxes = false;
 	public bool|string $caption = false;
 
-	public Order $order;
+	public Quotation $quotation;
 	public string $type;
 
 	public $allowedMethods = ['index'];
@@ -45,11 +45,11 @@ class OrderAddSupplierIndexByTableController extends SupplierCRUD
 	{
 		$getterMethod = "get{$this->type}Suppliers";
 
-		if(method_exists(Order::gpc(), $getterMethod))
+		if(method_exists(Quotation::gpc(), $getterMethod))
 		{
 			app('uikittemplate')->addCustomGetter($getterMethod);
 
-			return Order::gpc()::$getterMethod();
+			return Quotation::gpc()::$getterMethod();
 		}
 
 		$result = $this->getModelClass()::query()
@@ -65,17 +65,17 @@ class OrderAddSupplierIndexByTableController extends SupplierCRUD
 		return $result;
 	}
 
-	public function index(Request $request, $order, $type)
+	public function index(Request $request, $quotation, $type)
 	{
 		$this->type = $type;
-		$this->order = Order::gpc()::find($order);
+		$this->quotation = Quotation::gpc()::find($quotation);
 
 		return $this->_index($request);
 	}
 
 	public function getRowcontainerModel()
 	{
-		return $this->order;
+		return $this->quotation;
 	}
 
 	public function getIndexFieldsArray()

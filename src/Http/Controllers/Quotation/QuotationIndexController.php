@@ -29,7 +29,7 @@ class QuotationIndexController extends QuotationCRUD
 
     public function getIndexElements()
     {
-        $query = $this->getModelClass()::with(
+        $query = $this->getModelClass()::notArchived()->with(
             'project',
             'destination',
             'parent',

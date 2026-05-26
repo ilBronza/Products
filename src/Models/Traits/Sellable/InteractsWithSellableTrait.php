@@ -30,25 +30,20 @@ trait InteractsWithSellableTrait
 			SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
 		});
 
-		//if this has CRUDModelExtraFieldsTrait
-//		if (! in_array('IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait', class_uses(static::class)))
-			static::saved(function($model)
+		static::saved(function($model)
+		{
+			$sellable = SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
+
+			$possibleSuppliers = $model->getPossibleSuppliers();
+
+			foreach($possibleSuppliers as $possibleSupplier)
 			{
-				$sellable = SellableCreatorHelper::getOrCreateSellableByTarget($model, null, $model->getSellableTypeName());
+				$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($possibleSupplier, $sellable);
 
-				$possibleSuppliers = $model->getPossibleSuppliers();
-
-				foreach($possibleSuppliers as $possibleSupplier)
-				{
-					$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($possibleSupplier, $sellable);
-
-					if($sellable->getTarget()?->mustAutomaticallyUpdatePricesBySellable())
-						$sellableSupplier->updatePricesBySellableAndSupplier();
-				}
-
-				// dd($possibleSuppliers);
-
-			});
+				if($sellable->getTarget()?->mustAutomaticallyUpdatePricesBySellable())
+					$sellableSupplier->updatePricesBySellableAndSupplier();
+			}
+		});
 	}
 
 	public function getNameForSellable(...$parameters) : string

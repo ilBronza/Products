@@ -91,6 +91,8 @@ trait SellableSupplierAssignmentTrait
 		if(! $helper = config("products.models.sellableSupplier.fieldsGroupsFiles.{$lcType}"))
 			throw new \Exception('declare helper class in config ' . "products.models.sellableSupplier.fieldsGroupsFiles.{$lcType}");
 
+		app('uikittemplate')->addFieldsGroupsNames($helper);
+
 		return $helper::getFieldsGroupByContainerModel($this->getContainerModelPrefix());
 	}
 

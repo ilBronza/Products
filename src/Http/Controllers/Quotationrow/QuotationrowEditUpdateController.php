@@ -19,7 +19,7 @@ class QuotationrowEditUpdateController extends QuotationrowCRUD
 
     public function getOverriddenEditParametersFile() : string
     {
-        if(! $sellableTarget = $this->getModel()->getSellable()->getTarget())
+        if(! $sellableTarget = $this->getModel()?->getSellable()?->getTarget())
             return $this->getStandardParametersFile();
 
         if(! $packagePrefix = $sellableTarget->getPackageConfigPrefix())

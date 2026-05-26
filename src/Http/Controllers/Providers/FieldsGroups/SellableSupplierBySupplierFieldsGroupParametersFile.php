@@ -19,13 +19,13 @@ class SellableSupplierBySupplierFieldsGroupParametersFile extends CostsFieldsGro
 
                 'cost_company_day' => 'numbers.price',
 
-				// 'prices' => [
-				// 	'type' => 'iterators.each',
-				// 	'childParameters' => [
-				// 		'type' => 'function',
-				// 		'function' => 'getPriceDescriptionString'
-				// 	],
-				// ],
+				'prices' => [
+					'type' => 'iterators.each',
+					'childParameters' => [
+						'type' => 'function',
+						'function' => 'getPriceDescriptionString'
+					],
+				],
 
                 'orderrows_count' => 'flat',
                 'quotationrows_count' => 'flat',

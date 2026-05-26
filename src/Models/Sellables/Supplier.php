@@ -209,6 +209,24 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		return $this->sellableSuppliers()->select('id')->pluck('id')->toArray();
 	}
 
+	public function getAddOrderrowBySupplierUrl()
+	{
+		return app('products')->route('orderrows.addOrderrowBySupplier', [
+			'order' => request()->order,
+			'type' => request()->type,
+			'supplier' => $this->getKey()
+		]);
+	}
+
+	public function getAddQuotationrowBySupplierUrl()
+	{
+		return app('products')->route('quotationrows.addQuotationrowBySupplier', [
+			'quotation' => request()->quotation,
+			'type' => request()->type,
+			'supplier' => $this->getKey()
+		]);
+	}
+
 	public function getAssociateSupplierToSellableByOrderrowUrl()
 	{
 		return app('products')->route('orderrows.associateSupplierToSellable', [

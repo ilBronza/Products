@@ -8,7 +8,9 @@ use IlBronza\Products\Models\ProductPackageBaseRowModel;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
+use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
+use IlBronza\Products\Providers\Helpers\Sellables\SellableSupplierCreatorHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SupplierCreatorHelper;
 use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
@@ -18,6 +20,8 @@ class RowAssociatorHelper
 	public ProductPackageBaseRowcontainerModel $containerModel;
 	public SellableSupplier $sellableSupplier;
 	public Sellable $sellable;
+	public Supplier $supplier;
+	public string $type;
 
 	public ProductPackageBaseRowModel $row;
 
@@ -46,6 +50,17 @@ class RowAssociatorHelper
 		return new static($containerModel, $sellableSupplier);
 	}
 
+	static function createBySupplier(ProductPackageBaseRowcontainerModel $containerModel, Supplier|string $supplier) : static
+	{
+		$helper = new static($containerModel);
+
+		$helper->setSupplier(
+			$supplier
+		);
+
+		return $helper;
+	}
+
 	static function createBySellable(ProductPackageBaseRowcontainerModel $containerModel, Sellable|string $sellable) : static
 	{
 		$helper = new static($containerModel);
@@ -62,6 +77,16 @@ class RowAssociatorHelper
 		$this->sellable = $sellable;
 	}
 
+	public function setSupplier(Supplier $supplier)
+	{
+		$this->supplier = $supplier;
+	}
+
+	public function getSupplier() : ? Supplier
+	{
+		return $this->supplier;
+	}
+
 	static function associateRowBySellable(ProductPackageBaseRowcontainerModel $containerModel, Sellable|string $sellable)
 	{
 		$helper = static::createBySellable($containerModel, $sellable);
@@ -70,6 +95,18 @@ class RowAssociatorHelper
 		$helper->associateSellableToRow();
 
 		$helper->row->save();
+	}
+
+	static function associateRowBySupplier(ProductPackageBaseRowcontainerModel $containerModel, Supplier|string $supplier, string $type)
+	{
+		$sellable = Sellable::provideGenericByType($type);
+
+		if(is_string($supplier))
+			$supplier = Supplier::gpc()::find($supplier);
+
+		$sellableSupplier = SellableSupplierCreatorHelper::getOrCreateSellableSupplier($supplier, $sellable);
+
+		return static::associateRowBySellableSupplier($containerModel, $sellableSupplier);
 	}
 
 	static function associateRowBySellableSupplier(ProductPackageBaseRowcontainerModel $containerModel, SellableSupplier|string $sellableSupplier)
@@ -84,6 +121,11 @@ class RowAssociatorHelper
 		return $this->sellable;
 	}
 
+	public function hasSellable() : bool
+	{
+		return isset($this->sellable);
+	}
+
 	public function getSellableTarget() : ? SellableItemInterface
 	{
 		return $this->getSellable()?->getTarget();
@@ -94,9 +136,20 @@ class RowAssociatorHelper
 		return $this->sellableSupplier;
 	}
 
+	public function setType(string $type)
+	{
+		$this->type = $type;
+	}
+
 	public function getType() : string
 	{
-		return $this->getSellable()->getType();
+		if(isset($this->type))
+			return $this->type;
+
+		if($this->hasSellable())
+			return $this->getSellable()->getType();
+
+		throw new \Exception('non deve succedere');
 	}
 
 	public function addAddedSellableSupplier(SellableSupplier $sellableSupplier)
@@ -181,8 +234,7 @@ class RowAssociatorHelper
 
 	public function makeRow() : static
 	{
-
-        $classMethod = "rowRelationBy{$this->getSellable()->getType()}";
+        $classMethod = "rowRelationBy{$this->getType()}";
 
         $this->row = $this->containerModel->{$classMethod}()->make();
 		// $this->row = $this->containerModel->rows()->make();
@@ -226,7 +278,6 @@ class RowAssociatorHelper
 			$this->containerModel,
 			$this->getType()
 		);
-
 	}
 
 	public function associateContainerToRow()

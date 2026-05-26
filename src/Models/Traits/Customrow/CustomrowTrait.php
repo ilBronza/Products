@@ -105,4 +105,9 @@ trait CustomrowTrait
 	{
 		return $this->client_description;
 	}
+
+	public function getTablesToRefresh() : array
+	{
+		return cconfig('products.tablesToRefreshByType.' . $this->getType());
+	}
 }

@@ -7,7 +7,6 @@ class SellableSupplierRentFieldsGroupParametersFile extends SellableSupplierBase
 	static function getTypedFields(string $containerModel) : array
 	{
 		return [
-			'supplier.target.address.street_string' => 'flat',
 			'supplier.target.address.city' => 'flat',
 			'supplier.target.address.province' => [
 				'type' => 'flat',
@@ -23,7 +22,7 @@ class SellableSupplierRentFieldsGroupParametersFile extends SellableSupplierBase
 				'contacttype' => 'backoffice'
 			],
 
-			'cost_company' => 'numbers.price',
+			// 'cost_company' => 'numbers.price',
 		];
 	}
 }

@@ -17,8 +17,8 @@ class ProjectRelationManager Extends RelationshipsManager
 				'relations' => [
 					'quotations' => config('products.models.quotation.controllers.index'),
 					'orders' => config('products.models.order.controllers.index'),
-					 'client' => config('clients.models.client.controller'),
-					 'notes' => CrudNoteController::class
+					 // 'client' => config('clients.models.client.controller'),
+					 // 'notes' => CrudNoteController::class
 				]
 			]
 		];

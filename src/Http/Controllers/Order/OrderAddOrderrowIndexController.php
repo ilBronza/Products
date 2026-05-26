@@ -76,6 +76,7 @@ class OrderAddOrderrowIndexController extends OrderCRUD
 						'quantity' => [
 							'label' => trans('products::fields.quantity'),
 							'type' => 'number',
+							'default' => 1,
 							'rules'=> 'integer|required|min:1'
 						]
 					]

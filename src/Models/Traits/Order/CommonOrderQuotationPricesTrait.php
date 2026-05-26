@@ -86,6 +86,7 @@ trait CommonOrderQuotationPricesTrait
 		});
 	}
 
+	//total_product_rows_revenue
 	public function getTotalByCustomRowsRevenue(string $customRowsType)
 	{
 		return $this->$customRowsType->sum(function($item)

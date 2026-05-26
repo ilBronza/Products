@@ -55,6 +55,8 @@ class OrderEditUpdateController extends OrderCRUD
 		if(config('products.models.order.buttons.attachClientOperatorsToOrderrows'))
 			$this->addNavbarButton($order->getAttachClientOperatorsToOrderrowsButton());
 
+		$this->addNavbarButton($order->getSetGrossWhereMissingToOrderrowsButton());
+
 		if(config('products.models.order.buttons.freeze'))
 			if (! $order->isFrozen())
 				$this->addNavbarButton($order->getFreezeButton());

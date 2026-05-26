@@ -45,12 +45,10 @@ class SellableCreateStoreController extends SellableCRUD
 		return $this->target;
 	}
 
-	public function getAfterStoredRedirectUrl() {
+	public function getAfterStoredRedirectUrl()
+	{
 		if($target = $this->getTarget())
 			return $target->getEditUrl();
-
-		if($url = $this->getReturnUrl())
-			return $url;
 
 		if($this->isSaveAndNew())
 			return $this->getCreateUrl();
@@ -58,6 +56,15 @@ class SellableCreateStoreController extends SellableCRUD
 		if($this->isSaveAndRefresh())
 			return $this->getRouteUrlByType('edit');
 
-		return $this->getRouteUrlByType('index');
+		$type = $this->getModel()->getType();
+
+		return app('products')->route('sellables.byType', [
+			'type' => $type
+		]);
+
+		// if($url = $this->getReturnUrl())
+		// 	return $url;
+
+		// return $this->getRouteUrlByType('index');
 	}
 }

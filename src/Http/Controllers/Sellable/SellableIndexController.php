@@ -47,6 +47,19 @@ class SellableIndexController extends SellableCRUD
 	        ->withCount('orders')
 	        ->withCount('suppliers');
 
+        if($type = request()->type)
+        {
+            $result->byType($type);
+
+            $translatedType = trans("products::types.{$type}");
+
+            $this->setPageTitle(
+                trans('products::routes.ibProductssellables.byType', [
+                    'type' => $translatedType
+                ])
+            );
+        }
+
         $placeholder = $this->getModelClass()::make();
 
         if(method_exists($placeholder, 'scopeNotArchived'))

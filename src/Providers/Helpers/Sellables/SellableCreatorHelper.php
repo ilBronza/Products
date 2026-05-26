@@ -46,4 +46,17 @@ class SellableCreatorHelper
 
 		return $sellable;
 	}
+
+	static function getOrProvideEmptySellable(string $name, string $type) : Sellable
+	{
+		if($sellable = Sellable::gpc()::where('name', $name)->byType($type)->first())
+			return $sellable;
+
+		$sellable = Sellable::gpc()::make();
+		$sellable->name = $name;
+		$sellable->type = $type;
+		$sellable->save();
+
+		return $sellable;
+	}
 }

@@ -20,11 +20,13 @@ class SellableSupplierEditUpdateController extends SellableSupplierCRUD
 
     public function getOverriddenEditParametersFile() : string
     {
-        if(! $sellableTarget = $this->getModel()->getSellable()->getTarget())
-            return $this->getStandardParametersFile();
+        if(! $sellableTarget = $this->getModel()?->getSellable()?->getTarget())
+            return config('products.models.sellableSupplier.parametersFiles.edit');
+            // return $this->getStandardParametersFile();
 
         if(! $packagePrefix = $sellableTarget->getPackageConfigPrefix())
-            return $this->getStandardParametersFile();
+            return config('products.models.sellableSupplier.parametersFiles.edit');
+            // return $this->getStandardParametersFile();
 
         if($file = config("{$packagePrefix}.models.sellableSupplier.parametersFiles.edit"))
         	return $file;

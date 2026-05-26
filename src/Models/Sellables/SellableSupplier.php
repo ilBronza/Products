@@ -170,7 +170,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	{
 		return $this->belongsTo(
 			config('products.models.supplier.class'),
-		);
+		)->withTrashed();
 	}
 
 	// public function setStandardPrices() : ?Collection

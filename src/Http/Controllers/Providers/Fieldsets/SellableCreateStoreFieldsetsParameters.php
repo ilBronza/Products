@@ -24,7 +24,7 @@ class SellableCreateStoreFieldsetsParameters extends FieldsetParametersFile
 				'translationPrefix' => 'products::fields',
 				'fields' => [
 					'name' => ['text' => 'string|required'],
-					'slug' => ['text' => 'string|nullable'],
+					// 'slug' => ['text' => 'string|nullable'],
 					'type' => [
 						'type' => 'select',
 						'select2' => false,
