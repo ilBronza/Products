@@ -25,7 +25,7 @@ trait CURSORImageTrait
 	public function getPdfSingleRevenue() : string
 	{
 		if($this->pdf_quotation_show_price)
-			return $this->calculated_single_revenue;
+			return $this->getCalculatedSingleRevenue();
 
 		return '-';
 	}
@@ -35,13 +35,18 @@ trait CURSORImageTrait
 		if(! $this->pdf_quotation_show_price)
 			return '-';
 		
-		return ((float) $this->calculated_total_row_revenue) * (((float) $this->calculated_vat / 100) + 1);
+		return ((float) $this->getCalculatedTotalRowRevenue()) * (((float) $this->calculated_vat / 100) + 1);
 	}
 
 	public function getPdfTotalRevenue() : string
 	{
 		if($this->pdf_quotation_show_price)
-			return $this->calculated_total_row_revenue;
+		{
+			if(! $this->hasDiscount())
+				return $this->getCalculatedTotalRowRevenue();
+
+			return $this->getPdfTotalDiscountedString();
+		}
 
 		return '-';		
 	}
@@ -49,7 +54,7 @@ trait CURSORImageTrait
 	public function getPdfVat() : string
 	{
 		if($this->pdf_quotation_show_price)
-			return $this->calculated_vat . ' %';
+			return $this->getCalculatedVat() . ' %';
 
 		return '-';		
 	}

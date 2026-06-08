@@ -93,8 +93,9 @@ Route::group([
 		Route::get('{quotation}/convert-to-order', [Products::getController('quotation', 'convertToOrder'), 'convertToOrder'])->name('quotations.convertToOrder');
 
 		//QuotationDuplicateController
-		Route::post('{quotation}/duplicate', [Products::getController('quotation', 'duplicate'), 'duplicate'])->name('quotations.duplicate');
 		Route::get('{quotation}/duplicate-form', [Products::getController('quotation', 'duplicate'), 'duplicateForm'])->name('quotations.duplicateForm');
+		Route::post('{quotation}/duplicate-relations', [Products::getController('quotation', 'duplicate'), 'selectRelations'])->name('quotations.selectRelations');
+		Route::post('{quotation}/duplicate', [Products::getController('quotation', 'duplicate'), 'duplicate'])->name('quotations.duplicate');
 
 		//QuotationAddQuotationrowIndexByTableController
 		Route::get('{quotation}/add-row-by-type/type/{type}/table', [Products::getController('quotation', 'addQuotationrowsByTable'), 'index'])->name('quotations.addQuotationrowsByTable');
@@ -393,6 +394,12 @@ Route::group([
 		Route::get('{order}/change-client', [Products::getController('order', 'changeClient'), 'edit'])->name('orders.changeClientForm');
 		Route::put('{order}/change-client', [Products::getController('order', 'changeClient'), 'update'])->name('orders.changeClientUpdate');
 
+		//OrderDuplicateController
+		Route::get('{order}/duplicate-form', [Products::getController('order', 'duplicate'), 'duplicateForm'])->name('orders.duplicateForm');
+		//OrderDuplicateController
+		Route::post('{order}/duplicate-relations', [Products::getController('order', 'duplicate'), 'selectRelations'])->name('orders.selectRelations');
+		//OrderDuplicateController
+		Route::post('{order}/duplicate', [Products::getController('order', 'duplicate'), 'duplicate'])->name('orders.duplicate');
 
 		//AddOrderrowBySellableSupplierController
 		Route::get('{order}/add-row-by-sellable-supplier/{sellableSupplier}', [Products::getController('order', 'addOrderrowBySellableSupplier'), 'store'])->name('orders.addSellableSupplierRow');

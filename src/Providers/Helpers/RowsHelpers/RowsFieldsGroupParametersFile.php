@@ -222,4 +222,14 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 
 		return static::addDiscountFields($fields);
 	}
+
+	public function getStandardCostsSummaryFields() : array
+	{
+		return [
+			'calculated_total_row_cost' => 'sum',
+			'calculated_total_row_revenue' => 'sum',
+			'calculated_vat_cost' => 'sum',
+			'discount_neat' => 'sum'
+		];
+	}
 }

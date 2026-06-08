@@ -91,6 +91,11 @@ trait CustomrowTrait
 		return 10;
 	}
 
+	public function getCalculatedVat()
+	{
+		return $this->calculated_vat;
+	}
+
 	public function getCalculatedVatCostAttribute()
 	{
 		return $this->calculated_total_row_revenue * $this->calculated_vat / 100;

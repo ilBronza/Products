@@ -14,7 +14,10 @@ class OrderrowEditUpdateController extends OrderrowCRUD
 
     public function getStandardParametersFile() : string
     {
-        return config('products.models.orderrow.parametersFiles.edit');        
+        if($file = config("products.models.orderrow.parametersFiles.editByType." . $this->getModel()->getType()))
+            return $file;
+
+        return config('products.models.orderrow.parametersFiles.edit');
     }
 
     public function getOverriddenEditParametersFile() : string

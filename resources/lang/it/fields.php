@@ -63,6 +63,8 @@ return [
 	'approve_daily_allowances_costs' => 'Approva diarie',
 	'sellable.type' => 'Tipologia',
 	'sellable.name' => 'Tipologia',
+	'sellable_name' => 'Tipologia',
+	'supplier_name' => 'Fornitore',
 	'orders_count' => 'Ordini',
 	'suppliers_count' => 'Fornitori',
 	'quotations_count' => 'Preventivi',

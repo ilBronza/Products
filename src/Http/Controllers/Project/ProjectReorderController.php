@@ -50,7 +50,7 @@ class ProjectReorderController extends ProjectCRUD
     public function getSortableElements($modelInstance) : Collection
     {
         //usare modelinstance per avere i suoi figli (per coerenza)
-        return $this->getModelClass()::byClient($this->client)->get();
+        return $this->getModelClass()::byClient($this->client)->withCount(['orders', 'quotations'])->get();
     }
 
     public function reorderByClient(Request $request, $client)

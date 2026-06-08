@@ -57,7 +57,8 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 
 		$result = [
 			'translationPrefix' => 'products::fields',
-			'fields' => $fields
+			'fields' => $fields,
+			'summary' => $helper->getStandardCostsSummaryFields(),
 		];
 
 		return $result;

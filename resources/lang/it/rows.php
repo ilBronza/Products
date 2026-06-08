@@ -8,5 +8,7 @@ return [
 	'vehicleRows' => 'Automezzi',
 	'productRows' => 'Prodotti',
 	'operatorRows' => 'Operatori',
+	'orderrows' => 'Righe commessa',
+	'quotationrows' => 'Righe preventivo',
 	'accessoryRows' => 'Accessori',
 ];

@@ -214,4 +214,19 @@ trait CommonOrderQuotationTrait
 
 		return $this->getClient()?->getRevenueCoefficient() ?? 1;
 	}
+
+	public function getDuplicateUrl() : string
+	{
+		return $this->getKeyedRoute('duplicateForm');
+	}
+
+	public function getDuplicateButton() : Button
+	{
+		return Button::create([
+			'href' => $this->getDuplicateUrl(),
+			'text' => 'crud::buttons.duplicate',
+			'icon' => 'copy'
+		]);
+	}
+
 }

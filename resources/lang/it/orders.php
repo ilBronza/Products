@@ -7,11 +7,23 @@ return [
 	'orders' => 'Commesse',
 	'gantt' => 'Schema Gantt',
 
+	'create' => 'Crea nuova',
+
 	'current' => 'Commesse recenti',
 	'all' => 'Tutte le commesse',
 	'freeze' => 'Consolida valori',
 	'resetRowsIndex' => 'Riduci ordinamenti',
 	'changeClient' => 'Cambia cliente',
+	'duplicateOrder' => 'Duplica commessa :order',
+	'duplicateOrderButton' => 'Duplica commessa',
+	'duplicateSelectRelations' => 'Seleziona cosa duplicare — :order',
+	'duplicateConfirm' => 'Duplica commessa',
+	'duplicateRelationsEmpty' => 'Nessun elemento da duplicare',
+	'duplicateRelations' => [
+		'orderrows' => 'Righe commessa',
+		'notes' => 'Note',
+		'dossiers' => 'Schede / dossier',
+	],
 	'printPdf' => 'Stampa PDF',
 
 	'attachClientOperatorsToOrderrows' => 'Collega rapporti di lavoro mancanti',

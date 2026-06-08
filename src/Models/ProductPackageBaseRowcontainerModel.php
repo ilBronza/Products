@@ -305,6 +305,34 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $total;
 	}
 
+	public function getTotalRevenueBesidesDiscount() : float
+	{
+		if($this->mup_selection == 'mup_forfait')
+		{
+			if(($this->extraFields)&&($this->extraFields->saved_total_revenue !== $this->mup_revenue))
+			{
+				$this->extraFields->saved_total_revenue = $this->mup_revenue ?? 0;
+				$this->extraFields->save();
+			}
+
+			return $this->mup_revenue;
+		}
+
+		$totalRevenue = 0;
+
+		foreach($this->getRowTypeRelationsForTotals() as $rowRelation)
+		{
+			$fieldName = RowsCostsFieldsHelper::getRevenueFieldName($rowRelation);
+
+			$totalRevenue += $this->$fieldName;
+		}
+
+		if($this->mup_selection == 'mup_plus_extra')
+			$totalRevenue += $this->mup_revenue;
+
+		return $totalRevenue;
+	}
+
 	public function getTotalRevenueAttribute()
 	{
 		if($this->mup_selection == 'mup_forfait')
@@ -361,7 +389,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		{
 			foreach($this->$rowRelation as $row)
 			{
-				$vat = $row->calculated_total_row_revenue * ($row->calculated_vat ?? 10) / 100;
+				$vat = $row->getCalculatedTotalRowRevenue() * ($row->calculated_vat ?? 10) / 100;
 
 				$totalVat += $vat;
 			}
@@ -373,6 +401,11 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 	public function getTotalRevenue()
 	{
 		return $this->total_revenue;
+	}
+
+	public function getTotalRevenueBesidesProducts()
+	{
+		return $this->getTotalRevenueBesidesDiscount() - $this->total_product_rows_revenue;
 	}
 
 	//total_cost

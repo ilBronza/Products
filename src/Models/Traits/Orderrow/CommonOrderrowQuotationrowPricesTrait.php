@@ -26,6 +26,13 @@ trait CommonOrderrowQuotationrowPricesTrait
 		$this->casts = array_merge($this->casts, $casts);
 	}
 
+	public function getDiscountNeatAttribute()
+	{
+		return $this->getNeatDiscount(
+			$this->getCalculatedTotalRowRevenueBeforeDiscount()
+		);
+	}
+
 	public function getCostCoefficient() : float
 	{
 		return $this->calculated_cost_coefficient ?? 1;
@@ -94,10 +101,21 @@ trait CommonOrderrowQuotationrowPricesTrait
 		return $this->setCalculateOverrideablePriceValue('total_row_revenue', $value);
 	}
 
+	//calculated_total_row_revenue_before_discount
+	public function getCalculatedTotalRowRevenueBeforeDiscountAttribute() : float
+	{
+		return $this->getCalculateOverrideablePriceValue('total_row_revenue');
+	}
+
+	public function getCalculatedTotalRowRevenueBeforeDiscount() : float
+	{
+		return $this->calculated_total_row_revenue_before_discount;
+	}
+
 	//calculated_total_row_revenue
 	public function getCalculatedTotalRowRevenueAttribute() : float
 	{
-		$totalRowRevenue = $this->getCalculateOverrideablePriceValue('total_row_revenue');
+		$totalRowRevenue = $this->getCalculatedTotalRowRevenueBeforeDiscount();
 
 		if(! $discount = $this->getNeatDiscount($totalRowRevenue))
 			return $totalRowRevenue;

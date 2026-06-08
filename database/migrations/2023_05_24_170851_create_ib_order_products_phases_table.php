@@ -34,7 +34,7 @@ class CreateIbOrderProductsPhasesTable extends Migration
 
             $table->string('workstation_overridden_id', 36)->nullable();
             $table->foreign('workstation_overridden_id')->references('slug')->on(
-                connfig('products.models.workstation.table')
+                config('products.models.workstation.table')
             );
 
             $table->timestamp('started_at')->nullable();

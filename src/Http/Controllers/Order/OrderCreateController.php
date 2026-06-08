@@ -14,4 +14,9 @@ class OrderCreateController extends OrderCRUD
     {
         return config('products.models.order.parametersFiles.create');
     }
+
+    public function getAfterStoredRedirectUrl()
+    {
+        return $this->getModel()->getEditUrl();
+    }
 }

@@ -6,10 +6,7 @@
 	<td class="product-price">
 		{{ $formatEuro($rows->sum(function($row)
 					{
-						if(is_numeric($value = $row->getPdfTotalRevenue()))
-							return $value;
-		
-						return 0;
+						return (float) $row->getCalculatedTotalRowRevenue();
 					})) }}
 	</td>
 	<td> - </td>

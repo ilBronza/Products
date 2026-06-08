@@ -43,6 +43,9 @@ class OrderEditUpdateController extends OrderCRUD
 					$order->getChangeClientButton()
 				);
 
+		if(config('products.models.order.buttons.duplicateOrder'))
+			$this->addNavbarButton($order->getDuplicateButton());
+
 		if(config('products.models.order.buttons.pdfButton'))
 			$this->addNavbarButton($order->getPdfButton());
 
@@ -55,7 +58,7 @@ class OrderEditUpdateController extends OrderCRUD
 		if(config('products.models.order.buttons.attachClientOperatorsToOrderrows'))
 			$this->addNavbarButton($order->getAttachClientOperatorsToOrderrowsButton());
 
-		$this->addNavbarButton($order->getSetGrossWhereMissingToOrderrowsButton());
+		// $this->addNavbarButton($order->getSetGrossWhereMissingToOrderrowsButton());
 
 		if(config('products.models.order.buttons.freeze'))
 			if (! $order->isFrozen())

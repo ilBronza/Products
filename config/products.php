@@ -63,6 +63,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderCalendarController;
 use IlBronza\Products\Http\Controllers\Order\OrderChangeClientController;
 use IlBronza\Products\Http\Controllers\Order\OrderCreateController;
 use IlBronza\Products\Http\Controllers\Order\OrderDeletionController;
+use IlBronza\Products\Http\Controllers\Order\OrderDuplicateController;
 use IlBronza\Products\Http\Controllers\Order\OrderEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderFreezeController;
 use IlBronza\Products\Http\Controllers\Order\OrderHtmlController;
@@ -307,6 +308,7 @@ use IlBronza\Products\Providers\Helpers\Orders\OrderCompletionHelper;
 use IlBronza\Products\Providers\Helpers\Pdf\OrderPdfHelper;
 use IlBronza\Products\Providers\Helpers\Pdf\QuotationPdfHelper;
 use IlBronza\Products\Providers\Helpers\PriceCreatorHelpers\ProductPricesCreatorHelper;
+use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\OrderFreezerHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper;
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
@@ -373,6 +375,30 @@ return [
 		'quotationHelper' => QuotationPdfHelper::class,
 		'orderView' => 'products::pdf.order',
 		'quotationView' => 'products::pdf.quotation',
+	],
+
+	/*
+	| Colonne DB da non copiare quando si duplicano righe commessa/preventivo.
+	| Attivare con useStandardExcludedAttributes nella voce duplicateRelations (handler rows).
+	| Aggiungere excludeRowAttributes / excludeExtraFieldsAttributes per estendere il set.
+	*/
+	'duplicateRowStandardExcludedAttributes' => [
+		'row' => [
+			'price_id',
+			'frozen',
+		],
+		'extraFields' => [
+			'stored_single_cost',
+			'stored_single_revenue',
+			'stored_total_row_cost',
+			'stored_total_row_revenue',
+			'approved_total_row_cost',
+			'approved_total_row_revenue',
+			'discount_neat',
+			'discount_percentage',
+			'cost_coefficient',
+			'revenue_coefficient',
+		],
 	],
 
 	'manageDiaries' => false,
@@ -708,16 +734,33 @@ return [
 				'resetRowsIndexesButton' => false,
 				'htmlPreviewButton' => false,
 				'pdfButton' => false,
-				'changeClient' => false
+				'changeClient' => false,
+				'duplicateOrder' => false
 			],
 			'calendar' => [
 				'colors' => [
 					'ok' => 'green'
 				],
 			],
+			'duplicateRelations' => [
+				'orderrows' => [
+					'handler' => 'rows',
+					'useStandardExcludedAttributes' => true,
+					'eagerLoad' => ['extraFields'],
+					'instanceLabelAttribute' => 'description',
+					'columns' => [
+						['attribute' => 'sorting_index', 'width' => '4em'],
+						['attribute' => 'type'],
+						['attribute' => 'description'],
+						['method' => 'getStartsAt', 'type' => 'date'],
+						['method' => 'getEndsAt', 'type' => 'date'],
+					],
+				],
+			],
 			'helpers' => [
 				'freezerHelper' => OrderFreezerHelper::class,
-				'completionHelper' => OrderCompletionHelper::class
+				'completionHelper' => OrderCompletionHelper::class,
+				'duplicate' => OrderDuplicatorHelper::class,
 			],
 			'controllers' => [
 				'html' => OrderHtmlController::class,
@@ -725,6 +768,7 @@ return [
 				'bulkEdit' => OrderBulkEditUpdateController::class,
 				'bulkUpdate' => OrderBulkEditUpdateController::class,
 				'changeClient' => OrderChangeClientController::class,
+				'duplicate' => OrderDuplicateController::class,
 				'clientArea' => ClientAreaOrderIndexController::class,
 				'addOrderrow' => OrderAddOrderrowIndexController::class,
 				'addOrderrowsByTable' => OrderAddOrderrowIndexByTableController::class,
@@ -945,6 +989,21 @@ return [
 		'quotation' => [
 			'table' => 'products__quotations__quotations',
 			'class' => Quotation::class,
+			'duplicateRelations' => [
+				'quotationrows' => [
+					'handler' => 'rows',
+					'useStandardExcludedAttributes' => true,
+					'eagerLoad' => ['extraFields'],
+					'instanceLabelAttribute' => 'description',
+					'columns' => [
+						['attribute' => 'sorting_index'],
+						['attribute' => 'type'],
+						['attribute' => 'description'],
+						['method' => 'getStartsAt', 'type' => 'date'],
+						['method' => 'getEndsAt', 'type' => 'date'],
+					],
+				],
+			],
 			'helpers' => [
 				'freezerHelper' => QuotationFreezerHelper::class,
 				'duplicate' => QuotationDuplicatorHelper::class,

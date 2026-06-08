@@ -1,6 +1,6 @@
 <?php
 
-namespace IlBronza\Products\Http\Controllers\Quotation;
+namespace IlBronza\Products\Http\Controllers\Order;
 
 use IlBronza\Form\Form;
 use IlBronza\FormField\FormField;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 use function config;
 
-class QuotationDuplicateController extends QuotationCRUD
+class OrderDuplicateController extends OrderCRUD
 {
 	use RowcontainerDuplicateControllerTrait;
 
@@ -17,20 +17,20 @@ class QuotationDuplicateController extends QuotationCRUD
 
 	protected function getRowcontainerModelConfigPrefix() : string
 	{
-		return 'quotation';
+		return 'order';
 	}
 
-	public function duplicateForm($quotation)
+	public function duplicateForm($order)
 	{
-		$quotation = $this->findModel($quotation);
+		$order = $this->findModel($order);
 
 		$form = Form::createFromArray([
-			'action' => $quotation->getKeyedRoute('selectRelations'),
+			'action' => $order->getKeyedRoute('selectRelations'),
 			'method' => 'POST'
 		]);
 
 		$form->setCard();
-		$form->setTitle(trans('products::quotations.duplicateQuotation', ['quotation' => $quotation->getName()]));
+		$form->setTitle(trans('products::orders.duplicateOrder', ['order' => $order->getName()]));
 
 		$form->addFormField(
 			FormField::createFromArray([
@@ -42,31 +42,31 @@ class QuotationDuplicateController extends QuotationCRUD
 		return $form->render();
 	}
 
-	public function selectRelations(Request $request, $quotation)
+	public function selectRelations(Request $request, $order)
 	{
 		$requestParameters = $this->validateDuplicateDateRequest($request);
 
-		$quotation = $this->findModel($quotation);
+		$order = $this->findModel($order);
 
 		return $this->renderSelectRelationsView(
-			$quotation,
+			$order,
 			$requestParameters['event_starts_at'] ?? null,
-			$quotation->getKeyedRoute('duplicate')
+			$order->getKeyedRoute('duplicate')
 		);
 	}
 
-	public function duplicate(Request $request, $quotation)
+	public function duplicate(Request $request, $order)
 	{
 		$requestParameters = $this->validateDuplicateRequest($request);
 
-		$quotation = $this->findModel($quotation);
+		$order = $this->findModel($order);
 
-		$helperClass = config('products.models.quotation.helpers.duplicate');
+		$helperClass = config('products.models.order.helpers.duplicate');
 
-		$helper = new $helperClass($quotation, $requestParameters);
+		$helper = new $helperClass($order, $requestParameters);
 
-		$duplicatedQuotation = $helper->duplicate();
+		$duplicatedOrder = $helper->duplicate();
 
-		return redirect()->to($duplicatedQuotation->getEditUrl());
+		return redirect()->to($duplicatedOrder->getEditUrl());
 	}
 }

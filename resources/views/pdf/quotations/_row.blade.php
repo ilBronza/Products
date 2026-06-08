@@ -29,7 +29,11 @@
 		{{ $formatEuro($row->getPdfSingleRevenue()) }}
 	</td>
 	<td class="total-cost">
+		@if(is_numeric($row->getPdfTotalRevenue()))
 		{{ $formatEuro($row->getPdfTotalRevenue()) }}
+		@else
+		{!! $row->getPdfTotalRevenue() !!}
+		@endif
 	</td>
 	<td class="vat-percent">
 		{{ $row->getPdfVat() }}

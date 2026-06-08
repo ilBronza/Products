@@ -91,7 +91,7 @@ class RowsSellableSupplierAssociatorHelper
 
 		foreach($row->getRowFieldsToStore() as $rowField => $sellableSupplierField)
 		{
-			dd($sellableSupplier->getCasts(), $sellableSupplier->$sellableSupplierField, $sellableSupplierField);
+			// dd($sellableSupplier->getCasts(), $sellableSupplier->$sellableSupplierField, $sellableSupplierField);
 
 			$row->$rowField = $sellableSupplier->$sellableSupplierField;
 		}
