@@ -2,9 +2,8 @@
 
 namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
-use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
-use IlBronza\Products\Providers\Helpers\RowsHelpers\CostsFieldsGroupParametersFile;
+use IlBronza\Products\Providers\Helpers\Permissions\EconomicsPermissionsHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SellablePriceDatatableFieldsHelper;
 use Illuminate\Database\Eloquent\Model;
 
@@ -164,6 +163,35 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 		$fields['mySelfDelete'] = 'links.delete';
 
 		return $fields;
+	}
+
+	static function getCostsFieldsPermissionNames(Model $model) : array
+	{
+		return array_merge(
+			[
+				'calculated_cost_coefficient',
+				'calculated_revenue_coefficient',
+				'calculated_single_cost',
+				'calculated_single_revenue',
+				'calculated_total_row_cost',
+				'calculated_total_row_revenue',
+				'discount_neat',
+				'discount_percentage',
+				'calculated_vat',
+				'calculated_vat_cost',
+			],
+			array_keys(
+				SellablePriceDatatableFieldsHelper::getCalculatedFieldsByModel($model)
+			)
+		);
+	}
+
+	static function finalizeCostsFieldsGroup(array $fieldsGroup, Model $model) : array
+	{
+		return EconomicsPermissionsHelper::mergeInto(
+			$fieldsGroup,
+			static::getCostsFieldsPermissionNames($model)
+		);
 	}
 
 	static function getPriceFields(array $fieldsGroupDefinitions = [])

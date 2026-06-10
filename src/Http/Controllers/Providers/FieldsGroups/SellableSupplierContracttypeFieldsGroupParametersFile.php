@@ -2,8 +2,21 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
+use IlBronza\Products\Providers\Helpers\Permissions\EconomicsPermissionsHelper;
+
 class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupplierBaseFieldsGroupParametersFile
 {
+	static function getFieldsGroupByContainerModel(string $containerModel) : array
+	{
+		return EconomicsPermissionsHelper::mergeInto(
+			parent::getFieldsGroupByContainerModel($containerModel),
+			[
+				'cost_company_day',
+				'cost_gross_day',
+			]
+		);
+	}
+
 	static function getTypedFields(string $containerModel) : array
 	{
 		return [

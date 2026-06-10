@@ -26,11 +26,9 @@ class AccessoryRowsByContainerFieldsGroupParametersFile extends RowsFieldsGroupP
 			$fields,
 		);
 
-		$result = [
+		return static::finalizeCostsFieldsGroup([
 			'translationPrefix' => 'products::fields',
 			'fields' => $fields
-		];
-
-		return $result;
+		], AccessoryType::gpc()::make());
 	}
 }

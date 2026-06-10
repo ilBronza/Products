@@ -476,6 +476,10 @@ return [
 		'accessoryType_accessory' => AccessoryTypeAccessorySellableSupplierPricesHelper::class
 	],
 
+	'roles' => [
+		'economics' => 'economics',
+	],
+
 	'helpers' => [
 		'rowsFieldsGroupParametersFile' => RowsFieldsGroupParametersFile::class,
 		'rowsFieldsetParametersFile' => RowFieldsetParametersFile::class

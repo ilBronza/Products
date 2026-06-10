@@ -2,14 +2,14 @@
 
 namespace IlBronza\Products\Http\Controllers\Providers\FieldsGroups;
 
-use IlBronza\Clients\Models\Client;
 use IlBronza\Datatables\Providers\FieldsGroupParametersFile;
+use IlBronza\Products\Providers\Helpers\Permissions\EconomicsPermissionsHelper;
 
 class QuotationrowFieldsGroupParametersFile extends FieldsGroupParametersFile
 {
     static function getFieldsGroup() : array
     {
-        return [
+        return EconomicsPermissionsHelper::mergeInto([
             'translationPrefix' => 'products::fields',
             'fields' =>
             [
@@ -25,6 +25,9 @@ class QuotationrowFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'cost_company' => 'flat',
                 'client_price' => 'flat',
             ]
-        ];
+        ], [
+            'cost_company',
+            'client_price',
+        ]);
     }
 }

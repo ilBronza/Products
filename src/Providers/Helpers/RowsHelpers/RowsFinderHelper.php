@@ -3,19 +3,57 @@
 namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
 use App\Http\Controllers\CustomRows\Hotel\HotelOrderrow;
+use App\Http\Controllers\CustomRows\Hotel\HotelQuotationrow;
 use App\Http\Controllers\CustomRows\Reimbursement\ReimbursementOrderrow;
+use App\Http\Controllers\CustomRows\Reimbursement\ReimbursementQuotationrow;
 use Carbon\Carbon;
 use IlBronza\Operators\Models\Sellables\OperatorOrderrow;
+use IlBronza\Operators\Models\Sellables\OperatorQuotationrow;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\ProductOrderrow;
+use IlBronza\Products\Models\Sellables\ProductQuotationrow;
 use IlBronza\Vehicles\Models\Sellables\VehicleOrderrow;
+use IlBronza\Vehicles\Models\Sellables\VehicleQuotationrow;
 use Illuminate\Support\Collection;
 use function dd;
 
 class RowsFinderHelper
 {
+	static function getQuotationCompositeRowCollectionByIds(array|Collection $ids, array $relations = []) : Collection
+	{
+		$elements = collect();
+
+		foreach([
+			OperatorQuotationrow::gpc(),
+			ReimbursementQuotationrow::gpc(),
+			ProductQuotationrow::gpc(),
+			VehicleQuotationrow::gpc(),
+			HotelQuotationrow::gpc()
+		] as $type)
+		{
+			{
+				$result = $type::query()->whereIn('id', $ids);
+
+				if($relations)
+					$result->with($relations);
+
+				if($type == OperatorOrderrow::gpc())
+				{
+					$result->with('sellableSupplier.supplier.target.operator.extraFields');
+					$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
+					$result->with('sellableSupplier.supplier.target.operator.user.userdata');
+					$result->with('sellableSupplier.supplier.target.operator.address');
+				}
+
+				$elements = $elements->merge($result->get());
+			}
+		}
+
+		return $elements;
+	}
+
 	static function getCompositeRowCollectionByIds(array|Collection $ids, array $relations = []) : Collection
 	{
 		$elements = collect();

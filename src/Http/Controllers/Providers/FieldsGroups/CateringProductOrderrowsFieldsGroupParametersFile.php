@@ -55,12 +55,10 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 			$fields,
 		);
 
-		$result = [
+		return static::finalizeCostsFieldsGroup([
 			'translationPrefix' => 'products::fields',
 			'fields' => $fields,
 			'summary' => $helper->getStandardCostsSummaryFields(),
-		];
-
-		return $result;
+		], Product::gpc()::make());
 	}
 }

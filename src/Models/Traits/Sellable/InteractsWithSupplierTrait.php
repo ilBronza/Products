@@ -7,6 +7,7 @@ use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
 use IlBronza\Products\Models\Sellables\Supplier;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableSupplierCreatorHelper;
 use IlBronza\Products\Providers\Helpers\Sellables\SupplierCreatorHelper;
@@ -115,14 +116,32 @@ trait InteractsWithSupplierTrait
 		return SellableSupplier::gpc()::select('id')->where('supplier_id', $supplier->getKey())->pluck('id');
 	}
 
+	public function getRowIds(string $class) : Collection
+	{
+		return $class::select('id')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->pluck('id');		
+	}
+
 	public function getOrderrowsForShowRelation() : Collection
 	{
-		return Orderrow::gpc()::with('order.client', 'order.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->get();
+		$rowIds = $this->getRowIds(Orderrow::gpc());
+
+		return RowsFinderHelper::getCompositeRowCollectionByIds(
+			$rowIds,
+			['order.client', 'order.project', 'sellable.target', 'extraFields']
+		);
+		// return Orderrow::gpc()::with('order.client', 'order.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->get();
 	}
 
 	public function getQuotationrowsForShowRelation() : Collection
 	{
-		return Quotationrow::gpc()::with('quotation.client', 'quotation.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->get();
+		// return Quotationrow::gpc()::with('quotation.client', 'quotation.project', 'sellable.target', 'extraFields')->whereIn('sellable_supplier_id', $this->getSellableSuppliersIds())->get();
+
+		$rowIds = $this->getRowIds(Quotationrow::gpc());
+
+		return RowsFinderHelper::getQuotationCompositeRowCollectionByIds(
+			$rowIds,
+			['quotation.client', 'quotation.project', 'sellable.target', 'extraFields'],
+		);
 	}
 
 	protected static function bootInteractsWithSupplierTrait()
