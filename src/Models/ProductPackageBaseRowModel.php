@@ -3,11 +3,11 @@
 namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineItemInterface;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Interfaces\TimelineItemInterface;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
-use IlBronza\CRUD\Traits\Timeline\IsTimelineItemTrait;
+use IlBronza\Timeline\Traits\IsTimelineItemTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Events\ProductPackageBaseRowSavedEvent;
 use IlBronza\Products\Models\Sellables\Sellable;

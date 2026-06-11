@@ -4,9 +4,8 @@ namespace IlBronza\Products\Http\Controllers\Order;
 
 use Carbon\Carbon;
 use IlBronza\Buttons\Button;
-use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineItemCreatorHelper;
-use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
-use IlBronza\CRUD\Traits\Gantt\CRUDHasGanttTrait;
+use IlBronza\Timeline\Helpers\TimelineItemCreatorHelper;
+use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;

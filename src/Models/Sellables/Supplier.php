@@ -2,10 +2,10 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
-use IlBronza\CRUD\Interfaces\GanttTimelineInterface;
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
-use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
-use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
+use IlBronza\Timeline\Interfaces\GanttTimelineInterface;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Traits\GanttTimelineTrait;
+use IlBronza\Timeline\Traits\IsTimelineGroupTrait;
 use IlBronza\Category\Models\Category;
 use IlBronza\Contacts\Models\Traits\InteractsWithContact;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;

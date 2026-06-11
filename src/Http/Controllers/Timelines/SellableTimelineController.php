@@ -2,9 +2,9 @@
 
 namespace IlBronza\Products\Http\Controllers\Timelines;
 
-use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineGroupCreatorHelper;
-use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineItemCreatorHelper;
-use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
+use IlBronza\Timeline\Helpers\TimelineGroupCreatorHelper;
+use IlBronza\Timeline\Helpers\TimelineItemCreatorHelper;
+use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;

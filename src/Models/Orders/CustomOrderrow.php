@@ -27,6 +27,9 @@ abstract class CustomOrderrow extends Orderrow implements CustomRowInterface
 
 	public function getExtraFieldsClass(): ?string
 	{
-		return Orderrow::gpc()::make()->getExtraFieldsClass();
+		if (config('products.models.orderrow.extraFields.enabled', true))
+			return cconfig('products.models.orderrow.extraFields.class');
+
+		return null;
 	}
 }

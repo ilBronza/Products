@@ -2,8 +2,8 @@
 
 namespace IlBronza\Products\Http\Controllers\Timelines;
 
-use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
-use IlBronza\CRUD\Traits\Timeline\GlobalTimelineTrait;
+use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
+use IlBronza\Timeline\Traits\GlobalTimelineTrait;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\Orders\Orderrow;
 

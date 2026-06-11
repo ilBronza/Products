@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Models\Orders;
 
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Interfaces\RowInterface;
 use IlBronza\Products\Models\Order;

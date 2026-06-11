@@ -3,9 +3,9 @@
 namespace IlBronza\Products\Http\Controllers\Supplier;
 
 use Carbon\Carbon;
-use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineGroupCreatorHelper;
-use IlBronza\CRUD\Helpers\TimelineHelpers\TimelineItemCreatorHelper;
-use IlBronza\CRUD\Http\Controllers\Timeline\BaseTimelineController;
+use IlBronza\Timeline\Helpers\TimelineGroupCreatorHelper;
+use IlBronza\Timeline\Helpers\TimelineItemCreatorHelper;
+use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\Supplier;

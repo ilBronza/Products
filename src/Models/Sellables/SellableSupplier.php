@@ -6,7 +6,7 @@ use App\Models\ProjectSpecific\Client;
 use Carbon\Carbon;
 use Exception;
 use IlBronza\Buttons\Button;
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Models\BasePivotModel;
 
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;

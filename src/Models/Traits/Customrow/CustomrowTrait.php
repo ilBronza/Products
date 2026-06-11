@@ -34,7 +34,6 @@ trait CustomrowTrait
 		$casts['client_description'] = ExtraField::class;
 		$casts['quantity_coefficient'] = ExtraField::class;
 
-
 		$casts['pdf_quotation_show'] = ExtraField::class;
 		$casts['pdf_quotation_show_price'] = ExtraField::class;
 		$casts['pdf_quotation_show_quantity'] = ExtraField::class;

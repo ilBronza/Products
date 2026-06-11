@@ -2,12 +2,12 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
-use IlBronza\CRUD\Interfaces\TimelineInterfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\CRUD\Traits\Timeline\GanttTimelineTrait;
-use IlBronza\CRUD\Traits\Timeline\IsTimelineGroupTrait;
+use IlBronza\Timeline\Traits\GanttTimelineTrait;
+use IlBronza\Timeline\Traits\IsTimelineGroupTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
