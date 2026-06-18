@@ -177,22 +177,19 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 
 	public function getTimelineItemActions(? TimelineGroupInterface $groupModel) : array
 	{
-		$result = [];
-
-		$result[] = [
-			'url' => $this->getAssignSellablesupplierUrl(),
-			'text' => 'Cambia fornitore',
-			'target' => 'iframe',
-			'faIcon' => 'shuffle',
+		return [
+			[
+				'url' => $this->getAssignSellablesupplierUrl(),
+				'text' => 'Cambia fornitore',
+				'target' => 'iframe',
+				'faIcon' => 'shuffle',
+			],
+			[
+				'url' => $this->getModelContainer()->getEditUrl(),
+				'text' => 'Vai alla commessa',
+				'faIcon' => 'link',
+			],
 		];
-
-		$result[] = [
-			'url' => $this->getModelContainer()->getEditUrl(),
-			'text' => 'Vai alla commessa',
-			'faIcon' => 'link',
-		];
-
-		return $result;
 	}
 
 	public function getTimelineItemRightLinks(? TimelineGroupInterface $groupModel) : array

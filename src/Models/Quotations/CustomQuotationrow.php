@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Quotations;
 
 use IlBronza\Products\Models\Interfaces\CustomRowInterface;
+use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\Customrow\CustomrowTrait;
@@ -23,6 +24,6 @@ abstract class CustomQuotationrow extends Quotationrow implements CustomRowInter
 
 	public function getExtraFieldsClass(): ?string
 	{
-		return Quotationrow::gpc()::make()->getExtraFieldsClass();
+		return Orderrow::gpc()::make()->getExtraFieldsClass();
 	}
 }
