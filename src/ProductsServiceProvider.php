@@ -53,7 +53,7 @@ class ProductsServiceProvider extends ServiceProvider
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'products');
 		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'products');
 		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+		$this->loadRoutesFrom(__DIR__ . '/../routes/products.php');
 
 		$this->app['router']->aliasMiddleware('products.roles', ProductsMiddlewareRolesPermissions::class);
 
