@@ -108,9 +108,9 @@ class ProductsServiceProvider extends ServiceProvider
 		], 'products.views');*/
 
 		// Publishing assets.
-		/*$this->publishes([
-			__DIR__.'/../resources/assets' => public_path('vendor/ilbronza'),
-		], 'products.views');*/
+		$this->publishes([
+			__DIR__.'/../resources/assets' => base_path('resources'),
+		], 'products.assets');
 
 		// Publishing the translation files.
 		// $this->publishes([
