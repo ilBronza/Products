@@ -124,6 +124,9 @@ Route::group([
 
 	Route::group(['prefix' => 'suppliers'], function ()
 	{
+		Route::get('all-timeline-container', [Products::getController('supplier', 'globalTimeline'), 'container'])->name('suppliers.globalTimelineContainer');
+		Route::get('all-timeline', [Products::getController('supplier', 'globalTimeline'), 'timeline'])->name('suppliers.globalTimeline');
+
 		Route::get('timeline-container/{supplier}', [Products::getController('supplier', 'timeline'), 'container'])->name('suppliers.timelineContainer');
 		Route::get('timeline/{supplier}', [Products::getController('supplier', 'timeline'), 'timeline'])->name('suppliers.timeline');
 
@@ -199,8 +202,8 @@ Route::group([
 
 	Route::group(['prefix' => 'sellable-suppliers'], function ()
 	{
-		Route::get('all-timeline-container', [Products::getController('supplier', 'globalTimeline'), 'container'])->name('suppliers.globalTimelineContainer');
-		Route::get('all-timeline', [Products::getController('supplier', 'globalTimeline'), 'timeline'])->name('suppliers.globalTimeline');
+		Route::get('all-timeline-container', [Products::getController('sellableSupplier', 'globalTimeline'), 'container'])->name('sellableSuppliers.globalTimelineContainer');
+		Route::get('all-timeline', [Products::getController('sellableSupplier', 'globalTimeline'), 'timeline'])->name('sellableSuppliers.globalTimeline');
 
 
 
@@ -357,6 +360,8 @@ Route::group([
 
 		//OrderTimelineController
 		Route::get('timeline-container/{order}/{option?}', [Products::getController('order', 'timeline'), 'container'])->name('orders.timelineContainer');
+		Route::get('timeline/{order}/possible-sellables', [Products::getController('order', 'timeline'), 'getPossibleSellablesArray'])->name('orders.timeline.possibleSellables');
+		Route::post('timeline/{order}/store-row', [Products::getController('order', 'timeline'), 'storeTimelineRow'])->name('orders.timeline.storeRow');
 		Route::get('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
 
 

@@ -5,11 +5,11 @@ namespace IlBronza\Products\Http\Controllers\Timelines;
 use IlBronza\Timeline\Helpers\TimelineGroupCreatorHelper;
 use IlBronza\Timeline\Helpers\TimelineItemCreatorHelper;
 use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\SellableSupplier;
-use IlBronza\Products\Models\Sellables\Supplier;
 use Illuminate\Support\Collection;
 
 class SellableTimelineController extends BaseTimelineController
@@ -50,6 +50,22 @@ class SellableTimelineController extends BaseTimelineController
 		return $this->$method($order);
 	}
 
+	public function getGroupModel($row) : ?TimelineGroupInterface
+	{
+		return $row->getSupplierTimelineGroup();
+	}
+
+	public function createGroupsByRows(Collection $rows) : void
+	{
+		$groupItems = $rows->map(fn($row) => $this->getGroupModel($row))
+			->filter()
+			->unique(fn(TimelineGroupInterface $group) => get_class($group) . ':' . $group->getTimelineGroupId())
+			->values();
+
+		foreach($groupItems as $groupItem)
+			$this->groups[] = TimelineGroupCreatorHelper::createGroupByModel($groupItem);
+	}
+
 	public function getMainTimelineData($sellable, bool $addContainerGantt = false)
 	{
 		$sellable = $this->findModel($sellable);
@@ -57,19 +73,16 @@ class SellableTimelineController extends BaseTimelineController
 
 		$sellableSuppliersIds = SellableSupplier::gpc()::getIdsBySellable($sellable);
 
-		$orderrows = Orderrow::gpc()::whereIn('sellable_supplier_id', $sellableSuppliersIds)->get();
-		$quotationRows = Quotationrow::gpc()::whereIn('sellable_supplier_id', $sellableSuppliersIds)->get();
+		$orderrows = Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->whereIn('sellable_supplier_id', $sellableSuppliersIds)->get();
+		$quotationRows = Quotationrow::gpc()::with('quotation', 'sellable', 'sellableSupplier.supplier.target')->whereIn('sellable_supplier_id', $sellableSuppliersIds)->get();
 
 		$rows = $orderrows->merge($quotationRows);
 
-		$suppliers = Supplier::gpc()::all();
-
-		foreach($suppliers as $supplier)
-			$this->groups[] = TimelineGroupCreatorHelper::createGroupByModel($supplier);
+		$this->createGroupsByRows($rows);
 
 		foreach($rows as $row)
 		{
-			$this->items[] = TimelineItemCreatorHelper::createItemByModel($row, $row->getSupplier());
+			$this->items[] = TimelineItemCreatorHelper::createItemByModel($row, $this->getGroupModel($row));
 
 			// $supplier = $row->getSupplier();
 

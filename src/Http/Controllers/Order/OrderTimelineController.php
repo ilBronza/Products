@@ -4,20 +4,15 @@ namespace IlBronza\Products\Http\Controllers\Order;
 
 use Carbon\Carbon;
 use IlBronza\Buttons\Button;
-use IlBronza\Timeline\Helpers\TimelineItemCreatorHelper;
-use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\Sellables\Sellable;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
-use IlBronza\Timings\Helpers\TimingIntervalsHelper;
+use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use function array_merge;
-use function compact;
-use function view;
 
 class OrderTimelineController extends BaseTimelineController
 {
@@ -33,7 +28,9 @@ class OrderTimelineController extends BaseTimelineController
 	public $allowedMethods = [
 		'timeline',
 		'updateRow',
-		'container'
+		'container',
+		'getPossibleSellablesArray',
+		'storeTimelineRow',
 	];
 
 	public function getEndpoint() : string
@@ -45,9 +42,72 @@ class OrderTimelineController extends BaseTimelineController
 		);
 	}
 
+	public function getPossibleSellablesEndpoint() : ?string
+	{
+		return app('products')->route('orders.timeline.possibleSellables', [
+			'order' => $this->getModel()->getKey(),
+		]);
+	}
+
+	public function getTimelineStoreRowEndpoint() : ?string
+	{
+		return app('products')->route('orders.timeline.storeRow', [
+			'order' => $this->getModel()->getKey(),
+		]);
+	}
+
 	public function findModel(string $key, array $relations = []) : ?Model
 	{
 		return Order::gpc()::find($key);
+	}
+
+	public function getPossibleSellablesArray(Request $request, string $order) : JsonResponse
+	{
+		$this->findModel($order);
+
+		$possibleSellables = Sellable::gpc()::query()
+			->orderBy('name')
+			->get(['id', 'name'])
+			->map(static function (Sellable $sellable) : array
+			{
+				return [
+					'id' => $sellable->getKey(),
+					'name' => $sellable->name,
+				];
+			})
+			->values()
+			->all();
+
+		return response()->json([
+			'possibleSellables' => $possibleSellables,
+		]);
+	}
+
+	public function storeTimelineRow(Request $request, string $order) : JsonResponse
+	{
+		$orderModel = $this->findModel($order);
+
+		$validated = $request->validate([
+			'starts_at' => 'required|date',
+			'ends_at' => 'required|date|after:starts_at',
+			'sellable_id' => 'required|exists:' . Sellable::gpc()::make()->getTable() . ',id',
+		]);
+
+		$sellable = Sellable::gpc()::findOrFail($validated['sellable_id']);
+		$startsAt = Carbon::parse($validated['starts_at'])->timezone(config('app.timezone'));
+		$endsAt = Carbon::parse($validated['ends_at'])->timezone(config('app.timezone'));
+
+		$helper = RowAssociatorHelper::createBySellable($orderModel, $sellable);
+		$helper->makeRow();
+		$helper->associateSellableToRow();
+		$helper->row->starts_at = $startsAt;
+		$helper->row->ends_at = $endsAt;
+		$helper->row->save();
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Riga timeline creata',
+		]);
 	}
 
 	public function getButtons() : Collection

@@ -175,6 +175,11 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		return $this->getSupplier()?->getCssTextColorValue();
 	}
 
+	public function getSupplierTimelineGroup() : ?TimelineGroupInterface
+	{
+		return $this->getSupplier()?->getSupplierTimelineGroup();
+	}
+
 	public function getTimelineItemActions(? TimelineGroupInterface $groupModel) : array
 	{
 		return [
@@ -233,6 +238,9 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 
 	public function getTimelineItemTitle(? TimelineGroupInterface $groupModel) : string
 	{
+		if(method_exists($groupModel, 'getTimelineItemTitleByRow'))
+			return $groupModel->getTimelineItemTitleByRow($this);
+
 		if($groupModel instanceof Sellable)
 			return $this->getSupplierName() ?? 'Nd';
 
@@ -274,6 +282,9 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 			$pieces[] = $value;
 
 		if($value = $this->getSupplierName())
+			$pieces[] = $value;
+
+		if($value = $this->getModelContainer()?->getName())
 			$pieces[] = $value;
 
 		return trim(implode(' - ', $pieces)) ?? 'Nd';

@@ -11,6 +11,7 @@ use IlBronza\Contacts\Models\Traits\InteractsWithContact;
 use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Client;
+use IlBronza\Products\Models\Interfaces\SupplierTimelineGroupProviderInterface;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseModel;
@@ -88,6 +89,14 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 			return $this->target()->first();
 
 		return $this->target;
+	}
+
+	public function getSupplierTimelineGroup() : TimelineGroupInterface
+	{
+		if(($target = $this->getTarget()) instanceof SupplierTimelineGroupProviderInterface)
+			return $target->getSupplierTimelineGroup() ?? $this;
+
+		return $this;
 	}
 
 	public function target()

@@ -32,7 +32,7 @@ use function is_string;
 use function request;
 use function strpos;
 
-class SellableSupplier extends BasePivotModel implements WithPriceInterface, HasWorkingDays
+class SellableSupplier extends BasePivotModel implements WithPriceInterface, HasWorkingDays, TimelineGroupInterface
 {
 	use CRUDUseUuidTrait;
 	use PackagedModelsTrait;
@@ -157,6 +157,44 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	public function getSellableName() : ?string
 	{
 		return $this->getSellable()?->getName();
+	}
+
+	public function getName() : string
+	{
+		return collect([
+			$this->getSellableName(),
+			$this->getSupplier()?->getName()
+		])->filter()->implode(' - ') ?: (string) $this->getKey();
+	}
+
+	public function getTimelineGroupId() : string
+	{
+		return (string) $this->getKey();
+	}
+
+	public function getTimelineGroupName() : string
+	{
+		return $this->getName();
+	}
+
+	public function getTimelineGroupContent() : string
+	{
+		return $this->getName();
+	}
+
+	public function getTimelineGroupCssStyles() : array
+	{
+		return [];
+	}
+
+	public function getTimelineGroupHtmlClasses() : array
+	{
+		return [];
+	}
+
+	public function getTimelineGroupActions() : array
+	{
+		return [];
 	}
 
 	public function sellable() : BelongsTo

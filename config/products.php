@@ -266,6 +266,7 @@ use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalOrderTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableSupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationCreateStoreController;
@@ -1195,6 +1196,7 @@ return [
 				'edit' => SellableSupplierEditUpdateController::class,
 				'update' => SellableSupplierEditUpdateController::class,
 				'destroy' => SellableSupplierDestroyController::class,
+				'globalTimeline' => GlobalSellableSupplierTimelineController::class,
 			]
 		],
 		'sellableOption' => [
