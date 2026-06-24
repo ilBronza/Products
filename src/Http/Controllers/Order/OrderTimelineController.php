@@ -29,7 +29,6 @@ class OrderTimelineController extends BaseTimelineController
 		'timeline',
 		'updateRow',
 		'container',
-		'getPossibleSellablesArray',
 		'storeTimelineRow',
 	];
 
@@ -42,45 +41,9 @@ class OrderTimelineController extends BaseTimelineController
 		);
 	}
 
-	public function getPossibleSellablesEndpoint() : ?string
-	{
-		return app('products')->route('orders.timeline.possibleSellables', [
-			'order' => $this->getModel()->getKey(),
-		]);
-	}
-
-	public function getTimelineStoreRowEndpoint() : ?string
-	{
-		return app('products')->route('orders.timeline.storeRow', [
-			'order' => $this->getModel()->getKey(),
-		]);
-	}
-
 	public function findModel(string $key, array $relations = []) : ?Model
 	{
 		return Order::gpc()::find($key);
-	}
-
-	public function getPossibleSellablesArray(Request $request, string $order) : JsonResponse
-	{
-		$this->findModel($order);
-
-		$possibleSellables = Sellable::gpc()::query()
-			->orderBy('name')
-			->get(['id', 'name'])
-			->map(static function (Sellable $sellable) : array
-			{
-				return [
-					'id' => $sellable->getKey(),
-					'name' => $sellable->name,
-				];
-			})
-			->values()
-			->all();
-
-		return response()->json([
-			'possibleSellables' => $possibleSellables,
-		]);
 	}
 
 	public function storeTimelineRow(Request $request, string $order) : JsonResponse

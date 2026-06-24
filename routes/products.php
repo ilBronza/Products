@@ -360,7 +360,6 @@ Route::group([
 
 		//OrderTimelineController
 		Route::get('timeline-container/{order}/{option?}', [Products::getController('order', 'timeline'), 'container'])->name('orders.timelineContainer');
-		Route::get('timeline/{order}/possible-sellables', [Products::getController('order', 'timeline'), 'getPossibleSellablesArray'])->name('orders.timeline.possibleSellables');
 		Route::post('timeline/{order}/store-row', [Products::getController('order', 'timeline'), 'storeTimelineRow'])->name('orders.timeline.storeRow');
 		Route::get('timeline/{order}/{option?}', [Products::getController('order', 'timeline'), 'timeline'])->name('orders.timeline');
 
