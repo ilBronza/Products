@@ -330,4 +330,5 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 		return SellableCreatorHelper::getOrProvideEmptySellable($name, $type);
 	}
+
 }
