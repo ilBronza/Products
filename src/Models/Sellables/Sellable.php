@@ -2,12 +2,10 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
-use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
-use IlBronza\Timeline\Traits\GanttTimelineTrait;
-use IlBronza\Timeline\Traits\IsTimelineGroupTrait;
+use IlBronza\Category\Models\Category;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
 use IlBronza\Notes\Traits\InteractsWithNotesTrait;
@@ -21,6 +19,9 @@ use IlBronza\Products\Models\Quotations\Quotation;
 use IlBronza\Products\Models\Quotations\Quotationrow;
 use IlBronza\Products\Models\Traits\ProductPackageBaseModelTrait;
 use IlBronza\Products\Providers\Helpers\Sellables\SellableCreatorHelper;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Traits\GanttTimelineTrait;
+use IlBronza\Timeline\Traits\IsTimelineGroupTrait;
 use Illuminate\Support\Collection;
 use function app;
 use function array_filter;
@@ -331,4 +332,10 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return SellableCreatorHelper::getOrProvideEmptySellable($name, $type);
 	}
 
+	public function getPossibleCategoriesValuesArray() : array
+	{
+		$mainCategory = Category::gpc()::provideCategoryByName(config('products.models.sellable.categories.byType.' . lcfirst($this->getType())));
+
+		return $mainCategory->getSelectTreeArray('name', '-', 0, false);
+	}
 }

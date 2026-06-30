@@ -2,91 +2,13 @@
 
 namespace IlBronza\Products\Http\Controllers\Order;
 
-use IlBronza\CRUD\Traits\CRUDIndexTrait;
-use IlBronza\FormField\FormField;
-use IlBronza\Products\Http\Controllers\Supplier\SupplierCRUD;
+use IlBronza\Products\Http\Controllers\Supplier\AddSupplierIndexByTableController;
 use IlBronza\Products\Models\Order;
-use IlBronza\Products\Models\Sellables\Sellable;
-use Illuminate\Http\Request;
 
-class OrderAddSupplierIndexByTableController extends SupplierCRUD
+class OrderAddSupplierIndexByTableController extends AddSupplierIndexByTableController
 {
-	use CRUDIndexTrait;
-
-	public $avoidCreateButton = true;
-	public $rowSelectCheckboxes = false;
-	public bool|string $caption = false;
-
-	public Order $order;
-	public string $type;
-
-	public $allowedMethods = ['index'];
-
-
-	public function addPostFieldsToTable()
+	protected function getRowcontainerModelClass() : string
 	{
-		$generic = Sellable::gpc()::provideGenericByType($this->type);
-
-		$possibleSellablesArray = Sellable::gpc()::notArchived()->orderBy('name')->byType($this->type)->select('name', 'id')->pluck('name', 'id')->toArray();
-
-		$this->getTable()->addPostField(
-			FormField::createFromArray([
-				'label' => 'Servizi/Materiali',
-				'type' => 'select',
-				'multiple' => false,
-				'name' => 'sellable_id',
-				'value' => $generic->getKey(),
-				'list' => $possibleSellablesArray
-			])
-		);
-	}
-
-	public function getIndexElements()
-	{
-		$getterMethod = "get{$this->type}Suppliers";
-
-		if(method_exists(Order::gpc(), $getterMethod))
-		{
-			app('uikittemplate')->addCustomGetter($getterMethod);
-
-			return Order::gpc()::$getterMethod();
-		}
-
-		$result = $this->getModelClass()::query()
-			->whereHas('sellables', function($query)
-			{
-				$query->byType($this->type);
-			})
-			->with([
-				'target.address',
-			])
-			->get();
-
-		return $result;
-	}
-
-	public function index(Request $request, $order, $type)
-	{
-		$this->type = $type;
-		$this->order = Order::gpc()::find($order);
-
-		return $this->_index($request);
-	}
-
-	public function getRowcontainerModel()
-	{
-		return $this->order;
-	}
-
-	public function getIndexFieldsArray()
-	{
-		$type = lcfirst($this->type);
-		
-		if(! $file = config("products.models.supplier.fieldsGroupsFiles.pick.{$type}"))
-			$file = cconfig("products.models.supplier.fieldsGroupsFiles.pick.index");
-
-		return $file::getTracedFieldsGroup(
-			$this->getRowcontainerModel()
-		);
+		return Order::class;
 	}
 }

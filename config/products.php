@@ -1098,6 +1098,11 @@ return [
 		'sellable' => [
 			'table' => 'products__sellables__sellables',
 			'class' => Sellable::class,
+			'categories' => [
+				'byType' => [
+					'product' => 'ProductCategories'
+				]
+			],
 			'availableTypes' => [
 				'material',
 				'asset'

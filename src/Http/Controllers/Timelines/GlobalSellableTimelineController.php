@@ -31,4 +31,11 @@ class GlobalSellableTimelineController extends BaseTimelineController
 		return $this->sendResponse();
 	}
 
+	public function getTimelineCreateRowFormEndpoint() : ?string
+	{
+		return app('operators')->route('operators.timeline.createRowForm', [
+			'iframed' => true,
+		]);
+	}
+
 }
