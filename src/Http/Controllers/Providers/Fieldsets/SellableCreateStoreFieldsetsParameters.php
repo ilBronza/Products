@@ -9,17 +9,46 @@ use function implode;
 
 class SellableCreateStoreFieldsetsParameters extends FieldsetParametersFile
 {
+	public function _getFieldsetsParametersByType(string $type) : array
+	{
+		$possibleCategories = $this->getModel()->getPossibleCategoriesValuesArray($type);
+		$possibleTypesValues = $this->getModel()->getPossibleCreatingTypeValuesArray();
+
+		$result = [
+			'base' => [
+				'translationPrefix' => 'products::fields',
+				'fields' => [
+					'name' => ['text' => 'string|required'],
+					// 'slug' => ['text' => 'string|nullable'],
+					'type' => [
+						'type' => 'hidden',
+						'value' => $type,
+						'rules' => 'string|required|in:' . implode(",", array_keys($possibleTypesValues))
+					],
+					'category' => [
+						'type' => 'select',
+						'multiple' => false,
+						'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
+						'list' => $possibleCategories,
+						'relation' => 'category'
+					],
+				],
+				'width' => ["1-3@l", '1-2@m']
+			]
+		];
+
+		return $result;
+	}
+
 	public function _getFieldsetsParameters() : array
 	{
-		$possibleTypesValues = $this->getModel()->getPossibleTypeValuesArray();
+		if(request()->type)
+			return $this->_getFieldsetsParametersByType(request()->type);
 
-		unset($possibleTypesValues['Contracttype']);
-		unset($possibleTypesValues['material']);
-		unset($possibleTypesValues['asset']);
-		unset($possibleTypesValues['VehicleType']);
-		unset($possibleTypesValues['HotelType']);
+		$possibleTypesValues = $this->getModel()->getPossibleCreatingTypeValuesArray();
+		$possibleCategories = $this->getModel()->getPossibleCategoriesValuesArray();
 
-		return [
+		$result = [
 			'base' => [
 				'translationPrefix' => 'products::fields',
 				'fields' => [
@@ -31,15 +60,18 @@ class SellableCreateStoreFieldsetsParameters extends FieldsetParametersFile
 						'list' => $possibleTypesValues,
 						'rules' => 'string|required|in:' . implode(",", array_keys($possibleTypesValues))
 					],
-//					'category' => [
-//						'type' => 'select',
-//						'multiple' => false,
-//						'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
-//						'relation' => 'category'
-//					],
+					'category' => [
+						'type' => 'select',
+						'multiple' => false,
+						'rules' => 'string|required|exists:' . config('category.models.category.table') . ',id',
+						'list' => $possibleCategories,
+						'relation' => 'category'
+					],
 				],
 				'width' => ["1-3@l", '1-2@m']
 			]
 		];
+
+		return $result;
 	}
 }

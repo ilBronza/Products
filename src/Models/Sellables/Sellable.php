@@ -217,6 +217,19 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return $result;
 	}
 
+	public function getPossibleCreatingTypeValuesArray() : array
+	{
+		$types = config('products.models.sellable.availableCreatingTypes', []);
+
+		$result = [];
+
+		foreach ($types as $type => $available)
+			if($available)
+				$result[$type] = trans('products::sellables.types.' . $type);
+
+		return $result;
+	}
+
 	public function mustAutomaticallyUpdatePrices(): ? bool
 	{
 		return $this->getTarget()?->mustAutomaticallyUpdatePrices();
@@ -332,9 +345,12 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		return SellableCreatorHelper::getOrProvideEmptySellable($name, $type);
 	}
 
-	public function getPossibleCategoriesValuesArray() : array
+	public function getPossibleCategoriesValuesArray(string $type = null) : array
 	{
-		$mainCategory = Category::gpc()::provideCategoryByName(config('products.models.sellable.categories.byType.' . lcfirst($this->getType())));
+		if(! $type)
+			$type = $this->getType();
+
+		$mainCategory = Category::gpc()::provideCategoryByName(config('products.models.sellable.categories.byType.' . lcfirst($type)));
 
 		return $mainCategory->getSelectTreeArray('name', '-', 0, false);
 	}

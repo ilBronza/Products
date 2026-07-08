@@ -8,7 +8,6 @@ class DatatableFieldFindOrAssociateSupplier extends DatatableFieldLink
 {
 	public bool|string $lightbox = true;
 
-	public $defaultWidth = '25px';
 	public $faIcon = 'plus';
 	public ? string $translationPrefix = 'products::datatableFields';
 

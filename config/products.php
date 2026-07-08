@@ -446,7 +446,7 @@ return [
 			'datatableFieldProject' => '18em'
 		],
 		'sellableSuppliers' => [
-			'datatableFieldFindOrAssociateSupplier' => '2em',
+			'datatableFieldFindOrAssociateSupplier' => '3em',
 			'datatableFieldChangeSellableSupplier' => '2em',
 			'datatableFieldPricesList' => 'auto'
 		],
