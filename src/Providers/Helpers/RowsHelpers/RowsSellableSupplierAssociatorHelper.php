@@ -98,7 +98,7 @@ class RowsSellableSupplierAssociatorHelper
 
 		try
 		{
-			$row->save();			
+			$row->save();
 		}
 		catch(\Exception $e)
 		{
