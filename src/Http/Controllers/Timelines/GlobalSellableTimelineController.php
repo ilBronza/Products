@@ -16,6 +16,13 @@ class GlobalSellableTimelineController extends BaseTimelineController
 		return app('products')->route('sellables.globalTimeline');
 	}
 
+	public function getTimelineItemModalEndpoint() : string
+	{
+		return app('operators')->route('contracttypes.timelineModal', [
+			'iframed' => true,
+		]);		
+	}
+
 	public function getMainTimelineData()
 	{
 		$addContainerGantt = true;
@@ -33,9 +40,8 @@ class GlobalSellableTimelineController extends BaseTimelineController
 
 	public function getTimelineCreateRowFormEndpoint() : ?string
 	{
-		return app('operators')->route('operators.timeline.createRowForm', [
+		return app('products')->route('sellables.timeline.createRowFormBySellable', [
 			'iframed' => true,
 		]);
 	}
-
 }

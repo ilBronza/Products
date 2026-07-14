@@ -239,4 +239,9 @@ return [
 	'pdf_quotation_show_quantity' => 'Mostra quantità in PDF',
 
 	'discounts' => 'Sconti',
+
+	'operator_id' => 'Operatore',
+	'sellable_id' => 'Bene/servizio',
+	'authorized' => 'Approvato',
+	'uploaded_files' => 'Files',
 ];

@@ -76,6 +76,8 @@ abstract class AddSupplierIndexByTableController extends SupplierCRUD
 		$this->type = $type;
 		$this->rowcontainer = $this->getRowcontainerModelClass()::gpc()::find($rowcontainer);
 
+		app('uikittemplate')->addBodyHtmlClass("sellabletype-{$type}");
+
 		return $this->_index($request);
 	}
 

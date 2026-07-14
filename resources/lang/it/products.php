@@ -24,4 +24,5 @@ return [
 	'sellable' => 'Bene/servizio',
 	'accessory' => 'Accessori',
 	'accessoryType' => 'Tipologie Accessori',
+	'operatorOrderrow' => 'Operatore'
 ];

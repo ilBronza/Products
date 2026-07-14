@@ -47,7 +47,7 @@ class RowsButtonsHelper
 
 		return static::makeButton(
 			$container->{"getAdd{$type}Url"}(),
-			'products::rows.addRow',
+			"products::rows.addRow{$type}",
 			true
 		);
 	}
@@ -56,7 +56,7 @@ class RowsButtonsHelper
 	{
 		return static::makeButton(
 			$container->getAddRowByTypeUrl($type, true),
-			'products::rows.addTableRow',
+			"products::rows.addTableRow{$type}",
 			true
 		);
 	}
@@ -65,7 +65,7 @@ class RowsButtonsHelper
 	{
 		return static::makeButton(
 			$container->getAddSellableSupplierRowByTypeUrl($type),
-			'products::rows.addSellableSupplierRow',
+			"products::rows.addSellableSupplierRow{$type}",
 			true
 		);
 	}
@@ -74,7 +74,7 @@ class RowsButtonsHelper
 	{
 		return static::makeButton(
 			$container->getAddSupplierRowByTypeUrl($type),
-			'products::rows.addSupplierRow',
+			"products::rows.addSupplierRow{$type}",
 			true
 		);
 	}

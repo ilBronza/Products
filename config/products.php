@@ -88,6 +88,7 @@ use IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowTimelinePopupController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowSplitController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowTimelineUpdateController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
@@ -265,10 +266,15 @@ use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalOrderTimelineController;
-use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableSupplierTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSupplierTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\OrderGenericTimelineCreateRowBySellableController;
+use IlBronza\Products\Http\Controllers\Timelines\OrderTimelineCreateRowBySellableController;
 use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineCreateRowBySellableController;
+use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineCreateRowBySupplierController;
+use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineRowModalController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationCreateStoreController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationDestroyController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationEditUpdateController;
@@ -799,6 +805,8 @@ return [
 				'destroy' => OrderDeletionController::class,
 				'calendar' => OrderCalendarController::class,
 				'timeline' => OrderTimelineController::class,
+				'createRowFormBySellable' => OrderTimelineCreateRowBySellableController::class,
+				'createRowFormByOrder' => OrderGenericTimelineCreateRowBySellableController::class,
 				'globalTimeline' => GlobalOrderTimelineController::class,
 			],
 			'parametersFiles' => [
@@ -834,6 +842,7 @@ return [
                 'getAddBySupplierButton' => true,
             ],
 			'controllers' => [
+				'showTimelinePopup' => OrderrowShowTimelinePopupController::class,
 				'timelineUpdate' => OrderrowTimelineUpdateController::class,
 				'history' => OrderrowHistoryController::class,
 				'reorder' => OrderrowReorderController::class,
@@ -849,6 +858,8 @@ return [
 				'destroy' => OrderrowDestroyController::class,
 				'confirmDestroy' => OrderrowDestroyController::class,
 				'split' => OrderrowSplitController::class,
+
+
 
 				'bulkEdit' => OrderrowBulkEditUpdateController::class
 			],
@@ -1147,6 +1158,9 @@ return [
 				'destroy' => SellableDestroyController::class,
 				'globalTimeline' => GlobalSellableTimelineController::class,
 				'timeline' => SellableTimelineController::class,
+				'timelineModal' => SellableTimelineRowModalController::class,
+				'createRowFormBySupplier' => SellableTimelineCreateRowBySupplierController::class,
+				'createRowFormBySellable' => SellableTimelineCreateRowBySellableController::class,
 			]
 		],
 		'sellableSupplier' => [

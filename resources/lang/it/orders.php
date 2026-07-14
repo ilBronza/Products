@@ -4,6 +4,7 @@ return [
     'orderFromQuotation' => 'Commessa :order da preventivo :quotation',
 	'active' => 'Commesse in produzione',
 	'index' => 'Commesse',
+	'awaiting' => 'In Attesa',
 	'orders' => 'Commesse',
 	'gantt' => 'Schema Gantt',
 

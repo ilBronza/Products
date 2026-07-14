@@ -41,7 +41,7 @@ return [
 
 	'ibProductssellables' => [
 		'index' => 'Indice beni/servizi disponibili',
-		'byType' => 'Indice beni/servizi disponibili per tipo: :type'
+		'byType' => 'Indice beni/servizi disponibili: :type'
 	],
 
 	'ibProductsfinishings' =>[

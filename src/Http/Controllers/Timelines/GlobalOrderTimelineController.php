@@ -16,6 +16,13 @@ class GlobalOrderTimelineController extends BaseTimelineController
 		return app('products')->route('orders.globalTimeline');
 	}
 
+	public function getTimelineItemModalEndpoint() : string
+	{
+		return app('operators')->route('operators.timelineModal', [
+			'iframed' => true,
+		]);		
+	}
+
 	public function getMainTimelineData()
 	{
 		$addContainerGantt = true;
@@ -31,4 +38,10 @@ class GlobalOrderTimelineController extends BaseTimelineController
 		return $this->sendResponse();
 	}
 
+	public function getTimelineCreateRowFormEndpoint() : ?string
+	{
+		return app('products')->route('orders.timeline.createRowFormByOrder', [
+			'iframed' => true,
+		]);
+	}
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomRows\Hotel\HotelQuotationrow;
 use App\Http\Controllers\CustomRows\Reimbursement\ReimbursementOrderrow;
 use App\Http\Controllers\CustomRows\Reimbursement\ReimbursementQuotationrow;
 use Carbon\Carbon;
+use IlBronza\Operators\Models\Operator;
 use IlBronza\Operators\Models\Sellables\OperatorOrderrow;
 use IlBronza\Operators\Models\Sellables\OperatorQuotationrow;
 use IlBronza\Products\Models\Orders\Orderrow;
@@ -21,17 +22,75 @@ use function dd;
 
 class RowsFinderHelper
 {
+	static function getPossibleCustomQuotationrowsClasses() : array
+	{
+		dd('qua mai considerato');
+		// $result = [];
+
+		// foreach(config('products.models.customOrderrows') as $parameters)
+		// 	$result[] = $parameters['class'];
+
+		// return $result;
+	}
+
+	static function getPossibleCustomOrderrowsClasses() : array
+	{
+		$result = [];
+
+		foreach(config('products.models.customOrderrows') as $parameters)
+			$result[] = $parameters['class'];
+
+		return $result;
+	}
+
+	static function getQuotationCustomSpecificRowById(int|string $id, array $relations = []) : ?Quotationrow
+	{
+		// foreach([
+		// 	OperatorQuotationrow::gpc(),
+		// 	ReimbursementQuotationrow::gpc(),
+		// 	ProductQuotationrow::gpc(),
+		// 	VehicleQuotationrow::gpc(),
+		// 	HotelQuotationrow::gpc()
+		// ] as $type)
+
+		foreach($possibleOrderrowsClasses = static::getPossibleCustomQuotationrowsClasses() as $type)
+		{
+			$result = $type::query()->whereKey($id);
+
+			if($relations)
+				$result->with($relations);
+
+			if($type == OperatorQuotationrow::gpc())
+			{
+				if(Operator::gpc()::make()->getExtraFieldsClass())
+					$result->with('sellableSupplier.supplier.target.operator.extraFields');
+				else
+					$result->with('sellableSupplier.supplier.target.operator');
+
+				$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
+				$result->with('sellableSupplier.supplier.target.operator.user.userdata');
+				$result->with('sellableSupplier.supplier.target.operator.address');
+			}
+
+			if($row = $result->first())
+				return $row;
+		}
+
+		return null;
+	}
+
 	static function getQuotationCompositeRowCollectionByIds(array|Collection $ids, array $relations = []) : Collection
 	{
 		$elements = collect();
 
-		foreach([
-			OperatorQuotationrow::gpc(),
-			ReimbursementQuotationrow::gpc(),
-			ProductQuotationrow::gpc(),
-			VehicleQuotationrow::gpc(),
-			HotelQuotationrow::gpc()
-		] as $type)
+		// foreach([
+		// 	OperatorQuotationrow::gpc(),
+		// 	ReimbursementQuotationrow::gpc(),
+		// 	ProductQuotationrow::gpc(),
+		// 	VehicleQuotationrow::gpc(),
+		// 	HotelQuotationrow::gpc()
+		// ] as $type)
+		foreach($possibleOrderrowsClasses = static::getPossibleCustomQuotationrowsClasses() as $type)
 		{
 			{
 				$result = $type::query()->whereIn('id', $ids);
@@ -39,9 +98,13 @@ class RowsFinderHelper
 				if($relations)
 					$result->with($relations);
 
-				if($type == OperatorOrderrow::gpc())
+				if($type == OperatorQuotationrow::gpc())
 				{
-					$result->with('sellableSupplier.supplier.target.operator.extraFields');
+					if(Operator::gpc()::make()->getExtraFieldsClass())
+						$result->with('sellableSupplier.supplier.target.operator.extraFields');
+					else
+						$result->with('sellableSupplier.supplier.target.operator');
+
 					$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
 					$result->with('sellableSupplier.supplier.target.operator.user.userdata');
 					$result->with('sellableSupplier.supplier.target.operator.address');
@@ -54,17 +117,53 @@ class RowsFinderHelper
 		return $elements;
 	}
 
+	static function getCustomSpecificRowById(int|string $id, array $relations = []) : ?Orderrow
+	{
+		// foreach([
+		// 	OperatorOrderrow::gpc(),
+		// 	ReimbursementOrderrow::gpc(),
+		// 	ProductOrderrow::gpc(),
+		// 	VehicleOrderrow::gpc(),
+		// 	HotelOrderrow::gpc()
+		// ] as $type)
+		foreach($possibleOrderrowsClasses = static::getPossibleCustomOrderrowsClasses() as $type)
+		{
+			$result = $type::query()->whereKey($id);
+
+			if($relations)
+				$result->with($relations);
+
+			if($type == OperatorOrderrow::gpc())
+			{
+				if(Operator::gpc()::make()->getExtraFieldsClass())
+					$result->with('sellableSupplier.supplier.target.operator.extraFields');
+				else
+					$result->with('sellableSupplier.supplier.target.operator');
+
+				$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
+				$result->with('sellableSupplier.supplier.target.operator.user.userdata');
+				$result->with('sellableSupplier.supplier.target.operator.address');
+			}
+
+			if($row = $result->first())
+				return $row;
+		}
+
+		return null;
+	}
+
 	static function getCompositeRowCollectionByIds(array|Collection $ids, array $relations = []) : Collection
 	{
 		$elements = collect();
 
-		foreach([
-			OperatorOrderrow::gpc(),
-			ReimbursementOrderrow::gpc(),
-			ProductOrderrow::gpc(),
-			VehicleOrderrow::gpc(),
-			HotelOrderrow::gpc()
-		] as $type)
+		// foreach([
+		// 	OperatorOrderrow::gpc(),
+		// 	ReimbursementOrderrow::gpc(),
+		// 	ProductOrderrow::gpc(),
+		// 	VehicleOrderrow::gpc(),
+		// 	HotelOrderrow::gpc()
+		// ] as $type)
+		foreach($possibleOrderrowsClasses = static::getPossibleCustomOrderrowsClasses() as $type)
 		{
 			{
 				$result = $type::query()->whereIn('id', $ids);
@@ -74,7 +173,11 @@ class RowsFinderHelper
 
 				if($type == OperatorOrderrow::gpc())
 				{
-					$result->with('sellableSupplier.supplier.target.operator.extraFields');
+					if(Operator::gpc()::make()->getExtraFieldsClass())
+						$result->with('sellableSupplier.supplier.target.operator.extraFields');
+					else
+						$result->with('sellableSupplier.supplier.target.operator');
+
 					$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
 					$result->with('sellableSupplier.supplier.target.operator.user.userdata');
 					$result->with('sellableSupplier.supplier.target.operator.address');

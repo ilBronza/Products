@@ -185,6 +185,14 @@ class OrderTimelineController extends BaseTimelineController
 		// ];
 	}
 
+	public function getTimelineCreateRowFormEndpoint() : ?string
+	{
+		return app('products')->route('orders.timeline.createRowFormBySellable', [
+			'order' => $this->getModel()->getKey(),
+			'iframed' => true,
+		]);
+	}
+
 	public function getMainChildrenTimelineData($order)
 	{
 		$order = $this->findModel($order);
@@ -226,17 +234,24 @@ class OrderTimelineController extends BaseTimelineController
 		$this->createItemsByCollectionAndGetter($order->rows, 'getSellable');		
 	}
 
-	public function getMainTimelineData($order, bool $addContainerGantt = false)
+	public function getTimelineItemModalEndpoint() : string
 	{
-		$order = $this->findModel($order);
+		return 'asd';
+		return app('products')->route('orders.timelineModal', [
+			'iframed' => true,
+		]);		
+	}
 
-		$this->_getMainTimelineData($order, $addContainerGantt);
+	public function getMainTimelineData()
+	{
+		$this->_getMainTimelineData($this->order, $addContainerGantt ?? false);
 
 		return $this->sendResponse();
 	}
 
 	public function timeline($order, string $option = 'main')
 	{
+		$this->order = $this->findModel($order);
 		$method = $this->getOptionMethod($option);
 
 		return $this->$method($order);

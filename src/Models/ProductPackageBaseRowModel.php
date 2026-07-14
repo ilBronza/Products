@@ -238,7 +238,7 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 
 	public function getTimelineItemTitle(? TimelineGroupInterface $groupModel) : string
 	{
-		if(method_exists($groupModel, 'getTimelineItemTitleByRow'))
+		if(($groupModel)&&(method_exists($groupModel, 'getTimelineItemTitleByRow')))
 			return $groupModel->getTimelineItemTitleByRow($this);
 
 		if($groupModel instanceof Sellable)

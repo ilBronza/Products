@@ -2,6 +2,6 @@
 
 return [
 	'Product' => 'Servizio/Materiale',
-	'ProductionType' => 'Spese prod',
+	'ProductionType' => 'Spese produzione',
 	'ReimbursementType' => 'Rimborso'
 ];

@@ -159,6 +159,15 @@ Route::group([
 
 	Route::group(['prefix' => 'sellables'], function ()
 	{
+		//OperatorTimelineRowModalController
+		Route::post('timeline-modal', [Products::getController('sellable', 'timelineModal'), 'timelineModal'])->name('sellables.timelineModal');
+
+		//SellableTimelineCreateRowBySellableController
+		Route::get('timeline/create-row-form-by-sellable', [Products::getController('sellable', 'createRowFormBySellable'), 'createRowFormBySellable'])->name('sellables.timeline.createRowFormBySellable');
+
+		//SellableTimelineCreateRowBySupplierController
+		Route::get('{sellable}/timeline/create-row-form-by-supplier', [Products::getController('sellable', 'createRowFormBySupplier'), 'createRowFormBySupplier'])->name('sellables.timeline.createRowFormBySupplier');
+
 		Route::get('by-type/{type}', [Products::getController('sellable', 'byType'), 'index'])->name('sellables.byType');
 
 
@@ -344,6 +353,13 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		Route::get('timeline/create-row-form-by-order', [Products::getController('order', 'createRowFormByOrder'), 'createRowFormByOrder'])->name('orders.timeline.createRowFormByOrder');
+
+		// Route::get('timeline/create-row-form', [Products::getController('order', 'timelineCreateRow'), 'createRowForm'])->name('orders.timeline.createRowForm');
+
+		//OrderTimelineCreateRowBySellableController
+		Route::get('{order}/timeline/create-row-form-by-sellable', [Products::getController('order', 'createRowFormBySellable'), 'createRowFormBySellable'])->name('orders.timeline.createRowFormBySellable');
+
 		//OrderrowAddBySupplierController
 		Route::post('{order}/add-row-type/{type}/by-supplier/{supplier}', [Products::getController('order', 'addOrderrowBySupplier'), 'addOrderrowBySupplier'])->name('orderrows.addOrderrowBySupplier');
 
@@ -459,6 +475,8 @@ Route::group([
 	{
 		Route::group(['prefix' => 'timeline'], function ()
 		{
+			Route::get('{orderrow}/show-popup', [Products::getController('orderrow', 'showTimelinePopup'), 'showTimelinePopup'])->name('orderrows.showTimelinePopup');
+
 			Route::put('{orderrow}/update', [
 				Products::getController('orderrow', 'timelineUpdate'),
 				'update'

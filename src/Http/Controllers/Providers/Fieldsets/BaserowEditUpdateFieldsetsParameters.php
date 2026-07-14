@@ -110,6 +110,7 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'rules' => 'string|nullable|exists:' . config('operators.models.operator.table') . ',id',
 					],
 
+
 					'reimbursement_from_place' => ['text' => 'string|nullable|max:255'],
 					'reimbursement_to_place' => ['text' => 'string|nullable|max:255'],
 					'reimbursement_annotations' => ['text' => 'string|nullable|max:1024'],
