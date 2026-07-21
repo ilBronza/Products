@@ -527,6 +527,7 @@ Route::group([
 		Route::get('{orderrow}/confirm-delete', [Products::getController('orderrow', 'confirmDestroy'), 'confirmDestroy'])->name('orderrows.confirmDestroy');
 
 		Route::get('{orderrow}/split', [Products::getController('orderrow', 'split'), 'store'])->name('orderrows.split');
+		Route::get('{orderrow}/split-weekends', [Products::getController('orderrow', 'splitWeekends'), 'store'])->name('orderrows.splitWeekends');
 
 		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController
 		Route::get('{orderrow}/history', [Products::getController('orderrow', 'history'), 'history'])->name('orderrows.history');

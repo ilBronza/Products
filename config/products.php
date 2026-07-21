@@ -90,6 +90,7 @@ use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowShowTimelinePopupController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowSplitController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowWeekendSplitController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowTimelineUpdateController;
 use IlBronza\Products\Http\Controllers\Packing\PackingDeleteMediaController;
 use IlBronza\Products\Http\Controllers\Packing\PackingEditUpdateController;
@@ -858,6 +859,7 @@ return [
 				'destroy' => OrderrowDestroyController::class,
 				'confirmDestroy' => OrderrowDestroyController::class,
 				'split' => OrderrowSplitController::class,
+				'splitWeekends' => OrderrowWeekendSplitController::class,
 
 
 

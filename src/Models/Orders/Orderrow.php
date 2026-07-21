@@ -86,6 +86,11 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 		return $this->getKeyedRoute('split') . '?closeIframe=1';
 	}
 
+	public function getSplitWeekendsUrl() : string
+	{
+		return $this->getKeyedRoute('splitWeekends') . '?closeIframe=1';
+	}
+
 	public function getDeleteUrl(array $data = []) : string
 	{
 		return $this->getKeyedRoute('destroy', $data);
@@ -100,6 +105,14 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 				'url' => $url,
 				'text' => __('products::orderrows.split'),
 				'faIcon' => 'scissors',
+			];
+		}
+
+		if ($url = $this->getSplitWeekendsUrl()) {
+			$rightLinks[] = [
+				'url' => $url,
+				'text' => __('products::orderrows.splitWeekends'),
+				'faIcon' => 'calendar-week',
 			];
 		}
 
