@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Exception;
 use IlBronza\Buttons\Button;
 use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
+use IlBronza\Timeline\Traits\GanttTimelineTrait;
 use IlBronza\CRUD\Models\BasePivotModel;
 
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
@@ -36,6 +37,7 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 {
 	use CRUDUseUuidTrait;
 	use PackagedModelsTrait;
+	use GanttTimelineTrait;
 
 	use CRUDModelExtraFieldsTrait;
 
@@ -195,6 +197,24 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 	public function getTimelineGroupActions() : array
 	{
 		return [];
+	}
+
+	public function getTimelineGroupGanttUrl() : string
+	{
+		return $this->getGanttUrl();
+	}
+
+	public function getTimelineGroupModalUrl() : string
+	{
+		return 'sostituire con url buona';
+	}
+
+	public function getTimelineBindingDataArray() : array
+	{
+		dd('Dati dal sellableSupplier');
+		return [
+
+		];
 	}
 
 	public function sellable() : BelongsTo

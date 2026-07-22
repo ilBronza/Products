@@ -5,6 +5,7 @@ return [
 	'addSupplierRow' => 'Aggiungi per fornitore',
 	'addRow' => 'Aggiungi riga generica',
 	'addTableRow' => 'Aggiungi riga con ricerca',
+	'addRowSelect' => 'Aggiungi riga da lista',
 	'vehicleRows' => 'Automezzi',
 	'productRows' => 'Prodotti',
 	'operatorRows' => 'Operatori',

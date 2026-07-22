@@ -16,13 +16,6 @@ class GlobalSellableTimelineController extends BaseTimelineController
 		return app('products')->route('sellables.globalTimeline');
 	}
 
-	public function getTimelineItemModalEndpoint() : string
-	{
-		return app('operators')->route('contracttypes.timelineModal', [
-			'iframed' => true,
-		]);		
-	}
-
 	public function getMainTimelineData()
 	{
 		$addContainerGantt = true;

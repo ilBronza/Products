@@ -66,13 +66,6 @@ class SellableTimelineController extends BaseTimelineController
 			$this->groups[] = TimelineGroupCreatorHelper::createGroupByModel($groupItem);
 	}
 
-	public function getTimelineItemModalEndpoint() : string
-	{
-		return app('products')->route('sellables.timelineModal', [
-			'iframed' => true,
-		]);		
-	}
-
 	public function getMainTimelineData()
 	{
 		$sellable = $this->findModel(request()->sellable);

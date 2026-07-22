@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use IlBronza\Timeline\Helpers\TimelineGroupCreatorHelper;
 use IlBronza\Timeline\Helpers\TimelineItemCreatorHelper;
 use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
+use IlBronza\Products\Models\Interfaces\SupplierTimelineTargetInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\Supplier;
@@ -37,8 +38,14 @@ class SupplierTimelineController extends BaseTimelineController
 	public function container($supplier)
 	{
 		$this->setModel(
-			$this->findModel($supplier)
+			$supplierModel = $this->findModel($supplier)
 		);
+
+		//se il target fornisce una timeline dedicata, i vecchi link
+		//verso la timeline generica vengono rediretti su quella
+		if(($target = $supplierModel->getTarget()) instanceof SupplierTimelineTargetInterface)
+			if($url = $target->getSupplierTimelineContainerUrl($supplierModel, request()->input('option')))
+				return redirect()->to($url);
 
 		return $this->returnGanttContainer();
 	}
@@ -58,4 +65,5 @@ class SupplierTimelineController extends BaseTimelineController
 			$this->items[] = TimelineItemCreatorHelper::createItemByModel($row, $row->getSellable());
 
 		return $this->sendResponse();
-	}}
+	}
+}

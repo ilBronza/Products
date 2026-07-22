@@ -176,7 +176,7 @@ class RowContainerDuplicatorHelper
 		return !! stripos($cast, 'date');
 	}
 
-	protected function getRawInsertExcludedAttributes() : array
+	public function getRawInsertExcludedAttributes() : array
 	{
 		return [
 			'id',

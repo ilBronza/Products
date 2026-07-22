@@ -32,6 +32,8 @@ class OrderDuplicateController extends OrderCRUD
 		$form->setCard();
 		$form->setTitle(trans('products::orders.duplicateOrder', ['order' => $order->getName()]));
 
+		$form->addCardClasses(['uk-width-large']);
+
 		$form->addFormField(
 			FormField::createFromArray([
 				'name' => 'event_starts_at',

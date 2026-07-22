@@ -12,6 +12,7 @@ use IlBronza\FileCabinet\Traits\InteractsWithFormTrait;
 use IlBronza\Payments\Models\Traits\InteractsWithPaymenttypes;
 use IlBronza\Products\Models\Client;
 use IlBronza\Products\Models\Interfaces\SupplierTimelineGroupProviderInterface;
+use IlBronza\Products\Models\Interfaces\SupplierTimelineTargetInterface;
 use IlBronza\Products\Models\Interfaces\SupplierInterface;
 use IlBronza\Products\Models\Orders\Orderrow;
 use IlBronza\Products\Models\ProductPackageBaseModel;
@@ -91,12 +92,34 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		return $this->target;
 	}
 
+	/**
+	 * Se il target fornisce una url dedicata per la timeline
+	 * (SupplierTimelineTargetInterface), usa quella.
+	 * Altrimenti fallback sulla timeline generica del package.
+	 */
+	public function getGanttUrl(?string $option = null) : string
+	{
+		if(($target = $this->getTarget()) instanceof SupplierTimelineTargetInterface)
+			if($url = $target->getSupplierTimelineContainerUrl($this, $option))
+				return $url;
+
+		return $this->getKeyedRoute('timelineContainer', ['option' => $option]);
+	}
+
 	public function getSupplierTimelineGroup() : TimelineGroupInterface
 	{
 		if(($target = $this->getTarget()) instanceof SupplierTimelineGroupProviderInterface)
 			return $target->getSupplierTimelineGroup() ?? $this;
 
 		return $this;
+	}
+
+	public function getTimelineBindingDataArray() : array
+	{
+		dd($this);
+		return [
+
+		];
 	}
 
 	public function target()

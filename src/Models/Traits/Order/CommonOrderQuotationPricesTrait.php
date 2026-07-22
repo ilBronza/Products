@@ -54,25 +54,39 @@ trait CommonOrderQuotationPricesTrait
 
 	public function getTotalByCustomRowsCost(string $customRowsType)
 	{
-		return $this->$customRowsType->sum(function($item)
-		{
-			if (! $item->isCostApproved())
-				return 0;
+		return cache()->remember(
+			$this->cacheKey('getTotalByCustomRowsCost' . $customRowsType),
+			3600,
+			function() use($customRowsType)
+			{
+				return $this->$customRowsType->sum(function($item)
+				{
+					if (! $item->isCostApproved())
+						return 0;
 
-			return $item->calculated_total_row_cost;
-		});
+					return $item->calculated_total_row_cost;
+				});				
+			}
+		);
 	}
 
 	//total_product_rows_revenue
 	public function getTotalByCustomRowsRevenue(string $customRowsType)
 	{
-		return $this->$customRowsType->sum(function($item)
-		{
-			if (! $item->isRevenueApproved())
-				return 0;
+		return cache()->remember(
+			$this->cacheKey('getTotalByCustomRowsRevenue' . $customRowsType),
+			3600,
+			function() use($customRowsType)
+			{
+				return $this->$customRowsType->sum(function($item)
+				{
+					if (! $item->isRevenueApproved())
+						return 0;
 
-			return $item->calculated_total_row_revenue;
-		});
+					return $item->calculated_total_row_revenue;
+				});
+			}
+		);
 	}
 
 	public function getMarginByCustomRows(string $customRowsType)

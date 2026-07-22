@@ -180,6 +180,21 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		return $this->getSupplier()?->getSupplierTimelineGroup();
 	}
 
+	public function getTimelineModalButtons() : array
+	{
+		$buttons = [];
+
+		foreach([
+			$this->getSellable(),
+			$this->getSupplier(),
+			$this->getModelContainer()
+		] as $element)
+			if($element)
+				$buttons[] = $element->getGanttButton();
+
+		return $buttons;
+	}
+
 	public function getTimelineItemActions(? TimelineGroupInterface $groupModel) : array
 	{
 		return [
@@ -234,28 +249,6 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 			$subject = $this->getSellable();
 
 		return $subject?->getTarget()?->getCssBackgroundColorValue();
-	}
-
-	public function getTimelineItemTitle(? TimelineGroupInterface $groupModel) : string
-	{
-		if(($groupModel)&&(method_exists($groupModel, 'getTimelineItemTitleByRow')))
-			return $groupModel->getTimelineItemTitleByRow($this);
-
-		if($groupModel instanceof Sellable)
-			return $this->getSupplierName() ?? 'Nd';
-
-		if($groupModel instanceof Supplier)
-			return $this->getSellableName() ?? 'Nd';
-
-		$pieces = [];
-
-		if($value = $this->getSellableName())
-			$pieces[] = $value;
-
-		if($value = $this->getSupplierName())
-			$pieces[] = $value;
-
-		return trim(implode(' - ', $pieces)) ?? 'Nd';
 	}
 
 	public function getSupplierName() : ? string

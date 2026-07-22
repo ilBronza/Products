@@ -3,6 +3,7 @@
 return [
 	'addRow' => 'plus',
 	'addTableRow' => 'plus',
+	'addRowSelect' => 'plus',
 	'addSellableSupplierRow' => 'plus',
 	'addSupplierRow' => 'plus',
 

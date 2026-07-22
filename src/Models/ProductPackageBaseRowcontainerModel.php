@@ -146,6 +146,13 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $this->getKeyedRoute('addRow', $params);
 	}
 
+	public function getAddRowBySellableUrlTemplate() : string
+	{
+		return $this->getKeyedRoute('addRowBySellable', [
+			'sellable' => config('datatables.replace_model_id_string'),
+		]);
+	}
+
 	public function getAddSellableSupplierRowByTypeUrl(string $type)
 	{
 		return $this->getKeyedRoute('addSellableSupplierRows', [
@@ -222,6 +229,14 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		];
 	}
 
+	public function getTimelineBindingDataArray() : array
+	{
+		dd($this->getForeignKey());
+		return [
+
+		];
+	}
+
 	public function getTimelineItemActions(? TimelineGroupInterface $groupModel) : array
 	{
 		return [];
@@ -234,26 +249,6 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		// ];
 
 		// return $result;
-	}
-
-	public function getTimelineItemTitle(? TimelineGroupInterface $groupModel) : string
-	{
-		return $this->getName();
-		// if($groupModel instanceof Sellable)
-		// 	return $this->getSupplierName() ?? 'Nd';
-
-		// if($groupModel instanceof Supplier)
-		// 	return $this->getSellableName() ?? 'Nd';
-
-		// $pieces = [];
-
-		// if($value = $this->getSellableName())
-		// 	$pieces[] = $value;
-
-		// if($value = $this->getSupplierName())
-		// 	$pieces[] = $value;
-
-		// return trim(implode(' - ', $pieces)) ?? 'Nd';
 	}
 
 	public function getTimelineItemGroupId(? TimelineGroupInterface $groupModel) : string
@@ -333,7 +328,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $totalRevenue;
 	}
 
-	public function getTotalRevenueAttribute()
+	public function _getTotalRevenueAttribute()
 	{
 		if($this->mup_selection == 'mup_forfait')
 		{
@@ -372,13 +367,17 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $totalRevenue;
 	}
 
+	public function getTotalRevenueAttribute()
+	{
+		return $this->cacheMethod('_getTotalRevenueAttribute');
+	}
+
 	public function getTotalVat()
 	{
 		return $this->total_vat;
 	}
 
-	//total_vat
-	public function getTotalVatAttribute()
+	public function _getTotalVatAttribute()
 	{
 		$totalVat = 0;
 
@@ -396,6 +395,12 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		}
 
 		return $totalVat;
+	}
+
+	//total_vat
+	public function getTotalVatAttribute()
+	{
+		return $this->cacheMethod('_getTotalVatAttribute');
 	}
 
 	public function getTotalRevenue()

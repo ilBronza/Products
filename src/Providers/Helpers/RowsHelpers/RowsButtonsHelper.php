@@ -4,6 +4,7 @@ namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
 use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Providers\Buttons\AddRowSelectButton;
 
 use function preg_replace;
 use function ucfirst;
@@ -68,6 +69,28 @@ class RowsButtonsHelper
 			"products::rows.addSellableSupplierRow{$type}",
 			true
 		);
+	}
+
+	static function getAddRowSelectButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		$text = "products::rows.addRowSelect{$type}";
+
+		$button = AddRowSelectButton::create([
+			'text' => $text,
+			'icon' => static::iconKeyForText($text),
+		]);
+
+		$button->setSecondary();
+
+		$button->setSellablesList(
+			$container->getPossibleSellablesByType($type)
+		);
+
+		$button->setAssociateUrlTemplate(
+			$container->getAddRowBySellableUrlTemplate()
+		);
+
+		return $button;
 	}
 
 	static function getAddSupplierButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button

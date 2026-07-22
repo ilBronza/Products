@@ -36,7 +36,7 @@ abstract class AddSupplierIndexByTableController extends SupplierCRUD
 
 		$this->getTable()->addPostField(
 			FormField::createFromArray([
-				'label' => 'Servizi/Materiali',
+				'label' => trans('products::types.' . $this->type),
 				'type' => 'select',
 				'multiple' => false,
 				'name' => 'sellable_id',

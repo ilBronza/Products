@@ -87,8 +87,8 @@ return [
 	'quantity_required' => 'Quantità richiesta',
 	'quantity_done' => 'Quantità eseguite',
 	'short_description' => 'Breve descrizione',
-	'parent' => 'Principale',
-	'children' => 'Componenti',
+	'parent' => 'Commessa',
+	'children' => 'Sottocommesse',
 	'gains' => 'Ricavi',
 	'supplier.target' => 'Fornitore',
 	'parameters' => 'Parametri',
@@ -169,7 +169,7 @@ return [
 	'people_coefficient_quantity' => 'Quant.',
 	'people_coefficient_price_coefficient' => 'Coeff.',
 	'phase' => 'Fase',
-	'description' => 'Note interne',
+	'description' => 'Descrizione',
 	'economicals' => 'Costi',
 	'operatorsCosts' => 'Operatori',
 	'productsCosts' => 'Prodotti',
@@ -244,4 +244,6 @@ return [
 	'sellable_id' => 'Bene/servizio',
 	'authorized' => 'Approvato',
 	'uploaded_files' => 'Files',
+
+	'due_date' => 'Data consegna'
 ];

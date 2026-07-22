@@ -354,4 +354,13 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 
 		return $mainCategory->getSelectTreeArray('name', '-', 0, false);
 	}
+
+	public function getTimelineBindingDataArray() : array
+	{
+		dd('Dati dal sellable');
+		return [
+
+		];
+	}
+
 }

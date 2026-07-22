@@ -234,14 +234,6 @@ class OrderTimelineController extends BaseTimelineController
 		$this->createItemsByCollectionAndGetter($order->rows, 'getSellable');		
 	}
 
-	public function getTimelineItemModalEndpoint() : string
-	{
-		return 'asd';
-		return app('products')->route('orders.timelineModal', [
-			'iframed' => true,
-		]);		
-	}
-
 	public function getMainTimelineData()
 	{
 		$this->_getMainTimelineData($this->order, $addContainerGantt ?? false);

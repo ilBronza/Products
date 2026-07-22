@@ -64,6 +64,11 @@ trait CustomrowTrait
 		return RowsButtonsHelper::getAddTypedRowButton($container, static::$typeName);
 	}
 
+	public function getAddRowSelectButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return RowsButtonsHelper::getAddRowSelectButton($container, static::$typeName);
+	}
+
 	public function getAddSellableSupplierButton(ProductPackageBaseRowcontainerModel $container)
 	{
 		return RowsButtonsHelper::getAddSellableSupplierButton($container, static::$typeName);

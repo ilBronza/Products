@@ -24,5 +24,6 @@ return [
 	'sellable' => 'Bene/servizio',
 	'accessory' => 'Accessori',
 	'accessoryType' => 'Tipologie Accessori',
-	'operatorOrderrow' => 'Operatore'
+	'operatorOrderrow' => 'Operatore',
+	'supplier' => 'Fornitore/Operatore'
 ];

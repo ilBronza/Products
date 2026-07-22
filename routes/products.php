@@ -73,6 +73,9 @@ Route::group([
 		//AddQuotationrowBySellableSupplierController
 		Route::get('{quotation}/add-row-by-sellable-supplier/{sellableSupplier}', [Products::getController('quotation', 'addQuotationrowBySellableSupplier'), 'store'])->name('quotations.addSellableSupplierRow');
 
+		//AddQuotationrowBySellableController
+		Route::get('{quotation}/add-row-by-sellable/{sellable}', [Products::getController('quotation', 'addQuotationrowBySellable'), 'store'])->name('quotations.addRowBySellable');
+
 
 
 		//QuotationPdfController
@@ -159,9 +162,6 @@ Route::group([
 
 	Route::group(['prefix' => 'sellables'], function ()
 	{
-		//OperatorTimelineRowModalController
-		Route::post('timeline-modal', [Products::getController('sellable', 'timelineModal'), 'timelineModal'])->name('sellables.timelineModal');
-
 		//SellableTimelineCreateRowBySellableController
 		Route::get('timeline/create-row-form-by-sellable', [Products::getController('sellable', 'createRowFormBySellable'), 'createRowFormBySellable'])->name('sellables.timeline.createRowFormBySellable');
 
@@ -213,6 +213,9 @@ Route::group([
 	{
 		Route::get('all-timeline-container', [Products::getController('sellableSupplier', 'globalTimeline'), 'container'])->name('sellableSuppliers.globalTimelineContainer');
 		Route::get('all-timeline', [Products::getController('sellableSupplier', 'globalTimeline'), 'timeline'])->name('sellableSuppliers.globalTimeline');
+
+		Route::get('timeline-container/{sellableSupplier}', [Products::getController('sellableSupplier', 'timeline'), 'container'])->name('sellableSuppliers.timelineContainer');
+		Route::get('timeline/{sellableSupplier}', [Products::getController('sellableSupplier', 'timeline'), 'timeline'])->name('sellableSuppliers.timeline');
 
 
 
@@ -423,6 +426,9 @@ Route::group([
 
 		//AddOrderrowBySellableSupplierController
 		Route::get('{order}/add-row-by-sellable-supplier/{sellableSupplier}', [Products::getController('order', 'addOrderrowBySellableSupplier'), 'store'])->name('orders.addSellableSupplierRow');
+
+		//AddOrderrowBySellableController
+		Route::get('{order}/add-row-by-sellable/{sellable}', [Products::getController('order', 'addOrderrowBySellable'), 'store'])->name('orders.addRowBySellable');
 
 
 		//OrderAddOrderrowIndexByTableController

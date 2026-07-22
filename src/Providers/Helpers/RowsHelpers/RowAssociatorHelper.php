@@ -87,7 +87,7 @@ class RowAssociatorHelper
 		return $this->supplier;
 	}
 
-	static function associateRowBySellable(ProductPackageBaseRowcontainerModel $containerModel, Sellable|string $sellable)
+	static function associateRowBySellable(ProductPackageBaseRowcontainerModel $containerModel, Sellable|string $sellable) : static
 	{
 		$helper = static::createBySellable($containerModel, $sellable);
 
@@ -95,6 +95,8 @@ class RowAssociatorHelper
 		$helper->associateSellableToRow();
 
 		$helper->row->save();
+
+		return $helper;
 	}
 
 	static function associateRowBySupplier(ProductPackageBaseRowcontainerModel $containerModel, Supplier|string $supplier, string $type)
