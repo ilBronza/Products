@@ -276,6 +276,8 @@ use IlBronza\Products\Http\Controllers\Timelines\GlobalSupplierTimelineControlle
 use IlBronza\Products\Http\Controllers\Timelines\OrderGenericTimelineCreateRowBySellableController;
 use IlBronza\Products\Http\Controllers\Timelines\OrderTimelineCreateRowBySellableController;
 use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\SellablesByOrdersTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\SellablesBySuppliersTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineCreateRowBySellableController;
 use IlBronza\Products\Http\Controllers\Timelines\SellableTimelineCreateRowBySupplierController;
 use IlBronza\Products\Http\Controllers\Workstations\WorkstationCreateStoreController;
@@ -1165,6 +1167,8 @@ return [
 				'update' => SellableEditUpdateController::class,
 				'destroy' => SellableDestroyController::class,
 				'globalTimeline' => GlobalSellableTimelineController::class,
+				'bySuppliersTimeline' => SellablesBySuppliersTimelineController::class,
+				'byOrdersTimeline' => SellablesByOrdersTimelineController::class,
 				'timeline' => SellableTimelineController::class,
 				'createRowFormBySupplier' => SellableTimelineCreateRowBySupplierController::class,
 				'createRowFormBySellable' => SellableTimelineCreateRowBySellableController::class,

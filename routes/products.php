@@ -174,6 +174,12 @@ Route::group([
 		Route::get('all-timeline-container', [Products::getController('sellable', 'globalTimeline'), 'container'])->name('sellables.globalTimelineContainer');
 		Route::get('all-timeline', [Products::getController('sellable', 'globalTimeline'), 'timeline'])->name('sellables.globalTimeline');
 
+		Route::get('timeline-by-suppliers-container/{option?}', [Products::getController('sellable', 'bySuppliersTimeline'), 'container'])->name('sellables.bySuppliersTimelineContainer');
+		Route::get('timeline-by-suppliers/{option?}', [Products::getController('sellable', 'bySuppliersTimeline'), 'timeline'])->name('sellables.bySuppliersTimeline');
+
+		Route::get('timeline-by-orders-container/{option?}', [Products::getController('sellable', 'byOrdersTimeline'), 'container'])->name('sellables.byOrdersTimelineContainer');
+		Route::get('timeline-by-orders/{option?}', [Products::getController('sellable', 'byOrdersTimeline'), 'timeline'])->name('sellables.byOrdersTimeline');
+
 		Route::get('timeline-container/{sellable}', [Products::getController('sellable', 'timeline'), 'container'])->name('sellables.timelineContainer');
 		Route::get('timeline/{sellable}', [Products::getController('sellable', 'timeline'), 'timeline'])->name('sellables.timeline');
 

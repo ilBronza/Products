@@ -2,10 +2,11 @@
 
 namespace IlBronza\Products\Http\Controllers\Timelines;
 
-use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
-use IlBronza\Timeline\Traits\GlobalTimelineTrait;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\Orders\Orderrow;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
+use IlBronza\Timeline\Http\Controllers\BaseTimelineController;
+use IlBronza\Timeline\Traits\GlobalTimelineTrait;
 
 class GlobalOrderTimelineController extends BaseTimelineController
 {
@@ -20,7 +21,11 @@ class GlobalOrderTimelineController extends BaseTimelineController
 	{
 		$addContainerGantt = true;
 
-		$orderrows = Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->get();
+		$ids = Orderrow::gpc()::select('id')->pluck('id');
+
+		$orderrows = RowsFinderHelper::getCompositeRowCollectionByIds($ids);
+
+		// $orderrows = Orderrow::gpc()::with('order', 'sellable', 'sellableSupplier.supplier.target')->get();
 
 		$groupItems = Order::gpc()::whereIn('id', $orderrows->pluck('order_id'))->get();
 

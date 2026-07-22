@@ -7,6 +7,8 @@ use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Events\ProductPackageBaseRowSavedEvent;
+use IlBronza\Products\Helpers\Timelines\SellableOrderGroup;
+use IlBronza\Products\Helpers\Timelines\SellableSupplierGroup;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
@@ -180,6 +182,24 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		return $this->getSupplier()?->getSupplierTimelineGroup();
 	}
 
+	//il figlio passa dal resolver, cosi' l'id del gruppo e' lo stesso
+	//che il controller mette nei nestedGroups del bene
+	public function getSellableSupplierSubgroupTimelineGroup() : SellableSupplierGroup
+	{
+		return SellableSupplierGroup::create(
+			$this->getSellable(),
+			$this->getSupplierTimelineGroup()
+		);
+	}
+
+	public function getSellableOrderSubgroupTimelineGroup() : SellableOrderGroup
+	{
+		return SellableOrderGroup::create(
+			$this->getSellable(),
+			$this->getModelContainer()
+		);
+	}
+
 	public function getTimelineModalButtons() : array
 	{
 		$buttons = [];
@@ -249,6 +269,18 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 			$subject = $this->getSellable();
 
 		return $subject?->getTarget()?->getCssBackgroundColorValue();
+	}
+
+	//sotto bene + fornitore entrambi sono gia' detti dal percorso: resta la commessa
+	public function getTimelineItemTitleForSellableSupplierGroup(SellableSupplierGroup $group) : string
+	{
+		return $this->getModelContainer()?->getName() ?? '';
+	}
+
+	//sotto bene + commessa resta il fornitore
+	public function getTimelineItemTitleForSellableOrderGroup(SellableOrderGroup $group) : string
+	{
+		return $this->getSupplierName() ?? '';
 	}
 
 	public function getSupplierName() : ? string

@@ -41,7 +41,11 @@ return [
 
 	'ibProductssellables' => [
 		'index' => 'Indice beni/servizi disponibili',
-		'byType' => 'Indice beni/servizi disponibili: :type'
+		'byType' => 'Indice beni/servizi disponibili: :type',
+		'globalTimelineContainer' => 'Gantt beni',
+		'bySuppliersTimelineContainer' => 'Gantt beni per fornitore',
+		'byOrdersTimelineContainer' => 'Gantt beni per commessa',
+		'timelineContainer' => 'Gantt :model'
 	],
 
 	'ibProductsfinishings' =>[
