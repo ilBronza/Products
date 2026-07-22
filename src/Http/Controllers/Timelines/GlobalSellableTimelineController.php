@@ -11,8 +11,11 @@ use IlBronza\Timeline\Traits\GlobalTimelineTrait;
 
 class GlobalSellableTimelineController extends BaseTimelineController
 {
-	use GlobalTimelineTrait;
-	use TimelineButtonsTrait;
+	//entrambi i trait portano getButtons(): vince quello coi bottoni veri
+	use GlobalTimelineTrait, TimelineButtonsTrait
+	{
+		TimelineButtonsTrait::getButtons insteadof GlobalTimelineTrait;
+	}
 
 	//senza questo il titolo pagina cerca routes.xxx invece di products::routes.xxx
 	public function getPackageConfigName()
