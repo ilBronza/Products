@@ -27,7 +27,11 @@ return [
 		'addOrderrowsByTable' => 'Aggiungi servizi/beni',
 		'active' => 'Commesse attive',
 		'all' => 'Tutte Commesse',
-		'addSellableSupplierRows' => 'Aggiungi riga specifica'
+		'addSellableSupplierRows' => 'Aggiungi riga specifica',
+		'globalTimelineContainer' => 'Gantt commesse',
+		'bySuppliersTimelineContainer' => 'Gantt commesse per fornitore',
+		'bySellablesTimelineContainer' => 'Gantt commesse per bene',
+		'timelineContainer' => 'Gantt :model'
 	],
 
 	'ibProductsproducts' => [

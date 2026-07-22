@@ -383,6 +383,12 @@ Route::group([
 		Route::get('all-timeline-container', [Products::getController('order', 'globalTimeline'), 'container'])->name('orders.globalTimelineContainer');
 		Route::get('all-timeline', [Products::getController('order', 'globalTimeline'), 'timeline'])->name('orders.globalTimeline');
 
+		Route::get('timeline-by-suppliers-container/{option?}', [Products::getController('order', 'bySuppliersTimeline'), 'container'])->name('orders.bySuppliersTimelineContainer');
+		Route::get('timeline-by-suppliers/{option?}', [Products::getController('order', 'bySuppliersTimeline'), 'timeline'])->name('orders.bySuppliersTimeline');
+
+		Route::get('timeline-by-sellables-container/{option?}', [Products::getController('order', 'bySellablesTimeline'), 'container'])->name('orders.bySellablesTimelineContainer');
+		Route::get('timeline-by-sellables/{option?}', [Products::getController('order', 'bySellablesTimeline'), 'timeline'])->name('orders.bySellablesTimeline');
+
 		//OrderTimelineController
 		Route::get('timeline-container/{order}/{option?}', [Products::getController('order', 'timeline'), 'container'])->name('orders.timelineContainer');
 		Route::post('timeline/{order}/store-row', [Products::getController('order', 'timeline'), 'storeTimelineRow'])->name('orders.timeline.storeRow');

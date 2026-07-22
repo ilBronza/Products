@@ -7,6 +7,8 @@ use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Events\ProductPackageBaseRowSavedEvent;
+use IlBronza\Products\Helpers\Timelines\OrderSellableGroup;
+use IlBronza\Products\Helpers\Timelines\OrderSupplierGroup;
 use IlBronza\Products\Helpers\Timelines\SellableOrderGroup;
 use IlBronza\Products\Helpers\Timelines\SellableSupplierGroup;
 use IlBronza\Products\Models\Sellables\Sellable;
@@ -200,6 +202,22 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		);
 	}
 
+	public function getOrderSupplierSubgroupTimelineGroup() : OrderSupplierGroup
+	{
+		return OrderSupplierGroup::create(
+			$this->getModelContainer(),
+			$this->getSupplierTimelineGroup()
+		);
+	}
+
+	public function getOrderSellableSubgroupTimelineGroup() : OrderSellableGroup
+	{
+		return OrderSellableGroup::create(
+			$this->getModelContainer(),
+			$this->getSellable()
+		);
+	}
+
 	public function getTimelineModalButtons() : array
 	{
 		$buttons = [];
@@ -279,6 +297,18 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 
 	//sotto bene + commessa resta il fornitore
 	public function getTimelineItemTitleForSellableOrderGroup(SellableOrderGroup $group) : string
+	{
+		return $this->getSupplierName() ?? '';
+	}
+
+	//sotto commessa + fornitore resta il bene
+	public function getTimelineItemTitleForOrderSupplierGroup(OrderSupplierGroup $group) : string
+	{
+		return $this->getSellableName() ?? '';
+	}
+
+	//sotto commessa + bene resta il fornitore
+	public function getTimelineItemTitleForOrderSellableGroup(OrderSellableGroup $group) : string
 	{
 		return $this->getSupplierName() ?? '';
 	}

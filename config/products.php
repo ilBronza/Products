@@ -269,6 +269,8 @@ use IlBronza\Products\Http\Controllers\Supplier\SupplierIndexController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierShowController;
 use IlBronza\Products\Http\Controllers\Supplier\SupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalOrderTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\OrdersBySellablesTimelineController;
+use IlBronza\Products\Http\Controllers\Timelines\OrdersBySuppliersTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableSupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\SellableSupplierTimelineController;
 use IlBronza\Products\Http\Controllers\Timelines\GlobalSellableTimelineController;
@@ -814,6 +816,8 @@ return [
 				'createRowFormBySellable' => OrderTimelineCreateRowBySellableController::class,
 				'createRowFormByOrder' => OrderGenericTimelineCreateRowBySellableController::class,
 				'globalTimeline' => GlobalOrderTimelineController::class,
+				'bySuppliersTimeline' => OrdersBySuppliersTimelineController::class,
+				'bySellablesTimeline' => OrdersBySellablesTimelineController::class,
 			],
 			'parametersFiles' => [
 				'create' => OrderCreateFieldsetsParameters::class,
