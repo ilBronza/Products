@@ -17,7 +17,7 @@ class SellableSupplierBySupplierFieldsGroupParametersFile extends CostsFieldsGro
                 'mySelfEdit' => 'links.edit',
 				'sellable.name' => 'flat',
 
-                'cost_company_day' => 'numbers.price',
+                // 'cost_company_day' => 'numbers.price',
 
 				'prices' => [
 					'type' => 'iterators.each',
@@ -27,8 +27,8 @@ class SellableSupplierBySupplierFieldsGroupParametersFile extends CostsFieldsGro
 					],
 				],
 
-                'orderrows_count' => 'flat',
-                'quotationrows_count' => 'flat',
+                // 'orderrows_count' => 'flat',
+                // 'quotationrows_count' => 'flat',
 
                 'mySelfDelete' => 'links.delete'
             ]

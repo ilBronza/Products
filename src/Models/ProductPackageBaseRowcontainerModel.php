@@ -153,6 +153,13 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		]);
 	}
 
+	public function getAddEmptyRowByTypeUrl(string $type) : string
+	{
+		return $this->getKeyedRoute('addEmptyRow', [
+			'type' => $type,
+		]);
+	}
+
 	public function getAddSellableSupplierRowByTypeUrl(string $type)
 	{
 		return $this->getKeyedRoute('addSellableSupplierRows', [

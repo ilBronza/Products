@@ -6,6 +6,7 @@ use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\Products\Casts\StoredOrCalculatedExtraField;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Traits\Orderrow\ExclusiveDiscountFieldsTrait;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 
@@ -64,6 +65,11 @@ trait CustomrowTrait
 		return RowsButtonsHelper::getAddTypedRowButton($container, static::$typeName);
 	}
 
+	public function getAddEmptyRowButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return RowsButtonsHelper::getAddEmptyRowButton($container, static::$typeName);
+	}
+
 	public function getAddRowSelectButton(ProductPackageBaseRowcontainerModel $container)
 	{
 		return RowsButtonsHelper::getAddRowSelectButton($container, static::$typeName);
@@ -118,5 +124,10 @@ trait CustomrowTrait
 	public function getTablesToRefresh() : array
 	{
 		return cconfig('products.tablesToRefreshByType.' . $this->getType());
+	}
+
+	public function getPossibleSellablesArrayValues() : array
+	{
+		return Sellable::gpc()::byType(static::$typeName)->pluck('name', 'id')->toArray();
 	}
 }

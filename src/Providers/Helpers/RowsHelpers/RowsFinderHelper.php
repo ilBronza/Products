@@ -165,26 +165,24 @@ class RowsFinderHelper
 		// ] as $type)
 		foreach($possibleOrderrowsClasses = static::getPossibleCustomOrderrowsClasses() as $type)
 		{
+			$result = $type::query()->whereIn('id', $ids);
+
+			if($relations)
+				$result->with($relations);
+
+			if($type == OperatorOrderrow::gpc())
 			{
-				$result = $type::query()->whereIn('id', $ids);
+				if(Operator::gpc()::make()->getExtraFieldsClass())
+					$result->with('sellableSupplier.supplier.target.operator.extraFields');
+				else
+					$result->with('sellableSupplier.supplier.target.operator');
 
-				if($relations)
-					$result->with($relations);
-
-				if($type == OperatorOrderrow::gpc())
-				{
-					if(Operator::gpc()::make()->getExtraFieldsClass())
-						$result->with('sellableSupplier.supplier.target.operator.extraFields');
-					else
-						$result->with('sellableSupplier.supplier.target.operator');
-
-					$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
-					$result->with('sellableSupplier.supplier.target.operator.user.userdata');
-					$result->with('sellableSupplier.supplier.target.operator.address');
-				}
-
-				$elements = $elements->merge($result->get());
+				$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
+				$result->with('sellableSupplier.supplier.target.operator.user.userdata');
+				$result->with('sellableSupplier.supplier.target.operator.address');
 			}
+
+			$elements = $elements->merge($result->get());
 		}
 
 		return $elements;
@@ -274,5 +272,14 @@ class RowsFinderHelper
 	static function getSortingIndexByType(ProductPackageBaseRowcontainerModel $containerModel, string $type) : int
 	{
 		return ($containerModel->rows()->bySellableType($type)->max('sorting_index') ?? 0) + 1;
+	}
+
+	/**
+	 * Come getSortingIndexByType ma sul campo type della riga:
+	 * serve alle righe che non hanno ancora un sellable associato
+	 **/
+	static function getSortingIndexByRowType(ProductPackageBaseRowcontainerModel $containerModel, string $type) : int
+	{
+		return ($containerModel->rows()->where('type', $type)->max('sorting_index') ?? 0) + 1;
 	}
 }

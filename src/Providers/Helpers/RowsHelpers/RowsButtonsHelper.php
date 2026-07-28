@@ -4,6 +4,7 @@ namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
 use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
+use IlBronza\Products\Providers\Buttons\AddEmptyRowButton;
 use IlBronza\Products\Providers\Buttons\AddRowSelectButton;
 
 use function preg_replace;
@@ -88,6 +89,24 @@ class RowsButtonsHelper
 
 		$button->setAssociateUrlTemplate(
 			$container->getAddRowBySellableUrlTemplate()
+		);
+
+		return $button;
+	}
+
+	static function getAddEmptyRowButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		$text = "products::rows.addEmptyRow{$type}";
+
+		$button = AddEmptyRowButton::create([
+			'text' => $text,
+			'icon' => static::iconKeyForText($text),
+		]);
+
+		$button->setSecondary();
+
+		$button->setCreateUrl(
+			$container->getAddEmptyRowByTypeUrl($type)
 		);
 
 		return $button;

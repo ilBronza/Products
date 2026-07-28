@@ -76,6 +76,9 @@ Route::group([
 		//AddQuotationrowBySellableController
 		Route::get('{quotation}/add-row-by-sellable/{sellable}', [Products::getController('quotation', 'addQuotationrowBySellable'), 'store'])->name('quotations.addRowBySellable');
 
+		//AddQuotationrowEmptyController
+		Route::get('{quotation}/add-empty-row/type/{type}', [Products::getController('quotation', 'addQuotationrowEmpty'), 'store'])->name('quotations.addEmptyRow');
+
 
 
 		//QuotationPdfController
@@ -441,6 +444,9 @@ Route::group([
 
 		//AddOrderrowBySellableController
 		Route::get('{order}/add-row-by-sellable/{sellable}', [Products::getController('order', 'addOrderrowBySellable'), 'store'])->name('orders.addRowBySellable');
+
+		//AddOrderrowEmptyController
+		Route::get('{order}/add-empty-row/type/{type}', [Products::getController('order', 'addOrderrowEmpty'), 'store'])->name('orders.addEmptyRow');
 
 
 		//OrderAddOrderrowIndexByTableController

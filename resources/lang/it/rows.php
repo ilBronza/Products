@@ -6,6 +6,7 @@ return [
 	'addRow' => 'Aggiungi riga generica',
 	'addTableRow' => 'Aggiungi riga con ricerca',
 	'addRowSelect' => 'Aggiungi riga da lista',
+	'addEmptyRow' => 'Aggiungi riga vuota',
 	'vehicleRows' => 'Automezzi',
 	'productRows' => 'Prodotti',
 	'operatorRows' => 'Operatori',

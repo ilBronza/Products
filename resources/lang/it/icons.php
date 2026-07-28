@@ -4,6 +4,7 @@ return [
 	'addRow' => 'plus',
 	'addTableRow' => 'plus',
 	'addRowSelect' => 'plus',
+	'addEmptyRow' => 'plus',
 	'addSellableSupplierRow' => 'plus',
 	'addSupplierRow' => 'plus',
 

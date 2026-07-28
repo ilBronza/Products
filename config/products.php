@@ -76,6 +76,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderTeaserController;
 use IlBronza\Products\Http\Controllers\Order\OrderTimelineController;
 use IlBronza\Products\Http\Controllers\Order\ResetOrderRowsIndexesController;
 use IlBronza\Products\Http\Controllers\Orderrow\AddOrderrowBySellableController;
+use IlBronza\Products\Http\Controllers\Orderrow\AddOrderrowEmptyController;
 use IlBronza\Products\Http\Controllers\Orderrow\AddOrderrowBySellableSupplierController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAddBySupplierController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowAssignSellableSupplierController;
@@ -240,6 +241,7 @@ use IlBronza\Products\Http\Controllers\Quotation\QuotationShowController;
 use IlBronza\Products\Http\Controllers\Quotation\QuotationrowAddBySupplierController;
 use IlBronza\Products\Http\Controllers\Quotation\ResetQuotationRowsIndexesController;
 use IlBronza\Products\Http\Controllers\Quotationrow\AddQuotationrowBySellableController;
+use IlBronza\Products\Http\Controllers\Quotationrow\AddQuotationrowEmptyController;
 use IlBronza\Products\Http\Controllers\Quotationrow\AddQuotationrowBySellableSupplierController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowAssignSellableSupplierController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowCreateStoreController;
@@ -793,6 +795,7 @@ return [
 				'addOrderrowBySupplier' => OrderrowAddBySupplierController::class,
 				'addOrderrowBySellableSupplier' => AddOrderrowBySellableSupplierController::class,
 				'addOrderrowBySellable' => AddOrderrowBySellableController::class,
+				'addOrderrowEmpty' => AddOrderrowEmptyController::class,
 				'addSellableSupplierRows' => OrderAddSellableSupplierIndexByTableController::class,
 				'addSupplierRows' => OrderAddSupplierIndexByTableController::class,
 				'storeRowsBySellableSupplier' => OrderStoreOrderrowsBySellableSupplierController::class,
@@ -851,6 +854,7 @@ return [
                 'getAddRowTableButton' => true,
                 'getAddBySupplierButton' => true,
                 'getAddRowSelectButton' => true,
+                'getAddEmptyRowButton' => true,
             ],
 			'controllers' => [
 				'showTimelinePopup' => OrderrowShowTimelinePopupController::class,
@@ -1068,6 +1072,7 @@ return [
 				'addSellableSupplierRows' => QuotationAddSellableSupplierIndexByTableController::class,
 				'addQuotationrowBySellableSupplier' => AddQuotationrowBySellableSupplierController::class,
 				'addQuotationrowBySellable' => AddQuotationrowBySellableController::class,
+				'addQuotationrowEmpty' => AddQuotationrowEmptyController::class,
 				'index' => QuotationIndexController::class,
 				'current' => QuotationCurrentController::class,
 				'create' => QuotationCreateStoreController::class,
@@ -1087,6 +1092,7 @@ return [
                 'getAddRowTableButton' => true,
                 'getAddBySupplierButton' => true,
                 'getAddRowSelectButton' => true,
+                'getAddEmptyRowButton' => true,
             ],
 			'fieldsGroupsFiles' => [
 				'byQuotation' => QuotationrowByQuotationFieldsGroupParametersFile::class,
