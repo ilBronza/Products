@@ -28,7 +28,7 @@ class FindOrAssociateSupplierController extends CRUDProductPackageController
 
 	public function getIndexElements()
 	{
-		if(($this->sellable->isRentType())||($this->sellable->isReimbursementType()))
+		if(($this->sellable->isProductionType())||($this->sellable->isRentType())||($this->sellable->isReimbursementType()))
 			return Supplier::gpc()::where('target_type', 'Client')->with('target.address')->get();
 
 		return Supplier::gpc()::with('target')->get();
