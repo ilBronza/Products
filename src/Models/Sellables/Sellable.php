@@ -143,6 +143,11 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 		$query->where('type', $type);
 	}
 
+	public function scopeByName($query, string $name)
+	{
+		$query->where('name', $name);
+	}
+
 	public function scopeByTypes($query, array|Collection $types)
 	{
 		$query->whereIn('type', $types);

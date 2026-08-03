@@ -120,4 +120,19 @@ class RowsButtonsHelper
 			true
 		);
 	}
+
+	static function getAssociateOrCreateParentRowByTypeButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		$button = static::makeButton(
+			$container->getAssociateOrCreateParentRowByTypeUrl($type),
+			"products::rows.associateOrCreateParentRowByType{$type}",
+			true
+		);
+
+		$button->setAsIframe();
+		$button->setSubmitTableButton();
+
+		return $button;
+	}
+
 }

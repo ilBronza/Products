@@ -259,6 +259,26 @@ class Supplier extends ProductPackageBaseModel implements GanttTimelineInterface
 		]);
 	}
 
+	public function getAssociateOrCreateParentOrderrowByTypeUrl() : string
+	{
+		return app('products')->route('orders.associateOrCreateParentRowByType.store', [
+			'order' => request()->order,
+			'type' => request()->type,
+			'supplier' => $this->getKey(),
+			'parent_ids' => request()->input('ids', []),
+		]);
+	}
+
+	public function getAssociateOrCreateParentQuotationrowByTypeUrl() : string
+	{
+		return app('products')->route('quotations.associateOrCreateParentRowByType.store', [
+			'quotation' => request()->quotation,
+			'type' => request()->type,
+			'supplier' => $this->getKey(),
+			'parent_ids' => request()->input('ids', []),
+		]);
+	}
+
 	public function getAssociateSupplierToSellableByOrderrowUrl()
 	{
 		return app('products')->route('orderrows.associateSupplierToSellable', [

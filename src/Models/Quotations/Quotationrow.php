@@ -69,4 +69,14 @@ class Quotationrow extends ProductPackageBaseRowModel implements CrudReorderable
 	{
 		return 0;
 	}
+
+	public function genericChildren()
+	{
+		return $this->hasMany(self::class, 'parent_id');
+	}
+
+	public function getGenericParent() : ? self
+	{
+		return $this->genericParent;
+	}
 }

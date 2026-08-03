@@ -176,6 +176,13 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		]);
 	}
 
+	public function getAssociateOrCreateParentRowByTypeUrl(string $type)
+	{
+		return $this->getKeyedRoute('associateOrCreateParentRowByType', [
+			'type' => $type
+		]);
+	}
+
 	public function getStartsAt() : ?Carbon
 	{
 		return $this->starts_at;

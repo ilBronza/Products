@@ -61,6 +61,8 @@ trait UsesProductRowTrait
 			if($productRowPlaceholder->getExtraFieldsClass())
 				$relations[] = 'extraFields';
 
-		return $this->productRows()->with($relations)->get();
+		return $this->productRows()->with($relations)
+			->withCount('genericChildren')
+			->get();
 	}
 }

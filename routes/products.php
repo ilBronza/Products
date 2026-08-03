@@ -365,6 +365,12 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		//OrderAssociateOrCreateParentRowByTypeIndexByTableController
+		Route::match(['get', 'post'], '{order}/associate-or-create-parent-row-by-type/{type}', [Products::getController('order', 'associateOrCreateParentRowByType'), 'index'])->name('orders.associateOrCreateParentRowByType');
+
+		//OrderAssociateOrCreateParentRowByTypeIndexByTableController
+		Route::post('{order}/associate-or-create-parent-row-by-type/{type}/supplier/{supplier}', [Products::getController('order', 'associateOrCreateParentRowByType'), 'store'])->name('orders.associateOrCreateParentRowByType.store');
+
 		Route::get('timeline/create-row-form-by-order', [Products::getController('order', 'createRowFormByOrder'), 'createRowFormByOrder'])->name('orders.timeline.createRowFormByOrder');
 
 		// Route::get('timeline/create-row-form', [Products::getController('order', 'timelineCreateRow'), 'createRowForm'])->name('orders.timeline.createRowForm');

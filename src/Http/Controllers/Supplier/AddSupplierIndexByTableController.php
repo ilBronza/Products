@@ -23,7 +23,7 @@ abstract class AddSupplierIndexByTableController extends SupplierCRUD
 
 	abstract protected function getRowcontainerModelClass() : string;
 
-	public function getPossibleSellableSupplierArray()
+	public function getPossibleSellableSupplierArray() : array
 	{
 		return Sellable::gpc()::notArchived()->orderBy('name')->byType($this->type)->select('name', 'id')->pluck('name', 'id')->toArray();
 	}

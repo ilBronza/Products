@@ -14,6 +14,7 @@ use IlBronza\Products\Helpers\Timelines\SellableSupplierGroup;
 use IlBronza\Products\Models\Sellables\Sellable;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\Orderrow\TypedOrderrowTrait;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsButtonsHelper;
 use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\Timeline\Interfaces\TimelineItemInterface;
 use IlBronza\Timeline\Traits\IsTimelineItemTrait;

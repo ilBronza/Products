@@ -58,6 +58,7 @@ use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableControl
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddSellableSupplierIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddSupplierIndexByTableController;
+use IlBronza\Products\Http\Controllers\Order\OrderAssociateOrCreateParentRowByTypeIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderBulkEditUpdateController;
 use IlBronza\Products\Http\Controllers\Order\OrderCalendarController;
 use IlBronza\Products\Http\Controllers\Order\OrderChangeClientController;
@@ -438,7 +439,18 @@ return [
 			'datatableFieldAssociateSupplier' => '2em',
 			'datatableFieldAssignSellableSupplier' => '2em',
 			'datatableFieldAssignBulkSellableSupplier' => '2em',
-			'datatableFieldAddSellableSupplierRow' => '2em'
+			'datatableFieldAddSellableSupplierRow' => '2em',
+
+
+
+
+
+
+
+
+			//sta roba va levata porcatroia?!
+			'getAssociateOrCreateParentOrderrowByTypeUrl' => '2em',
+			'datatableFieldAssociateOrCreateParentRowByType' => '2em'
 		],
 		'quotations' => [
 			'datatableFieldQuotation' => '7.3em'
@@ -798,6 +810,7 @@ return [
 				'addOrderrowEmpty' => AddOrderrowEmptyController::class,
 				'addSellableSupplierRows' => OrderAddSellableSupplierIndexByTableController::class,
 				'addSupplierRows' => OrderAddSupplierIndexByTableController::class,
+				'associateOrCreateParentRowByType' => OrderAssociateOrCreateParentRowByTypeIndexByTableController::class,
 				'storeRowsBySellableSupplier' => OrderStoreOrderrowsBySellableSupplierController::class,
 				'resetOrderRowsIndexes' => ResetOrderRowsIndexesController::class,
 				'attachClientOperatorsToOrderrows' => AttachClientOperatorsToOrderrowsController::class,
@@ -1133,6 +1146,9 @@ return [
 				'byType' => [
 					'product' => 'ProductCategories'
 				]
+			],
+			'parentRowNames' => [
+				// 'parentRowForHotelTypeName' => 'Hotel'
 			],
 			'availableTypes' => [
 				'material',

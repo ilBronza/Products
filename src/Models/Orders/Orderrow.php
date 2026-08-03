@@ -128,4 +128,19 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 
 		return $rightLinks;
 	}
+
+	public function genericChildren()
+	{
+		return $this->hasMany(self::class, 'parent_id');
+	}
+
+	public function genericParent()
+	{
+		return $this->belongsTo(self::class, 'parent_id');
+	}
+
+	public function getGenericParent() : ? self
+	{
+		return $this->genericParent;
+	}
 }

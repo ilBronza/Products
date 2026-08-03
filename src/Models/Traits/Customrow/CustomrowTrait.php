@@ -85,6 +85,14 @@ trait CustomrowTrait
 		return RowsButtonsHelper::getAddSupplierButton($container, static::$typeName);
 	}
 
+	public static function getAssociateOrCreateParentRowByTypeButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return RowsButtonsHelper::getAssociateOrCreateParentRowByTypeButton(
+			$container,
+			static::$typeName
+		);
+	}
+
 	static function getClassname() : string
 	{
 		$actualClassname = lcfirst(class_basename(static::class));
