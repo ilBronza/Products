@@ -61,8 +61,24 @@ trait UsesProductRowTrait
 			if($productRowPlaceholder->getExtraFieldsClass())
 				$relations[] = 'extraFields';
 
-		return $this->productRows()->with($relations)
+		$result = $this->productRows()->with($relations)
 			->withCount('genericChildren')
 			->get();
+
+			// return $result;
+
+		return $result->filter(function($item)
+		{
+			if($item->getSellable()?->getName() != 'Hotel')
+				return true;
+
+			if($item->calculated_row_total > 0)
+				return true;
+
+			if($item->generic_children_count == 0)
+				return true;
+
+			return false;
+		});
 	}
 }
