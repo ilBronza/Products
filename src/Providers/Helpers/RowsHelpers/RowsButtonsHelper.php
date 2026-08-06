@@ -3,10 +3,10 @@
 namespace IlBronza\Products\Providers\Helpers\RowsHelpers;
 
 use IlBronza\Buttons\Button;
+use IlBronza\Buttons\ElementsSelectRowsButton;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Providers\Buttons\AddEmptyRowButton;
 use IlBronza\Products\Providers\Buttons\AddRowSelectButton;
-
 use function preg_replace;
 use function ucfirst;
 
@@ -119,6 +119,25 @@ class RowsButtonsHelper
 			"products::rows.addSupplierRow{$type}",
 			true
 		);
+	}
+
+
+
+	static function getCreateParentRowByManufacturerTypeButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button
+	{
+		$button = ElementsSelectRowsButton::create([
+	        'text' => "Associa fornitore",
+	        'icon' => 'plus'
+    	])
+        ->setSecondary()
+        ->setElements(
+            $container->getPossibleManufacturersByType($type) // [id => name]
+        )
+        ->setPostUrl(
+            $container->getCreateParentRowByManufacturerTypeButtonUrl($type)
+        );
+
+		return $button;
 	}
 
 	static function getAssociateOrCreateParentRowByTypeButton(ProductPackageBaseRowcontainerModel $container, string $type) : Button

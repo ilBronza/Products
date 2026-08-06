@@ -93,9 +93,9 @@ trait CustomrowTrait
 		);
 	}
 
-	public static function getAssociateParentRowByManufacturerButton(ProductPackageBaseRowcontainerModel $container)
+	public static function getCreateParentRowByManufacturerTypeButton(ProductPackageBaseRowcontainerModel $container)
 	{
-		return RowsButtonsHelper::getAssociateParentRowByManufacturerButton(
+		return RowsButtonsHelper::getCreateParentRowByManufacturerTypeButton(
 			$container,
 			static::$typeName
 		);

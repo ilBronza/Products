@@ -176,6 +176,12 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		]);
 	}
 
+	//TODO rimuovere ste merdate dal package. il metodo chiamato per i bottoni deve essere fuori package
+	public function getCreateParentRowByManufacturerTypeButtonUrl(string $type)
+	{
+		return route('hotelRows.storeAgency');
+	}
+
 	public function getAssociateOrCreateParentRowByTypeUrl(string $type)
 	{
 		return $this->getKeyedRoute('associateOrCreateParentRowByType', [
