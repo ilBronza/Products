@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models;
 
 use Carbon\Carbon;
+use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
@@ -23,18 +24,20 @@ use IlBronza\Timings\Interfaces\TimelineInterface;
 use IlBronza\Ukn\Ukn;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Spatie\MediaLibrary\HasMedia;
 use function class_basename;
 use function get_class;
 use function get_class_methods;
 use function is_string;
 
-class ProductPackageBaseRowModel extends ProductPackageBaseModel implements TimeIntervalInterface, TimelineItemInterface
+class ProductPackageBaseRowModel extends ProductPackageBaseModel implements TimeIntervalInterface, TimelineItemInterface, HasMedia
 {
 	use InteractsWithPriceTrait;
 	use IsTimelineItemTrait;
 	use CRUDTimeRangesTrait;
 	use TypedOrderrowTrait;
 	use CRUDParentingTrait;
+    use InteractsWithMedia;
 
 	protected $casts = [
 		'starts_at' => 'date',
