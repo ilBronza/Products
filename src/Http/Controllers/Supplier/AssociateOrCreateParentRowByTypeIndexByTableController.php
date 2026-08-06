@@ -48,8 +48,10 @@ abstract class AssociateOrCreateParentRowByTypeIndexByTableController extends Su
 
 	public function getParentSellable() : Sellable
 	{
+		$sellableName = cconfig('products.models.sellable.parentRowNames.parentRowFor' . $this->type . 'Name');
+
 		return Sellable::gpc()::notArchived()->byName(
-			cconfig('products.models.sellable.parentRowNames.parentRowFor' . $this->type . 'Name')
+			$sellableName
 		)->first();
 	}
 

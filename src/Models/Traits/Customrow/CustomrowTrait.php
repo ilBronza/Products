@@ -93,6 +93,14 @@ trait CustomrowTrait
 		);
 	}
 
+	public static function getAssociateParentRowByManufacturerButton(ProductPackageBaseRowcontainerModel $container)
+	{
+		return RowsButtonsHelper::getAssociateParentRowByManufacturerButton(
+			$container,
+			static::$typeName
+		);
+	}
+
 	static function getClassname() : string
 	{
 		$actualClassname = lcfirst(class_basename(static::class));
