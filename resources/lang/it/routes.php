@@ -1,115 +1,6 @@
 <?php
 
 return [
-	'ibProductsquotations' => [
-		'edit' => 'Modifica preventivo :model',
-		'current' => 'Preventivi in corso',
-		'show' => 'Mostra preventivo :model',
-		'index' => 'Indice preventivi',
-
-		'addQuotationrowsByTable' => 'Aggiungi dettagli'
-	],
-
-	'ibProductsorderProductPhases' => [
-		'byWorkstation' => [
-			'elaborated' => 'Elaborati per postazione :model',
-			'toElaborate' => 'Elabora | :model',
-		]
-	],
-
-	'ibProductsorders' => [
-		'active' => 'Commesse in produzione',
-		'awaiting' => 'In attesa',
-		'show' => 'Mostra ordine :model',
-		'edit' => ':model',
-		'index' => 'Indice commesse',
-		'current' => 'Commesse attive',
-		'addOrderrowsByTable' => 'Aggiungi servizi/beni',
-		'active' => 'Commesse attive',
-		'all' => 'Tutte Commesse',
-		'addSellableSupplierRows' => 'Aggiungi riga specifica',
-		'globalTimelineContainer' => 'Gantt commesse',
-		'bySuppliersTimelineContainer' => 'Gantt commesse per fornitore',
-		'bySellablesTimelineContainer' => 'Gantt commesse per bene',
-		'timelineContainer' => 'Gantt :model'
-	],
-
-	'ibProductsproducts' => [
-		'index' => 'Lista Prodotti',
-		'current' => 'Recenti',
-	],
-
-	'ibProductssellableSuppliers' => [
-		'index' => 'Beni/Servizi per fornitore',
-	],
-
-	'ibProductssellables' => [
-		'index' => 'Indice beni/servizi disponibili',
-		'byType' => 'Indice beni/servizi disponibili: :type',
-		'globalTimelineContainer' => 'Gantt beni',
-		'bySuppliersTimelineContainer' => 'Gantt beni per fornitore',
-		'byOrdersTimelineContainer' => 'Gantt beni per commessa',
-		'timelineContainer' => 'Gantt :model'
-	],
-
-	'ibProductsfinishings' =>[
-		'index' => 'Finiture'
-	],
-
-	'ibProductsworkstations' => [
-		'index' => 'Lista postazioni'
-	],
-
-	'ibProductsprojects' => [
-		'index' => 'Indice progetti',
-	],
-
-	'ibProductsorderrows' => [
-		'findOrAssociateSupplier' => 'Trova o associa fornitore',
-		'assignSellableSupplier' => 'Assegna fornitore',
-	],
-
-	'ibProductsquotationrows' => [
-		'findOrAssociateSupplier' => 'Trova o associa fornitore',
-		'assignSellableSupplier' => 'Assegna fornitore',
-	],
-
-	'ibProductssuppliers' => [
-		'orderrows' => [
-			'index' => 'Righe per fornitore :model',
-		]
-	],
-
-	'ibProducts' => [
-		'clientsorderProducts' => [
-			'index' => 'Ordini per cliente',
-		],
-
-		'clients' => [
-			'products' => [
-				'index' => 'Prodotti per cliente',
-			],
-			'orderProducts' => [
-				'index' => 'Ordini per cliente',
-			]
-		],
-	],
-
-	'ibProductsaccessories' => [
-		'index' => 'Lista accessori',
-		'create' => 'Crea accessorio',
-		'createByParent' => 'Crea accessorio figlio',
-		'show' => 'Mostra accessorio :model',
-		'edit' => 'Modifica accessorio :model',
-	],
-
-	'ibProductsaccessoryTypes' => [
-		'index' => 'Lista tipi accessorio',
-		'create' => 'Crea tipo accessorio',
-		'show' => 'Mostra tipo accessorio :model',
-		'edit' => 'Modifica tipo accessorio :model',
-	],
-
 	'accessories' => [
 		'index' => 'Lista accessori',
 		'create' => 'Crea accessorio',
@@ -117,35 +8,358 @@ return [
 		'show' => 'Mostra accessorio :model',
 		'edit' => 'Modifica accessorio :model',
 	],
-
 	'accessoryTypes' => [
 		'index' => 'Lista tipi accessorio',
 		'create' => 'Crea tipo accessorio',
 		'show' => 'Mostra tipo accessorio :model',
 		'edit' => 'Modifica tipo accessorio :model',
 	],
-
-	'ibProductsproducts' => ['current' => 'Prodotti Attuali',],
-
-	'orderProducts' => [
-     'regulateProduction' => [
-		'index' => 'Ordini Prodotti',
-	 ],
-    ],
-
-	'ibProductsorderProducts' => [
-     'byWorkstation' => [
-		'elaborated' => 'Commesse Elaborate Per Centro',
-	 ],
-    ],
-
-	'products' => [
-     'withoutStencil' => 'Prodotto Senza Stencil',
-    ],
-
+	'ibProducts' => [
+		'clientsorderProducts' => [
+			'index' => 'Ordini per cliente',
+		],
+		'clients' => [
+			'products' => [
+				'index' => 'Prodotti per cliente',
+			],
+			'orderProducts' => [
+				'index' => 'Ordini per cliente',
+			],
+		],
+	],
+	'ibProductsaccessories' => [
+		'index' => 'Lista accessori',
+		'create' => 'Crea accessorio',
+		'createByParent' => 'Crea accessorio figlio',
+		'show' => 'Mostra accessorio :model',
+		'edit' => 'Modifica accessorio :model',
+	],
+	'ibProductsaccessoriesdeleteMedia' => 'Elimina media — accessorio',
+	'ibProductsaccessoriesdestroy' => 'Elimina accessorio',
+	'ibProductsaccessoriesstore' => 'Salva accessorio',
+	'ibProductsaccessoriesupdate' => 'Aggiorna accessorio',
+	'ibProductsaccessoryProductsedit' => 'Modifica accessory products :model',
+	'ibProductsaccessoryProductsindex' => 'Lista accessory products',
+	'ibProductsaccessoryProductsshow' => 'Mostra accessory products :model',
+	'ibProductsaccessoryProductsupdate' => 'Aggiorna accessory products',
+	'ibProductsaccessoryTypes' => [
+		'index' => 'Lista tipi accessorio',
+		'create' => 'Crea tipo accessorio',
+		'show' => 'Mostra tipo accessorio :model',
+		'edit' => 'Modifica tipo accessorio :model',
+	],
+	'ibProductsaccessoryTypesdestroy' => 'Elimina tipo accessorio',
+	'ibProductsaccessoryTypesstore' => 'Salva tipo accessorio',
+	'ibProductsaccessoryTypesupdate' => 'Aggiorna tipo accessorio',
+	'ibProductsclients' => [
+		'orders' => [
+			'index' => 'Lista cliente',
+		],
+		'orderProducts' => [
+			'update' => 'Aggiorna cliente',
+		],
+		'products' => [
+			'update' => 'Aggiorna cliente',
+		],
+	],
+	'ibProductsclientsindex' => 'Lista cliente',
+	'ibProductsdashboard' => 'Dashboard prodotti — dashboard',
+	'ibProductsfinishings' => [
+		'index' => 'Finiture',
+	],
+	'ibProductsfinishingscreate' => 'Crea finishings',
+	'ibProductsfinishingsdestroy' => 'Elimina finishings',
+	'ibProductsfinishingsedit' => 'Modifica finishings :model',
+	'ibProductsfinishingsshow' => 'Mostra finishings :model',
+	'ibProductsfinishingsstore' => 'Salva finishings',
+	'ibProductsfinishingsupdate' => 'Aggiorna finishings',
+	'ibProductsmaterialscreate' => 'Crea materials',
+	'ibProductsmaterialsdestroy' => 'Elimina materials',
+	'ibProductsmaterialsedit' => 'Modifica materials :model',
+	'ibProductsmaterialsindex' => 'Lista materials',
+	'ibProductsmaterialsshow' => 'Mostra materials :model',
+	'ibProductsmaterialsstore' => 'Salva materials',
+	'ibProductsmaterialsupdate' => 'Aggiorna materials',
+	'ibProductsoperatorOrderrowsclientOperatorPopup' => 'Popup operatore cliente — operator orderrows',
 	'ibProductsorderProductPhases' => [
-     'byWorkstation' => [
-		'toElaborate' => 'Ordini Da Elaborare',
-	 ],
-    ],
+		'byWorkstation' => [
+			'toElaborate' => 'Ordini Da Elaborare',
+		],
+	],
+	'ibProductsorderProductPhasesassignees' => [
+		'index' => 'Lista assignees',
+		'workstationFetcher' => 'Assegnatari postazione — assignees',
+		'popup' => 'Popup — assignees',
+		'setAssignees' => 'Imposta assegnatari — assignees',
+		'removeAssignees' => 'Rimuovi assegnatari — assignees',
+	],
+	'ibProductsorderProductPhasesbyOrderProduct' => 'Per prodotto ordine — fase prodotto ordine',
+	'ibProductsorderProductPhasesbyWorkstation' => [
+		'elaborated' => 'Elaborati — by workstation',
+	],
+	'ibProductsorderProductPhasescomplete' => 'Completa — fase prodotto ordine',
+	'ibProductsorderProductPhasesdestroy' => 'Elimina fase prodotto ordine',
+	'ibProductsorderProductPhasesedit' => 'Modifica fase prodotto ordine :model',
+	'ibProductsorderProductPhasesreopen' => 'Riapri — fase prodotto ordine',
+	'ibProductsorderProductPhasesreopenMachineInitialization' => 'Riapri inizializzazione macchina — fase prodotto ordine',
+	'ibProductsorderProductPhasesshow' => 'Mostra fase prodotto ordine :model',
+	'ibProductsorderProductPhasesupdate' => 'Aggiorna fase prodotto ordine',
+	'ibProductsorderProducts' => [
+		'byWorkstation' => [
+			'elaborated' => 'Commesse Elaborate Per Centro',
+		],
+	],
+	'ibProductsorderProductsbyWorkstation' => [
+		'toElaborate' => 'Da elaborare — by workstation',
+	],
+	'ibProductsorderProductsedit' => 'Modifica prodotto ordine :model',
+	'ibProductsorderProductsgetNotesPopup' => 'Note — prodotto ordine',
+	'ibProductsorderProductsrestore' => 'Ripristina prodotto ordine',
+	'ibProductsorderProductsshow' => 'Mostra prodotto ordine :model',
+	'ibProductsorderProductsupdate' => 'Aggiorna prodotto ordine',
+	'ibProductsorderrows' => [
+		'findOrAssociateSupplier' => 'Trova o associa fornitore',
+		'assignSellableSupplier' => 'Assegna fornitore',
+	],
+	'ibProductsorderrowsaddOrderrowBySupplier' => 'Aggiungi riga per fornitore — riga ordine',
+	'ibProductsorderrowsasTimelineItem' => [
+		'update' => 'Aggiorna as timeline item',
+	],
+	'ibProductsorderrowsassociateBulkSellableSupplier' => 'Associa fornitori in blocco — riga ordine',
+	'ibProductsorderrowsassociateSellableSupplier' => 'Associa fornitore — riga ordine',
+	'ibProductsorderrowsassociateSupplierToSellable' => 'Associa fornitore al bene — riga ordine',
+	'ibProductsorderrowsbulkEdit' => 'Modifica massiva — riga ordine',
+	'ibProductsorderrowsbulkUpdate' => 'Aggiornamento massivo — riga ordine',
+	'ibProductsorderrowsconfirmDestroy' => 'Conferma eliminazione — riga ordine',
+	'ibProductsorderrowscreate' => 'Crea riga ordine',
+	'ibProductsorderrowsdestroy' => 'Elimina riga ordine',
+	'ibProductsorderrowsedit' => 'Modifica riga ordine :model',
+	'ibProductsorderrowshistory' => 'Storico — riga ordine',
+	'ibProductsorderrowsindex' => 'Lista riga ordine',
+	'ibProductsorderrowsshow' => 'Mostra riga ordine :model',
+	'ibProductsorderrowsshowTimelinePopup' => 'Timeline — riga ordine',
+	'ibProductsorderrowssplit' => 'Dividi — riga ordine',
+	'ibProductsorderrowssplitWeekends' => 'Dividi weekend — riga ordine',
+	'ibProductsorderrowsstore' => 'Salva riga ordine',
+	'ibProductsorderrowsstoreMassReorder' => 'Salva riordino massivo — riga ordine',
+	'ibProductsorderrowsupdate' => 'Aggiorna riga ordine',
+	'ibProductsorders' => [
+		'active' => 'Commesse attive',
+		'awaiting' => 'In attesa',
+		'show' => 'Mostra ordine :model',
+		'edit' => ':model',
+		'index' => 'Indice commesse',
+		'current' => 'Commesse attive',
+		'addOrderrowsByTable' => 'Aggiungi servizi/beni',
+		'all' => 'Tutte Commesse',
+		'addSellableSupplierRows' => 'Aggiungi riga specifica',
+		'globalTimelineContainer' => 'Gantt commesse',
+		'bySuppliersTimelineContainer' => 'Gantt commesse per fornitore',
+		'bySellablesTimelineContainer' => 'Gantt commesse per bene',
+		'timelineContainer' => 'Gantt :model',
+	],
+	'ibProductsordersactive' => [
+		'byClient' => 'By client — active',
+	],
+	'ibProductsordersaddEmptyRow' => 'Add empty row — commessa',
+	'ibProductsordersaddRow' => 'Aggiungi riga — commessa',
+	'ibProductsordersaddRowBySellable' => 'Add row by sellable — commessa',
+	'ibProductsordersaddSellableSupplierRow' => 'Add sellable supplier row — commessa',
+	'ibProductsordersaddSupplierRows' => 'Aggiungi righe fornitore — commessa',
+	'ibProductsordersassociateOrCreateParentRowByType' => [
+		'store' => 'Salva associate or create parent row by type',
+	],
+	'ibProductsordersattachClientOperatorsToOrderrows' => 'Attach client operators to orderrows — commessa',
+	'ibProductsordersbulkEdit' => 'Modifica massiva — commessa',
+	'ibProductsordersbulkUpdate' => 'Aggiornamento massivo — commessa',
+	'ibProductsordersbySellablesTimeline' => 'By sellables timeline — commessa',
+	'ibProductsordersbySuppliersTimeline' => 'By suppliers timeline — commessa',
+	'ibProductsorderscalendar' => [
+		'index' => 'Lista calendar',
+		'getEventsByDates' => 'Get events by dates — calendar',
+	],
+	'ibProductsorderschangeClientForm' => 'Cambia cliente — commessa',
+	'ibProductsorderschangeClientUpdate' => 'Change client update — commessa',
+	'ibProductsorderscreate' => 'Crea commessa',
+	'ibProductsorderscreateDestination' => 'Create destination — commessa',
+	'ibProductsordersdestroy' => 'Elimina commessa',
+	'ibProductsordersduplicate' => 'Duplica commessa',
+	'ibProductsordersduplicateForm' => 'Duplica commessa',
+	'ibProductsordersfreeze' => 'Freeze — commessa',
+	'ibProductsordersglobalTimeline' => 'Global timeline — commessa',
+	'ibProductsordershtml' => 'Html — commessa',
+	'ibProductsorderspdf' => 'Pdf — commessa',
+	'ibProductsordersreplicateLastRowByType' => 'Replicate last row by type — commessa',
+	'ibProductsordersresetRowsIndexes' => 'Reset rows indexes — commessa',
+	'ibProductsordersselectRelations' => 'Seleziona relazioni — commessa',
+	'ibProductsordersstore' => 'Salva commessa',
+	'ibProductsordersstoreRow' => 'Store row — commessa',
+	'ibProductsordersstoreRowsBySellableSupplier' => 'Store rows by sellable supplier — commessa',
+	'ibProductsorderstimeline' => [
+		'createRowFormByOrder' => 'Create row form by order — timeline',
+		'createRowFormBySellable' => 'Create row form by sellable — timeline',
+		'storeRow' => 'Store row — timeline',
+	],
+	'ibProductsordersupdate' => 'Aggiorna commessa',
+	'ibProductspackingsdeleteMedia' => 'Elimina media — imballo',
+	'ibProductspackingsedit' => 'Modifica imballo :model',
+	'ibProductspackingsupdate' => 'Aggiorna imballo',
+	'ibProductsphasescreateByProduct' => 'Create by product — fase',
+	'ibProductsphasesedit' => 'Modifica fase :model',
+	'ibProductsphasesreorder' => 'Riordina fase',
+	'ibProductsphasesshow' => 'Mostra fase :model',
+	'ibProductsphasesstore' => 'Salva fase',
+	'ibProductsphasesstoreMassReorder' => 'Salva riordino massivo — fase',
+	'ibProductsphasesstoreReorder' => 'Salva ordine fase',
+	'ibProductsphasesupdate' => 'Aggiorna fase',
+	'ibProductspricesproducts' => [
+		'calculatePrices' => 'Calculate prices — prodotto',
+	],
+	'ibProductsproductRelationscreateByProduct' => 'Create by product — product relations',
+	'ibProductsproductRelationsedit' => 'Modifica product relations :model',
+	'ibProductsproductRelationsindex' => 'Lista product relations',
+	'ibProductsproductRelationsshow' => 'Mostra product relations :model',
+	'ibProductsproductRelationsstore' => 'Salva product relations',
+	'ibProductsproductRelationsupdate' => 'Aggiorna product relations',
+	'ibProductsproducts' => [
+		'current' => 'Prodotti Attuali',
+	],
+	'ibProductsproductscreate' => 'Crea prodotto',
+	'ibProductsproductsdeleteMedia' => 'Elimina media — prodotto',
+	'ibProductsproductsdestroy' => 'Elimina prodotto',
+	'ibProductsproductsedit' => 'Modifica prodotto :model',
+	'ibProductsproductsindex' => 'Lista prodotto',
+	'ibProductsproductsshow' => 'Mostra prodotto :model',
+	'ibProductsproductsstore' => 'Salva prodotto',
+	'ibProductsproductsupdate' => 'Aggiorna prodotto',
+	'ibProductsprojects' => [
+		'index' => 'Indice progetti',
+	],
+	'ibProductsprojectscreate' => 'Crea progetto',
+	'ibProductsprojectsdestroy' => 'Elimina progetto',
+	'ibProductsprojectsedit' => 'Modifica progetto :model',
+	'ibProductsprojectsreorder' => [
+		'clients' => 'Clients — reorder',
+		'byClient' => 'By client — reorder',
+	],
+	'ibProductsprojectsshow' => 'Mostra progetto :model',
+	'ibProductsprojectsstore' => 'Salva progetto',
+	'ibProductsprojectsstoreReorder' => 'Salva ordine progetto',
+	'ibProductsprojectsupdate' => 'Aggiorna progetto',
+	'ibProductsquotationrows' => [
+		'findOrAssociateSupplier' => 'Trova o associa fornitore',
+		'assignSellableSupplier' => 'Assegna fornitore',
+	],
+	'ibProductsquotationrowsaddQuotationrowBySupplier' => 'Add quotationrow by supplier — riga preventivo',
+	'ibProductsquotationrowsassociateBulkSellableSupplier' => 'Associa fornitori in blocco — riga preventivo',
+	'ibProductsquotationrowsassociateSellableSupplier' => 'Associa fornitore — riga preventivo',
+	'ibProductsquotationrowsassociateSupplierToSellable' => 'Associa fornitore al bene — riga preventivo',
+	'ibProductsquotationrowscreate' => 'Crea riga preventivo',
+	'ibProductsquotationrowsdestroy' => 'Elimina riga preventivo',
+	'ibProductsquotationrowsedit' => 'Modifica riga preventivo :model',
+	'ibProductsquotationrowshistory' => 'Storico — riga preventivo',
+	'ibProductsquotationrowsindex' => 'Lista riga preventivo',
+	'ibProductsquotationrowsshow' => 'Mostra riga preventivo :model',
+	'ibProductsquotationrowsstore' => 'Salva riga preventivo',
+	'ibProductsquotationrowsstoreMassReorder' => 'Salva riordino massivo — riga preventivo',
+	'ibProductsquotationrowsupdate' => 'Aggiorna riga preventivo',
+	'ibProductsquotations' => [
+		'edit' => 'Modifica preventivo :model',
+		'current' => 'Preventivi in corso',
+		'show' => 'Mostra preventivo :model',
+		'index' => 'Indice preventivi',
+		'addQuotationrowsByTable' => 'Aggiungi dettagli',
+	],
+	'ibProductsquotationsaddEmptyRow' => 'Add empty row — preventivo',
+	'ibProductsquotationsaddRow' => 'Aggiungi riga — preventivo',
+	'ibProductsquotationsaddRowBySellable' => 'Add row by sellable — preventivo',
+	'ibProductsquotationsaddSellableSupplierRow' => 'Add sellable supplier row — preventivo',
+	'ibProductsquotationsaddSellableSupplierRows' => 'Aggiungi righe bene/fornitore — preventivo',
+	'ibProductsquotationsaddSupplierRows' => 'Aggiungi righe fornitore — preventivo',
+	'ibProductsquotationsattachClientOperatorsToQuotationrows' => 'Attach client operators to quotationrows — preventivo',
+	'ibProductsquotationschangeClientForm' => 'Cambia cliente — preventivo',
+	'ibProductsquotationschangeClientUpdate' => 'Change client update — preventivo',
+	'ibProductsquotationsconvertToOrder' => 'Convert to order — preventivo',
+	'ibProductsquotationscreate' => 'Crea preventivo',
+	'ibProductsquotationscreateDestination' => 'Create destination — preventivo',
+	'ibProductsquotationsdestroy' => 'Elimina preventivo',
+	'ibProductsquotationsduplicate' => 'Duplica preventivo',
+	'ibProductsquotationsduplicateForm' => 'Duplica preventivo',
+	'ibProductsquotationspdf' => 'Pdf — preventivo',
+	'ibProductsquotationsreplicateLastRowByType' => 'Replicate last row by type — preventivo',
+	'ibProductsquotationsresetRowsIndexes' => 'Reset rows indexes — preventivo',
+	'ibProductsquotationsselectRelations' => 'Seleziona relazioni — preventivo',
+	'ibProductsquotationsstore' => 'Salva preventivo',
+	'ibProductsquotationsstoreQuotationrow' => 'Store quotationrow — preventivo',
+	'ibProductsquotationsupdate' => 'Aggiorna preventivo',
+	'ibProductssellableSuppliers' => [
+		'index' => 'Beni/Servizi per fornitore',
+	],
+	'ibProductssellableSupplierscreate' => 'Crea bene per fornitore',
+	'ibProductssellableSuppliersdestroy' => 'Elimina bene per fornitore',
+	'ibProductssellableSuppliersedit' => 'Modifica bene per fornitore :model',
+	'ibProductssellableSuppliersglobalTimeline' => 'Global timeline — bene per fornitore',
+	'ibProductssellableSuppliersglobalTimelineContainer' => 'Global timeline container — bene per fornitore',
+	'ibProductssellableSuppliersshow' => 'Mostra bene per fornitore :model',
+	'ibProductssellableSuppliersstore' => 'Salva bene per fornitore',
+	'ibProductssellableSupplierstimeline' => 'Timeline — bene per fornitore',
+	'ibProductssellableSupplierstimelineContainer' => 'Gantt bene per fornitore',
+	'ibProductssellableSuppliersupdate' => 'Aggiorna bene per fornitore',
+	'ibProductssellables' => [
+		'index' => 'Indice beni/servizi disponibili',
+		'byType' => 'Indice beni/servizi disponibili: :type',
+		'globalTimelineContainer' => 'Gantt beni',
+		'bySuppliersTimelineContainer' => 'Gantt beni per fornitore',
+		'byOrdersTimelineContainer' => 'Gantt beni per commessa',
+		'timelineContainer' => 'Gantt :model',
+	],
+	'ibProductssellablesbyOrdersTimeline' => 'By orders timeline — bene/servizio',
+	'ibProductssellablesbySuppliersTimeline' => 'By suppliers timeline — bene/servizio',
+	'ibProductssellablescreate' => 'Crea bene/servizio',
+	'ibProductssellablescreateSellableSupplier' => 'Create sellable supplier — bene/servizio',
+	'ibProductssellablesdestroy' => 'Elimina bene/servizio',
+	'ibProductssellablesedit' => 'Modifica bene/servizio :model',
+	'ibProductssellablesglobalTimeline' => 'Global timeline — bene/servizio',
+	'ibProductssellablesshow' => 'Mostra bene/servizio :model',
+	'ibProductssellablesstore' => 'Salva bene/servizio',
+	'ibProductssellablesstoreSellableSupplier' => 'Store sellable supplier — bene/servizio',
+	'ibProductssellablestimeline' => [
+		'createRowFormBySellable' => 'Create row form by sellable — timeline',
+		'createRowFormBySupplier' => 'Create row form by supplier — timeline',
+	],
+	'ibProductssellablesupdate' => 'Aggiorna bene/servizio',
+	'ibProductssuppliers' => [
+		'orderrows' => [
+			'index' => 'Righe per fornitore :model',
+		],
+	],
+	'ibProductssuppliersbyCategory' => 'By category — fornitore',
+	'ibProductssupplierscreateSellableSupplier' => 'Create sellable supplier — fornitore',
+	'ibProductssuppliersdestroy' => 'Elimina fornitore',
+	'ibProductssuppliersedit' => 'Modifica fornitore :model',
+	'ibProductssuppliersglobalTimeline' => 'Global timeline — fornitore',
+	'ibProductssuppliersglobalTimelineContainer' => 'Global timeline container — fornitore',
+	'ibProductssuppliersindex' => 'Lista fornitore',
+	'ibProductssuppliersshow' => 'Mostra fornitore :model',
+	'ibProductssuppliersstoreSellableSupplier' => 'Store sellable supplier — fornitore',
+	'ibProductssupplierstimeline' => 'Timeline — fornitore',
+	'ibProductssupplierstimelineContainer' => 'Gantt fornitore',
+	'ibProductssuppliersupdate' => 'Aggiorna fornitore',
+	'ibProductsworkstations' => [
+		'index' => 'Lista postazioni',
+	],
+	'ibProductsworkstationscreate' => 'Crea workstations',
+	'ibProductsworkstationsdestroy' => 'Elimina workstations',
+	'ibProductsworkstationsedit' => 'Modifica workstations :model',
+	'ibProductsworkstationsshow' => 'Mostra workstations :model',
+	'ibProductsworkstationsstore' => 'Salva workstations',
+	'ibProductsworkstationsupdate' => 'Aggiorna workstations',
+	'orderProducts' => [
+		'regulateProduction' => [
+			'index' => 'Ordini Prodotti',
+		],
+	],
+	'products' => [
+		'withoutStencil' => 'Prodotto Senza Stencil',
+	],
 ];
