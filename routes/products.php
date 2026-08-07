@@ -11,8 +11,9 @@ use IlBronza\Ukn\Ukn;
 Route::group([
 	'middleware' => ['web', 'auth', 'products.roles'],
 	'prefix' => 'products-client-area',
-	'as' => config('products.routePrefix') . '.clients.'
-], function ()
+	'as' => config('products.routePrefix') . '.clients.',
+	'routeTranslationPrefix' => Products::getRouteTranslationPrefix(),
+	], function ()
 {
 	Route::get('{client}/orders', [Products::getController('order', 'clientArea'), 'index'])->name('orders.index');
 
@@ -30,8 +31,9 @@ Route::group([
 Route::group([
 	'middleware' => ['web', 'auth', 'products.roles'],
 	'prefix' => 'products-management',
-	'as' => config('products.routePrefix')
-], function ()
+	'as' => config('products.routePrefix'),
+	'routeTranslationPrefix' => Products::getRouteTranslationPrefix(),
+	], function ()
 {
 
 	Route::get('dashboard', [Products::_getController(Products::getPackageConfigPrefix() . '.dashboard.controller'), 'execute'])->name('dashboard');
@@ -595,8 +597,9 @@ Route::group([
 	{
 		Route::group([
 			'prefix' => '{orderProduct}',
-			'as' => 'orderProducts.'
-		], function ()
+			'as' => 'orderProducts.',
+			'routeTranslationPrefix' => Products::getRouteTranslationPrefix(),
+	], function ()
 		{
 			Route::get('notes-popup', [OrderProductNotesController::class, 'getPopupByModel'])->name('getNotesPopup');
 		});
@@ -683,7 +686,8 @@ Route::group([
 
 	Route::group([
 		'prefix' => 'prices',
-		'as' => 'prices.'
+		'as' => 'prices.',
+		'routeTranslationPrefix' => Products::getRouteTranslationPrefix(),
 	], function ()
 	{
 		//ProductCalculatePricesController
