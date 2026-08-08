@@ -21,7 +21,7 @@ class ProductIndexController extends ProductCRUD
             $this->getInteractsWithCategoryButton()
         );
 
-        $this->getTable()->setRowSelectCheckboxes(true);
+        $this->getTable()->setRowSelectCheckboxes();
     }
 
     public function getIndexFieldsArray()
