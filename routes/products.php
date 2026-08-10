@@ -563,6 +563,9 @@ Route::group([
 
 		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController
 		Route::get('{orderrow}/history', [Products::getController('orderrow', 'history'), 'history'])->name('orderrows.history');
+
+		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowGenericChildrenController
+		Route::get('{orderrow}/generic-children', [Products::getController('orderrow', 'genericChildren'), 'genericChildren'])->name('orderrows.genericChildren');
 	});
 
 	Route::group(['prefix' => 'quotationrows'], function ()
@@ -591,6 +594,9 @@ Route::group([
 		Route::delete('{quotationrow}/delete', [Products::getController('quotationrow', 'destroy'), 'destroy'])->name('quotationrows.destroy');
 
 		Route::get('{quotationrow}/history', [Products::getController('quotationrow', 'history'), 'history'])->name('quotationrows.history');
+
+		//IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowGenericChildrenController
+		Route::get('{quotationrow}/generic-children', [Products::getController('quotationrow', 'genericChildren'), 'genericChildren'])->name('quotationrows.genericChildren');
 	});
 
 	Route::group(['prefix' => 'order-products'], function ()

@@ -87,6 +87,7 @@ use IlBronza\Products\Http\Controllers\Orderrow\OrderrowCreateStoreController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowDestroyController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowFindOrAssociateSupplierController;
+use IlBronza\Products\Http\Controllers\Orderrow\OrderrowGenericChildrenController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowHistoryController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Orderrow\OrderrowReorderController;
@@ -249,6 +250,7 @@ use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowCreateStoreContr
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowDestroyController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowEditUpdateController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowFindOrAssociateSupplierController;
+use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowGenericChildrenController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowHistoryController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowIndexController;
 use IlBronza\Products\Http\Controllers\Quotationrow\QuotationrowReorderController;
@@ -873,6 +875,7 @@ return [
 				'showTimelinePopup' => OrderrowShowTimelinePopupController::class,
 				'timelineUpdate' => OrderrowTimelineUpdateController::class,
 				'history' => OrderrowHistoryController::class,
+				'genericChildren' => OrderrowGenericChildrenController::class,
 				'reorder' => OrderrowReorderController::class,
 				'assignSellableSupplier' => OrderrowAssignSellableSupplierController::class,
 				'findOrAssociateSupplier' => OrderrowFindOrAssociateSupplierController::class,
@@ -1123,6 +1126,7 @@ return [
 			],
 			'controllers' => [
 				'history' => QuotationrowHistoryController::class,
+				'genericChildren' => QuotationrowGenericChildrenController::class,
 				'reorder' => QuotationrowReorderController::class,
 				'assignSellableSupplier' => QuotationrowAssignSellableSupplierController::class,
 				'findOrAssociateSupplier' => QuotationrowFindOrAssociateSupplierController::class,

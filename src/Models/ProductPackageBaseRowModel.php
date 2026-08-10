@@ -124,6 +124,11 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		}
 	}
 
+	public function getGenericChildrenUrlPlaceholder()
+	{
+		return $this->getPlaceholderRoute('genericChildren');
+	}
+
 	static function boot()
 	{
 		parent::boot();

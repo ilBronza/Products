@@ -24,13 +24,12 @@ class RowsFinderHelper
 {
 	static function getPossibleCustomQuotationrowsClasses() : array
 	{
-		dd('qua mai considerato');
-		// $result = [];
+		$result = [];
 
-		// foreach(config('products.models.customOrderrows') as $parameters)
-		// 	$result[] = $parameters['class'];
+		foreach(config('products.models.customQuotationrows') as $parameters)
+			$result[] = $parameters['class'];
 
-		// return $result;
+		return $result;
 	}
 
 	static function getPossibleCustomOrderrowsClasses() : array
