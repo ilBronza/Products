@@ -151,6 +151,13 @@ class RowsFinderHelper
 		return null;
 	}
 
+	static function getCompositeOrderQuotationRowCollectionByIds(array|Collection $ids, array $relations = []) : Collection
+	{
+		return static::getCompositeRowCollectionByIds($ids, $relations)->merge(
+			static::getQuotationCompositeRowCollectionByIds($ids, $relations)
+		);
+	}
+
 	static function getCompositeRowCollectionByIds(array|Collection $ids, array $relations = []) : Collection
 	{
 		$elements = collect();
