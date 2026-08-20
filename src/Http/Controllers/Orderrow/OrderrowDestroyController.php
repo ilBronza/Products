@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Http\Controllers\Orderrow;
 
 use IlBronza\CRUD\Traits\CRUDDeleteTrait;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFinderHelper;
 
 class OrderrowDestroyController extends OrderrowCRUD
 {
@@ -12,7 +13,8 @@ class OrderrowDestroyController extends OrderrowCRUD
 
     public function destroy($orderrow)
     {
-        $orderrow = $this->findModel($orderrow);
+        $orderrow = RowsFinderHelper::getCustomSpecificRowById($orderrow);
+
         $this->deletedOrderrowOrder = $orderrow->getOrder();
 
         return $this->_destroy($orderrow);
