@@ -15,6 +15,7 @@ use IlBronza\Products\Models\Sellables\Supplier;
 
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 use function round;
@@ -105,6 +106,63 @@ trait CommonOrderrowQuotationrowTrait
 			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
 
 		return $this->getModelContainer()?->getEndsAt();
+	}
+
+	public function getConcomitances() : Collection
+	{
+		if (! $supplier = $this->getSupplier())
+			return $this->newCollection();
+
+		$startsAt = $this->getStartsAt();
+		$endsAt = $this->getEndsAt();
+		$modelContainerRelationName = $this->getModelContainerRelationName();
+
+		$query = static::whereIn(
+			'sellable_supplier_id',
+			$supplier->getSellableSuppliersIds()
+		)->where($this->getKeyName(), '!=', $this->getKey());
+
+		// Inizio effettivo della riga candidata: riga.starts_at ?? contenitore.starts_at.
+		if ($endsAt)
+			$query->where(function ($query) use ($endsAt, $modelContainerRelationName)
+			{
+				$query->where('starts_at', '<=', $endsAt)
+					->orWhere(function ($query) use ($endsAt, $modelContainerRelationName)
+					{
+						$query->whereNull('starts_at')
+							->whereHas($modelContainerRelationName, function ($query) use ($endsAt)
+							{
+								$query->where(function ($query) use ($endsAt)
+								{
+									$query->where('starts_at', '<=', $endsAt)
+										->orWhereNull('starts_at');
+								});
+							});
+					});
+			});
+
+		// Fine effettiva della riga candidata: riga.ends_at ?? contenitore.ends_at.
+		if ($startsAt)
+			$query->where(function ($query) use ($startsAt, $modelContainerRelationName)
+			{
+				$query->where('ends_at', '>=', $startsAt)
+					->orWhere(function ($query) use ($startsAt, $modelContainerRelationName)
+					{
+						$query->whereNull('ends_at')
+							->whereHas($modelContainerRelationName, function ($query) use ($startsAt)
+							{
+								$query->where(function ($query) use ($startsAt)
+								{
+									$query->where('ends_at', '>=', $startsAt)
+										->orWhereNull('ends_at');
+								});
+							});
+					});
+			});
+
+		return $query->with([
+			$modelContainerRelationName => fn ($query) => $query->with('extraFields'),
+		])->get();
 	}
 
 	public function getAssignSellablesupplierUrl()
