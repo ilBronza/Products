@@ -96,14 +96,7 @@ class RowsSellableSupplierAssociatorHelper
 			$row->$rowField = $sellableSupplier->$sellableSupplierField;
 		}
 
-		try
-		{
-			$row->save();
-		}
-		catch(\Exception $e)
-		{
-			dd($row, $e->getMessage());
-		}
+		$row->save();
 	}
 
 	static function emptySellableSupplier(ProductPackageBaseRowModel $row)
