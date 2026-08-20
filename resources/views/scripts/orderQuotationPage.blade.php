@@ -39,7 +39,7 @@ jQuery(document).ready(function ($)
 
 		var lower = s.toLowerCase();
 
-		if (lower === 'null' || lower === 'undefined' || lower === 'nd')
+		if (lower === 'null' || lower === 'undefined' || lower === 'nd' || lower === 'TBD')
 			return 'base';
 
 		return s;

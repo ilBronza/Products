@@ -335,10 +335,10 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 	public function getTimelineItemPopuptitle(? TimelineGroupInterface $groupModel) : string
 	{
 		if($groupModel instanceof Sellable)
-			return $this->getSupplierName() ?? 'Nd';
+			return $this->getSupplierName() ?? config('products.labels.nd', 'nd');
 
 		if($groupModel instanceof Supplier)
-			return $this->getSellableName() ?? 'Nd';
+			return $this->getSellableName() ?? config('products.labels.nd', 'nd');
 
 		$pieces = [];
 
@@ -351,7 +351,7 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		if($value = $this->getModelContainer()?->getName())
 			$pieces[] = $value;
 
-		return trim(implode(' - ', $pieces)) ?? 'Nd';
+		return trim(implode(' - ', $pieces)) ?? config('products.labels.nd', 'nd');
 	}
 
 
@@ -365,4 +365,13 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		return $this->container();
 	}
 
+	public function getSupplierSelectedLabel() : string
+	{
+		return $this->getSupplier()?->getName();
+	}
+
+	public function getSupplierIdAttribute()
+	{
+		return $this->getSupplier()?->getKey();
+	}
 }

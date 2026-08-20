@@ -354,6 +354,10 @@ use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 return [
 	'routePrefix' => 'ibProducts',
 
+	'labels' => [
+		'nd' => 'nd'
+	],
+
 	'defaultRoles' => [
 		'superadmin',
 		'administrator',
