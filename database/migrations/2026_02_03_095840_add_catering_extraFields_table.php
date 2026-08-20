@@ -12,6 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        return ;
         if(is_null(config('products.hasCateringFunctions')))
             dd('please config this key in config.products');
 
