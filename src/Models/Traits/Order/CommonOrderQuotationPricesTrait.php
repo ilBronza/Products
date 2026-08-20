@@ -32,6 +32,7 @@ trait CommonOrderQuotationPricesTrait
 	}
 
 	/***
+	 * total_hotel_rows_cost - total_hotel_rows_revenue
 	 * total_vehicle_rows_revenue - total_operator_rows_revenue - total_product_rows_revenue - total_accessory_rows_revenue - total_production_rows_revenue
 	 * total_vehicle_rows_cost - total_operator_rows_cost - total_product_rows_cost - total_accessory_rows_cost - total_production_rows_cost
 	 * margin_vehicle_rows - margin_operator_rows - margin_product_rows - margin_accessory_rows - margin_production_rows
@@ -61,7 +62,7 @@ trait CommonOrderQuotationPricesTrait
 			{
 				return $this->$customRowsType->sum(function($item)
 				{
-					if (! $item->isCostApproved())
+					if (! $item->isCostApprovedForTotals())
 						return 0;
 
 					return $item->calculated_total_row_cost;
