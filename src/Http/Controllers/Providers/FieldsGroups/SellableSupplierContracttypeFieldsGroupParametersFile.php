@@ -20,10 +20,9 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 	static function getTypedFields(string $containerModel) : array
 	{
 		return [
-			'supplier.target.active' => [
+			'supplier.target.operator.active' => [
 				'type' => 'boolean',
-				'width' => '2em',
-				'defaultWidth' => '2em',
+				'width' => '3em',
 				'valueAsRowClass' => true
 			],
 			'supplier.target.operator.address.city' => 'flat',
@@ -41,9 +40,8 @@ class SellableSupplierContracttypeFieldsGroupParametersFile extends SellableSupp
 			'supplier.target.operator.validClientOperator.employment.label_text' => 'flat',
 			'supplier.target.operator.validClientOperator.ended_at' => 'dates.date',
 
-			'cost_company_day' => 'numbers.number2',
 			'cost_gross_day' => 'numbers.number2',
-			// 'operator_neat_day' => 'numbers.number2',
+			'cost_company_day' => 'numbers.number2',
 
 		];
 	}

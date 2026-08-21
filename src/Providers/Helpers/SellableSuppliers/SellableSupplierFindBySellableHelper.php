@@ -32,7 +32,7 @@ class SellableSupplierFindBySellableHelper
 	{
 		$sellable = $this->getSellable();
 
-		return $sellable->getSellableSupplierIndexRelations();
+		return $sellable->getTarget()->getSellableSupplierIndexRelations();
 
 		// if($relations = config('products.models.sellable.associationRelations.' . $sellable->getType(), false))
 		// 	return $relations;
