@@ -13,6 +13,11 @@ class OrderEditUpdateController extends OrderCRUD
 
 	public $allowedMethods = ['edit', 'update'];
 
+	public array $formParameters = [
+		'collapsible' => true,
+		'collapsedInitially' => false,
+	];
+
 	public function getRelationshipsManagerClass()
 	{
 		return $this->getModel()->getEditRelationshipsManagerClass();
