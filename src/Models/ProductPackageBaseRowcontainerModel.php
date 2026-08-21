@@ -320,11 +320,19 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 		return $total;
 	}
 
+	protected function pricesDiffer(mixed $firstPrice, mixed $secondPrice) : bool
+	{
+		if(($firstPrice === null)||($secondPrice === null))
+			return $firstPrice !== $secondPrice;
+
+		return bccomp((string) $firstPrice, (string) $secondPrice, 2) !== 0;
+	}
+
 	public function getTotalRevenueBesidesDiscount() : float
 	{
 		if($this->mup_selection == 'mup_forfait')
 		{
-			if(($this->extraFields)&&($this->extraFields->saved_total_revenue !== $this->mup_revenue))
+			if(($this->extraFields)&&($this->pricesDiffer($this->extraFields->saved_total_revenue, $this->mup_revenue)))
 			{
 				$this->extraFields->saved_total_revenue = $this->mup_revenue ?? 0;
 				$this->extraFields->save();
@@ -352,7 +360,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 	{
 		if($this->mup_selection == 'mup_forfait')
 		{
-			if(($this->extraFields)&&($this->extraFields->saved_total_revenue !== $this->mup_revenue))
+			if(($this->extraFields)&&($this->pricesDiffer($this->extraFields->saved_total_revenue, $this->mup_revenue)))
 			{
 				$this->extraFields->saved_total_revenue = $this->mup_revenue ?? 0;
 				$this->extraFields->save();
@@ -377,7 +385,7 @@ class ProductPackageBaseRowcontainerModel extends ProductPackageBaseModel implem
 
 		if($this->extraFields)
 		{
-			if($this->extraFields->saved_total_revenue !== $totalRevenue)
+			if($this->pricesDiffer($this->extraFields->saved_total_revenue, $totalRevenue))
 			{
 				$this->extraFields->saved_total_revenue = $totalRevenue ?? 0;
 				$this->extraFields->save();
