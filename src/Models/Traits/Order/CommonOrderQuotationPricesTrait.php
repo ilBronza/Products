@@ -55,11 +55,11 @@ trait CommonOrderQuotationPricesTrait
 
 	public function getTotalByCustomRowsCost(string $customRowsType)
 	{
-		return cache()->remember(
-			$this->cacheKey('getTotalByCustomRowsCost' . $customRowsType),
-			3600,
-			function() use($customRowsType)
-			{
+		// return cache()->remember(
+		// 	$this->cacheKey('getTotalByCustomRowsCost' . $customRowsType),
+		// 	3600,
+		// 	function() use($customRowsType)
+		// 	{
 				return $this->$customRowsType->sum(function($item)
 				{
 					if (! $item->isCostApprovedForTotals())
@@ -67,8 +67,8 @@ trait CommonOrderQuotationPricesTrait
 
 					return $item->calculated_total_row_cost;
 				});				
-			}
-		);
+		// 	}
+		// );
 	}
 
 	//total_product_rows_revenue
