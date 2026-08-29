@@ -365,7 +365,7 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		return $this->container();
 	}
 
-	public function getSupplierSelectedLabel() : string
+	public function getSupplierSelectedLabel() : ? string
 	{
 		return $this->getSupplier()?->getName();
 	}
