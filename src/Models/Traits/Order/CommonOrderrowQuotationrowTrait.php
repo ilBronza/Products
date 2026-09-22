@@ -97,7 +97,18 @@ trait CommonOrderrowQuotationrowTrait
 		if ($value)
 			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
 
-		return $this->getModelContainer()?->getStartsAt();
+		if($value = $this->getModelContainer()?->getStartsAt())
+		{
+			if ($this->exists)
+			{
+				$this->starts_at = $value;
+				$this->saveQuietly();
+			}
+
+			return $value;
+		}
+
+		return null;
 	}
 
 	public function getEndsAtAttribute($value)
@@ -105,7 +116,18 @@ trait CommonOrderrowQuotationrowTrait
 		if ($value)
 			return Carbon::createFromFormat('Y-m-d H:i:s', $value);
 
-		return $this->getModelContainer()?->getEndsAt();
+		if($value = $this->getModelContainer()?->getEndsAt())
+		{
+			if ($this->exists)
+			{
+				$this->ends_at = $value;
+				$this->saveQuietly();
+			}
+
+			return $value;
+		}
+
+		return null;
 	}
 
 	public function getConcomitances() : Collection

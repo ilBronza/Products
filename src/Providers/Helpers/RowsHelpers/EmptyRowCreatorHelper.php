@@ -61,10 +61,9 @@ class EmptyRowCreatorHelper
 	{
 		$this->row->type = $this->getType();
 
-		$this->row->sorting_index = RowsFinderHelper::getSortingIndexByRowType(
-			$this->containerModel,
-			$this->getType()
-		);
+		$this->row->sorting_index = method_exists($this->row, 'getMaxSortingIndexIncludingSplittedRows')
+			? $this->row->getMaxSortingIndexIncludingSplittedRows($this->containerModel, $this->getType()) + 1
+			: RowsFinderHelper::getSortingIndexByRowType($this->containerModel, $this->getType());
 
 		return $this;
 	}

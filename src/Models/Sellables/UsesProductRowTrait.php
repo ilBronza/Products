@@ -67,7 +67,7 @@ trait UsesProductRowTrait
 
 			// return $result;
 
-		return $result->filter(function($item)
+		$result = $result->filter(function($item)
 		{
 			if($item->getSellable()?->getName() != 'Hotel')
 				return true;
@@ -80,5 +80,7 @@ trait UsesProductRowTrait
 
 			return false;
 		});
+
+		return ProductionOrderrow::addSplittedRowsToResult($result);
 	}
 }

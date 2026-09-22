@@ -8,6 +8,7 @@ use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDTimeRangesTrait;
 use IlBronza\Prices\Models\Traits\InteractsWithPriceTrait;
 use IlBronza\Products\Events\ProductPackageBaseRowSavedEvent;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowSortingIndexesOnDeletingHelper;
 use IlBronza\Products\Helpers\Timelines\OrderSellableGroup;
 use IlBronza\Products\Helpers\Timelines\OrderSupplierGroup;
 use IlBronza\Products\Helpers\Timelines\SellableOrderGroup;
@@ -144,19 +145,8 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 		{
 			$model->getModelContainer()->touch();
 
-			if ($type = $model->getSellable()?->getType())
-			{
-				$container = $model->getModelContainer();
-
-				$rows = $container->rows()->bySellableType($type)->orderBy('sorting_index')->get();
-
-				foreach($rows as $index => $row)
-					if(! $row->is($model))
-					{
-						$row->sorting_index = $index;
-						$row->saveQuietly();
-					}
-			}
+			$helperClass = config('products.helpers.rowSortingIndexesOnDeleting', RowSortingIndexesOnDeletingHelper::class);
+			$helperClass::recalculate($model);
 		});
 	}
 
@@ -367,7 +357,7 @@ class ProductPackageBaseRowModel extends ProductPackageBaseModel implements Time
 
 	public function getSupplierSelectedLabel() : ? string
 	{
-		return $this->getSupplier()?->getName();
+		return $this->getSupplier()?->getTarget()?->composite_name;
 	}
 
 	public function getSupplierIdAttribute()

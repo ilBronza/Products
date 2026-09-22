@@ -91,19 +91,19 @@ class RowsCostsFieldsHelper
 
 		foreach(static::getRowCostsFieldsByRelation($this->rowsRelationName) as $field)
 		{
-			try
-			{
+			// try
+			// {
 				//CalculatedTotalCostExtraField::class
 				//chiama getTotalByCustomRowsCost()
 
 				$fields[$field] = $this->getParameters(
 					$this->containerModel->$field
 				);				
-			}
-			catch(\Throwable $e)
-			{
-				dd($e->getMessage(), $field, $this, static::getRowCostsFieldsByRelation($this->rowsRelationName));
-			}
+			// }
+			// catch(\Throwable $e)
+			// {
+			// 	dd($e->getMessage(), $field, $this, static::getRowCostsFieldsByRelation($this->rowsRelationName));
+			// }
 		}
 
 		$fields[static::getPercentageMarginFieldName($this->rowsRelationName)]['widthClass'] = 'uk-width-2-5';

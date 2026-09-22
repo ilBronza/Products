@@ -106,6 +106,7 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 	{
 		return [
 			'type' => 'editor.toggle',
+			// 'tooltip' => true,
 			'fieldsGroupsDefinitions' => [
 				'pdfManagement'
 			],
@@ -115,6 +116,11 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 	static function addPdfFields(array $fields) : array
 	{
 		$fields['pdf_quotation_show'] = static::getPdfParameters();
+		$fields['pdf_quotation_show']['mainHeader'] = [
+			'label' => 'PDF',
+			'colspan' => 3
+		];
+
 		$fields['pdf_quotation_show_price'] = static::getPdfParameters();
 		$fields['pdf_quotation_show_quantity'] = static::getPdfParameters();
 
@@ -125,6 +131,10 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 	{
 		$fields['calculated_cost_coefficient'] = [
 					'type' => 'editor.numeric',
+					'mainHeader' => [
+						'label' => 'Coefficienti',
+						'colspan' => 2
+					],
 					'refreshRow' => true,
 					'fieldsGroupsDefinitions' => [
 						'costs'
@@ -148,6 +158,10 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 
 		$fields['calculated_vat'] = [
 					'type' => 'editor.numeric',
+					'mainHeader' => [
+						'label' => 'Iva',
+						'colspan' => 2
+					],
 					'fieldsGroupsDefinitions' => [
 						'costs'
 					],
@@ -194,13 +208,15 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 		);
 	}
 
-	static function getPriceFields(array $fieldsGroupDefinitions = [])
+	static function getPriceFields(array $fieldsGroupDefinitions = [], array $options = [])
 	{
-		return [
+		$result = [
 			'type' => 'editor.price',
 			'refreshRow' => true,
 			'fieldsGroupsDefinitions' => $fieldsGroupDefinitions
-		];		
+		];
+
+		return array_merge($result, $options);
 	}
 
 	static function addDiscountFields(array $fields) : array
@@ -208,6 +224,10 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 		$fields['discount_neat'] = [
 			'type' => 'editor.numeric',
 			'refreshRow' => true,
+			'mainHeader' => [
+				'label' => 'Scontistica',
+				'colspan' => 2
+			],
 			'rules' => 'numeric|nullable|min:0',
 			'fieldsGroupsDefinitions' => [
 				'revenue',
@@ -234,10 +254,20 @@ class RowsFieldsGroupParametersFile extends CostsFieldsGroupParametersFile
 		];
 
 		foreach([
-			'calculated_single_cost' => static::getPriceFields(['costs']),
+			'calculated_single_cost' => static::getPriceFields(['costs'], [
+				'mainHeader' => [
+					'label' => 'Singoli',
+					'colspan' => 2
+				]
+			]),
 			'calculated_single_revenue' => static::getPriceFields(),
 
-			'calculated_total_row_cost' => static::getPriceFields(['costs']),
+			'calculated_total_row_cost' => static::getPriceFields(['costs'], [
+				'mainHeader' => [
+					'label' => 'Totali',
+					'colspan' => 4
+				]
+			]),
 			'approved_total_row_cost' => [
 				'type' => 'editor.toggle',
 				'fieldsGroupsDefinitions' => ['costs']

@@ -16,7 +16,7 @@ class ByProductRelatedProductRelationFieldsGroupParametersFile extends FieldsGro
                 'mySelfPrimary' => 'primary',
                 'mySelfSee' => 'links.see',
                 'mySelfEdit' => 'links.edit',
-                'created_at' => 'dates.datetime',
+                // 'created_at' => 'dates.datetime',
                 'child' => 'products::products.product',
                 'mySelfChildrenPhases.child_id' => [
                     'type' => 'models.CachedModelProperty',
@@ -24,7 +24,10 @@ class ByProductRelatedProductRelationFieldsGroupParametersFile extends FieldsGro
                     'property' => 'phases_description_string'
                 ],
                 'quantity_coefficient' => 'flat',
-                'measurement_unit_id' => 'measurementUnits::measurementUnit.measurementUnit',
+                'measurement_unit_id' => [
+                    'type' => 'measurementUnits::measurementUnit.measurementUnit',
+                    'width' => '4em'
+                ],
             ]
         ];
 	}

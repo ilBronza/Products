@@ -157,6 +157,7 @@ class BaserowEditUpdateFieldsetsParameters extends FieldsetParametersFile
 						'rules' => 'string|nullable|in:"Da inviare",Inviato,Ricevuto',
 					],
 					'confirmed' => ['boolean' => 'bool|nullable'],
+					'authorized' => ['boolean' => 'bool|nullable'],
 
 					// 'client' => [
 					//     'type' => 'select',
