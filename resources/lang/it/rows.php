@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'addSellableSupplierRowProduct' => 'Aggiungi da tabella',
 	'addSellableSupplierRow' => 'Aggiungi riga specifica',
 	'addSupplierRow' => 'Aggiungi per fornitore',
 	'addRow' => 'Aggiungi riga generica',
@@ -13,4 +14,18 @@ return [
 	'orderrows' => 'Righe commessa',
 	'quotationrows' => 'Righe preventivo',
 	'accessoryRows' => 'Accessori',
+	'addRowSelectProduct' => 'Aggiungi prodotto rapido',
+	'addTableRowProduct' => 'Aggiungi prodotto da ricerca',
+	'addTableRowAccessoryType' => 'Aggiungi accessorio da ricerca',
+	'addRowProduct' => 'Aggiungi prodotto',
+	'addRowAccessoryType' => 'Aggiungi accessorio',
+	'addRowSelectAccessoryType' => 'Aggiungi accessorio rapido',
+	'addEmptyRowProduct' => 'Aggiungi prodotto vuoto',
+	'addEmptyRowAccessoryType' => 'Aggiungi accessorio vuoto',
+	'addSellableSupplierRowProduct' => 'Aggiungi prodotto per fornitore',
+	'addSellableSupplierRowAccessoryType' => 'Aggiungi accessorio per fornitore',
+	'addSupplierRowProduct' => 'Aggiungi prodotto per fornitore',
+	'addSupplierRowAccessoryType' => 'Aggiungi accessorio per fornitore',
+	'associateOrCreateParentRowByTypeProduct' => 'Associa o crea riga padre prodotto',
+	'associateOrCreateParentRowByTypeAccessoryType' => 'Associa o crea riga padre accessorio',
 ];

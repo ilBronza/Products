@@ -80,14 +80,14 @@
                   <div class="uk-grid uk-child-width-auto uk-child-width-1-2@s uk-grid-large uk-grid-match" uk-grid>
                      <div>
                         <div class="el-item uk-panel uk-margin-remove-first-child">
-                           <div class="el-title uk-h5 uk-text-muted uk-margin-top uk-margin-remove-bottom">                        Visit Us                    </div>
+						   <div class="el-title uk-h5 uk-text-muted uk-margin-top uk-margin-remove-bottom">                        Dove siamo                    </div>
                            <div class="el-content uk-panel uk-h3 uk-margin-small-top uk-margin-remove-bottom">{{ $address }}</div>
                         </div>
                      </div>
                      <div>
                         <div class="el-item uk-panel uk-margin-remove-first-child">
                            <div class="el-title uk-h5 uk-text-muted uk-margin-top uk-margin-remove-bottom">                        Contatti                    </div>
-                           <div class="el-content uk-panel uk-h3 uk-margin-small-top uk-margin-remove-bottom">Tel e Fax: {{ $fax }}<br>Mobile: {{ $phone }}<br>P.IVA {{ $piva }}</div>
+						   <div class="el-content uk-panel uk-h3 uk-margin-small-top uk-margin-remove-bottom">Tel. e fax: {{ $fax }}<br>Cellulare: {{ $phone }}<br>P. IVA {{ $piva }}</div>
                         </div>
                      </div>
                   </div>

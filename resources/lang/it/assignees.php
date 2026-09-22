@@ -1,5 +1,5 @@
 <?php
 
 return [
-	'index' => 'Assgnazione Operatori e Macchine'
+	'index' => 'Assegnazione operatori e macchine'
 ];

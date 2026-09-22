@@ -10,9 +10,9 @@ use Illuminate\Console\Command;
 
 class BuildProductsCacheCommand extends Command
 {
-    protected $signature = 'products:buildCache {--orders : Warm cache for orders.show}';
+    protected $signature = 'products:buildCache {--orders : Aggiorna la cache delle pagine delle commesse}';
 
-    protected $description = 'Build/warm caches for the Products package.';
+    protected $description = 'Genera e aggiorna la cache del pacchetto Products.';
 
     public function handle(OrderShowCacheWarmer $warmer): int
     {
@@ -32,7 +32,7 @@ class BuildProductsCacheCommand extends Command
             return self::SUCCESS;
         }
 
-        $this->info("Nothing Warmed");
+        $this->info('Nessuna cache aggiornata.');
 
         return self::SUCCESS;
     }

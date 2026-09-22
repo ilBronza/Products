@@ -25,7 +25,7 @@ return [
 	'convocated_where' => 'Luogo',
 	'convocated_when' => 'Orario',
 	'order_id' => 'Commessa',
-	'mySelfMobile.sellableSupplier.supplier.target' => 'Mobile',
+	'mySelfMobile.sellableSupplier.supplier.target' => 'Cellulare',
 	'street' => 'Via',
 	'number' => 'civico',
 	'address' => 'Indirizzo',
@@ -105,7 +105,7 @@ return [
 	'category' => 'Categoria',
 	'type' => 'Tipo',
 	'file' => 'File',
-	'files' => 'Files',
+	'files' => 'File',
 	'images' => 'Immagini',
 	'quantity_neeeded_in_stock' => 'Quantità minima da magazzino',
 	'accessory_type_id' => 'Tipologia accessorio',
@@ -138,7 +138,7 @@ return [
 	'started_at' => 'Inizio',
 	'completed_at' => 'Fine',
 	'product_relations_count' => 'Relazioni',
-	'media_count' => 'Media',
+	'media_count' => 'File multimediali',
 	'active_orders_count' => 'Attivi',
 
 	'quotations' => 'Quotazioni',
@@ -151,7 +151,10 @@ return [
 	'total_price' => 'Prezzo totale cliente',
 	'accessories' => 'Accessori',
 	'accessoryTypes' => 'Tipologie accessori',
-	'preset' => 'Preset',
+	'allergen_id' => 'Allergeni',
+	'allergens' => 'Allergeni',
+	'products_in_order_count' => 'Piatti in commessa',
+	'preset' => 'Preimpostazione',
 	'project' => 'Progetto',
 	'quotationrows' => 'Distinte',
 	'date' => 'Data',
@@ -186,8 +189,8 @@ return [
 	'approved_total_row_revenue' => 'Ricavi approvati',
 
 	'coefficient_output' => 'Coefficiente in uscita',
-	'calculated_cost_coefficient' => 'Coeff costi',
-	'calculated_revenue_coefficient' => 'Coeff ricavi',
+	'calculated_cost_coefficient' => 'Costi %',
+	'calculated_revenue_coefficient' => 'Ricavi %',
 	'discount_selection' => 'Tipo sconto',
 	'discount_neat' => 'Sconto netto',
 	'discount_percentage' => 'Sconto %',
@@ -234,16 +237,16 @@ return [
 
 
 
-	'pdf_quotation_show' => 'Mostra in PDF',
-	'pdf_quotation_show_price' => 'Mostra prezzo in PDF',
-	'pdf_quotation_show_quantity' => 'Mostra quantità in PDF',
+	'pdf_quotation_show' => '<i class="fa-solid fa-eye"></i>',
+	'pdf_quotation_show_price' => '<i class="fa-solid fa-euro-sign"></i>',
+	'pdf_quotation_show_quantity' => '<i class="fa-solid fa-hashtag"></i>',
 
 	'discounts' => 'Sconti',
 
 	'operator_id' => 'Operatore',
 	'sellable_id' => 'Bene/servizio',
 	'authorized' => 'Approvato',
-	'uploaded_files' => 'Files',
+	'uploaded_files' => 'File caricati',
 
 	'due_date' => 'Data consegna'
 ];

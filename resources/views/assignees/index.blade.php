@@ -34,7 +34,7 @@ jQuery(document).ready(function($)
             },
             error: function(response)
             {
-                alert('error');
+                alert('Si è verificato un errore.');
             }
         });
     }
@@ -91,7 +91,7 @@ jQuery(document).ready(function($)
             },
             error: function(response)
             {
-                alert('error');
+                alert('Si è verificato un errore.');
             }
         });
 

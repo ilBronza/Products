@@ -2,6 +2,9 @@
 
 return [
 	'orders' => [
-		'baseQuantity' => ':quantity Persone'
-	]
+		'baseQuantity' => ':quantity persone'
+	],
+	'allergens' => [
+		'title' => 'Allergeni in questo menu',
+	],
 ];

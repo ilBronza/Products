@@ -1,7 +1,9 @@
 <?php
 
 return [
-    'orderFromQuotation' => 'Commessa :order da preventivo :quotation',
+	'orderFromQuotation' => 'Commessa :order da preventivo :quotation',
+	'workingOnQuotation' => 'Preventivo :quotation',
+	'order' => 'Commessa',
 	'active' => 'Commesse in produzione',
 	'index' => 'Commesse',
 	'awaiting' => 'In Attesa',
@@ -9,6 +11,9 @@ return [
 	'gantt' => 'Schema Gantt',
 
 	'create' => 'Crea nuova',
+	'createProduct' => 'Crea nuovo prodotto',
+	'productCreatedAndAdded' => 'Prodotto creato e aggiunto alla commessa',
+	'cannotCreateProductOnFrozenOrder' => 'Non è possibile aggiungere prodotti a una commessa consolidata.',
 
 	'current' => 'Commesse recenti',
 	'all' => 'Tutte le commesse',

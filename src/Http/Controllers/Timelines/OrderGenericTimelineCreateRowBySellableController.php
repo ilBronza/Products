@@ -81,7 +81,7 @@ class OrderGenericTimelineCreateRowBySellableController extends CRUD
 
 		return response()->json([
 			'success' => true,
-			'message' => 'Riga timeline creata',
+			'message' => 'Riga del Gantt creata',
 		]);
 	}
 

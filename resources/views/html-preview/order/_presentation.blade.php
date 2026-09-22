@@ -27,7 +27,7 @@
 					<p class="uk-margin-small"><strong>Data:</strong> {{ \Carbon\Carbon::parse($dataEvento)->format('d F Y') }}</p>
 				@endif
 				@if($location)
-					<p class="uk-margin-small"><strong>Location:</strong> {{ $location }}</p>
+					<p class="uk-margin-small"><strong>Luogo:</strong> {{ $location }}</p>
 				@endif
 				@if($pax)
 					<p class="uk-margin-small"><strong>Pax:</strong> {{ $pax }}</p>

@@ -2,8 +2,10 @@
 
 return [
 	'list' => 'Lista prodotti',
+	'index' => 'Lista prodotti',
 	'finishings' => 'Finiture',
 	'current' => 'Recenti',
+	'dashboard' => 'Pannello prodotti',
 	'productsManagement' => 'Gestore prodotti',
 	'phase' => 'Fase',
 	'product' => 'Prodotto',
@@ -24,6 +26,8 @@ return [
 	'sellable' => 'Bene/servizio',
 	'accessory' => 'Accessori',
 	'accessoryType' => 'Tipologie Accessori',
+	'allergen' => 'Allergene',
+	'allergens' => 'Allergeni',
 	'operatorOrderrow' => 'Operatore',
 	'supplier' => 'Fornitore/Operatore'
 ];

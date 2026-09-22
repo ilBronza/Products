@@ -8,8 +8,8 @@ return [
 	'vehicleRows' => 'Mezzi / tipologie mezzo',
 	'parentOrder' => 'Commessa principale',
 	'childrenOrders' => 'Commesse subordinate',
-	'missingQuotationrowFieldsGroupsIndexConfig' => 'Config mancante: dichiarare :key nel package products.',
-	'missingOrderrowFieldsGroupsIndexConfig' => 'Config mancante: dichiarare :key nel package products.',
-	'missingSellableSupplierFieldsGroupByType' => 'Config mancante: dichiarare products.models.sellableSupplier.fieldsGroupsFiles.relatedByType.:type',
-	'relationsManagerRelatedModelTodo' => 'TODO: ricavare automaticamente relatedModelClass dalla relazione.',
+	'missingQuotationrowFieldsGroupsIndexConfig' => 'Configurazione mancante: dichiarare :key nel pacchetto Products.',
+	'missingOrderrowFieldsGroupsIndexConfig' => 'Configurazione mancante: dichiarare :key nel pacchetto Products.',
+	'missingSellableSupplierFieldsGroupByType' => 'Configurazione mancante: dichiarare products.models.sellableSupplier.fieldsGroupsFiles.relatedByType.:type',
+	'relationsManagerRelatedModelTodo' => 'Da completare: ricavare automaticamente la classe del modello correlato dalla relazione.',
 ];

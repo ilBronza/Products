@@ -10,14 +10,14 @@
 	<link href="/kojiro/alert.css" rel="stylesheet">
 	<link href="/kojiro/fontawesome.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
 	<link href="/kojiro/kojiro.css" rel="stylesheet">
-	<script type="application/json" class="joomla-script-options new">{"joomla.jtext":{"ERROR":"Error","MESSAGE":"Message","NOTICE":"Notice","WARNING":"Warning","JCLOSE":"Close","JOK":"OK","JOPEN":"Open"},"system.paths":{"root":"\/joomla","rootFull":"https:\/\/demo.yootheme.com\/joomla\/","base":"\/joomla","baseFull":"https:\/\/demo.yootheme.com\/joomla\/"},"csrf.token":"95759b0a6b9f891456e21ec9a2d65917"}</script>
+	<script type="application/json" class="joomla-script-options new">{"joomla.jtext":{"ERROR":"Errore","MESSAGE":"Messaggio","NOTICE":"Avviso","WARNING":"Attenzione","JCLOSE":"Chiudi","JOK":"OK","JOPEN":"Apri"},"system.paths":{"root":"\/joomla","rootFull":"https:\/\/demo.yootheme.com\/joomla\/","base":"\/joomla","baseFull":"https:\/\/demo.yootheme.com\/joomla\/"},"csrf.token":"95759b0a6b9f891456e21ec9a2d65917"}</script>
 	<script src="/kojiro/core.js"></script>
 	<script src="/kojiro/messages.js" type="module"></script>
 	<script src="/kojiro/uikit.js"></script>
 	<script src="/kojiro/icons.js"></script>
 	<script src="/kojiro/theme.js"></script>
 	<script>window !== parent && parent.postMessage({source: "demo-iframe", href: location.href}, "https://yootheme.com");</script>
-	<script>window.yootheme ||= {}; yootheme.theme = {"i18n":{"close":{"label":"Close"},"totop":{"label":"Back to top"},"marker":{"label":"Open"},"navbarToggleIcon":{"label":"Open Menu"},"paginationPrevious":{"label":"Previous page"},"paginationNext":{"label":"Next Page"},"searchIcon":{"toggle":"Open Search","submit":"Submit Search"},"slider":{"next":"Next slide","previous":"Previous slide","slideX":"Slide %s","slideLabel":"%s of %s"},"slideshow":{"next":"Next slide","previous":"Previous slide","slideX":"Slide %s","slideLabel":"%s of %s"},"lightboxPanel":{"next":"Next slide","previous":"Previous slide","slideLabel":"%s of %s","close":"Close"}}};</script>
+	<script>window.yootheme ||= {}; yootheme.theme = {"i18n":{"close":{"label":"Chiudi"},"totop":{"label":"Torna all'inizio"},"marker":{"label":"Apri"},"navbarToggleIcon":{"label":"Apri il menu"},"paginationPrevious":{"label":"Pagina precedente"},"paginationNext":{"label":"Pagina successiva"},"searchIcon":{"toggle":"Apri la ricerca","submit":"Cerca"},"slider":{"next":"Diapositiva successiva","previous":"Diapositiva precedente","slideX":"Diapositiva %s","slideLabel":"%s di %s"},"slideshow":{"next":"Diapositiva successiva","previous":"Diapositiva precedente","slideX":"Diapositiva %s","slideLabel":"%s di %s"},"lightboxPanel":{"next":"Diapositiva successiva","previous":"Diapositiva precedente","slideLabel":"%s di %s","close":"Chiudi"}}};</script>
 </head>
 
 
@@ -25,7 +25,7 @@
    <body class="">
       <div class="uk-hidden-visually uk-notification uk-notification-top-left uk-width-auto">
          <div class="uk-notification-message">
-            <a href="#tm-main" class="uk-link-reset">Skip to main content</a>
+			<a href="#tm-main" class="uk-link-reset">Vai al contenuto principale</a>
          </div>
       </div>
       <div class="tm-page">
@@ -35,7 +35,7 @@
                   <div class="uk-container uk-container-expand">
                      <nav class="uk-navbar" uk-navbar="{&quot;align&quot;:&quot;left&quot;,&quot;container&quot;:&quot;.tm-header-mobile &gt; [uk-sticky]&quot;,&quot;boundary&quot;:&quot;.tm-header-mobile .uk-navbar-container&quot;}">
                         <div class="uk-navbar-left ">
-                           <a href="https://demo.yootheme.com/joomla/themes/kojiro/" aria-label="Back to home" class="uk-logo uk-navbar-item">
+						   <a href="https://demo.yootheme.com/joomla/themes/kojiro/" aria-label="Torna alla pagina iniziale" class="uk-logo uk-navbar-item">
                            <img src="/demo/kojiro/images/logo-mobile.svg" width="64" height="70" alt="Kojiro"><img class="uk-logo-inverse" src="/demo/kojiro/images/logo-mobile-inverted.svg" width="64" height="70" alt="Kojiro"></a>
                         </div>
                         <div class="uk-navbar-right">
@@ -54,12 +54,12 @@
                         <div>
                            <div class="uk-panel" id="module-menu-dialog-mobile">
                               <ul class="uk-nav uk-nav-primary uk-nav- uk-nav-center">
-                                 <li class="item-134"><a href="/joomla/themes/kojiro/lunch">Lunch</a></li>
-                                 <li class="item-135"><a href="/joomla/themes/kojiro/dinner">Dinner</a></li>
-                                 <li class="item-136"><a href="/joomla/themes/kojiro/drinks">Drinks</a></li>
-                                 <li class="item-132"><a href="/joomla/themes/kojiro/about">About</a></li>
-                                 <li class="item-130"><a href="/joomla/themes/kojiro/news">News</a></li>
-                                 <li class="item-131"><a href="/joomla/themes/kojiro/contact">Contact</a></li>
+								 <li class="item-134"><a href="/joomla/themes/kojiro/lunch">Pranzo</a></li>
+								 <li class="item-135"><a href="/joomla/themes/kojiro/dinner">Cena</a></li>
+								 <li class="item-136"><a href="/joomla/themes/kojiro/drinks">Bevande</a></li>
+								 <li class="item-132"><a href="/joomla/themes/kojiro/about">Chi siamo</a></li>
+								 <li class="item-130"><a href="/joomla/themes/kojiro/news">Novità</a></li>
+								 <li class="item-131"><a href="/joomla/themes/kojiro/contact">Contatti</a></li>
                               </ul>
                            </div>
                         </div>
@@ -69,7 +69,7 @@
                                  <div class="uk-width-1-1">
                                     <div class="uk-margin-medium">
                                        <a class="el-content uk-button uk-button-primary" href="mailto:email@example.com">
-                                       Reservation    
+									   Prenota
                                        </a>
                                     </div>
                                     <div class="uk-margin-xlarge-top uk-margin-remove-bottom" uk-scrollspy="target: [uk-scrollspy-class];">
@@ -90,8 +90,8 @@
                                        </a>        
                                     </div>
                                     <div class="uk-panel uk-margin">
-                                       <p>Main Street<br>9876 Anytown</p>
-                                       <p>Tuesday-Sunday<br>11 am - 3 pm<br>5 pm - 11 pm</p>
+									   <p>Via principale<br>9876 Città di esempio</p>
+									   <p>Martedì-Domenica<br>11:00 - 15:00<br>17:00 - 23:00</p>
                                     </div>
                                  </div>
                               </div>
@@ -108,7 +108,7 @@
                   <div class="uk-container uk-container-expand">
                      <nav class="uk-navbar" uk-navbar="{&quot;align&quot;:&quot;left&quot;,&quot;container&quot;:&quot;.tm-header &gt; [uk-sticky]&quot;,&quot;boundary&quot;:&quot;.tm-header .uk-navbar-container&quot;}">
                         <div class="uk-navbar-left ">
-                           <a href="https://demo.yootheme.com/joomla/themes/kojiro/" aria-label="Back to home" class="uk-logo uk-navbar-item">
+						   <a href="https://demo.yootheme.com/joomla/themes/kojiro/" aria-label="Torna alla pagina iniziale" class="uk-logo uk-navbar-item">
                            <img src="{{ app('uikittemplate')->getLogoUrl() }}" width="103" height="110" alt="{{ app('uikittemplate')->getAppName() }}"><img class="uk-logo-inverse" src="{{ app('uikittemplate')->getLogoUrl() }}" width="103" height="110" alt="{{ app('uikittemplate')->getAppName() }}"></a>
                         </div>
                         <div class="uk-navbar-right">
@@ -117,7 +117,7 @@
                                  <div class="uk-width-1-1">
                                     <div class="uk-margin">
                                        <a class="el-content uk-button uk-button-primary" href="mailto:email@example.com">
-                                       Reservation    
+									   Prenota
                                        </a>
                                     </div>
                                  </div>
@@ -147,32 +147,32 @@
                                     <ul class="uk-margin-remove-bottom uk-nav uk-nav-primary">
                                        <li class="el-item ">
                                           <a class="el-link" href="/joomla/themes/kojiro/lunch">
-                                          Lunch        
+										  Pranzo
                                           </a>
                                        </li>
                                        <li class="el-item ">
                                           <a class="el-link" href="/joomla/themes/kojiro/dinner">
-                                          Dinner        
+										  Cena
                                           </a>
                                        </li>
                                        <li class="el-item ">
                                           <a class="el-link" href="/joomla/themes/kojiro/drinks">
-                                          Drinks        
+										  Bevande
                                           </a>
                                        </li>
                                        <li class="el-item ">
                                           <a class="el-link" href="/joomla/themes/kojiro/about">
-                                          About        
+										  Chi siamo
                                           </a>
                                        </li>
                                        <li class="el-item ">
                                           <a class="el-link" href="/joomla/themes/kojiro/news">
-                                          News        
+										  Novità
                                           </a>
                                        </li>
                                        <li class="el-item ">
                                           <a class="el-link" href="/joomla/themes/kojiro/contact">
-                                          Contact        
+										  Contatti
                                           </a>
                                        </li>
                                     </ul>
@@ -198,8 +198,8 @@
                                     + 555 123 456 78        
                                     </a>        
                                  </div>
-                                 <div class="uk-panel uk-text-emphasis uk-margin uk-width-small uk-margin-auto@s uk-margin-auto">123 Main Street 9876 Anytown</div>
-                                 <div class="uk-panel uk-text-emphasis uk-margin uk-width-small uk-margin-auto@s uk-margin-auto">Tuesday-Sunday 11am - 3pm<br> 5pm - 11pm</div>
+								 <div class="uk-panel uk-text-emphasis uk-margin uk-width-small uk-margin-auto@s uk-margin-auto">Via principale 123, 9876 Città di esempio</div>
+								 <div class="uk-panel uk-text-emphasis uk-margin uk-width-small uk-margin-auto@s uk-margin-auto">Martedì-Domenica 11:00 - 15:00<br>17:00 - 23:00</div>
                               </div>
                            </div>
                         </div>
@@ -297,7 +297,7 @@
                            'subtitle' => 'Scopri di più'
                         ],
                         [
-                           'title' => 'Allestimenti e<br />location ricercati',
+						   'title' => 'Allestimenti e<br />luoghi ricercati',
                            'image' => 'https://geg.test/storage/1/0/0/1/1001_default.jpg',
                            'href' => 'https://www.geggastronomia.it/ingredienti-e-fornitori',
                            'subtitle' => 'Scopri di più'

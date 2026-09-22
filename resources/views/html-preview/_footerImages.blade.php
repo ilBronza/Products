@@ -54,7 +54,7 @@
             <div class="uk-height-viewport uk-position-z-index uk-panel uk-flex uk-flex-middle" uk-sticky="end: !.uk-section;">
                <div class="uk-panel uk-width-1-1">
                   <div class="uk-margin uk-visible@s" uk-parallax="x: 100vh,0; scale: 2,100%; easing: 0; media: @s; target: !.uk-section; start: 150vh; end: 100vh">
-                     <img class="el-image" src="/images/palaz_giaco.jpg" alt="Location" loading="lazy" width="390" height="533">    
+					 <img class="el-image" src="/images/palaz_giaco.jpg" alt="Luogo" loading="lazy" width="390" height="533">
                   </div>
                   <div class="uk-panel uk-margin uk-visible@s">
                      <div class="uk-grid-margin-small uk-grid tm-grid-expand uk-grid-small" uk-grid>

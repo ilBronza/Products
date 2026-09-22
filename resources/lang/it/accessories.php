@@ -1,5 +1,6 @@
 <?php
 
 return [
-	'list' => 'Lista accessori'
+	'list' => 'Lista accessori',
+	'index' => 'Lista accessori'
 ];
