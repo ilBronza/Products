@@ -5,6 +5,7 @@ namespace IlBronza\Products\Models\Sellables;
 use IlBronza\CRUD\Traits\CRUDSluggableTrait;
 use IlBronza\CRUD\Traits\Model\CRUDParentingTrait;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
+use IlBronza\CRUD\Traits\Model\UsesArchive;
 use IlBronza\Category\Models\Category;
 use IlBronza\Category\Traits\InteractsWithCategoryStandardMethodsTrait;
 use IlBronza\Category\Traits\InteractsWithCategoryTrait;
@@ -36,6 +37,8 @@ class Sellable extends ProductPackageBaseModel implements WithPriceInterface, Ti
 	use InteractsWithNotesTrait;
 	use InteractsWithCategoryTrait;
 	use InteractsWithCategoryStandardMethodsTrait;
+
+	use UsesArchive;
 
 	use GanttTimelineTrait;
 	use IsTimelineGroupTrait;
