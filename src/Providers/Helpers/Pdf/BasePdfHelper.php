@@ -9,6 +9,10 @@ use function view;
 
 abstract class BasePdfHelper
 {
+	protected ?string $selectedViewName = null;
+
+	protected array $contractDocuments = [];
+
 	public function __construct(
 		protected object $container
 	) {}
@@ -19,6 +23,26 @@ abstract class BasePdfHelper
 	public function getContainer() : object
 	{
 		return $this->container;
+	}
+
+	/**
+	 * Use a view explicitly selected in the PDF print form.
+	 */
+	public function setSelectedViewName(string $viewName) : static
+	{
+		$this->selectedViewName = $viewName;
+
+		return $this;
+	}
+
+	/**
+	 * Make the selected contract document views available to the PDF template.
+	 */
+	public function setContractDocuments(array $contractDocuments) : static
+	{
+		$this->contractDocuments = $contractDocuments;
+
+		return $this;
 	}
 
 	/**
@@ -138,6 +162,7 @@ abstract class BasePdfHelper
 			'productRows' => $this->getProductRows(),
 			'vehicleRows' => $this->getVehicleRows(),
 			'documentTitleDefault' => $this->getDocumentTitleDefault(),
+			'contractDocuments' => $this->contractDocuments,
 		];
 	}
 
@@ -151,7 +176,7 @@ abstract class BasePdfHelper
 	 */
 	public function generate() : string
 	{
-		$html = view($this->getViewName(), $this->getViewData())->render();
+		$html = view($this->selectedViewName ?? $this->getViewName(), $this->getViewData())->render();
 
 		return $this->htmlToPdf($html);
 	}

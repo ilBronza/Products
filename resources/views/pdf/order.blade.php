@@ -1,1 +1,1 @@
-@extends('products::pdf.quotation')
+@extends('products::pdf.catering.quotation')

@@ -51,8 +51,7 @@ class OrderEditUpdateController extends OrderCRUD
 		if(config('products.models.order.buttons.duplicateOrder'))
 			$this->addNavbarButton($order->getDuplicateButton());
 
-		if(config('products.models.order.buttons.pdfButton'))
-			$this->addNavbarButton($order->getPdfButton());
+		$this->addPdfNavbarButton($order);
 
 		if(config('products.models.order.buttons.htmlPreviewButton'))
 			$this->addNavbarButton($order->getHtmlPreviewButton());
@@ -70,6 +69,12 @@ class OrderEditUpdateController extends OrderCRUD
 				$this->addNavbarButton($order->getFreezeButton());
 
 		return $this->_edit($order);
+	}
+
+	protected function addPdfNavbarButton($order) : void
+	{
+		if(config('products.models.order.buttons.pdfButton'))
+			$this->addNavbarButton($order->getPdfButton());
 	}
 
 	public function update(Request $request, $order)

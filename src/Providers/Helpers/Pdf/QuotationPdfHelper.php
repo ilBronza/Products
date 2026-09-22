@@ -31,6 +31,6 @@ class QuotationPdfHelper extends BasePdfHelper
 
 	public function getViewName() : string
 	{
-		return config('products.pdf.quotationView', 'products::pdf.quotation');
+		return config('products.pdf.quotationView', 'products::pdf.catering.quotation');
 	}
 }
