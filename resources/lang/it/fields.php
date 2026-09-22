@@ -248,5 +248,16 @@ return [
 	'authorized' => 'Approvato',
 	'uploaded_files' => 'File caricati',
 
-	'due_date' => 'Data consegna'
+	'due_date' => 'Data consegna',
+
+  'target.name' => 'Nome fornitore',
+  'target.destinations' => 'Destinazioni',
+  'mySelfFullAddress.target.destinations' => 'Indirizzo completo destinazione',
+  'quotationrows_count' => 'Numero righe preventivo',
+  'categories' => 'Categorie',
+  'sellables' => 'Articoli vendibili',
+  'updated_at' => 'Aggiornato il',
+  'child' => 'Figlio',
+  'accessory_id' => 'Accessorio',
+  'phase_id' => 'Fase',
 ];

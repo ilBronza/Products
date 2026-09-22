@@ -369,4 +369,20 @@ return [
 	'products' => [
 		'withoutStencil' => 'Prodotto senza stencil',
 	],
+
+  'ibProductsproducts.edit' => 'Modifica prodotto',
+  'ibProductsproducts.index' => 'Elenco prodotti',
+  'ibProductsorderProductPhases.edit' => 'Modifica fase della commessa',
+  'editorders.edit' => 'Modifica commessa',
+  'ibProductsproducts.show' => 'Dettagli prodotto',
+  'ibProductsorderProducts.edit' => 'Modifica prodotto in commessa',
+  'ibProductsorderProducts.show' => 'Dettagli prodotto in commessa',
+  'orders.setAsActiveOrders' => 'Imposta commesse come attivi',
+  'ibProductsfinishings.create' => 'Crea finitura',
+  'ibProductsfinishings.edit' => 'Modifica finitura',
+  'ibProductsorderProductPhases.show' => 'Dettagli fase della commessa',
+  'ibProductsphases.show' => 'Dettagli fase',
+  'ibProductsorderProductPhases.byOrderProduct' => 'Fasi della commessa',
+  'ibProductsphases.edit' => 'Modifica fase',
+  'ibProductsorderProductPhases.byWorkstation.elaborated' => 'Fasi elaborate per postazione',
 ];

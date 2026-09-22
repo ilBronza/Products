@@ -11,4 +11,6 @@ return array (
 		'material' => 'Materiale',
 		'asset' => 'Bene',
 	],
+
+  'suppliers' => 'Fornitori',
 );

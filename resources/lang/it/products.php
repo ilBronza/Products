@@ -29,5 +29,9 @@ return [
 	'allergen' => 'Allergene',
 	'allergens' => 'Allergeni',
 	'operatorOrderrow' => 'Operatore',
-	'supplier' => 'Fornitore/Operatore'
+	'supplier' => 'Fornitore/Operatore',
+
+  'orderProductPhases' => 'Fasi della commessa',
+  'orderProductPhase' => 'Fase della commessa',
+  'titles.show' => 'Dettagli :element',
 ];
