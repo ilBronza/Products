@@ -1,0 +1,85 @@
+<?php
+
+namespace IlBronza\Products\Models\Sellables;
+
+use App\Models\ProjectSpecific\SplitPaymentOrderrow;
+use Illuminate\Support\Collection;
+
+trait UsesSplitPaymentRowTrait
+{
+	// public function initializeUsesProductRowTrait()
+	// {
+	// 	$this->setRowRelationsParameters('productRows');
+	// }
+
+	// // ProductOrderrow or ProductQuotationrow
+	// abstract public function getProductRowRelatedModel() : string;
+
+	public function rowRelationBySplitPayment()
+	{
+		return $this->splitPaymentRows();
+	}
+
+	public function splitPaymentRows()
+	{
+		return $this->hasMany(
+			SplitPaymentOrderrow::class
+		);
+	}
+
+	// public function getProductRows()
+	// {
+	// 	return $this->productRows;
+	// }
+
+	// public function getAddProductUrl() : string
+	// {
+	// 	return $this->getAddRowByTypeUrl('Product');
+	// }
+
+	// public function getProductRowsForRelationshipManager() : Collection
+	// {
+	// 	$modelString = strtolower(class_basename($this->getModel()));
+
+	// 	if(method_exists($this->getModel(), 'getExtraFieldsClass'))
+	// 		if($this->getModel()->getExtraFieldsClass())
+	// 			$modelString .= '.extraFields';
+
+	// 	$relations = [
+	// 		"{$modelString}",
+	// 		'prices',
+	// 		'sellable',
+	// 		'sellable.target',
+	// 		'sellable.prices',
+	// 		'sellableSupplier.prices',
+	// 		'sellableSupplier.supplier.target',
+	// 		'sellableSupplier.sellable.target',
+	// 	];
+
+	// 	$productRowPlaceholder = $this->productRows()->make();
+
+	// 	if(method_exists($productRowPlaceholder, 'getExtraFieldsClass'))
+	// 		if($productRowPlaceholder->getExtraFieldsClass())
+	// 			$relations[] = 'extraFields';
+
+	// 	$result = $this->productRows()->with($relations)
+	// 		->withCount('genericChildren')
+	// 		->get();
+
+	// 		// return $result;
+
+	// 	return $result->filter(function($item)
+	// 	{
+	// 		if($item->getSellable()?->getName() != 'Hotel')
+	// 			return true;
+
+	// 		if($item->calculated_row_total > 0)
+	// 			return true;
+
+	// 		if($item->generic_children_count == 0)
+	// 			return true;
+
+	// 		return false;
+	// 	});
+	// }
+}
