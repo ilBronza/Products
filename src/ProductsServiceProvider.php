@@ -7,6 +7,7 @@ use IlBronza\Products\Console\Commands\BuildProductsCacheCommand;
 use IlBronza\Products\Http\Middleware\ProductsMiddlewareRolesPermissions;
 use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryType;
+use IlBronza\Products\Models\Catering\Allergen;
 use IlBronza\Products\Models\Order;
 use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Models\OrderProductPhase;
@@ -34,6 +35,7 @@ class ProductsServiceProvider extends ServiceProvider
 	public function boot() : void
 	{
 		Relation::morphMap([
+			'Allergen' => Allergen::gpc(),
 			'Accessory' => Accessory::gpc(),
 			'AccessoryType' => AccessoryType::gpc(),
 			'Quotationrow' => Quotationrow::gpc(),

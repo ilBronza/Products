@@ -161,6 +161,20 @@ class SellableSupplier extends BasePivotModel implements WithPriceInterface, Has
 		return $this->getSellable()?->getName();
 	}
 
+	public function getAllergensListString() : string
+	{
+		return cache()->remember(
+			implode('_', [
+				'sellable_supplier',
+				$this->getKey(),
+				'allergens_list_string',
+				$this->getRawOriginal('updated_at'),
+			]),
+			3600,
+			fn () : string => $this->getSellable()?->getTarget()?->allergens_list_string ?? ''
+		);
+	}
+
 	public function getName() : string
 	{
 		return collect([

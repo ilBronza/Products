@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use IlBronza\Buttons\Button;
 use IlBronza\Products\Models\Order;
 
+use IlBronza\Products\Models\Catering\InteractsWithCateringAllergensTrait;
+
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Products\Models\ProductPackageBaseRowcontainerModel;
 use IlBronza\Products\Models\Traits\Order\CommonOrderQuotationTrait;
@@ -15,6 +17,7 @@ class Quotation extends ProductPackageBaseRowcontainerModel
 {
 	use CommonOrderQuotationTrait;
 	use QuotationRelationshipsTrait;
+	use InteractsWithCateringAllergensTrait;
 
 	static $modelConfigPrefix = 'quotation';
 	static $deletingRelationships = ['quotationrows'];

@@ -7,7 +7,7 @@
          @if(count($allergens = $row->getSellable()?->getTarget()?->getAllergensList()))
          <strong>Allergeni:</strong> 
             @foreach($allergens as $allergen)
-               {{ $allergen->getName() }} @if(! $loop->last) - @endif
+               {{ $allergen->renderText() }} @if(! $loop->last) - @endif
             @endforeach
          @endif
       </div>

@@ -40,6 +40,17 @@ Route::group([
 
 	// Route::resource('pallets', CrudPalletController::class);
 
+	Route::group(['prefix' => 'allergens'], function ()
+	{
+		Route::get('', [Products::getController('allergen', 'index'), 'index'])->name('allergens.index');
+		Route::get('create', [Products::getController('allergen', 'create'), 'create'])->name('allergens.create');
+		Route::post('', [Products::getController('allergen', 'store'), 'store'])->name('allergens.store');
+		Route::get('{allergen}', [Products::getController('allergen', 'show'), 'show'])->name('allergens.show');
+		Route::get('{allergen}/edit', [Products::getController('allergen', 'edit'), 'edit'])->name('allergens.edit');
+		Route::put('{allergen}', [Products::getController('allergen', 'update'), 'update'])->name('allergens.update');
+		Route::delete('{allergen}/delete', [Products::getController('allergen', 'destroy'), 'destroy'])->name('allergens.destroy');
+	});
+
 	Route::group(['prefix' => 'projects'], function ()
 	{
         Route::get('projects-reorder', [Products::getController('project', 'reorder'), 'clients'])->name('projects.reorder.clients');
@@ -367,6 +378,9 @@ Route::group([
 
 	Route::group(['prefix' => 'orders'], function ()
 	{
+		Route::get('{order}/create-product', [Products::getController('product', 'createByOrder'), 'createByOrder'])->name('orders.createProduct');
+		Route::post('{order}/products', [Products::getController('product', 'createByOrder'), 'storeByOrder'])->name('orders.storeProduct');
+
 		//OrderAssociateOrCreateParentRowByTypeIndexByTableController
 		Route::match(['get', 'post'], '{order}/associate-or-create-parent-row-by-type/{type}', [Products::getController('order', 'associateOrCreateParentRowByType'), 'index'])->name('orders.associateOrCreateParentRowByType');
 
@@ -426,6 +440,11 @@ Route::group([
 
 		//OrderPdfController
 		Route::get('{order}/pdf', [Products::getController('order', 'pdf'), 'pdf'])->name('orders.pdf');
+		Route::post('{order}/pdf', [Products::getController('order', 'pdf'), 'pdf'])->name('orders.pdf.generate');
+
+		//CateringOrderPdfController
+		Route::get('{order}/catering-pdf', [Products::getController('order', 'cateringPdf'), 'pdf'])->name('orders.cateringPdf');
+		Route::post('{order}/catering-pdf', [Products::getController('order', 'cateringPdf'), 'pdf'])->name('orders.cateringPdf.generate');
 
 		Route::get('{order}/html', [Products::getController('order', 'html'), 'html'])->name('orders.html');
 

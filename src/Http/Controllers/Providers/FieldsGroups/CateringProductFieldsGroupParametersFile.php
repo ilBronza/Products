@@ -14,20 +14,21 @@ class CateringProductFieldsGroupParametersFile extends FieldsGroupParametersFile
             'fields' =>
             [
 				'mySelfPrimary' => 'primary',
-				'mySelfThumbnail' => 'media.media',
+				// 'mySelfThumbnail' => 'media.media',
 				'mySelfEdit' => 'links.edit',
 				'mySelfSee' => 'links.see',
 				'created_at' => 'dates.datetime',
 				'name' => 'flat',
-				'client_price' => 'flat',
+				// 'client_price' => 'flat',
+				'allergens_list' => 'products::catering.allergens',
 				'descendants' => 'relations.hasMany',
 				'categories' => 'relations.belongsToMany',
 				'short_description' => 'flat',
 				'coefficient_output' => 'editor.numeric',
 				'served_at_table' => 'editor.toggle',
 
-	            'single_cost' => 'editor.price',
-	            'single_revenue' => 'editor.price',
+				'single_cost' => 'editor.price',
+				'single_revenue' => 'editor.price',
 
 
 	            'mySelfDelete' => 'links.delete'

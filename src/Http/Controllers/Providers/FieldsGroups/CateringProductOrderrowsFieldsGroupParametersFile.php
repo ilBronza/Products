@@ -42,9 +42,11 @@ class CateringProductOrderrowsFieldsGroupParametersFile extends RowsFieldsGroupP
 
 		$fields['served_at_table'] = [
 					'refreshRow' => true,
-					//				'reloadTable' => true,
+					'tooltip' => 'areo',
 					'type' => 'editor.toggle',
 				];
+
+		$fields['allergens_list'] = 'products::catering.allergens';
 
 		$fields = static::addCostsFields(
 			$fields,

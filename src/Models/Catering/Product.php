@@ -2,8 +2,6 @@
 
 namespace IlBronza\Products\Models\Catering;
 
-use App\Models\ProjectSpecific\Allergen;
-use App\Models\ProjectSpecific\Allergenizable;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\Prices\Models\Interfaces\WithPriceInterface;
 use IlBronza\Prices\Models\Traits\HasCustomPricesTrait;
@@ -11,17 +9,24 @@ use IlBronza\Products\Models\Interfaces\SellableItemInterface;
 use IlBronza\Products\Models\Product\Product as IbProduct;
 use IlBronza\Products\Models\Sellables\Supplier;
 use IlBronza\Products\Models\Traits\Sellable\InteractsWithSellableTrait;
+use IlBronza\Products\Providers\RelationshipsManagers\CateringProductRelationManager;
 use Illuminate\Support\Collection;
 
 class Product extends IbProduct implements SellableItemInterface, WithPriceInterface
 {
 	use HasCustomPricesTrait;
 	use InteractsWithSellableTrait;
+	use InteractsWithAllergensTrait;
 
 	protected $casts = [
 		'base_quantity_calculator' => ExtraField::class,
 		'minimum_quantity' => ExtraField::class,
 	];
+
+	public function getRelationshipsManagerClass() : ?string
+	{
+		return CateringProductRelationManager::class;
+	}
 
 	public function getPriceFieldsForSellable() : array
 	{
@@ -61,28 +66,60 @@ class Product extends IbProduct implements SellableItemInterface, WithPriceInter
 		return !! $this->served_at_table;
 	}
 
+	public function getAllergensListAttribute() : Collection
+	{
+		return $this->getAllergensList();
+	}
+
 	public function getAllergensList() : Collection
 	{
+		return cache()->remember(
+			$this->cacheKey('getAllergensList'),
+			3600,
+			function()
+			{
+				return $this->_getAllergensList();
+			}
+		);
+	}
+
+	public function _getAllergensList() : Collection
+	{
+		$visitedProducts = [];
+
+		return $this->getAllergensListFromDescendants($visitedProducts);
+	}
+
+	protected function getAllergensListFromDescendants(array &$visitedProducts) : Collection
+	{
+		$productKey = $this->getKey();
+		$productIdentifier = static::class . ':' . (
+			$productKey === null
+				? 'object:' . spl_object_id($this)
+				: 'key:' . $productKey
+		);
+
+		if (isset($visitedProducts[$productIdentifier]))
+			return collect();
+
+		$visitedProducts[$productIdentifier] = true;
+
 		$result = $this->getAllergens();
 
-		foreach($this->getProducts() as $product)
-			$result = $result->merge($product->getAllergensList());
+		foreach($this->getDescendants() as $product)
+			$result = $result->merge($product->getAllergensListFromDescendants($visitedProducts));
 
-		return $result->unique();
+		return $result
+			->unique(fn ($allergen) => $allergen->getKey())
+			->values();
 	}
 
-	public function allergens()
+	public function getAllergensListStringAttribute() : string
 	{
-		return $this->morphToMany(
-			Allergen::class,
-			'allergenable',
-			'project_allergenables',
-		)->using(Allergenizable::class);
-	}
-
-	public function getAllergens() : Collection
-	{
-		return $this->allergens;
+		return $this->getCachedCalculatedProperty(
+			'allergens_list_string',
+			fn () : string => $this->getAllergensList()->pluck('name')->implode(' - ')
+		);
 	}
 
 	public function getDependentSellables() : array

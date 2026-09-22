@@ -19,7 +19,7 @@
 				@foreach($allergens as $allergen)
 					<li>
 						<span class="uk-h4">
-							{{ $allergen->getName() }}
+							{{ $allergen->renderText() }}
 						</span>
 					</li>
 				@endforeach

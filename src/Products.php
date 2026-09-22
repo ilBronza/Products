@@ -217,6 +217,15 @@ class Products implements RoutedObjectInterface
 
 		$productsContainerButton->addChild(
 			$menu->createButton([
+				'name' => 'allergens.index',
+				'icon' => 'triangle-exclamation',
+				'text' => 'products::products.allergens',
+				'href' => IbRouter::route($this, 'allergens.index')
+			])
+		);
+
+		$productsContainerButton->addChild(
+			$menu->createButton([
 				'name' => 'finishings.index',
 				'icon' => 'users',
 				'text' => 'products::finishings.list',

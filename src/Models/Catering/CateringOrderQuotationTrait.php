@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 trait CateringOrderQuotationTrait
 {
 	use CRUDModelExtraFieldsTrait;
+	use InteractsWithCateringAllergensTrait;
 
 	public function initializeCateringOrderQuotationTrait()
 	{
@@ -76,15 +77,4 @@ trait CateringOrderQuotationTrait
 		return $this->base_quantity;
 	}
 
-	public function getAllergensList() : Collection
-	{
-		$result = collect();
-
-		$productRows = $this->getProductRows();
-
-		foreach($productRows as $productRow)
-			$result = $result->merge($productRow->getSellable()?->getTarget()?->getAllergensList());
-
-		return $result->unique();
-	}
 }

@@ -2,80 +2,71 @@
 
 namespace IlBronza\Products\Providers\RelationshipsManagers;
 
+use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 use IlBronza\Notes\Http\Controllers\CrudNoteController;
-
+use IlBronza\Products\Models\Catering\Allergen;
+use IlBronza\Products\Models\Interfaces\SellableItemInterface;
+use IlBronza\Products\Models\Catering\Product;
 use IlBronza\Products\Models\Order;
-
+use IlBronza\Products\Providers\Helpers\QuotationOrder\RowscontainerRelationsManagerParametersHelper;
 use function config;
 use function trans;
 
 class CateringOrderRelationManager Extends RelationshipsManager
 {
+	protected function getCreateProductButtons() : array
+	{
+		if (! is_a(Product::gpc(), SellableItemInterface::class, true))
+			return [];
+
+		$order = $this->getModel();
+
+		if (! $order?->exists || $order->isFrozen() || ! $order->userCanUpdate() || ! Product::gpc()::userCanCreate())
+			return [];
+
+		$button = Button::create([
+			'name' => 'createProduct',
+			'text' => 'products::orders.createProduct',
+			'icon' => 'plus',
+			'href' => app('products')->route('orders.createProduct', [
+				'order' => $order->getKey(),
+			]),
+		]);
+
+		$button->setSecondary();
+		$button->setAsIframe();
+		$button->setAjaxTableButton();
+		$button->setData('method', 'GET');
+
+		return [$button];
+	}
+
 	public  function getAllRelationsParameters() : array
 	{
 		$result = [
-			'show' => [
+			'edit' => [
 				'relations' => [
-					'productOrderrows' => [
-						'controller' => config('products.models.orderrrow.controllers.index'),
-						'selectRowCheckboxes' => true,
-
-						//ProductRowsByContainerFieldsGroupParametersFile
-						//ProductOrderrowsByContainerFieldsGroupParametersFile
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.productOrderrow'),
-						'translatedTitle' => trans('products::models.productOrderrows'),
-						'buttonsMethods' => [
-							'getAddRowButton',
-							'getAddRowTableButton',
+					'productRows' => array_merge(
+						RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'productRows'),
+						[
+							'buttons' => $this->getCreateProductButtons()
 						]
+					),
+
+					'vehicleRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'vehicleRows'),
+
+					'operatorRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'operatorRows'),
+
+					'accessoryRows' => RowscontainerRelationsManagerParametersHelper::getStandardRowrelationParameters($this->getModel(), 'accessoryRows'),
+
+					'allergens' => [
+						'controller' => config('products.models.allergen.controllers.index'),
+						'elementGetterMethod' => 'getAllergensList',
+						'relationType' => 'HasMany',
+						'relatedModelClass' => Allergen::gpc(),
+						'relatedModel' => Allergen::gpc()::make(),
 					],
-					'operatorRows' => [
-						'controller' => config('products.models.orderrrow.controllers.index'),
-						'selectRowCheckboxes' => true,
-
-						//OperatorRowsByContainerFieldsGroupParametersFile
-
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.operatorOrderrow'),
-						'translatedTitle' => trans('products::models.operatorRows'),
-						'buttonsMethods' => [
-							'getAddRowButton',
-						]
-					],
-					'vehicleRows' => [
-						'controller' => config('products.models.orderrrow.controllers.index'),
-						'selectRowCheckboxes' => true,
-						'fieldsGroupsParametersFile' => config('products.models.orderrow.fieldsGroupsFiles.vehicleOrderrow'),
-						'translatedTitle' => trans('products::models.vehicleRows'),
-						'buttonsMethods' => [
-							'getAddRowButton',
-							'getAddRowTableButton',
-						]
-					],
-					// 'parent' => [
-					// 	'controller' => config('products.models.order.controllers.show'),
-					// 	'translatedTitle' => trans('products::models.parentOrder'),
-					// ],
-					// 'children' => [
-					// 	'controller' => config('products.models.order.controllers.index'),
-					// 	'translatedTitle' => trans('products::models.childrenOrders'),
-
-					// 	//OrderChildrenFieldsGroupParametersFile
-					// 	'fieldsGroupsParametersFile' => config('products.models.order.fieldsGroupsFiles.children'),
-
-					// 	// 'buttonsMethods' => [
-					// 	// 	'getAddChildrenButton',
-					// 	// ],
-					// ],
-					// 'orderProducts' => config('products.models.orderProduct.controllers.byOrderIndex'),
-					// 'notes' => CrudNoteController::class,
-					// // 'phases' => [
-					// // 	'controller' => config('products.models.phase.controllers.productPhaseIndex'),
-					// // 	'selectRowCheckboxes' => false,
-					// // 	'buttonsMethods' => [
-					// // 		'getReorderButtonByProduct'
-					// // 	],
-					// // ],
 				]
 			]
 		];

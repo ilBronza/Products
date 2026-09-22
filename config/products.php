@@ -20,6 +20,11 @@ use IlBronza\Products\Http\Controllers\Accessory\AccessoryEditUpdateController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryIndexController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryMediaController;
 use IlBronza\Products\Http\Controllers\Accessory\AccessoryShowController;
+use IlBronza\Products\Http\Controllers\Allergens\AllergenCreateStoreController;
+use IlBronza\Products\Http\Controllers\Allergens\AllergenDestroyController;
+use IlBronza\Products\Http\Controllers\Allergens\AllergenEditUpdateController;
+use IlBronza\Products\Http\Controllers\Allergens\AllergenIndexController;
+use IlBronza\Products\Http\Controllers\Allergens\AllergenShowController;
 use IlBronza\Products\Http\Controllers\Assignee\AssigneeOrderProductPhaseController;
 use IlBronza\Products\Http\Controllers\ClientArea\ClientAreaOrderIndexController;
 use IlBronza\Products\Http\Controllers\Clients\ClientIndexController;
@@ -54,6 +59,7 @@ use IlBronza\Products\Http\Controllers\Order\ActiveOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AllOrderIndexController;
 use IlBronza\Products\Http\Controllers\Order\AttachClientOperatorsToOrderrowsController;
 use IlBronza\Products\Http\Controllers\Order\AwaitingOrderIndexController;
+use IlBronza\Products\Http\Controllers\Order\CateringOrderPdfController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexByTableController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddOrderrowIndexController;
 use IlBronza\Products\Http\Controllers\Order\OrderAddSellableSupplierIndexByTableController;
@@ -111,6 +117,7 @@ use IlBronza\Products\Http\Controllers\Product\ByOrderProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ClientAreaProductIndexController;
 use IlBronza\Products\Http\Controllers\Product\ProductCalculatePricesController;
 use IlBronza\Products\Http\Controllers\Product\ProductCreateController;
+use IlBronza\Products\Http\Controllers\Product\ProductCreateByOrderController;
 use IlBronza\Products\Http\Controllers\Product\ProductCurrentController;
 use IlBronza\Products\Http\Controllers\Product\ProductDeletionController;
 use IlBronza\Products\Http\Controllers\Product\ProductEditUpdateController;
@@ -131,6 +138,7 @@ use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessorySellableS
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AccessoryTypeFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ActiveOrdersFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllOrderFieldsGroupParametersFile;
+use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\AllergenFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByClientProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByOrderRelatedOrderProductFieldsGroupParametersFile;
 use IlBronza\Products\Http\Controllers\Providers\FieldsGroups\ByProductRelatedAccessoryProductFieldsGroupParametersFile;
@@ -184,6 +192,7 @@ use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryProductEditF
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryShowFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryTypeCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AccessoryTypeOrderrowEditUpdateFieldsetsParameters;
+use IlBronza\Products\Http\Controllers\Providers\Fieldsets\AllergenCrudFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\ClientAreaOrderProductEditFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\FinishingCreateStoreFieldsetsParameters;
 use IlBronza\Products\Http\Controllers\Providers\Fieldsets\MaterialCreateFieldsetsParameters;
@@ -296,6 +305,8 @@ use IlBronza\Products\Models\Accessory;
 use IlBronza\Products\Models\AccessoryProduct;
 use IlBronza\Products\Models\AccessoryType;
 use IlBronza\Products\Models\AccessoryTypeProduct;
+use IlBronza\Products\Models\Catering\Allergen;
+use IlBronza\Products\Models\Catering\Allergenable;
 use IlBronza\Products\Models\Client;
 use IlBronza\Products\Models\Finishing;
 use IlBronza\Products\Models\Material;
@@ -333,6 +344,7 @@ use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationDuplicatorHelper
 use IlBronza\Products\Providers\Helpers\QuotationOrder\QuotationFreezerHelper;
 use IlBronza\Products\Providers\Helpers\Quotations\QuotationToOrderConverterHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowFieldsetParametersFile;
+use IlBronza\Products\Providers\Helpers\RowsHelpers\RowSortingIndexesOnDeletingHelper;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsFieldsGroupParametersFile;
 use IlBronza\Products\Providers\Helpers\RowsHelpers\RowsSellableSupplierAssociatorHelper;
 use IlBronza\Products\Providers\Helpers\SellableSuppliers\SellableSupplierFindBySellableHelper;
@@ -397,7 +409,17 @@ return [
 		'orderHelper' => OrderPdfHelper::class,
 		'quotationHelper' => QuotationPdfHelper::class,
 		'orderView' => 'products::pdf.order',
-		'quotationView' => 'products::pdf.quotation',
+		'quotationView' => 'products::pdf.catering.quotation',
+
+		/*
+		| The print form discovers Blade files from these directories. The namespace
+		| is kept separate so that an application can point to its published views.
+		*/
+		'contractDocumentsDirectory' => dirname((new \ReflectionClass(\IlBronza\Products\ProductsServiceProvider::class))->getFileName()) . '/../resources/views/pdf/contracts',
+		'contractDocumentsViewNamespace' => 'products::pdf.contracts',
+		'quotationTemplatesDirectory' => dirname((new \ReflectionClass(\IlBronza\Products\ProductsServiceProvider::class))->getFileName()) . '/../resources/views/pdf/catering',
+		'quotationTemplatesViewNamespace' => 'products::pdf.catering',
+		'defaultQuotationTemplate' => 'quotation',
 	],
 
 	/*
@@ -422,6 +444,10 @@ return [
 			'cost_coefficient',
 			'revenue_coefficient',
 		],
+	],
+
+	'catering' => [
+		'defaultPeopleCoefficientName' => 'persone menu standard',
 	],
 
 	'manageDiaries' => false,
@@ -516,10 +542,37 @@ return [
 
 	'helpers' => [
 		'rowsFieldsGroupParametersFile' => RowsFieldsGroupParametersFile::class,
-		'rowsFieldsetParametersFile' => RowFieldsetParametersFile::class
+		'rowsFieldsetParametersFile' => RowFieldsetParametersFile::class,
+		'rowSortingIndexesOnDeleting' => RowSortingIndexesOnDeletingHelper::class
 	],
 
 	'models' => [
+		'allergen' => [
+			'class' => Allergen::class,
+			'table' => 'products__allergens',
+			'fieldsGroupsFiles' => [
+				'index' => AllergenFieldsGroupParametersFile::class,
+				'related' => AllergenFieldsGroupParametersFile::class,
+			],
+			'parametersFiles' => [
+				'create' => AllergenCrudFieldsetsParameters::class,
+				'edit' => AllergenCrudFieldsetsParameters::class,
+				'show' => AllergenCrudFieldsetsParameters::class,
+			],
+			'controllers' => [
+				'index' => AllergenIndexController::class,
+				'create' => AllergenCreateStoreController::class,
+				'store' => AllergenCreateStoreController::class,
+				'show' => AllergenShowController::class,
+				'edit' => AllergenEditUpdateController::class,
+				'update' => AllergenEditUpdateController::class,
+				'destroy' => AllergenDestroyController::class,
+			],
+		],
+		'allergenable' => [
+			'class' => Allergenable::class,
+			'table' => 'products__allergenables',
+		],
 		'accessoryType' => [
 			'class' => AccessoryType::class,
 			'table' => 'products__accessory_types',
@@ -713,6 +766,7 @@ return [
 			],
 			'controllers' => [
 				'create' => ProductCreateController::class,
+				'createByOrder' => ProductCreateByOrderController::class,
 				'store' => ProductCreateController::class,
 				'show' => ProductShowController::class,
 				'teaser' => ProductTeaserController::class,
@@ -803,6 +857,7 @@ return [
 			'controllers' => [
 				'html' => OrderHtmlController::class,
 				'pdf' => OrderPdfController::class,
+				'cateringPdf' => CateringOrderPdfController::class,
 				'bulkEdit' => OrderBulkEditUpdateController::class,
 				'bulkUpdate' => OrderBulkEditUpdateController::class,
 				'changeClient' => OrderChangeClientController::class,

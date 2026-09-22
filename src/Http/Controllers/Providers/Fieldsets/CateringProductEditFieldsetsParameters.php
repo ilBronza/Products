@@ -29,6 +29,17 @@ class CateringProductEditFieldsetsParameters extends CostsFieldsetParametersFile
                     ],
                     'short_description' => ['text' => 'string|nullable|max:255'],
                     'coefficient_output' => ['number' => 'numeric|nullable|min:1'],
+					'allergens' => [
+						'type' => 'select',
+						'multiple' => true,
+						'mustBeSorted' => false,
+						'rules' => [
+							'nullable',
+							'array',
+							'*' => 'exists:' . config('products.models.allergen.table') . ',id',
+						],
+						'relation' => 'allergens',
+					],
 					'accessories' => [
 						'type' => 'select',
 						'multiple' => true,
