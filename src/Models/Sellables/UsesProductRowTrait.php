@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Models\Sellables;
 
+use App\Http\Controllers\CustomRows\Production\ProductionOrderrow;
 use Illuminate\Support\Collection;
 
 trait UsesProductRowTrait
