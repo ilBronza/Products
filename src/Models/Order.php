@@ -223,10 +223,18 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 
 	public function getDeliveriesDataStringAttribute() : ?string
 	{
-		if (! $result = $this->getDeliveriesDataArray())
-			return null;
+		//2026_23_09_001
+		return cache()->remember(
+			$this->cacheKey('getDeliveriesDataStringAttribute'),
+			3600,
+			function()
+			{
+				if (! $result = $this->getDeliveriesDataArray())
+					return null;
 
-		return implode(", ", $result);
+				return implode(", ", $result);
+			}
+		);
 	}
 
 	public function getDeliveries() : ?Collection
@@ -287,4 +295,3 @@ class Order extends ProductPackageBaseRowcontainerModel implements HasTimingInte
 	}
 
 }
-
