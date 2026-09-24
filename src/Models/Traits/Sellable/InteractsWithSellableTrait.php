@@ -21,6 +21,17 @@ trait InteractsWithSellableTrait
 
 	protected static function bootInteractsWithSellableTrait()
 	{
+		static::saving(static function ($model) : void
+		{
+			if($model->isDirty('name'))
+				foreach($model->getSellables() as $sellable)
+				{
+					$sellable->name = $model->name;
+					$sellable->save();
+				}
+		});
+
+
 		\Event::listen('adjustPricesEvent', function ($model) {
 
 			//if model use InteractsWithSellableTrait
@@ -48,7 +59,7 @@ trait InteractsWithSellableTrait
 
 	public function getNameForSellable(...$parameters) : string
 	{
-		return $this->getName();
+		return $this->getName() ?? $this->getKey();
 	}
 
 	public function getSellableTypeName(...$parameters) : string
