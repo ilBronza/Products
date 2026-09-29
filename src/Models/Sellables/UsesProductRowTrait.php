@@ -82,6 +82,8 @@ trait UsesProductRowTrait
 			return false;
 		});
 
+		return $result;
+
 		return ProductionOrderrow::addSplittedRowsToResult($result);
 	}
 }
