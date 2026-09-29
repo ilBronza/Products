@@ -104,8 +104,8 @@ class VatCalculatorCostsHelper
 	}
 
 	public static function calculateVattedAmountFromTaxableAmountAndVatPercentage(
-		float $taxable_amount,
-		float $vat_percentage
+		? float $taxable_amount,
+		? float $vat_percentage
 	) : float
 	{
 		return $taxable_amount * (100 + $vat_percentage) / 100;
