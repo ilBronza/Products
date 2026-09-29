@@ -144,6 +144,6 @@ trait CustomrowTrait
 
 	public function getPossibleSellablesArrayValues() : array
 	{
-		return Sellable::gpc()::byType(static::$typeName)->pluck('name', 'id')->toArray();
+		return Sellable::gpc()::byType(static::$typeName)->orderBy('name')->pluck('name', 'id')->toArray();
 	}
 }
