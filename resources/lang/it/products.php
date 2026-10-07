@@ -34,4 +34,12 @@ return [
   'orderProductPhases' => 'Fasi della commessa',
   'orderProductPhase' => 'Fase della commessa',
   'titles.show' => 'Dettagli :element',
+    'quotation' => 'Preventivo',
+    'orderrow' => 'Riga di commessa',
+    'suppliers' => 'Fornitori',
+    'quotationrows' => 'Righe di preventivo',
+    'sellableSupplier' => 'Articolo fornitore',
+    'cardTitleCreate' => 'Crea prodotto',
+    'cardIntroCreate' => 'Compila i dati e salva per completare la creazione.',
+    'quotationrow' => 'Riga di preventivo',
 ];

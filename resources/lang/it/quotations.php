@@ -15,4 +15,6 @@ return array (
 		'notes' => 'Note',
 		'dossiers' => 'Schede / dossier',
 	],
+    'cardTitleCreate' => 'Crea preventivo',
+    'cardIntroCreate' => 'Compila i dati e salva per completare la creazione.',
 );

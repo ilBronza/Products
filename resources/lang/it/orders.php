@@ -61,4 +61,6 @@ return [
 
 	'allOrders' => 'Tutte le commesse',
 	'calendar' => 'Calendario commesse',
+    'cardTitleCreate' => 'Crea commessa',
+    'cardIntroCreate' => 'Compila i dati e salva per completare la creazione.',
 ];

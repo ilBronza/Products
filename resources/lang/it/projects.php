@@ -7,4 +7,6 @@ return [
 	'reorder' => [
 		'clients' => 'Riordina progetti per cliente',
 	],
+    'cardTitleCreate' => 'Crea progetto',
+    'cardIntroCreate' => 'Compila i dati e salva per completare la creazione.',
 ];
