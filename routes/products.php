@@ -3,6 +3,7 @@
 use App\Http\Controllers\CrudPalletController;
 use IlBronza\Operators\Http\Controllers\Sellables\OrderrowClientOperatorController;
 use IlBronza\Products\Http\Controllers\OrderProduct\OrderProductNotesController;
+use IlBronza\Products\Models\OrderProduct;
 use IlBronza\Products\Products;
 use IlBronza\Timings\Timings;
 use IlBronza\Ukn\Ukn;
@@ -626,6 +627,16 @@ Route::group([
 			'routeTranslationPrefix' => Products::getRouteTranslationPrefix(),
 	], function ()
 		{
+			Route::get('show-product', function($orderProduct)
+			{
+				$_orderProduct = OrderProduct::gpc()::select('product_id')->find($orderProduct);
+
+				return redirect()->to(
+					app('products')->route('products.show', ['product' => $_orderProduct->product_id])
+				);
+			})->name('showProduct');
+
+
 			Route::get('notes-popup', [OrderProductNotesController::class, 'getPopupByModel'])->name('getNotesPopup');
 		});
 

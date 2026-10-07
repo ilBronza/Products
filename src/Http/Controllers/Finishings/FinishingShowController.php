@@ -2,9 +2,9 @@
 
 namespace IlBronza\Products\Http\Controllers\Finishings;
 
-use IlBronza\CRUD\Http\Controllers\BasePackageShowTrait;
+use IlBronza\CRUD\Http\Controllers\BasePackageShowCompleteTrait;
 
 class FinishingShowController extends FinishingCRUD
 {
-	use BasePackageShowTrait;
+	use BasePackageShowCompleteTrait;
 }

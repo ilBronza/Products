@@ -684,6 +684,8 @@ return [
 			],
 			'parametersFiles' => [
 				'create' => FinishingCreateStoreFieldsetsParameters::class,
+				'show' => FinishingCreateStoreFieldsetsParameters::class,
+				'edit' => FinishingCreateStoreFieldsetsParameters::class,
 			],
 			'controllers' => [
 				'index' => FinishingIndexController::class,
