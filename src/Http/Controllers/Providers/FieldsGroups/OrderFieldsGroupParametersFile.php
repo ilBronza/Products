@@ -32,7 +32,7 @@ class OrderFieldsGroupParametersFile extends FieldsGroupParametersFile
                 'ends_at' => 'dates.datetime',
 	            'parent' => 'relations.belongsTo',
 	            'children' => 'relations.hasMany',
-                'client' => 'clients::client.client',
+                'client.name' => 'flat',
                 // 'mySelfDelete' => 'links.delete'
             ]
         ];

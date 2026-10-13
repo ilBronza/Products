@@ -33,7 +33,11 @@ class OrderIndexController extends OrderCRUD
 		ini_set('memory_limit', - 1);
 
 		$query = $this->getModelClass()::with(
-			'project', 'destination', 'parent', 'client', 'quotation',
+			'project',
+			'destination',
+			'parent',
+			'children',
+			'client',
 		);
 
 		if(method_exists($placeholder = $this->getModelClass()::make(), 'getExtraFieldsClass'))
