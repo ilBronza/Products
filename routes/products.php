@@ -570,6 +570,8 @@ Route::group([
 		Route::get('create', [Products::getController('orderrow', 'create'), 'create'])->name('orderrows.create');
 		Route::post('', [Products::getController('orderrow', 'store'), 'store'])->name('orderrows.store');
 		Route::get('{orderrow}', [Products::getController('orderrow', 'show'), 'show'])->name('orderrows.show');
+
+		//OrderrowEditUpdateController
 		Route::get('{orderrow}/edit', [Products::getController('orderrow', 'edit'), 'edit'])->name('orderrows.edit');
 
 		//IlBronza\Products\Http\Controllers\Orderrow\OrderrowEditUpdateController
