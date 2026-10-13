@@ -18,7 +18,12 @@ class CateringProductRelationManager extends ProductRelationManager
 					],
 					'allergens' => [
 						'controller' => config('products.models.allergen.controllers.index'),
+						'elementGetterMethod' => 'getAllergensList',
 						'hasAssociateButton' => true,						
+					],
+					'accessories' => [
+						'controller' => config('products.models.accessory.controllers.index'),
+						'hasAssociateButton' => true,
 					],
 					'accessoryProducts' => config('products.models.accessoryProduct.controllers.byProductIndex'),
 					'phases' => [
