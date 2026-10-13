@@ -9,6 +9,9 @@ class CateringOrderAddSellableSupplierIndexByTableController extends OrderAddSel
 {
 	public function getIndexElements()
 	{
+		if ($this->type !== 'Product')
+			return parent::getIndexElements();
+
 		$getterMethod = "get{$this->type}SellableSuppliers";
 
 		if(method_exists(Order::gpc(), $getterMethod))
@@ -33,7 +36,6 @@ class CateringOrderAddSellableSupplierIndexByTableController extends OrderAddSel
 				'sellable.target.categories',
 				'prices',
 			])
-			->take(10)
 			->get();
 
 		return $result;
