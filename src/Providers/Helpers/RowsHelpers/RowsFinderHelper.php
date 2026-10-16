@@ -139,6 +139,7 @@ class RowsFinderHelper
 				else
 					$result->with('sellableSupplier.supplier.target.operator');
 
+				$result->with('clientOperator.client');
 				$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
 				$result->with('sellableSupplier.supplier.target.operator.user.userdata');
 				$result->with('sellableSupplier.supplier.target.operator.address');
@@ -169,6 +170,7 @@ class RowsFinderHelper
 		// 	VehicleOrderrow::gpc(),
 		// 	HotelOrderrow::gpc()
 		// ] as $type)
+
 		foreach($possibleOrderrowsClasses = static::getPossibleCustomOrderrowsClasses() as $type)
 		{
 			$result = $type::query()->whereIn('id', $ids);
@@ -183,6 +185,7 @@ class RowsFinderHelper
 				else
 					$result->with('sellableSupplier.supplier.target.operator');
 
+				$result->with('clientOperator.client');
 				$result->with('sellableSupplier.supplier.target.operator.clientOperators.client');
 				$result->with('sellableSupplier.supplier.target.operator.user.userdata');
 				$result->with('sellableSupplier.supplier.target.operator.address');
