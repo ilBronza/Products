@@ -33,68 +33,6 @@ class SellableSupplierFindBySellableHelper
 		$sellable = $this->getSellable();
 
 		return $sellable->getTarget()->getSellableSupplierIndexRelations();
-
-		// if($relations = config('products.models.sellable.associationRelations.' . $sellable->getType(), false))
-		// 	return $relations;
-
-		// if ($sellable->isContracttype())
-		// 	return $this->getContracttypeRelations();
-
-		// try
-		// {
-		// 	if (($sellable->isControlRoomType())||($sellable->isVehicleType()))
-		// 		return [
-		// 			'prices',
-		// 			'supplier.target.extraFields',
-		// 			'supplier.target',
-		// 		];			
-		// }
-		// catch(\Exception $e)
-		// {
-		// 	Log::critical($e->getMessage());
-		// 	Ukn::e("Rimuovi sta merdata: " .  $e->getMessage());
-
-		// 	if ($sellable->isVehicleType())
-		// 		return [
-		// 			'prices',
-		// 			'supplier.target.extraFields',
-		// 			'supplier.target',
-		// 		];
-		// }
-
-
-		// if (($this->getSellable()->isServiceType())||($sellable->isHotelType())||($sellable->isReimbursementType()))
-		// 	return [
-		// 		'supplier.target.address'
-		// 	];
-
-
-		// dd($sellable->getType());
-
-		// dd('dopo');
-
-
-
-
-		// if (! $this->getTargetType())
-		// {
-		// 	if ($this->getSellable()->isHotelType())
-		// 		return [
-		// 			'supplier.target'
-		// 		];
-
-		// 	if ($this->getSellable()->isSurveillanceType())
-		// 		return [
-		// 			'supplier.target'
-		// 		];
-		// }
-
-		// if ($this->getTargetType() == 'Type')
-		// 	return [
-		// 		'supplier.target'
-		// 	];
-
-		// throw new Exception ('altro tipo di sellable: ' . $this->getTargetType());
 	}
 
 	public function find()
