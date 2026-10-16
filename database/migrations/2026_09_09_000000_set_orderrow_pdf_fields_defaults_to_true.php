@@ -14,6 +14,7 @@ return new class extends Migration
 
 	public function up() : void
 	{
+		return ;
 		Schema::table($this->getOrderrowExtraFieldsTable(), function (Blueprint $table)
 		{
 			$table->boolean('pdf_quotation_show')->nullable()->default(true)->change();
