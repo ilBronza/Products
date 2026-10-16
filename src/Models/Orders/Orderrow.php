@@ -3,7 +3,7 @@
 namespace IlBronza\Products\Models\Orders;
 
 use IlBronza\CRUD\Interfaces\CrudReorderableModelInterface;
-use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
+use IlBronza\Operators\Models\Operator;
 use IlBronza\Payments\Models\Interfaces\InvoiceDetailInterface;
 use IlBronza\Products\Models\Interfaces\RowInterface;
 use IlBronza\Products\Models\Order;
@@ -13,6 +13,7 @@ use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowCheckersT
 use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowGettersTrait;
 use IlBronza\Products\Models\Traits\Orderrow\CommonOrderrowQuotationrowPricesTrait;
 use IlBronza\Products\Models\Traits\Orderrow\OrderrowRelationsScopesTrait;
+use IlBronza\Timeline\Interfaces\TimelineGroupInterface;
 use IlBronza\Timings\Interfaces\TimeIntervalInterface;
 use IlBronza\Timings\Interfaces\TimelineInterface;
 use function rand;
@@ -143,4 +144,25 @@ class Orderrow extends ProductPackageBaseRowModel implements CrudReorderableMode
 	{
 		return $this->genericParent;
 	}
+
+	public function getTimelineItemTitleForSellable()
+	{
+		$result = [];
+
+		if($value = $this->getSupplier()?->getName())
+			$result[] = $value;
+
+		return implode(" | ", $result);
+	}
+
+	public function getTimelineItemTitleForOperator(Operator $operator)
+	{
+		$result = [];
+
+		if($value = $this->getOrder()?->getName())
+			$result[] = $value;
+
+		return implode(" | ", $result);
+	}
+
 }
