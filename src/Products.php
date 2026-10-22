@@ -215,14 +215,15 @@ class Products implements RoutedObjectInterface
 			])
 		);
 
-		$productsContainerButton->addChild(
-			$menu->createButton([
-				'name' => 'allergens.index',
-				'icon' => 'triangle-exclamation',
-				'text' => 'products::products.allergens',
-				'href' => IbRouter::route($this, 'allergens.index')
-			])
-		);
+		if (config('products.hasCateringFunctions', false))
+			$productsContainerButton->addChild(
+				$menu->createButton([
+					'name' => 'allergens.index',
+					'icon' => 'triangle-exclamation',
+					'text' => 'products::products.allergens',
+					'href' => IbRouter::route($this, 'allergens.index')
+				])
+			);
 
 		$productsContainerButton->addChild(
 			$menu->createButton([
