@@ -25,7 +25,7 @@ class OrderrowAssignSellableSupplierController extends OrderrowCRUD
 
 	public function assignSellableSupplier(Request $request, $orderrow)
 	{
-		$this->orderrow = Orderrow::getProjectClassName()::with('sellable')->find($orderrow);
+		$this->orderrow = Orderrow::gpc()::with('sellable')->find($orderrow);
 		$this->sellable = $this->orderrow->getSellable();
 		$this->targetType = class_basename($this->sellable->getTarget());
 
@@ -34,7 +34,7 @@ class OrderrowAssignSellableSupplierController extends OrderrowCRUD
 
 	public function associateBulkSellableSupplier($orderrow, $sellableSupplier)
 	{
-		$target = Orderrow::getProjectClassName()::find($orderrow);
+		$target = Orderrow::gpc()::find($orderrow);
 
 		return $this->_associateBulkSellableSupplier($target, $sellableSupplier);
 
@@ -42,7 +42,7 @@ class OrderrowAssignSellableSupplierController extends OrderrowCRUD
 
 	public function associateSellableSupplier($orderrow, $sellableSupplier)
 	{
-		$target = Orderrow::getProjectClassName()::find($orderrow);
+		$target = Orderrow::gpc()::find($orderrow);
 
 		return $this->_associateSellableSupplier($target, $sellableSupplier);
 	}
