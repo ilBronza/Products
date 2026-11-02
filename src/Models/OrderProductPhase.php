@@ -55,6 +55,9 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 
 	public function getQuantityRequired() : ?float
 	{
+		if($this->quantity_out)
+			return $this->quantity_out;
+
 		return $this->quantity_required;
 	}
 
@@ -248,6 +251,9 @@ class OrderProductPhase extends ProductPackageBaseModel implements HasTimingInte
 	public function getRequiredQuantityIn()
 	{
 		// morime(['qweqwe', $this, $this->getWorkstationId(), $this->getQuantityRequired(), $this->getCoefficientOutput(), $this->getQuantityRequired() / $this->getCoefficientOutput()]);
+
+		if($this->quantity_in)
+			return $this->quantity_in;
 
 		if(! $coefficientOutput = $this->getCoefficientOutput())
 			return $this->getQuantityRequired();
