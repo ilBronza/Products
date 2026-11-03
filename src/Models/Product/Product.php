@@ -9,6 +9,7 @@ use IlBronza\Products\Models\Interfaces\SellableSupplierPriceCreatorBaseClass;
 use IlBronza\Products\Models\ProductPackageBaseModel;
 use IlBronza\Products\Models\ProductRelation;
 use IlBronza\Products\Models\Traits\CompletionScopesTrait;
+use IlBronza\Products\Models\Traits\Product\ProductHasSeoTrait;
 use IlBronza\Products\Models\Traits\Product\ProductQueriesTrait;
 use IlBronza\Products\Models\Traits\Product\ProductRelationshipsTrait;
 use IlBronza\Products\Models\Traits\Product\ProductScopesTrait;
@@ -32,6 +33,8 @@ class Product extends ProductPackageBaseModel implements HasMedia, UnitloadableI
 	use CompletionScopesTrait;
 
 	use CRUDManyToManyTreeTrait;
+
+	use ProductHasSeoTrait;
 
 	static $deletingRelationships = [
 		'orders',

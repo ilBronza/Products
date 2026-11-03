@@ -1,5 +1,17 @@
 # Products
 
+## SEO
+
+`Product` includes `ProductHasSeoTrait` (Crud `HasSeo`). Defaults:
+
+- title: `title` / `name`
+- description: `short_description` → `description` → `name`
+- URL: `getPublicUrl($locale)` when the model (or a subclass) exposes it
+
+Open Graph defaults to `article` (switch to `product` when a public price exists) and, when media is present, uses the first `catalog` or `cover` image for `og:image` / Twitter card, including width, height and alt from the product name.
+
+Enable admin SEO form integrations with `products.seo.enabled` (default `false`). Persist with `SeoFormHelper::saveFromRequest($product, $request)` or the Crud trait `SavesSeoFromRequest`. Requires the Crud `crud_seo` migration.
+
 ## Suppliers Creation from Standard Models
 
 This package now includes a helper feature that allows you to create **Suppliers** directly from existing Eloquent models.
