@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Http\Controllers\Timelines;
 
+use Carbon\Carbon;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
 use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
@@ -47,7 +48,8 @@ class SellableTimelineCreateRowBySellableController extends CRUD
 			$orderrow->starts_at = $startsAt;
 
 		if ($endsAt = request()->input('ends_at'))
-			$orderrow->ends_at = $endsAt;
+			$orderrow->ends_at = Carbon::parse($endsAt)
+				->setTimeFromTimeString(config('products.timeline.default_end_time', '18:00'));
 
 		$orderrow->sellable_id = request()->input('group_id');
 

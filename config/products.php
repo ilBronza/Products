@@ -366,6 +366,11 @@ use IlBronza\Products\Providers\RelationshipsManagers\SupplierRelationManager;
 return [
 	'routePrefix' => 'ibProducts',
 
+	'timeline' => [
+		// Proposed end time (HH:MM) when creating a row by sellable.
+		'default_end_time' => '18:00',
+	],
+
 	// When true, package forms/controllers may expose SEO fields for products that use ProductHasSeoTrait.
 	'seo' => [
 		'enabled' => env('PRODUCTS_SEO_ENABLED', false),
