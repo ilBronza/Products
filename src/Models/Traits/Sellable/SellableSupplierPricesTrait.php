@@ -3,6 +3,7 @@
 namespace IlBronza\Products\Models\Traits\Sellable;
 
 use IlBronza\CRUD\Models\Casts\CastFieldPrice;
+use IlBronza\CRUD\ResourceFilters\ResourceFilters;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait SellableSupplierPricesTrait
@@ -30,26 +31,19 @@ trait SellableSupplierPricesTrait
 
 		if ($sellableClass === null)
 		{
-			if(! $sellableTarget = $this->getSellable()?->getTarget())
-			{
-				static::query()
-					->whereKey($this->getKey())
-					->update([
-						'sellable_class' => static::SELLABLE_CLASS_NONE
-					]);
-
-				return ;
-			}
-
-			$sellableClass = class_basename($sellableTarget);
-
-			static::query()
-				->whereKey($this->getKey())
-				->update([
-					'sellable_class' => $sellableClass
+			$sellableTarget = $this->getSellable()?->getTarget();
+			$sellableClass = $sellableTarget ? class_basename($sellableTarget) : static::SELLABLE_CLASS_NONE;
+			// A consultation scope can hide an existing target. Never persist
+			// a class inferred from that partial view of the relationship.
+			if (! app(ResourceFilters::class)->active()) {
+				static::query()->whereKey($this->getKey())->whereNull('sellable_class')->update([
+					'sellable_class' => $sellableClass,
 				]);
-
-			$this->sellable_class = $sellableClass;
+				if ($sellableTarget)
+					$this->sellable_class = $sellableClass;
+			}
+			if (! $sellableTarget)
+				return;
 		}
 
 		$fullClass = Relation::getMorphedModel($sellableClass);

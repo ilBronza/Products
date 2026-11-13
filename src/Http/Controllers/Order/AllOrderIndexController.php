@@ -2,6 +2,7 @@
 
 namespace IlBronza\Products\Http\Controllers\Order;
 
+use IlBronza\CRUD\ResourceFilters\ResourceFilters;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use Illuminate\Support\Str;
@@ -24,15 +25,16 @@ class AllOrderIndexController extends OrderCRUD
         ini_set('max_execution_time', "120");
         ini_set('memory_limit', "2048M");
 
+        $query = $this->getModelClass()::select('id', 'client_id', 'name');
+        if (ResourceFilters::currentCacheContext() !== null)
+            return $query->get();
+
         return cache()->remember(
 
             Str::slug(get_class($this) . __METHOD__),
             3600 * 24,
 
-            function()
-            {
-                return $this->getModelClass()::select('id', 'client_id', 'name')->get();
-            }
+            fn () => $query->get()
         );
     }
 }

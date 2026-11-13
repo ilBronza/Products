@@ -74,6 +74,7 @@ class ProductsServiceProvider extends ServiceProvider
 	public function register() : void
 	{
 		$this->mergeConfigFrom(__DIR__ . '/../config/products.php', 'products');
+		$this->mergeConfigFrom(__DIR__ . '/../config/resource-filters/orders.php', 'resource-filters.resources.orders');
 
 		// Register the service the package provides.
 		$this->app->singleton('products', function ($app)
